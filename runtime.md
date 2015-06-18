@@ -447,6 +447,10 @@ For Linux the mapping is
 capabilities is an array of Linux process capabilities. Valid values are the string after CAP_ for capabilities defined in http://linux.die.net/man/7/capabilities
 
 #### SELinux
+```
+   "selinux_label": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675"
+```
+selinux label specifies the label with which the processes in a container are run. For more information about SELinux, see http://selinuxproject.org/page/Main_Page
 
 #### Apparmor
 
