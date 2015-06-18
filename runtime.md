@@ -415,7 +415,8 @@ The array contains names: for each name, the device /dev/<name> will be made ava
         "network",
         "mount",
         "ipc",
-        "uts"
+        "uts",
+        "user"
     ],
 ```
 Namespaces for the container are specified as an array of strings under the namespaces key. The list of constants that can be used is portable across operating systems. Here is a table mapping these names to native OS equivalent.
@@ -431,6 +432,8 @@ For Linux the mapping is
 * ipc -> ipc processes in the container can only communicate with other processes inside same container
 
 * uts -> uts Hostname and NIS domain name are specific to the container
+
+* user -> uids/gids on the are mapped to different uids/gids in the container, so root in a container could be unprivileged on the host
 
 #### Linux Control groups
 
