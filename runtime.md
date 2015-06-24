@@ -320,7 +320,10 @@ See links for details about mountvol in Windows.
     "processes": [
         {
             "tty": true,
-            "user": "daemon",
+            "user": {
+              "name": "daemon",
+              "id": 0,
+            },
             "args": [
                 "sh"
             ],
@@ -338,11 +341,9 @@ The processes to be created inside the container are specified in a processes ar
 ```
 The command to start a process is specified in an array of args. It will be run in the working directory specified in the string cwd.
 
-Environment variables are specified is an array called env.
+Environment variables are specified is an array called `env`. Elements in the array are specified as `strings` in the form "KEY=value", and are passed unmodified to the underlying process.
 
-Elements in the array are specified as Strings in the form "KEY=value"
-
-The user inside the container under which the process is running is specified under the user key.
+The user inside the container under which the process is running is specified under the `user` object. The `user` object may specify a `name` which is the string value of the user name, or the `id` which is an integer representing the Unix user identifier of the user. This is the expected value of the user as seen from the inside of the container - the runtime may define a mapping between the value seen inside the container and the value the host operating system sees.
 
 tty is a boolean that lets you specify whether you want a terminal attached to that process. tty cannot be set to true for more than one process in the array, else oc returns the error code THERE_CAN_BE_ONLY_ONE_TTY.
 
