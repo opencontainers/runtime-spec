@@ -1,6 +1,13 @@
 # OCF spec draft
 
-[[TOC]]
+# Table of Contents
+
+* [Principles of Standard Containers](#the-5-principles-of-standard-containers)
+* [Container Format](#container-format)
+* [emit content for building a hash of the container filesystem](#emit-content-for-building-a-hash-of-the-container-filesystem)
+* [Standard operations (lifecycle)](#standard-operations-lifecycle)
+* [Execution environment](#execution-environment)
+* [See also](#see-also)
 
 # The 5 principles of Standard Containers
 
