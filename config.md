@@ -10,8 +10,6 @@ Below is a detailed description of each field defined in the configuration forma
 
 The `version` element specifies the version of the OCF specification which the container complies with. If the container is compliant with multiple versions, it SHOULD advertise the most recent known version to be supported.
 
-*Linux example*
-
 ```
     "version": "1",
 ```
