@@ -25,15 +25,19 @@ The readonlyRootfs is an optional boolean element which defaults to false. If it
 *Example (Linux)*
 
 ```
-    "rootfs": "rootfs",
-    "readonlyRootfs": true,
+    "root" : {
+        "path": "rootfs",
+        "readonly": true
+    }
 ```
 
 *Example (Windows)*
 
 ```
-    "rootfs": "My Fancy Root FS",
-    "readonlyRootfs": true,
+    "root" : {
+        "path": "rootfs",
+        "readonly": false
+    }
 ```
 
 Additional file systems can be declared as "mounts", declared by the the array element mounts. The parameters are similar to the ones in Linux mount system call. [http://linux.die.net/man/2/mount](http://linux.die.net/man/2/mount)
