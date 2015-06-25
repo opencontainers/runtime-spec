@@ -22,7 +22,7 @@ Each container has exactly one *root filesystem*, and any number of optional *mo
 
 The rootfs string element specifies the path to the root file system for the container, relative to the path where the manifest is. A directory MUST exist at the relative path declared by the field.
 
-The readonlyRootfs is an optional boolean element which defaults to false. If it is true, access to the root file system MUST be read-only for all processes running inside it.  whether you want the root file system to be readonly or not for the processes running on it.
+The readonlyRootfs is an optional boolean element which defaults to false. If it is true, access to the root file system MUST be read-only for all processes running inside it.
 
 *Example (Linux)*
 
