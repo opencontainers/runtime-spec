@@ -7,6 +7,7 @@ Table of Contents
 - [Filesystem Bundle](bundle.md)
 - [Container Configuration](config.md)
   - [Linux Specific Configuration](config-linux.md)
+  - [Windows Specific Configuration](config-windows.md)
 - [Runtime and Lifecycle](runtime.md)
 
 # The 5 principles of Standard Containers
