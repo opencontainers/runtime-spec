@@ -15,3 +15,7 @@ Runs a process in a container. Can be invoked several times.
 Not sure we need that from oc cli. Process is killed from the outside.
 
 This event needs to be captured by oc to run onstop event handlers.
+
+### Modify
+
+Modify the container: 
