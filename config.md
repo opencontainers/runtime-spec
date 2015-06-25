@@ -1,6 +1,6 @@
 # Configuration file
 
-The container’s top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [spec.go](https://github.com/opencontainers/runc/blob/master/spec.go) and [spec_linux.go](https://github.com/opencontainers/runc/blob/master/spec_linux.go), this will be moved to a JSON schema overtime.
+The container’s top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [spec.go][] and [spec_linux.go][], this will be moved to a JSON schema overtime.
 
 The configuration file contains metadata necessary to implement standard operations against the container. This includes processes to run, environment variables to inject, sandboxing features to use, etc.
 
@@ -38,7 +38,7 @@ The readonlyRootfs is an optional boolean element which defaults to false. If it
     "readonlyRootfs": true,
 ```
 
-Additional file systems can be declared as "mounts", declared by the the array element mounts. The parameters are similar to the ones in Linux mount system call. [http://linux.die.net/man/2/mount](http://linux.die.net/man/2/mount)
+Additional file systems can be declared as "mounts", declared by the the array element mounts. The parameters are similar to the ones in Linux's [mount][] system call.
 
 type: Linux, *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). Windows: ntfs
 
@@ -46,7 +46,7 @@ source: a device name, but can also be a directory name or a dummy. Windows, the
 
 destination: where the file system is mounted in the container.
 
-options: in the fstab format [https://wiki.archlinux.org/index.php/Fstab](https://wiki.archlinux.org/index.php/Fstab).
+options: in the [fstab format][fstab].
 
 *Example (Linux)*
 
@@ -92,11 +92,7 @@ options: in the fstab format [https://wiki.archlinux.org/index.php/Fstab](https:
         }
 ```
 
-See links for details about mountvol in Windows.
-
-[https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx)
-
-[http://ss64.com/nt/mountvol.html](http://ss64.com/nt/mountvol.html)
+See links for details about [SetVolumeMountPoint][] and [mountvol][] in Windows.
 
 ### Processes configuration
 
@@ -204,6 +200,14 @@ os specifies the operating system family this image must run on.
 
 arch specifies the instruction set for which the binaries in the image have been compiled.
 
-values for os and arch must be in the list specified by by the Go Language documentation for $GOOS and $GOARCH https://golang.org/doc/install/source#environment
+values for os and arch must be in the [list specified by by the Go Language documentation for $GOOS and $GOARCH][go-env]
 
 OS or architecture specific settings can be added in the json file. They will be interpreted by the implementation depending on the os and arch values specified at the top of the manifest.
+
+[spec.go]: https://github.com/opencontainers/runc/blob/master/spec.go
+[spec_linux.go]: https://github.com/opencontainers/runc/blob/master/spec_linux.go
+[mount]: http://linux.die.net/man/2/mount
+[fstab]: https://wiki.archlinux.org/index.php/Fstab
+[SetVolumeMountPoint]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx
+[mountvol]: http://ss64.com/nt/mountvol.html
+[go-env]: https://golang.org/doc/install/source#environment
