@@ -18,13 +18,13 @@ For Linux the mapping is
 
 * process -> pid: the process ID number space is specific to the container, meaning that processes in different PID namespaces can have the same PID
 
-* network -> network: the container will have an isolated network stack
+* network -> net: the container will have an isolated network stack
 
-* mount -> mnt container can only access mounts local to itself
+* mount -> mnt: the container can only access mounts local to itself
 
-* ipc -> ipc processes in the container can only communicate with other processes inside same container
+* ipc -> ipc: processes in the container can only communicate with other processes inside the container
 
-* uts -> uts Hostname and NIS domain name are specific to the container
+* uts -> uts: Hostname and NIS domain name are specific to the container
 
 ## Linux Control groups
 
