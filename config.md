@@ -1,6 +1,6 @@
 # Configuration file
 
-The container’s top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [spec.go][] and [spec_linux.go][], this will be moved to a JSON schema overtime.
+The container’s top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [`spec.go`][] and [`spec_linux.go`][], this will be moved to a JSON schema overtime.
 
 The configuration file contains metadata necessary to implement standard operations against the container. This includes processes to run, environment variables to inject, sandboxing features to use, etc.
 
@@ -40,9 +40,9 @@ The readonlyRootfs is an optional boolean element which defaults to false. If it
 
 Additional file systems can be declared as "mounts", declared by the the array element mounts. The parameters are similar to the ones in Linux's [mount][] system call.
 
-type: Linux, *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). Windows: ntfs
+type: Linux, *filesystemtype* argument supported by the kernel are listed in `/proc/filesystems` (e.g., `minix`, `ext2`, `ext3`, `jfs`, `xfs`, `reiserfs`, `msdos`, `proc`, `nfs`, `iso9660`). Windows: `ntfs`
 
-source: a device name, but can also be a directory name or a dummy. Windows, the volume name that is the target of the mount point. \\?\Volume\{GUID}\ (on Windows source is called target)
+source: a device name, but can also be a directory name or a dummy. Windows, the volume name that is the target of the mount point. `\\?\Volume\{GUID}\` (on Windows source is called target)
 
 destination: where the file system is mounted in the container.
 
@@ -128,11 +128,11 @@ The command to start a process is specified in an array of args. It will be run 
 
 Environment variables are specified is an array called env.
 
-Elements in the array are specified as Strings in the form "KEY=value"
+Elements in the array are specified as Strings in the form `KEY=value`
 
 The user inside the container under which the process is running is specified under the user key.
 
-tty is a boolean that lets you specify whether you want a terminal attached to that process. tty cannot be set to true for more than one process in the array, else oc returns the error code THERE_CAN_BE_ONLY_ONE_TTY.
+tty is a boolean that lets you specify whether you want a terminal attached to that process. tty cannot be set to true for more than one process in the array, else oc returns the error code `THERE_CAN_BE_ONLY_ONE_TTY`.
 
 *Example (Windows)*
 
@@ -167,7 +167,7 @@ The number of CPUs is specified as a positive decimal under the key cpus.
 
 The amount of memory allocated to this container is specified under the memory key, as an integer and is expressed in MBb.
 
-If the cpu or memory requested are too high for the underlying environment capabilities, an error code NOT_ENOUGH_CPU or NOT_ENOUGH_MEM will be returned.
+If the cpu or memory requested are too high for the underlying environment capabilities, an error code `NOT_ENOUGH_CPU` or `NOT_ENOUGH_MEM` will be returned.
 
 
 ### Access to devices
@@ -185,7 +185,7 @@ If the cpu or memory requested are too high for the underlying environment capab
 
 Devices is an array specifying the list of devices from the host to make available in the container.
 
-The array contains names: for each name, the device /dev/<name> will be made available inside the container.
+The array contains names: for each name, the device `/dev/<name>` will be made available inside the container.
 
 ## Machine-specific configuration
 
@@ -198,7 +198,7 @@ os specifies the operating system family this image must run on.
 
 arch specifies the instruction set for which the binaries in the image have been compiled.
 
-values for os and arch must be in the [list specified by by the Go Language documentation for $GOOS and $GOARCH][go-env]
+values for os and arch must be in the [list specified by by the Go Language documentation for `$GOOS` and `$GOARCH`][go-env]
 
 OS or architecture specific settings can be added in the json file. They will be interpreted by the implementation depending on the os and arch values specified at the top of the manifest.
 
