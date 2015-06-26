@@ -1,6 +1,6 @@
 # Configuration file
 
-The container’s top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [spec.go](https://github.com/opencontainers/runc/blob/master/spec.go) and [spec_linux.go](https://github.com/opencontainers/runc/blob/master/spec_linux.go), this will be moved to a JSON schema overtime.
+The container's top-level directory MUST contain a configuration file called config.json. The configuration file MUST comply with the Open Container Configuration JSON Schema attached to this document. For now the schema is defined in [spec.go](https://github.com/opencontainers/runc/blob/master/spec.go) and [spec_linux.go](https://github.com/opencontainers/runc/blob/master/spec_linux.go), this will be moved to a JSON schema overtime.
 
 The configuration file contains metadata necessary to implement standard operations against the container. This includes processes to run, environment variables to inject, sandboxing features to use, etc.
 
@@ -20,22 +20,28 @@ The `version` element specifies the version of the OCF specification which the c
 
 Each container has exactly one *root filesystem*, and any number of optional *mounted filesystems*. Both need to be declared in the manifest.
 
-The rootfs string element specifies the path to the root file system for the container, relative to the path where the manifest is. A directory MUST exist at the relative path declared by the field.
+| Element name   | Required | Default | Description
+| :------------: | :------: | :-----: | :---------- 
+| path           |   YES    |   N/A   | The path to the root file system for the container, relative to the path where the manifest is. A directory MUST exist at the relative path declared by the field.
+| readonly       |   NO     | `false` | Indicates whether or not the file system reflected inside the container is read-only or read-write.  When `true`, processes running inside the container would see the file-system as read-only and not be allowed write access.  Some operating systems may not support read-only root (or OS) file systems and some may not support read-only file systems at all.  
 
-The readonlyRootfs is an optional boolean element which defaults to false. If it is true, access to the root file system MUST be read-only for all processes running inside it.  whether you want the root file system to be readonly or not for the processes running on it.
 
 *Example (Linux)*
 
 ```
-    "rootfs": "rootfs",
-    "readonlyRootfs": true,
+    "root" : {
+        "path": "rootfs",
+        "readonly": true
+    }
 ```
 
 *Example (Windows)*
 
 ```
-    "rootfs": "My Fancy Root FS",
-    "readonlyRootfs": true,
+    "root" : {
+        "path": "rootfs",
+        "readonly": false
+    }
 ```
 
 Additional file systems can be declared as "mounts", declared by the the array element mounts. The parameters are similar to the ones in Linux mount system call. [http://linux.die.net/man/2/mount](http://linux.die.net/man/2/mount)
