@@ -78,6 +78,8 @@ Also known as cgroups, they are used to restrict resource usage for a container 
 device access.  cgroups provide controls to restrict cpu, memory, IO, and network for
 the container. For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt)
 
+Container's own cgroups are mounted readonly under /sys/fs/cgroup inside the container's filesystem for introspection. The container process could use it to tune JVM paramaters as a use case.
+
 ## Linux capabilities
 
 Capabilities is an array that specifies Linux capabilities that can be provided to the process
