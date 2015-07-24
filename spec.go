@@ -15,6 +15,10 @@ type Spec struct {
 	Hostname string `json:"hostname"`
 	// Mounts profile configuration for adding mounts to the container's filesystem.
 	Mounts []Mount `json:"mounts"`
+	// Prestart lists commands to be run before the container process is executed.
+	Prestart []Command `json:"prestart"`
+	// Poststop lists commands to be run after the container process exits.
+	Poststop []Command `json:"poststop"`
 }
 
 // Mount specifies a mount for a container.
@@ -60,4 +64,11 @@ type Platform struct {
 	OS string `json:"os"`
 	// Arch is the architecture
 	Arch string `json:"arch"`
+}
+
+type Command struct {
+	Path string   `json:"path"`
+	Args []string `json:"args"`
+	Env  []string `json:"env"`
+	Dir  string   `json:"dir"`
 }
