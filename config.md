@@ -137,7 +137,7 @@ For Linux-based systems the user structure has the following fields:
 
 ## Platform-specific configuration
 
-The *platforms* array should contain a list of platforms which the container supports.
+The *platforms* array should contain a list of platforms which the container supports. Only the main configuration file `config.json` may contain a *platforms* section.
 
 * **os** (string, required) specifies the operating system family this image must run on. Values for os must be in the list specified by the Go Language document for [`$GOOS`](https://golang.org/doc/install/source#environment).
 * **arch** (string, required) specifies the instruction set for which the binaries in the image have been compiled. Values for arch must be in the list specified by the Go Language document for [`$GOARCH`](https://golang.org/doc/install/source#environment).
