@@ -5,8 +5,8 @@ package specs
 type Spec struct {
 	// Version is the version of the specification that is supported.
 	Version string `json:"version"`
-	// Platform is the host information for OS and Arch.
-	Platform Platform `json:"platform"`
+	// Platforms supported by the container.
+	Platform []Platform `json:"platforms"`
 	// Process is the container's main process.
 	Process Process `json:"process"`
 	// Root is the root information for the container's filesystem.
@@ -53,11 +53,12 @@ type Root struct {
 	Readonly bool `json:"readonly"`
 }
 
-// Platform specifies OS and arch information for the host system that the container
-// is created for.
+// Platform specifies OS and arch information for the target host system.
 type Platform struct {
 	// OS is the operating system.
 	OS string `json:"os"`
 	// Arch is the architecture
 	Arch string `json:"arch"`
+	// Configuration file containing platform-specific configurations.
+	Config string `json:"config"`
 }

@@ -137,14 +137,20 @@ For Linux-based systems the user structure has the following fields:
 
 ## Platform-specific configuration
 
+The *platforms* array should contain a list of platforms which the container supports. Only the main configuration file `config.json` may contain a *platforms* section.
+
 * **os** (string, required) specifies the operating system family this image must run on. Values for os must be in the list specified by the Go Language document for [`$GOOS`](https://golang.org/doc/install/source#environment).
 * **arch** (string, required) specifies the instruction set for which the binaries in the image have been compiled. Values for arch must be in the list specified by the Go Language document for [`$GOARCH`](https://golang.org/doc/install/source#environment).
+* **config** (string, optional) specifies the config file containing platform-specific overrides and/or platform-specific sections. File path must be relative to the main config (`config.json`) file.
 
 ```json
-"platform": {
-    "os": "linux",
-    "arch": "amd64"
-}
+"platforms": [
+    {
+        "os": "linux",
+        "arch": "amd64",
+        "config": "linux64.json"
+    }
+]
 ```
 
-Interpretation of the platform section of the JSON file is used to find which platform-specific sections may be available in the document. For example, if `os` is set to `linux`, then a JSON object conforming to the [Linux-specific schema](config-linux.md) SHOULD be found at the key `linux` in the `config.json`.
+In this case a JSON object conforming to the [Linux-specific schema](config-linux.md) SHOULD be found at the key `linux` in the `linux64.json` config file.
