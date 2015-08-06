@@ -74,9 +74,60 @@ the container has access rights for the device.
 
 ## Linux control groups
 
-Also known as cgroups, they are used to restrict resource usage for a container and handle
-device access.  cgroups provide controls to restrict cpu, memory, IO, and network for
-the container. For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt)
+Also known as cgroups, they are used to restrict resource usage for a container and handle device access.
+For more information, see the [kernel cgroups documentation][cgroups].
+You can configure a container's cgroups via the "resources" field of the Linux configuration.
+
+### Disable out-of-memory killer
+
+FIXME
+
+### Memory
+
+FIXME
+
+### CPU
+
+FIXME
+
+### Block I/O
+
+FIXME
+
+### Devices
+
+Container-side devices are [mounted from the bundle filesystems][mount-devices].
+Bundle authors can set major and minor nodes, owner IDs, filesystem permissions, etc. by altering those filesystems.
+However, you cannot pass cgroup information via the bundle filesystem, so bundle authors that need special device cgroups should use the "devices" field of the resource configuration.
+The fields are discussed [in the kernel documentation][cgroups-devices].
+The entries are applied to the container in the order that they are listed in the configuration.
+
+```json
+   "devices": [
+        {
+            "allow": false,
+            "type": "a",
+            "major": "*",
+            "minor": "*",
+            "access": "rwm",
+        },
+        {
+            "allow": true,
+            "type": "c",
+            "major": "1",
+            "minor": "3",
+            "access": "mr",
+        }
+   ]
+```
+
+### Huge page limits
+
+FIXME
+
+### Network
+
+FIXME
 
 ## Linux capabilities
 
@@ -150,3 +201,6 @@ rootfsPropagation sets the rootfs's mount propagation. Its value is either slave
 
 **TODO:** security profiles
 
+[cgroups]: https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt
+[cgroups-devices]: https://www.kernel.org/doc/Documentation/cgroups/devices.txt
+[mount-devices]: #access-to-devices
