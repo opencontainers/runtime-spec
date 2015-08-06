@@ -55,6 +55,16 @@ type Process struct {
 	Cwd string `json:"cwd"`
 }
 
+// User specifies user and group information for the container's main process
+type User struct {
+	// Uid is the user id
+	UID int32 `json:"uid"`
+	// Gid is the group id
+	GID int32 `json:"gid"`
+	// AdditionalGids are additional group ids set for the container's process
+	AdditionalGids []int32 `json:"additionalGids"`
+}
+
 // Root contains information about the container's root filesystem on the host.
 type Root struct {
 	// Path is the absolute path to the container's root filesystem.

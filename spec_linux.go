@@ -32,17 +32,6 @@ type Linux struct {
 	RootfsPropagation string `json:"rootfsPropagation"`
 }
 
-// User specifies Linux specific user and group information for the container's
-// main process
-type User struct {
-	// Uid is the user id
-	UID int32 `json:"uid"`
-	// Gid is the group id
-	GID int32 `json:"gid"`
-	// AdditionalGids are additional group ids set for the container's process
-	AdditionalGids []int32 `json:"additionalGids"`
-}
-
 // Namespace is the configuration for a Linux namespace
 type Namespace struct {
 	// Type is the type of Linux namespace
