@@ -26,8 +26,6 @@ type Linux struct {
 	Namespaces []Namespace `json:"namespaces"`
 	// Capabilities are Linux capabilities that are kept for the container
 	Capabilities []string `json:"capabilities"`
-	// Devices are a list of device nodes that are created and enabled for the container
-	Devices []string `json:"devices"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container
 	RootfsPropagation string `json:"rootfsPropagation"`
 }
@@ -102,6 +100,21 @@ type BlockIO struct {
 	ThrottleWriteIOpsDevice string `json:"blkioThrottleWriteIopsDevice"`
 }
 
+// Device rule for Linux cgroup management
+type Device struct {
+	// Whether the device is allowed (true) or denied (false)
+	Allow bool `json:"allow"`
+	// a (all), c (char), or b (block).  'all' means it applies to all
+	// types and all major and minor numbers
+	Type string `json:type`
+	// Major number.  Either an integer or '*' for all.
+	Major string `json:major`
+	// Minor number.  Either an integer or '*' for all.
+	Minor string `json:minor`
+	// a composition of r (read), w (write), and m (mknod).
+	Access string `json:access`
+}
+
 // Memory for Linux cgroup 'memory' resource management
 type Memory struct {
 	// Memory limit (in bytes)
@@ -152,6 +165,8 @@ type Resources struct {
 	CPU CPU `json:"cpu"`
 	// BlockIO restriction configuration
 	BlockIO BlockIO `json:"blockIO"`
+	// Device configuration
+	Devices []Device `json:"devices"`
 	// Hugetlb limit (in bytes)
 	HugepageLimits []HugepageLimit `json:"hugepageLimits"`
 	// Network restriction configuration
