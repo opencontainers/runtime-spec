@@ -55,29 +55,45 @@ within the container.
 
 ### Access to devices
 
-Devices is an array specifying the list of devices to be created in the container.
+Devices is an array specifying both devices to be created in the container, and any device control group rules that should be applied.
 The following parameters can be specified:
 
-* type - type of device: 'b', 'c', 'u' or 'p'.
-  More info in [mknod(1)][]
-* path - full path to device inside container
+* type - type of device: 'a', 'b', 'c', 'u' or 'p'.
+  Required.
+  If path is given, only 'b', 'c', 'u', and 'p' are allowed (more info in [mknod(1)][]).
+  If permissions is given, only 'a', 'b', and 'c' are allowed (more info in the [cgroups devices documentation][cgroups-devices]).
+* path - full path to device inside container.
+  Optional.
+  If not given, the entry only creates a cgroups allow rule.
 * major, minor - major, minor numbers for device.
   More info in [mknod(1)][].
-  There is special value: `-1`, which means `*` for `device` cgroup setup.
+  There is special value: `-1`, which uses the wildcard `*` for the cgroups rule.
+  If `-1` is used, path, uid, fileMode, uid, and gid are not allowed.
+  Required.
 * permissions - cgroup permissions for device.
-  A composition of 'r' (read), 'w' (write), and 'm' (mknod).
-* fileMode - file mode for device file
-* uid - uid of device owner
-* gid - gid of device owner
+  A composition of 'r' (read), 'w' (write), and 'm' (mknod) (more info in the [cgroups devices documentation][cgroups-devices]).
+  Optional.
+  If not given, the entry only creates the device node with mknod.
+* fileMode - file mode for device file.
+  Required if path is given, otherwise not allowed.
+* uid - uid of device owner.
+  Required if path is given, otherwise not allowed.
+* gid - gid of device owner.
+  Required if path is given, otherwise not allowed.
 
 ```json
    "devices": [
+        {
+            "type": "a",
+            "major": -1,
+            "minor": -1,
+            "permissions": "rwm",
+        },
         {
             "path": "/dev/random",
             "type": "c",
             "major": 1,
             "minor": 8,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -87,7 +103,6 @@ The following parameters can be specified:
             "type": "c",
             "major": 1,
             "minor": 9,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -97,7 +112,6 @@ The following parameters can be specified:
             "type": "c",
             "major": 1,
             "minor": 3,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -107,7 +121,6 @@ The following parameters can be specified:
             "type": "c",
             "major": 1,
             "minor": 5,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -117,7 +130,6 @@ The following parameters can be specified:
             "type": "c",
             "major": 5,
             "minor": 0,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -127,7 +139,6 @@ The following parameters can be specified:
             "type": "c",
             "major": 1,
             "minor": 7,
-            "permissions": "rwm",
             "fileMode": 0666,
             "uid": 0,
             "gid": 0
@@ -214,3 +225,4 @@ rootfsPropagation sets the rootfs's mount propagation. Its value is either slave
 **TODO:** security profiles
 
 [mknod(1)]: http://man7.org/linux/man-pages/man1/mknod.1.html
+[cgroups-devices]: https://www.kernel.org/doc/Documentation/cgroups/devices.txt
