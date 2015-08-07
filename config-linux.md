@@ -58,7 +58,7 @@ within the container.
 Devices is an array specifying the list of devices to be created in the container.
 The following parameters can be specified:
 
-* type - type of device: 'c', 'b', 'u' or 'p'.
+* type - type of device: 'b', 'c', 'u' or 'p'.
   More info in [mknod(1)][]
 * path - full path to device inside container
 * major, minor - major, minor numbers for device.
