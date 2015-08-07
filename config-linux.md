@@ -56,7 +56,7 @@ within the container.
 ### Access to devices
 
 Devices is an array specifying the list of devices to be created in the container.
-Next parameters can be specified:
+The following parameters can be specified:
 
 * type - type of device: 'c', 'b', 'u' or 'p'. More info in `man mknod`
 * path - full path to device inside container
