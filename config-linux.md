@@ -58,9 +58,9 @@ within the container.
 Devices is an array specifying the list of devices to be created in the container.
 The following parameters can be specified:
 
-* type - type of device: 'c', 'b', 'u' or 'p'. More info in `man mknod`
+* type - type of device: 'c', 'b', 'u' or 'p'. More info in [mknod(1)][]
 * path - full path to device inside container
-* major, minor - major, minor numbers for device. More info in `man mknod`.
+* major, minor - major, minor numbers for device. More info in [mknod(1)][].
                  There is special value: `-1`, which means `*` for `device`
                  cgroup setup.
 * permissions - cgroup permissions for device. A composition of 'r'
@@ -212,3 +212,4 @@ rootfsPropagation sets the rootfs's mount propagation. Its value is either slave
 
 **TODO:** security profiles
 
+[mknod(1)]: http://man7.org/linux/man-pages/man1/mknod.1.html
