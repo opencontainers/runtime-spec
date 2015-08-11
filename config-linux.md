@@ -72,8 +72,8 @@ Next parameters can be specified:
 ```json
    "devices": [
         {
-            "path": "/dev/random",
             "type": "c",
+            "path": "/dev/random",
             "major": 1,
             "minor": 8,
             "permissions": "rwm",
@@ -82,8 +82,8 @@ Next parameters can be specified:
             "gid": 0
         },
         {
-            "path": "/dev/urandom",
             "type": "c",
+            "path": "/dev/urandom",
             "major": 1,
             "minor": 9,
             "permissions": "rwm",
@@ -92,8 +92,8 @@ Next parameters can be specified:
             "gid": 0
         },
         {
-            "path": "/dev/null",
             "type": "c",
+            "path": "/dev/null",
             "major": 1,
             "minor": 3,
             "permissions": "rwm",
@@ -102,8 +102,8 @@ Next parameters can be specified:
             "gid": 0
         },
         {
-            "path": "/dev/zero",
             "type": "c",
+            "path": "/dev/zero",
             "major": 1,
             "minor": 5,
             "permissions": "rwm",
@@ -112,8 +112,8 @@ Next parameters can be specified:
             "gid": 0
         },
         {
-            "path": "/dev/tty",
             "type": "c",
+            "path": "/dev/tty",
             "major": 5,
             "minor": 0,
             "permissions": "rwm",
@@ -122,8 +122,8 @@ Next parameters can be specified:
             "gid": 0
         },
         {
-            "path": "/dev/full",
             "type": "c",
+            "path": "/dev/full",
             "major": 1,
             "minor": 7,
             "permissions": "rwm",
