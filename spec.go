@@ -1,5 +1,9 @@
 package specs
 
+import (
+	"os"
+)
+
 // Spec is the base configuration for the container.  It specifies platform
 // independent configuration.
 type Spec struct {
@@ -53,6 +57,8 @@ type Process struct {
 	// Cwd is the current working directory for the process and must be
 	// relative to the container's root.
 	Cwd string `json:"cwd"`
+	// ExtraFiles specifies open file descriptors that should be passed to the process.
+	ExtraFiles []os.File `json:"extraFiles"`
 }
 
 // Root contains information about the container's root filesystem on the host.
