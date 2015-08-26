@@ -75,22 +75,24 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
     "hooks" : {
         "prestart": [
             {
-                "path": "/usr/bin/fix-mounts",
-                "args": ["arg1", "arg2"],
+                "args": ["/usr/bin/fix-mounts", "arg1", "arg2"],
                 "env":  [ "key1=value1"]
             },
             {
-                "path": "/usr/bin/setup-network"
+                "path": "/usr/bin/setup-network",
+                "args": ["net.eth1", "start"],
             }
         ],
         "poststop": [
             {
-                "path": "/usr/sbin/cleanup.sh",
-                "args": ["-f"]
+                "args": ["/usr/sbin/cleanup.sh", "-f"]
             }
         ]
     }
 ```
 
-`path` is required for a hook.
-`args` and `env` are optional.
+`args` is passed to the executable, and includes the command as `args[0]` (which MUST be an absolute path).
+`path` is optional, but if set it MUST be an absolute path.
+When set, it takes precedence over `args[0]` when selecting for the executable, but it does not effect the arguments passed to that executable.
+For example, the `setup-network` script above will still have `net.eth1` as `args[0]`.
+`env` is optional.
