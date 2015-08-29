@@ -5,8 +5,10 @@ This project is where the [Open Container Initiative](http://www.opencontainers.
 Table of Contents
 
 - [Filesystem Bundle](bundle.md)
-- [Container Configuration](config.md)
+- [Host-independent Container Configuration](config.md)
   - [Linux Specific Configuration](config-linux.md)
+- [Host-specific Container Configuration](runtime.md)
+  - [Linux Specific Configuration](runtime-linux.md)
 - [Runtime and Lifecycle](lifecycle.md)
 - [Implementations](implementations.md)
 
