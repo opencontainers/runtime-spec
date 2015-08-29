@@ -7,7 +7,7 @@ Table of Contents
 - [Filesystem Bundle](bundle.md)
 - [Container Configuration](config.md)
   - [Linux Specific Configuration](config-linux.md)
-- [Runtime and Lifecycle](runtime.md)
+- [Runtime and Lifecycle](lifecycle.md)
 - [Implementations](implementations.md)
 
 ## Use Cases
