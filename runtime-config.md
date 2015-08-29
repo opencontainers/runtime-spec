@@ -14,8 +14,7 @@ Additional filesystems can be declared as "mounts", specified in the *mounts* ar
     {
         "type": "proc",
         "source": "proc",
-        "destination": "/proc",
-        "options": []
+        "destination": "/proc"
     },
     {
         "type": "tmpfs",
@@ -45,8 +44,7 @@ Additional filesystems can be declared as "mounts", specified in the *mounts* ar
     {
         "type": "ntfs",
         "source": "\\\\?\\Volume\\{2eca078d-5cbc-43d3-aff8-7e8511f60d0e}\\",
-        "destination": "C:\\Users\\crosbymichael\\My Fancy Mount Point\\",
-        "options": []
+        "destination": "C:\\Users\\crosbymichael\\My Fancy Mount Point\\"
     }
 ]
 ```
