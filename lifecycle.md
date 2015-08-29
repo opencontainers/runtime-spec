@@ -15,7 +15,8 @@ A typical lifecyle progresses like this:
 9. The runtime sends a termination signal to the application
 10. The application exits
 11. The runtime executes any [post-stop hooks](runtime.md#post-stop)
-12. The runtime removes the container
+12. A user tells the runtime to [destroy](#destroy) the container
+13. The runtime removes the container
 
 With steps 8 and 9, the user is explicitly stopping the application
 (via the runtime), but it's also possible that the application could
@@ -34,3 +35,8 @@ Runs a process in a container. Can be invoked several times.
 Not sure we need that from runc cli. Process is killed from the outside.
 
 This event needs to be captured by runc to run onstop event handlers.
+
+### Destroy
+
+Remove the container: unmount file systems, remove namespaces, etc.
+This is the inverse of [create](#create).
