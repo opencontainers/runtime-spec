@@ -19,6 +19,7 @@ The `runtime.json` file contains settings that are host specific such as memory 
 The goal is that the bundle can be moved as a unit to another machine and run the same application if `runtime.json` is removed or reconfigured.
 
 The syntax and semantics for `config.json` are described in [this specification](config.md).
+The syntax and semantics for `runtime.json` are described in [this specification](runtime.md).
 
 A single `rootfs` directory MUST be in the same directory as the `config.json`.
 The names of the directories may be arbitrary, but users should consider using conventional names as in the example below.
