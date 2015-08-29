@@ -6,9 +6,9 @@ Table of Contents
 
 - [Filesystem Bundle](bundle.md)
 - [Host-independent Container Configuration](config.md)
-  - [Linux Specific Configuration](config-linux.md)
+  - [Linux-specific Configuration](config-linux.md)
 - [Host-specific Container Configuration](runtime.md)
-  - [Linux Specific Configuration](runtime-linux.md)
+  - [Linux-specific Configuration](runtime-linux.md)
 - [Runtime and Lifecycle](lifecycle.md)
 - [Implementations](implementations.md)
 
