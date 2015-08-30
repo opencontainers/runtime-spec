@@ -1,4 +1,4 @@
-# Configuration file
+# Host-independent container configuration
 
 The container's top-level directory MUST contain a configuration file called `config.json`.
 For now the canonical schema is defined in [spec.go](spec.go) and [spec_linux.go](spec_linux.go), but this will be moved to a formal JSON schema over time.
