@@ -1,3 +1,7 @@
+# Linux-specific, host-dependent configuration
+
+The Linux-specific section of the [host-dependent configuration](runtime.md).
+
 ## Namespaces
 
 A namespace wraps a global system resource in an abstraction that makes it appear to the processes within the namespace that they have their own isolated instance of the global resource.

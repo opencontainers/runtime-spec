@@ -1,3 +1,8 @@
+# Host-specific container configuration
+
+The `runtime.json` file contains host-specific information needed to create containers and launch applications.
+There are also platform-specific extensions for [Linux](runtime-linux.md).
+
 ## Hooks
 
 Hooks allow one to run code before/after various lifecycle events of the container.
