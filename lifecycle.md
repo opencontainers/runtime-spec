@@ -1,6 +1,4 @@
-# Runtime and Lifecycle
-
-## Lifecycle
+# Lifecycle
 
 A typical lifecyle progresses like this:
 
@@ -22,23 +20,23 @@ With steps 8 and 9, the user is explicitly stopping the application
 (via the runtime), but it's also possible that the application could
 exit for other reasons.  In that case we skip directly from 7 to 10.
 
-### Create
+## Create
 
 Creates the container: file system, namespaces, cgroups, capabilities.
 
-### Start (process)
+## Start (process)
 
 Runs a process in a container. Can be invoked several times.
 On Linux hosts, some information for this execution may come from outside the [`config.json`](config.md) and [`runtime.json`](runtime.md) specifications.
 See [the Linux-specific notes](lifecycle-linux.md#start-process) for details.
 
-### Stop (process)
+## Stop (process)
 
 Not sure we need that from runc cli. Process is killed from the outside.
 
 This event needs to be captured by runc to run onstop event handlers.
 
-### Destroy
+## Destroy
 
 Remove the container: unmount file systems, remove namespaces, etc.
 This is the inverse of [create](#create).
