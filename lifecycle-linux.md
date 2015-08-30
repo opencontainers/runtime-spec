@@ -1,4 +1,10 @@
-## File descriptors
+# Linux-specific lifecycle notes
+
+The [platform-independent lifecycle](lifecycle.md) has a few Linux-specific extensions.
+
+## Start (process)
+
+###  File descriptors
 
 By default, only the `stdin`, `stdout` and `stderr` file descriptors are kept open for the application by the runtime.
 

@@ -29,6 +29,8 @@ Creates the container: file system, namespaces, cgroups, capabilities.
 ### Start (process)
 
 Runs a process in a container. Can be invoked several times.
+On Linux hosts, some information for this execution may come from outside the [`config.json`](config.md) and [`runtime.json`](runtime.md) specifications.
+See [the Linux-specific notes](lifecycle-linux.md#start-process) for details.
 
 ### Stop (process)
 
