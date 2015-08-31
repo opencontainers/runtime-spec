@@ -125,11 +125,11 @@ Next parameters can be specified:
     ]
 ```
 
-## Control groups
+## Resources
 
-Also known as cgroups, they are used to restrict resource usage for a container and handle
-device access.  cgroups provide controls to restrict cpu, memory, IO, and network for
-the container. For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
+Resources controlling in groups, also known as cgroups, they are used to restrict resource usage for a container and handle device access.
+Cgroups provide controls to restrict cpu, memory, IO, and network for the container.
+For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
 
 ```json
     "resources": {
