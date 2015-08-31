@@ -1,4 +1,4 @@
-# Linux-specific configuration
+# Linux-specific, host-independent configuration
 
 The Linux container specification uses various kernel features like namespaces,
 cgroups, capabilities, LSM, and file system jails to fulfill the spec.
