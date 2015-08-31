@@ -131,6 +131,41 @@ Also known as cgroups, they are used to restrict resource usage for a container 
 device access.  cgroups provide controls to restrict cpu, memory, IO, and network for
 the container. For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
 
+```json
+    "resources": {
+        "disableOOMKiller": false,
+        "memory": {
+            "limit": 0,
+            "reservation": 0,
+            "swap": 0,
+            "kernel": 0,
+            "swappiness": -1
+        },
+        "cpu": {
+            "shares": 0,
+            "quota": 0,
+            "period": 0,
+            "realtimeRuntime": 0,
+            "realtimePeriod": 0,
+            "cpus": "",
+            "mems": ""
+        },
+        "blockIO": {
+            "blkioWeight": 0,
+            "blkioWeightDevice": "",
+            "blkioThrottleReadBpsDevice": "",
+            "blkioThrottleWriteBpsDevice": "",
+            "blkioThrottleReadIopsDevice": "",
+            "blkioThrottleWriteIopsDevice": ""
+        },
+        "hugepageLimits": null,
+        "network": {
+            "classId": "",
+            "priorities": null
+        }
+    }
+```
+
 ## Sysctl
 
 sysctl allows kernel parameters to be modified at runtime for the container.
