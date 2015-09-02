@@ -133,3 +133,14 @@ Once a container is deleted its ID MAY be used by a subsequent container.
 ## Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
 See [runtime configuration for hooks](./config.md#hooks) for more information.
+
+## Container environment
+
+The following sections discuss portions of the container environment which are not configurable via the [configuration JSON](config.md).
+Beyond the sections below, there are additional platform-specific requirements for [Linux](runtime-linux.md).
+
+### Standard streams
+
+All OCI-specified runtime APIs MUST allow runtime-callers to specify the file descriptors which will be inherited by the container process, with the [POSIX *exec* caveat][exec] that if file descriptor 0, 1, or 2 would otherwise be closed, the container process may have unspecified files opened for those file descriptors.
+
+[exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/execve.html
