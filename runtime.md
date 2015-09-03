@@ -3,7 +3,7 @@
 ## State
 
 The runtime state for a container is persisted on disk so that external tools can consume and act on this information.
-The runtime state is stored in a JSON encoded file.
+The runtime state is stored in a [UTF-8][] [JSON][] file.
 It is recommended that this file is stored in a temporary filesystem so that it can be removed on a system reboot.
 On Linux based systems the state information should be stored in `/run/oci/containers`.
 The directory structure for a container is `/run/oci/containers/<containerID>/state.json`.
@@ -86,3 +86,6 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
 ```
 
 `path` is required for a hook. `args` and `env` are optional.
+
+[UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
+[JSON]: http://json.org/

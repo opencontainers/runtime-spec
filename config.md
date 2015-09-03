@@ -1,6 +1,6 @@
 # Configuration file
 
-The container's top-level directory MUST contain a configuration file called `config.json`.
+The bundle's top-level directory MUST contain a configuration file called `config.json` with [UTF-8][] [JSON][].
 For now the canonical schema is defined in [spec.go](spec.go) and [spec_linux.go](spec_linux.go), but this will be moved to a formal JSON schema over time.
 
 The configuration file contains metadata necessary to implement standard operations against the container.
@@ -124,3 +124,6 @@ For Linux-based systems the user structure has the following fields:
 ```
 
 Interpretation of the platform section of the JSON file is used to find which platform-specific sections may be available in the document. For example, if `os` is set to `linux`, then a JSON object conforming to the [Linux-specific schema](config-linux.md) SHOULD be found at the key `linux` in the `config.json`.
+
+[UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
+[JSON]: http://json.org/

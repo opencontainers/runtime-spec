@@ -1,3 +1,8 @@
+# Host-specific container configuration
+
+The bundle's top-level directory MUST contain a configuration file called `runtime.json` with [UTF-8][] [JSON][].
+For now the canonical schema is defined in [`runtime_config.go`](runtime_config.go) and [runtime_config_linux.go](runtime_config.go), but this will be moved to a formal JSON schema over time.
+
 ## Mount Configuration
 
 Additional filesystems can be declared as "mounts", specified in the *mounts* object.
@@ -51,3 +56,6 @@ Only [mounts from the portable config](config.md#mount-points) will be mounted.
 ```
 
 See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [SetVolumeMountPoint](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx) in Windows.
+
+[UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
+[JSON]: http://json.org/
