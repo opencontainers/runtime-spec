@@ -36,7 +36,7 @@ If a path is specified, that particular file is used to join that type of namesp
 #### Namespace types
 
 * **pid** processes inside the container will only be able to see other processes inside the same container.
-* **network** the container will have its own network stack.
+* **net** the container will have its own network stack.
 * **mnt** the container will have an isolated mount table.
 * **ipc** processes inside the container will only be able to communicate to other processes inside the same
 container via system level IPC.
