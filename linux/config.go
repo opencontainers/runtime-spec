@@ -1,10 +1,12 @@
-// +build linux
+package linux
 
-package specs
+import (
+	"github.com/opencontainers/specs"
+)
 
 // LinuxSpec is the full specification for linux containers.
 type LinuxSpec struct {
-	Spec
+	specs.Spec
 	// Linux is platform specific configuration for linux based containers.
 	Linux Linux `json:"linux"`
 }
