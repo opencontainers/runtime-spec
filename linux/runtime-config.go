@@ -1,13 +1,17 @@
-package specs
+package linux
 
-import "os"
+import (
+	"os"
+
+	"github.com/opencontainers/specs"
+)
 
 // LinuxStateDirectory holds the container's state information
 const LinuxStateDirectory = "/run/opencontainer/containers"
 
 // LinuxRuntimeSpec is the full specification for linux containers.
 type LinuxRuntimeSpec struct {
-	RuntimeSpec
+	specs.RuntimeSpec
 	// LinuxRuntime is platform specific configuration for linux based containers.
 	Linux LinuxRuntime `json:"linux"`
 }
