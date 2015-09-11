@@ -1,0 +1,59 @@
+package oci;
+	
+// Spec is the base configuration for the container.  It specifies platform
+// independent configuration.
+message Spec {
+	// Version is the version of the specification that is supported.
+  required string Version = 1;
+	// Platform is the host information for OS and Arch.
+  required Platform Platform = 2; // [default=77];
+	// Process is the container's main process.
+  required Process Process = 3;
+	// Root is the root information for the container's filesystem.
+  required Root Root = 4;
+	// Hostname is the container's host name.
+  required string Hostname = 5;
+	// Mounts profile configuration for adding mounts to the container's filesystem.
+  repeated MountPoint Mounts = 6;
+}
+
+// Platform specifies OS and arch information for the host system that the container
+// is created for.
+message Platform {
+	// OS is the operating system.
+  required string OS = 1;
+	// Arch is the architecture
+  required string Arch = 2;
+}
+
+// Process contains information to start a specific application inside the container.
+message Process {
+	// Terminal creates an interactive terminal for the container.
+	required bool Terminal = 1;
+	// User specifies user information for the process.
+  // TODO(vbatts) figure out platform dependent types
+	//required User User = 2;
+	// Args specifies the binary and arguments for the application to execute.
+	repeated string Args = 3;
+	// Env populates the process environment for the process.
+	repeated string Env = 4;
+	// Cwd is the current working directory for the process and must be
+	// relative to the container's root.
+	required string Cwd = 5;
+}
+
+// Root contains information about the container's root filesystem on the host.
+message Root {
+	// Path is the absolute path to the container's root filesystem.
+	required string Path = 1;
+	// Readonly makes the root filesystem for the container readonly before the process is executed.
+	required bool Readonly = 2;
+}
+
+// MountPoint describes a directory that may be fullfilled by a mount in the runtime.json.
+message MountPoint {
+	// Name is a unique descriptive identifier for this mount point.
+  required string Name = 1;
+	// Path specifies the path of the mount. The path and child directories MUST exist, a runtime MUST NOT create directories automatically to a mount point.
+  required string Path = 2;
+}
