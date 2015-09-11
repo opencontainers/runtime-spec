@@ -1,18 +1,20 @@
 package oci;
-	
+
+//import "config_user.proto";
+
 // Spec is the base configuration for the container.  It specifies platform
 // independent configuration.
 message Spec {
 	// Version is the version of the specification that is supported.
-  required string Version = 1;
+  optional string Version = 1;
 	// Platform is the host information for OS and Arch.
-  required Platform Platform = 2; // [default=77];
+  optional Platform Platform = 2; // [default=77];
 	// Process is the container's main process.
-  required Process Process = 3;
+  optional Process Process = 3;
 	// Root is the root information for the container's filesystem.
-  required Root Root = 4;
+  optional Root Root = 4;
 	// Hostname is the container's host name.
-  required string Hostname = 5;
+  optional string Hostname = 5;
 	// Mounts profile configuration for adding mounts to the container's filesystem.
   repeated MountPoint Mounts = 6;
 }
@@ -21,39 +23,60 @@ message Spec {
 // is created for.
 message Platform {
 	// OS is the operating system.
-  required string OS = 1;
+  optional string OS = 1;
 	// Arch is the architecture
-  required string Arch = 2;
+  optional string Arch = 2;
 }
 
 // Process contains information to start a specific application inside the container.
 message Process {
 	// Terminal creates an interactive terminal for the container.
-	required bool Terminal = 1;
+	optional bool Terminal = 1;
 	// User specifies user information for the process.
-  // TODO(vbatts) figure out platform dependent types
-	//required User User = 2;
+	optional User User = 2;
 	// Args specifies the binary and arguments for the application to execute.
 	repeated string Args = 3;
 	// Env populates the process environment for the process.
 	repeated string Env = 4;
 	// Cwd is the current working directory for the process and must be
 	// relative to the container's root.
-	required string Cwd = 5;
+	optional string Cwd = 5;
+}
+
+enum PlatformType {
+  LINUX = 1;
+}
+
+// User specifies user information for the process.
+message User {
+  // Type so that receivers of this message can `switch` for the fields expected
+  optional PlatformType Type = 1 [default = LINUX];
+  // LinuxUserFields are to be used when Type is LINUX
+  optional linuxUserFields LinuxUserFields = 2;
+}
+
+// User specifies linux specific user and group information for the container's
+// main process.
+message linuxUserFields {
+	// UID is the user id.
+  optional int32 UID = 1;
+	// GID is the group id.
+  optional int32 GID = 2;
+  repeated int32 AdditionalGids = 3;
 }
 
 // Root contains information about the container's root filesystem on the host.
 message Root {
 	// Path is the absolute path to the container's root filesystem.
-	required string Path = 1;
+	optional string Path = 1;
 	// Readonly makes the root filesystem for the container readonly before the process is executed.
-	required bool Readonly = 2;
+	optional bool Readonly = 2;
 }
 
 // MountPoint describes a directory that may be fullfilled by a mount in the runtime.json.
 message MountPoint {
 	// Name is a unique descriptive identifier for this mount point.
-  required string Name = 1;
+  optional string Name = 1;
 	// Path specifies the path of the mount. The path and child directories MUST exist, a runtime MUST NOT create directories automatically to a mount point.
-  required string Path = 2;
+  optional string Path = 2;
 }
