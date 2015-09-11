@@ -1,6 +1,5 @@
+//package oci.config.bundle;
 package oci;
-
-//import "config_user.proto";
 
 // Spec is the base configuration for the container.  It specifies platform
 // independent configuration.
@@ -17,6 +16,20 @@ message Spec {
   optional string Hostname = 5;
 	// Mounts profile configuration for adding mounts to the container's filesystem.
   repeated MountPoint Mounts = 6;
+}
+
+
+// LinuxSpec is the full specification for linux containers.
+message LinuxSpec {
+	optional Spec Spec = 1;
+	// LinuxConfig is platform specific configuration for linux based containers.
+	optional LinuxConfig LinuxConfig = 2;
+}
+
+// LinuxConfig contains platform specific configuration for linux based containers.
+message LinuxConfig {
+	// Capabilities are linux capabilities that are kept for the container.
+	repeated string Capabilities = 1;
 }
 
 // Platform specifies OS and arch information for the host system that the container
