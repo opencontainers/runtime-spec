@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -39,6 +41,9 @@ var DefaultRules = []ValidateRule{
 		return vr
 	},
 	// TODO add something for the cleanliness of the c.Subject
+	func(c CommitEntry) (vr ValidateResult) {
+		return ExecTree(c, "go", "vet", "./...")
+	},
 }
 
 var (
@@ -228,4 +233,76 @@ func GitHeadCommit() (string, error) {
 		return "", err
 	}
 	return strings.TrimSpace(string(output)), nil
+}
+
+// GitCheckoutTree extracts the tree associated with the given commit
+// to the given directory.  Unlike 'git checkout ...', it does not
+// alter the HEAD.
+func GitCheckoutTree(commit string, directory string) error {
+	pipeReader, pipeWriter := io.Pipe()
+	gitCmd := exec.Command("git", "archive", commit)
+	gitCmd.Stdout = pipeWriter
+	gitCmd.Stderr = os.Stderr
+	tarCmd := exec.Command("tar", "-xC", directory)
+	tarCmd.Stdin = pipeReader
+	tarCmd.Stderr = os.Stderr
+	err := gitCmd.Start()
+	if err != nil {
+		return err
+	}
+	defer gitCmd.Process.Kill()
+	err = tarCmd.Start()
+	if err != nil {
+		return err
+	}
+	defer tarCmd.Process.Kill()
+	err = gitCmd.Wait()
+	if err != nil {
+		return err
+	}
+	err = pipeWriter.Close()
+	if err != nil {
+		return err
+	}
+	err = tarCmd.Wait()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// ExecTree executes a command in a checkout of the commit's tree,
+// wrapping any errors in a ValidateResult object.
+func ExecTree(c CommitEntry, args ...string) (vr ValidateResult) {
+	vr.CommitEntry = c
+	err := execTree(c, args...)
+	if err == nil {
+		vr.Pass = true
+		vr.Msg = strings.Join(args, " ")
+	} else {
+		vr.Pass = false
+		vr.Msg = fmt.Sprintf("%s : %s", strings.Join(args, " "), err.Error())
+	}
+	return vr
+}
+
+// execTree executes a command in a checkout of the commit's tree
+func execTree(c CommitEntry, args ...string) error {
+	dir, err := ioutil.TempDir("", "go-validate-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(dir)
+	err = GitCheckoutTree(c["commit"], dir)
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Dir = dir
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
 }

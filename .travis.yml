@@ -12,7 +12,6 @@ before_install:
 install: true
 
 script:
-  - go vet -x ./...
   - $HOME/gopath/bin/golint ./...
   - go run .tools/validate.go -range ${TRAVIS_COMMIT_RANGE}
   
