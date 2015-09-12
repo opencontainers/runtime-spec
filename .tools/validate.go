@@ -44,6 +44,22 @@ var DefaultRules = []ValidateRule{
 	},
 	// TODO add something for the cleanliness of the c.Subject
 	func(c CommitEntry) (vr ValidateResult) {
+		vr.CommitEntry = c
+		buf := bytes.NewBuffer([]byte{})
+		args := []string{"git", "show", "--check", c["commit"]}
+		vr.Msg = strings.Join(args, " ")
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Stdout = buf
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			vr.Pass = false
+			vr.Detail = string(buf.Bytes())
+			return vr
+		}
+		vr.Pass = true
+		return vr
+	},
+	func(c CommitEntry) (vr ValidateResult) {
 		return ExecTree(c, "go", "vet", "./...")
 	},
 	func(c CommitEntry) (vr ValidateResult) {
