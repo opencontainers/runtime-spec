@@ -13,5 +13,6 @@ before_install:
 install: true
 
 script:
+  - echo ${TRAVIS_COMMIT_RANGE}
   - go run .tools/validate.go -range ${TRAVIS_COMMIT_RANGE}
   
