@@ -6,12 +6,12 @@ go:
 sudo: false
 
 before_install:
-  - go get golang.org/x/tools/cmd/vet
   - go get github.com/golang/lint/golint
+  - go get golang.org/x/tools/cmd/vet
+  - go get gopkg.in/yaml.v2
 
 install: true
 
 script:
-  - $HOME/gopath/bin/golint ./...
   - go run .tools/validate.go -range ${TRAVIS_COMMIT_RANGE}
   

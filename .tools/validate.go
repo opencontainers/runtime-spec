@@ -12,6 +12,8 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+
+	yaml "gopkg.in/yaml.v2"
 )
 
 // DefaultRules are the standard validation to perform on git commits
@@ -43,6 +45,13 @@ var DefaultRules = []ValidateRule{
 	// TODO add something for the cleanliness of the c.Subject
 	func(c CommitEntry) (vr ValidateResult) {
 		return ExecTree(c, "go", "vet", "./...")
+	},
+	func(c CommitEntry) (vr ValidateResult) {
+		vr = ExecTree(c, os.ExpandEnv("$HOME/gopath/bin/golint"), "./...")
+		if len(vr.Detail) > 0 {
+			vr.Pass = false
+		}
+		return vr
 	},
 }
 
@@ -98,6 +107,19 @@ func main() {
 			} else if !r.Pass {
 				fmt.Printf("not ok - %s\n", r.Msg)
 			}
+			if (*flVerbose || !r.Pass) && len(r.Detail) > 0 {
+				m := map[string]string{"message": r.Detail}
+				buf, err := yaml.Marshal(m)
+				if err != nil {
+					log.Fatal(err)
+				}
+				lines := strings.Split(strings.TrimSpace(string(buf)), "\n")
+				fmt.Println(" ---")
+				for _, line := range lines {
+					fmt.Printf(" %s\n", line)
+				}
+				fmt.Println(" ...")
+			}
 		}
 	}
 	_, fail := results.PassFail()
@@ -124,6 +146,7 @@ type ValidateResult struct {
 	CommitEntry CommitEntry
 	Pass        bool
 	Msg         string
+	Detail      string
 }
 
 // ValidateResults is a set of results. This is type makes it easy for the following function.
@@ -275,7 +298,8 @@ func GitCheckoutTree(commit string, directory string) error {
 // wrapping any errors in a ValidateResult object.
 func ExecTree(c CommitEntry, args ...string) (vr ValidateResult) {
 	vr.CommitEntry = c
-	err := execTree(c, args...)
+	stdout, err := execTree(c, args...)
+	vr.Detail = strings.TrimSpace(stdout)
 	if err == nil {
 		vr.Pass = true
 		vr.Msg = strings.Join(args, " ")
@@ -287,22 +311,25 @@ func ExecTree(c CommitEntry, args ...string) (vr ValidateResult) {
 }
 
 // execTree executes a command in a checkout of the commit's tree
-func execTree(c CommitEntry, args ...string) error {
+func execTree(c CommitEntry, args ...string) (string, error) {
 	dir, err := ioutil.TempDir("", "go-validate-")
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer os.RemoveAll(dir)
 	err = GitCheckoutTree(c["commit"], dir)
 	if err != nil {
-		return err
+		return "", err
 	}
+	buf := bytes.NewBuffer([]byte{})
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = dir
+	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
+	stdout := string(buf.Bytes())
 	if err != nil {
-		return err
+		return stdout, err
 	}
-	return nil
+	return stdout, nil
 }
