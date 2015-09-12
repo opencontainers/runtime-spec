@@ -47,6 +47,9 @@ var DefaultRules = []ValidateRule{
 		return ExecTree(c, "go", "vet", "./...")
 	},
 	func(c CommitEntry) (vr ValidateResult) {
+		return ExecTree(c, "go", "fmt", "./...")
+	},
+	func(c CommitEntry) (vr ValidateResult) {
 		vr = ExecTree(c, os.ExpandEnv("$HOME/gopath/bin/golint"), "./...")
 		if len(vr.Detail) > 0 {
 			vr.Pass = false
