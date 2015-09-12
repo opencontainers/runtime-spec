@@ -68,8 +68,13 @@ func main() {
 	}
 
 	results := ValidateResults{}
-	for _, commit := range c {
-		fmt.Printf(" * %s %s ... ", commit["abbreviated_commit"], commit["subject"])
+
+	if *flVerbose {
+		fmt.Println("TAP version 13")
+		fmt.Printf("1..%d\n", len(c)*len(DefaultRules))
+	}
+	for i, commit := range c {
+		fmt.Printf("# %s %s ... ", commit["abbreviated_commit"], commit["subject"])
 		vr := ValidateCommit(commit, DefaultRules)
 		results = append(results, vr...)
 		if _, fail := vr.PassFail(); fail == 0 {
@@ -77,16 +82,16 @@ func main() {
 		} else {
 			fmt.Println("FAIL")
 		}
-		for _, r := range vr {
+		for j, r := range vr {
 			if *flVerbose {
 				if r.Pass {
 					fmt.Printf("ok")
 				} else {
 					fmt.Printf("not ok")
 				}
-				fmt.Printf(" %s\n", r.Msg)
+				fmt.Printf(" %d - %s\n", i*len(DefaultRules)+j+1, r.Msg)
 			} else if !r.Pass {
-				fmt.Printf("not ok %s\n", r.Msg)
+				fmt.Printf("not ok - %s\n", r.Msg)
 			}
 		}
 	}
