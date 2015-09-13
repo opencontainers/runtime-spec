@@ -1,6 +1,6 @@
 package specs
 
-// Spec is the base configuration for the container.  It specifies platform
+// Spec is the base configuration for the container. It specifies platform
 // independent configuration.
 type Spec struct {
 	// Version is the version of the specification that is supported.
@@ -45,7 +45,7 @@ type Root struct {
 type Platform struct {
 	// OS is the operating system.
 	OS string `json:"os"`
-	// Arch is the architecture
+	// Arch is the architecture.
 	Arch string `json:"arch"`
 }
 
@@ -61,7 +61,7 @@ type MountPoint struct {
 type State struct {
 	// Version is the version of the specification that is supported.
 	Version string `json:"version"`
-	// ID is the container ID
+	// ID is the container ID.
 	ID string `json:"id"`
 	// Pid is the process id for the container's main process.
 	Pid int `json:"pid"`
