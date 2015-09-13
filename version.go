@@ -3,11 +3,11 @@ package specs
 import "fmt"
 
 const (
-	// VersionMajor is for an API incompatible changes
+	// VersionMajor is for an API incompatible changes.
 	VersionMajor = 0
-	// VersionMinor is for functionality in a backwards-compatible manner
+	// VersionMinor is for functionality in a backwards-compatible manner.
 	VersionMinor = 1
-	// VersionPatch is for backwards-compatible bug fixes
+	// VersionPatch is for backwards-compatible bug fixes.
 	VersionPatch = 0
 )
 
