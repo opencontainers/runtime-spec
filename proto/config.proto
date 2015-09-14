@@ -7,7 +7,7 @@ message Spec {
 	// Version is the version of the specification that is supported.
 	optional string version = 1;
 	// Platform is the host information for OS and Arch.
-	optional Platform platform = 2; // [default=77];
+	optional Platform platform = 2;
 	// Process is the container's main process.
 	optional Process process = 3;
 	// Root is the root information for the container's filesystem.
@@ -69,7 +69,7 @@ enum PlatformType {
 message User {
 	// Type so that receivers of this message can `switch` for the fields
 	// expected
-	optional PlatformType type = 1 [default = LINUX];
+	optional PlatformType type = 1;
 
 	optional LinuxUser linux_type = 2;
 }
