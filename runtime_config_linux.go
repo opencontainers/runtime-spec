@@ -41,6 +41,8 @@ type LinuxRuntime struct {
 	Seccomp Seccomp `json:"seccomp"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container
 	RootfsPropagation string `json:"rootfsPropagation"`
+	// MaskedPaths is a list of paths that are hidden in the container.
+	MaskedPaths []string `json:"maskedPaths"`
 }
 
 // Namespace is the configuration for a linux namespace
