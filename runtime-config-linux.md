@@ -250,6 +250,16 @@ The actions and operators are strings that match the definitions in seccomp.h fr
    }
 ```
 
+## Masked Paths
+
+Masked paths allow hiding paths in the container by bind mounting `/dev/null` over them to prevent access by the container process.
+
+```json
+   "maskedPaths": [
+       "/proc/kcore"
+   ]
+```
+
 ## Rootfs Mount Propagation
 
 rootfsPropagation sets the rootfs's mount propagation.
