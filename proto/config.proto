@@ -62,20 +62,20 @@ enum PlatformType {
 
 // User specifies user information for the process.
 message User {
-  // Type so that receivers of this message can `switch` for the fields expected
-  optional PlatformType Type = 1 [default = LINUX];
-  // LinuxUserFields are to be used when Type is LINUX
-  optional linuxUserFields LinuxUserFields = 2;
+	// Type so that receivers of this message can `switch` for the fields expected
+	optional PlatformType Type = 1 [default = LINUX];
+
+	optional LinuxUser LinuxUser = 2;
 }
 
 // User specifies linux specific user and group information for the container's
 // main process.
-message linuxUserFields {
+message LinuxUser {
 	// UID is the user id.
-  optional int32 UID = 1;
+	optional int32 UID = 1;
 	// GID is the group id.
-  optional int32 GID = 2;
-  repeated int32 AdditionalGids = 3;
+	optional int32 GID = 2;
+	repeated int32 AdditionalGids = 3;
 }
 
 // Root contains information about the container's root filesystem on the host.
