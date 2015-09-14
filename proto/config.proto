@@ -62,6 +62,7 @@ message Process {
 }
 
 enum PlatformType {
+	UNKNOWN = 0;
 	LINUX = 1;
 }
 
