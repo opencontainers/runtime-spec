@@ -5,55 +5,60 @@ package oci;
 // independent configuration.
 message Spec {
 	// Version is the version of the specification that is supported.
-	optional string Version = 1;
+	optional string version = 1;
 	// Platform is the host information for OS and Arch.
-	optional Platform Platform = 2; // [default=77];
+	optional Platform platform = 2; // [default=77];
 	// Process is the container's main process.
-	optional Process Process = 3;
+	optional Process process = 3;
 	// Root is the root information for the container's filesystem.
-	optional Root Root = 4;
+	optional Root root = 4;
 	// Hostname is the container's host name.
-	optional string Hostname = 5;
-	// Mounts profile configuration for adding mounts to the container's filesystem.
-	repeated MountPoint Mounts = 6;
+	optional string hostname = 5;
+	// Mounts profile configuration for adding mounts to the container's
+	// filesystem.
+	repeated MountPoint mounts = 6;
 }
 
 
 // LinuxSpec is the full specification for linux containers.
 message LinuxSpec {
-	optional Spec Spec = 1;
-	// LinuxConfig is platform specific configuration for linux based containers.
-	optional LinuxConfig LinuxConfig = 2;
+	optional Spec spec = 1;
+	// LinuxConfig is platform specific configuration for linux based
+	// containers.
+	optional LinuxConfig linux_config = 2;
 }
 
-// LinuxConfig contains platform specific configuration for linux based containers.
+// LinuxConfig contains platform specific configuration for linux based
+// containers.
 message LinuxConfig {
 	// Capabilities are linux capabilities that are kept for the container.
-	repeated string Capabilities = 1;
+	repeated string capabilities = 1;
 }
 
-// Platform specifies OS and arch information for the host system that the container
-// is created for.
+// Platform specifies OS and arch information for the host system that the
+// container is created for.
 message Platform {
 	// OS is the operating system.
-	optional string OS = 1;
+	optional string os = 1;
 	// Arch is the architecture
-	optional string Arch = 2;
+	optional string arch = 2;
 }
 
-// Process contains information to start a specific application inside the container.
+// Process contains information to start a specific application inside the
+// container.
 message Process {
 	// Terminal creates an interactive terminal for the container.
-	optional bool Terminal = 1;
+	optional bool terminal = 1;
 	// User specifies user information for the process.
-	optional User User = 2;
-	// Args specifies the binary and arguments for the application to execute.
-	repeated string Args = 3;
+	optional User user = 2;
+	// Args specifies the binary and arguments for the application to
+	// execute.
+	repeated string args = 3;
 	// Env populates the process environment for the process.
-	repeated string Env = 4;
+	repeated string env = 4;
 	// Cwd is the current working directory for the process and must be
 	// relative to the container's root.
-	optional string Cwd = 5;
+	optional string cwd = 5;
 }
 
 enum PlatformType {
@@ -62,34 +67,39 @@ enum PlatformType {
 
 // User specifies user information for the process.
 message User {
-	// Type so that receivers of this message can `switch` for the fields expected
-	optional PlatformType Type = 1 [default = LINUX];
+	// Type so that receivers of this message can `switch` for the fields
+	// expected
+	optional PlatformType type = 1 [default = LINUX];
 
-	optional LinuxUser LinuxUser = 2;
+	optional LinuxUser linux_type = 2;
 }
 
-// User specifies linux specific user and group information for the container's
-// main process.
+// LinuxUser specifies linux specific user and group information for the
+// container's main process.
 message LinuxUser {
-	// UID is the user id.
-	optional int32 UID = 1;
-	// GID is the group id.
-	optional int32 GID = 2;
-	repeated int32 AdditionalGids = 3;
+	// Uid is the user id.
+	optional int32 uid = 1;
+	// Gid is the group id.
+	optional int32 gid = 2;
+	repeated int32 additional_gids = 3;
 }
 
 // Root contains information about the container's root filesystem on the host.
 message Root {
 	// Path is the absolute path to the container's root filesystem.
-	optional string Path = 1;
-	// Readonly makes the root filesystem for the container readonly before the process is executed.
-	optional bool Readonly = 2;
+	optional string path = 1;
+	// Readonly makes the root filesystem for the container readonly before
+	// the process is executed.
+	optional bool readonly = 2;
 }
 
-// MountPoint describes a directory that may be fullfilled by a mount in the runtime.json.
+// MountPoint describes a directory that may be fullfilled by a mount in the
+// runtime.json.
 message MountPoint {
 	// Name is a unique descriptive identifier for this mount point.
-	optional string Name = 1;
-	// Path specifies the path of the mount. The path and child directories MUST exist, a runtime MUST NOT create directories automatically to a mount point.
-	optional string Path = 2;
+	optional string name = 1;
+	// Path specifies the path of the mount. The path and child directories
+	// MUST exist, a runtime MUST NOT create directories automatically to a
+	// mount point.
+	optional string path = 2;
 }

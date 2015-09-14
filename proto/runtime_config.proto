@@ -8,16 +8,16 @@ message RuntimeSpec {
 	// Mounts is a mapping of names to mount configurations.
 	// Which mounts will be mounted and where should be chosen with MountPoints
 	// in Spec.
-	repeated MountFieldEntry Mounts = 1;
+	repeated MountFieldEntry mounts = 1;
 	// Hooks are the commands run at various lifecycle events of the container.
-	optional Hooks Hooks = 2;
+	optional Hooks hooks = 2;
 }
 
 // LinuxRuntimeSpec is the full specification for linux containers.
 message LinuxRuntimeSpec {
-	optional RuntimeSpec RuntimeSpec = 1;
+	optional RuntimeSpec runtime_spec = 1;
 	// LinuxRuntime is platform specific configuration for linux based containers.
-	optional oci.LinuxRuntime Linux = 2;
+	optional oci.LinuxRuntime linux = 2;
 }
 
 // MountFieldEntry is more backwards compatible protobuf associative map (than map<string, Mount>)
@@ -29,26 +29,26 @@ message MountFieldEntry {
 // Mount specifies a mount for a container
 message Mount {
 	// Type specifies the mount kind.
-	optional string Type = 1;
+	optional string type = 1;
 	// Source specifies the source path of the mount. In the case of bind mounts on
 	// linux based systems this would be the file on the host.
-	optional string Source = 2;
+	optional string source = 2;
 	// Options are fstab style mount options.
-	repeated string Options = 3;
+	repeated string options = 3;
 }
 
 // Hook specifies a command that is run at a particular event in the lifecycle of a container
 message Hook {
-	optional string Path = 1;
-	repeated string Args = 2;
-	repeated string Env = 3;
+	optional string path = 1;
+	repeated string args = 2;
+	repeated string env = 3;
 }
 
 // Hooks for container setup and teardown
 message Hooks {
 	// Prestart is a list of hooks to be run before the container process is executed.
 	// On Linux, they are run after the container namespaces are created.
-	repeated Hook Prestart = 1;
+	repeated Hook prestart = 1;
 	// Poststop is a list of hooks to be run after the container process exits.
-	repeated Hook Poststop = 2;
+	repeated Hook poststop = 2;
 }
