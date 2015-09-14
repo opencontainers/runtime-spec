@@ -1,0 +1,14 @@
+package oci;
+
+import "config.proto";
+
+// LinuxUser specifies linux specific user and group information for the
+// container's main process.
+extend oci.User {
+	// Uid is the user id.
+	optional int32 uid = 101;
+	// Gid is the group id.
+	optional int32 gid = 102;
+	repeated int32 additional_gids = 103;
+}
+

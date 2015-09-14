@@ -72,17 +72,8 @@ message User {
 	// expected
 	optional PlatformType type = 1;
 
-	optional LinuxUser linux_type = 2;
-}
-
-// LinuxUser specifies linux specific user and group information for the
-// container's main process.
-message LinuxUser {
-	// Uid is the user id.
-	optional int32 uid = 1;
-	// Gid is the group id.
-	optional int32 gid = 2;
-	repeated int32 additional_gids = 3;
+	//optional LinuxUser linux_type = 2;
+	extensions 100 to 499;
 }
 
 // Root contains information about the container's root filesystem on the host.
