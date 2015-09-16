@@ -71,24 +71,14 @@ Each record in this array must have configuration in [runtime config](runtime-co
 * **cwd** (string, optional) is the working directory that will be set for the executable.
 * **env** (array of strings, optional) contains a list of variables that will be set in the process's environment prior to execution. Elements in the array are specified as Strings in the form "KEY=value". The left hand side must consist solely of letters, digits, and underscores `_` as outlined in [IEEE Std 1003.1-2001](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html).
 * **args** (string, required) executable to launch and any flags as an array. The executable is the first element and must be available at the given path inside of the rootfs. If the executable path is not an absolute path then the search $PATH is interpreted to find the executable.
-
-The user for the process is a platform-specific structure that allows specific control over which user the process runs as.
-For Linux-based systems the user structure has the following fields:
-
-* **uid** (int, required) specifies the user id.
-* **gid** (int, required) specifies the group id.
-* **additionalGids** (array of ints, optional) specifies additional group ids to be added to the process.
+* **user** (string, required) is the user name for the process. The runtime should resolve the required information for the process by its platform-specific ways. For Linux-based containers, the runtime could parse the /etc/passwd and /etc/group inside the rootfs.
 
 *Example (Linux)*
 
 ```json
 "process": {
     "terminal": true,
-    "user": {
-        "uid": 1,
-        "gid": 1,
-        "additionalGids": [5, 6]
-    },
+    "user": "root",
     "env": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "TERM=xterm"
