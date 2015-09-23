@@ -319,10 +319,9 @@ For more information about Apparmor, see [Apparmor documentation](https://wiki.u
 Seccomp provides application sandboxing mechanism in the Linux kernel.
 Seccomp configuration allows one to configure actions to take for matched syscalls and furthermore also allows matching on values passed as arguments to syscalls.
 For more information about Seccomp, see [Seccomp kernel documentation](https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt)
-The actions, architectures, and operators are strings that match the definitions in seccomp.h from [libseccomp](https://github.com/seccomp/libseccomp) and are translated to corresponding values.
-A valid list of constants as of Libseccomp v2.2.3 is contained below.
+The set of valid constants MUST include the following (extracted from [libseccomp][]):
 
-Architecture Constants
+[Architecture Constants][libseccomp-architecture]:
 * `SCMP_ARCH_X86`
 * `SCMP_ARCH_X86_64`
 * `SCMP_ARCH_X32`
@@ -335,14 +334,14 @@ Architecture Constants
 * `SCMP_ARCH_MIPSEL64`
 * `SCMP_ARCH_MIPSEL64N32`
 
-Action Constants:
+[Action Constants][libseccomp-actions]:
 * `SCMP_ACT_KILL`
 * `SCMP_ACT_TRAP`
 * `SCMP_ACT_ERRNO`
 * `SCMP_ACT_TRACE`
 * `SCMP_ACT_ALLOW`
 
-Operator Constants:
+[Operator Constants][libseccomp-operators]:
 * `SCMP_CMP_NE`
 * `SCMP_CMP_LT`
 * `SCMP_CMP_LE`
@@ -375,3 +374,8 @@ Its value is either slave, private, or shared.
 ```json
     "rootfsPropagation": "slave",
 ```
+
+[libseccomp]: https://github.com/seccomp/libseccomp/tree/v2.2.3
+[libseccomp-architecture]: https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
+[libseccomp-actions]: https://github.com/seccomp/libseccomp/blob/v2.2.3/include/seccomp.h.in#L210-L233
+[libseccomp-operators]: https://github.com/seccomp/libseccomp/blob/v2.2.3/include/seccomp.h.in#L63-L76
