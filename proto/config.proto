@@ -1,4 +1,3 @@
-//package oci.config.bundle;
 package oci;
 
 // Spec is the base configuration for the container. It specifies platform
@@ -74,6 +73,16 @@ message User {
 
 	//optional LinuxUser linux_type = 2;
 	extensions 100 to 499;
+}
+
+// LinuxUser specifies linux specific user and group information for the
+// container's main process.
+extend User {
+	// Uid is the user id.
+	optional int32 uid = 101;
+	// Gid is the group id.
+	optional int32 gid = 102;
+	repeated int32 additional_gids = 103;
 }
 
 // Root contains information about the container's root filesystem on the host.
