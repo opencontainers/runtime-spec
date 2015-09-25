@@ -58,7 +58,7 @@ Hook paths are absolute and are executed from the host's filesystem.
 ### Pre-start
 
 The pre-start hooks are called after the container process is spawned, but before the user supplied command is executed.
-They are called after the container namespaces are created on Linux, so they provide an opportunity to customize the container.
+They are called after the container namespaces are created or already existing on Linux, so they provide an opportunity to customize the container.
 In Linux, for e.g., the network namespace could be configured in this hook.
 
 If a hook returns a non-zero exit code, then an error including the exit code and the stderr is returned to the caller and the container is torn down.
