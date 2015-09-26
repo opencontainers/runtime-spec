@@ -3,8 +3,7 @@ package specs
 // RuntimeSpec is the generic runtime state information on a running container
 type RuntimeSpec struct {
 	// Mounts is a mapping of names to mount configurations.
-	// Which mounts will be mounted and where should be chosen with MountPoints
-	// in Spec.
+	// Which mounts will be mounted and where should be chosen with Spec.Mounts.
 	Mounts map[string]Mount `json:"mounts"`
 	// Hooks are the commands run at various lifecycle events of the container.
 	Hooks Hooks `json:"hooks"`
