@@ -18,11 +18,11 @@ Hook paths are absolute and are executed from the host's filesystem.
 
 ### Pre-start
 
-The pre-start hooks are called after the container process is spawned, but before the user supplied command is executed.
+The pre-start hooks are called [after the container process is spawned, but before the user supplied command is executed](runtime.md#typical-lifecycle).
 They are called after the container namespaces are created on Linux, so they provide an opportunity to customize the container.
 In Linux, for e.g., the network namespace could be configured in this hook.
 
-If a hook returns a non-zero exit code, then an error including the exit code and the stderr is returned to the caller and the container is torn down.
+If a hook returns a non-zero exit code, [then an error including the exit code and the stderr is returned to the caller and the container is torn down](runtime.md#typical-lifecycle).
 
 ### Post-start
 
@@ -33,7 +33,7 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
 
 ### Post-stop
 
-The post-stop hooks are called after the container process is stopped.
+The post-stop hooks are called [after the container process is stopped](runtime.md#typical-lifecycle).
 Cleanup or debugging could be performed in such a hook.
 If a hook returns a non-zero exit code, then an error is logged and the remaining hooks are executed.
 
