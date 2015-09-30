@@ -39,17 +39,18 @@ A typical lifecyle progresses like this:
 4. The runtime executes any [pre-start hooks](runtime-config.md#pre-start)
 5. The runtime [executes the container process](#start-process)
 6. The container process is running
-7. A user tells the runtime to send a termination signal to the container process
-8. The runtime [sends a termination signal to the container process](#stop-process)
-9. The container process exits
-10. The runtime [terminates any other processes in the container](#stop-process)
-11. The runtime executes any [post-stop hooks](runtime-config.md#post-stop)
-12. The runtime [removes the container](#cleanup)
+7. The runtime executes any [post-start hooks](runtime-config.md#post-start)
+8. A user tells the runtime to send a termination signal to the container process
+9. The runtime [sends a termination signal to the container process](#stop-process)
+10. The container process exits
+11. The runtime [terminates any other processes in the container](#stop-process)
+12. The runtime executes any [post-stop hooks](runtime-config.md#post-stop)
+13. The runtime [removes the container](#cleanup)
 
 With steps 7 and 8, the user is explicitly stopping the container process (via the runtime), but it's also possible that the container process could exit for other reasons.
-In that case we skip directly from 6 to [10](#stop-process).
+In that case we skip directly from 6 to [10](#stop-process), skipping any post-start hooks that hadn't been launched and terminating any in-progress post-start hook.
 
-Failure in a pre-start hook or other setup task can cause a jump straight to [11](runtime-config.md#post-stop).
+Failure in a pre-start hook or other setup task can cause a jump straight to [12](runtime-config.md#post-stop).
 
 ### Create
 

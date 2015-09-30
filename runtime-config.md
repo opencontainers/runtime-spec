@@ -26,7 +26,7 @@ If a hook returns a non-zero exit code, [then an error including the exit code a
 
 ### Post-start
 
-The post-start hooks are called after the user process is started.
+The post-start hooks are called [after the user process is started](runtime.md#typical-lifecycle).
 For example this hook can notify user that real process is spawned.
 
 If a hook returns a non-zero exit code, then an error is logged and the remaining hooks are executed.
