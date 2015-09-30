@@ -12,6 +12,7 @@ Presently there are `Prestart`, `Poststart` and `Poststop`.
 Hooks allow one to run code before/after various lifecycle events of the container.
 Hooks MUST be called in the listed order.
 The state of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
+All hooks execute in the host environment (e.g. the same namespace, cgroups, etc. that apply to the host process).
 
 Hook paths are absolute and are executed from the host's filesystem.
 
