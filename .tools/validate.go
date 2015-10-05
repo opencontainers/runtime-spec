@@ -5,11 +5,15 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"regexp"
 	"strings"
+
+	yaml "gopkg.in/yaml.v2"
 )
 
 // DefaultRules are the standard validation to perform on git commits
@@ -39,6 +43,35 @@ var DefaultRules = []ValidateRule{
 		return vr
 	},
 	// TODO add something for the cleanliness of the c.Subject
+	func(c CommitEntry) (vr ValidateResult) {
+		vr.CommitEntry = c
+		buf := bytes.NewBuffer([]byte{})
+		args := []string{"git", "show", "--check", c["commit"]}
+		vr.Msg = strings.Join(args, " ")
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Stdout = buf
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			vr.Pass = false
+			vr.Detail = string(buf.Bytes())
+			return vr
+		}
+		vr.Pass = true
+		return vr
+	},
+	func(c CommitEntry) (vr ValidateResult) {
+		return ExecTree(c, "go", "vet", "./...")
+	},
+	func(c CommitEntry) (vr ValidateResult) {
+		return ExecTree(c, "go", "fmt", "./...")
+	},
+	func(c CommitEntry) (vr ValidateResult) {
+		vr = ExecTree(c, os.ExpandEnv("$HOME/gopath/bin/golint"), "./...")
+		if len(vr.Detail) > 0 {
+			vr.Pass = false
+		}
+		return vr
+	},
 }
 
 var (
@@ -68,26 +101,43 @@ func main() {
 	}
 
 	results := ValidateResults{}
-	for _, commit := range c {
-		fmt.Printf(" * %s %s ... ", commit["abbreviated_commit"], commit["subject"])
+
+	if *flVerbose {
+		fmt.Println("TAP version 13")
+		fmt.Printf("1..%d\n", len(c)*len(DefaultRules))
+	}
+	for i, commit := range c {
+		fmt.Printf("# %s %s ... ", commit["abbreviated_commit"], commit["subject"])
 		vr := ValidateCommit(commit, DefaultRules)
 		results = append(results, vr...)
 		if _, fail := vr.PassFail(); fail == 0 {
 			fmt.Println("PASS")
-			if *flVerbose {
-				for _, r := range vr {
-					if r.Pass {
-						fmt.Printf("  - %s\n", r.Msg)
-					}
-				}
-			}
 		} else {
 			fmt.Println("FAIL")
-			// default, only print out failed validations
-			for _, r := range vr {
-				if !r.Pass {
-					fmt.Printf("  - %s\n", r.Msg)
+		}
+		for j, r := range vr {
+			if *flVerbose {
+				if r.Pass {
+					fmt.Printf("ok")
+				} else {
+					fmt.Printf("not ok")
 				}
+				fmt.Printf(" %d - %s\n", i*len(DefaultRules)+j+1, r.Msg)
+			} else if !r.Pass {
+				fmt.Printf("not ok - %s\n", r.Msg)
+			}
+			if (*flVerbose || !r.Pass) && len(r.Detail) > 0 {
+				m := map[string]string{"message": r.Detail}
+				buf, err := yaml.Marshal(m)
+				if err != nil {
+					log.Fatal(err)
+				}
+				lines := strings.Split(strings.TrimSpace(string(buf)), "\n")
+				fmt.Println(" ---")
+				for _, line := range lines {
+					fmt.Printf(" %s\n", line)
+				}
+				fmt.Println(" ...")
 			}
 		}
 	}
@@ -115,6 +165,7 @@ type ValidateResult struct {
 	CommitEntry CommitEntry
 	Pass        bool
 	Msg         string
+	Detail      string
 }
 
 // ValidateResults is a set of results. This is type makes it easy for the following function.
@@ -224,4 +275,80 @@ func GitHeadCommit() (string, error) {
 		return "", err
 	}
 	return strings.TrimSpace(string(output)), nil
+}
+
+// GitCheckoutTree extracts the tree associated with the given commit
+// to the given directory.  Unlike 'git checkout ...', it does not
+// alter the HEAD.
+func GitCheckoutTree(commit string, directory string) error {
+	pipeReader, pipeWriter := io.Pipe()
+	gitCmd := exec.Command("git", "archive", commit)
+	gitCmd.Stdout = pipeWriter
+	gitCmd.Stderr = os.Stderr
+	tarCmd := exec.Command("tar", "-xC", directory)
+	tarCmd.Stdin = pipeReader
+	tarCmd.Stderr = os.Stderr
+	err := gitCmd.Start()
+	if err != nil {
+		return err
+	}
+	defer gitCmd.Process.Kill()
+	err = tarCmd.Start()
+	if err != nil {
+		return err
+	}
+	defer tarCmd.Process.Kill()
+	err = gitCmd.Wait()
+	if err != nil {
+		return err
+	}
+	err = pipeWriter.Close()
+	if err != nil {
+		return err
+	}
+	err = tarCmd.Wait()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// ExecTree executes a command in a checkout of the commit's tree,
+// wrapping any errors in a ValidateResult object.
+func ExecTree(c CommitEntry, args ...string) (vr ValidateResult) {
+	vr.CommitEntry = c
+	stdout, err := execTree(c, args...)
+	vr.Detail = strings.TrimSpace(stdout)
+	if err == nil {
+		vr.Pass = true
+		vr.Msg = strings.Join(args, " ")
+	} else {
+		vr.Pass = false
+		vr.Msg = fmt.Sprintf("%s : %s", strings.Join(args, " "), err.Error())
+	}
+	return vr
+}
+
+// execTree executes a command in a checkout of the commit's tree
+func execTree(c CommitEntry, args ...string) (string, error) {
+	dir, err := ioutil.TempDir("", "go-validate-")
+	if err != nil {
+		return "", err
+	}
+	defer os.RemoveAll(dir)
+	err = GitCheckoutTree(c["commit"], dir)
+	if err != nil {
+		return "", err
+	}
+	buf := bytes.NewBuffer([]byte{})
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Dir = dir
+	cmd.Stdout = buf
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	stdout := string(buf.Bytes())
+	if err != nil {
+		return stdout, err
+	}
+	return stdout, nil
 }
