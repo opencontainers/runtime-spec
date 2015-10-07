@@ -18,7 +18,7 @@ The `state.json` file MUST contain all of the following properties:
 This MUST be unique across all containers on this host.
 There is no requirement that it be unique across hosts.
 The ID is provided in the state because hooks will be executed with the state as the payload.
-This allows the hooks to perform cleanup and teardown logic after the runtime destroys its own state.
+This allows the hooks to perform cleanup and teardown logic after the runtime removes the container.
 * **`pid`**: (int) is the ID of the main process within the container, as seen by the host.
 * **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
