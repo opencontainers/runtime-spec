@@ -9,6 +9,8 @@ For more information, see [the man page](http://man7.org/linux/man-pages/man7/na
 Namespaces are specified in the spec as an array of entries.
 Each entry has a type field with possible values described below and an optional path element.
 If a path is specified, that particular file is used to join that type of namespace.
+If the specified path doesn't container any '/', it is considerred as a container ID rather than a file path and the target namespace is resolved from the information from the [state file](runtime.md#State) of the target container.
+For example, if the uts namespace path is "oc-container", it is considerred as a container ID and the pid (say 4422) can be fetched from its state file, thus the target namespace file is "/proc/4422/ns/uts".
 Also, when a path is specified, a runtime MUST assume that the setup for that particular namespace has already been done and error out if the config specifies anything else related to that namespace.
 
 ```json
