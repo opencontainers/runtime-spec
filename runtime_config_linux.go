@@ -14,6 +14,9 @@ type LinuxRuntimeSpec struct {
 
 // LinuxRuntime hosts the Linux-only runtime information
 type LinuxRuntime struct {
+	// Indicates if the host is unprivileged
+	// Used by libcontainer to check whether to mknod and write to devices cgroup
+	IsHostUnprivileged bool `json:"isHostUnprivileged"`
 	// UIDMapping specifies user mappings for supporting user namespaces on linux.
 	UIDMappings []IDMapping `json:"uidMappings"`
 	// GIDMapping specifies group mappings for supporting user namespaces on linux.
