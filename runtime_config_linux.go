@@ -9,7 +9,7 @@ const LinuxStateDirectory = "/run/opencontainer/containers"
 type LinuxRuntimeSpec struct {
 	RuntimeSpec
 	// LinuxRuntime is platform specific configuration for linux based containers.
-	Linux LinuxRuntime `json:"linux"`
+	Linux LinuxRuntime `json:"linux" mandatory:"required"`
 }
 
 // LinuxRuntime hosts the Linux-only runtime information

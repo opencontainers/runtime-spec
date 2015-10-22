@@ -1,0 +1,55 @@
+{
+	"version": "0.1.0",
+	"platform": {
+		"os": "linux",
+		"arch": "x86"
+	},
+	"process": {
+		"terminal": false,
+		"user": {
+			"uid": 0,
+			"gid": 0,
+			"additionalGids": null
+		},
+		"args": [
+			"/usr/bin/ls",
+			"-al"
+		],
+		"env": null,
+		"cwd": "/tmp"
+	},
+	"root": {
+		"path": "rootfs",
+		"readonly": false
+	},
+	"hostname": "demohost",
+	"mounts": [
+		{
+			"name": "sys",
+			"path": "/sys"
+		},
+		{
+			"name": "proc",
+			"path": "/proc"
+		},
+		{
+			"name": "dev",
+			"path": "/dev"
+		},
+		{
+			"name": "devpts",
+			"path": "/dev/pts"
+		},
+		{
+			"name": "devshm",
+			"path": "/dev/shm"
+		}
+	],
+	"linux": {
+		"capabilities": [
+			"CAP_AUDIT_WRITE",
+			"CAP_KILL",
+			"CAP_NET_BIND_SERVICE"
+		]
+	}
+}
