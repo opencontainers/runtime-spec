@@ -15,41 +15,41 @@ type LinuxRuntimeSpec struct {
 // LinuxRuntime hosts the Linux-only runtime information
 type LinuxRuntime struct {
 	// UIDMapping specifies user mappings for supporting user namespaces on linux.
-	UIDMappings []IDMapping `json:"uidMappings"`
+	UIDMappings []IDMapping `json:"uidMappings" mandatory:"optional"`
 	// GIDMapping specifies group mappings for supporting user namespaces on linux.
-	GIDMappings []IDMapping `json:"gidMappings"`
+	GIDMappings []IDMapping `json:"gidMappings" mandatory:"optional"`
 	// Rlimits specifies rlimit options to apply to the container's process.
-	Rlimits []Rlimit `json:"rlimits"`
+	Rlimits []Rlimit `json:"rlimits" mandatory:"required"`
 	// Sysctl are a set of key value pairs that are set for the container on start
-	Sysctl map[string]string `json:"sysctl"`
+	Sysctl map[string]string `json:"sysctl" mandatory:"optional"`
 	// Resources contain cgroup information for handling resource constraints
 	// for the container
-	Resources *Resources `json:"resources"`
+	Resources *Resources `json:"resources" mandatory:"optional"`
 	// CgroupsPath specifies the path to cgroups that are created and/or joined by the container.
 	// The path is expected to be relative to the cgroups mountpoint.
 	// If resources are specified, the cgroups at CgroupsPath will be updated based on resources.
-	CgroupsPath string `json:"cgroupsPath"`
+	CgroupsPath string `json:"cgroupsPath" mandatory:"required"`
 	// Namespaces contains the namespaces that are created and/or joined by the container
-	Namespaces []Namespace `json:"namespaces"`
+	Namespaces []Namespace `json:"namespaces" mandatory:"required"`
 	// Devices are a list of device nodes that are created and enabled for the container
-	Devices []Device `json:"devices"`
+	Devices []Device `json:"devices" mandatory:"required"`
 	// ApparmorProfile specified the apparmor profile for the container.
-	ApparmorProfile string `json:"apparmorProfile"`
+	ApparmorProfile string `json:"apparmorProfile" mandatory:"optional"`
 	// SelinuxProcessLabel specifies the selinux context that the container process is run as.
-	SelinuxProcessLabel string `json:"selinuxProcessLabel"`
+	SelinuxProcessLabel string `json:"selinuxProcessLabel" mandatory:"optional"`
 	// Seccomp specifies the seccomp security settings for the container.
-	Seccomp Seccomp `json:"seccomp"`
+	Seccomp Seccomp `json:"seccomp" mandatory:"optional"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container
-	RootfsPropagation string `json:"rootfsPropagation"`
+	RootfsPropagation string `json:"rootfsPropagation" mandatory:"required"`
 }
 
 // Namespace is the configuration for a linux namespace
 type Namespace struct {
 	// Type is the type of Linux namespace
-	Type NamespaceType `json:"type"`
+	Type NamespaceType `json:"type" mandatory:"required"`
 	// Path is a path to an existing namespace persisted on disk that can be joined
 	// and is of the same type
-	Path string `json:"path"`
+	Path string `json:"path" mandatory:"required"`
 }
 
 // NamespaceType is one of the linux namespaces
@@ -73,172 +73,172 @@ const (
 // IDMapping specifies UID/GID mappings
 type IDMapping struct {
 	// HostID is the UID/GID of the host user or group
-	HostID uint32 `json:"hostID"`
+	HostID uint32 `json:"hostID" mandatory:"required"`
 	// ContainerID is the UID/GID of the container's user or group
-	ContainerID uint32 `json:"containerID"`
+	ContainerID uint32 `json:"containerID" mandatory:"required"`
 	// Size is the length of the range of IDs mapped between the two namespaces
-	Size uint32 `json:"size"`
+	Size uint32 `json:"size" mandatory:"required"`
 }
 
 // Rlimit type and restrictions
 type Rlimit struct {
 	// Type of the rlimit to set
-	Type string `json:"type"`
+	Type string `json:"type" mandatory:"required"`
 	// Hard is the hard limit for the specified type
-	Hard uint64 `json:"hard"`
+	Hard uint64 `json:"hard" mandatory:"required"`
 	// Soft is the soft limit for the specified type
-	Soft uint64 `json:"soft"`
+	Soft uint64 `json:"soft" mandatory:"required"`
 }
 
 // HugepageLimit structure corresponds to limiting kernel hugepages
 type HugepageLimit struct {
 	// Pagesize is the hugepage size
-	Pagesize string `json:"pageSize"`
+	Pagesize string `json:"pageSize" mandatory:"required"`
 	// Limit is the limit of "hugepagesize" hugetlb usage
-	Limit uint64 `json:"limit"`
+	Limit uint64 `json:"limit" mandatory:"requried"`
 }
 
 // InterfacePriority for network interfaces
 type InterfacePriority struct {
 	// Name is the name of the network interface
-	Name string `json:"name"`
+	Name string `json:"name" mandatory:"requried"`
 	// Priority for the interface
-	Priority int64 `json:"priority"`
+	Priority int64 `json:"priority" mandatory:"requried"`
 }
 
 // blockIODevice holds major:minor format supported in blkio cgroup
 type blockIODevice struct {
 	// Major is the device's major number.
-	Major int64 `json:"major"`
+	Major int64 `json:"major" mandatory:"requried"`
 	// Minor is the device's minor number.
-	Minor int64 `json:"minor"`
+	Minor int64 `json:"minor" mandatory:"required"`
 }
 
 // WeightDevice struct holds a `major:minor weight` pair for blkioWeightDevice
 type WeightDevice struct {
 	blockIODevice
 	// Weight is the bandwidth rate for the device, range is from 10 to 1000
-	Weight uint16 `json:"weight"`
+	Weight uint16 `json:"weight" mandatory:"required"`
 	// LeafWeight is the bandwidth rate for the device while competing with the cgroup's child cgroups, range is from 10 to 1000, cfq scheduler only
-	LeafWeight uint16 `json:"leafWeight"`
+	LeafWeight uint16 `json:"leafWeight" mandatory:"required"`
 }
 
 // ThrottleDevice struct holds a `major:minor rate_per_second` pair
 type ThrottleDevice struct {
 	blockIODevice
 	// Rate is the IO rate limit per cgroup per device
-	Rate uint64 `json:"rate"`
+	Rate uint64 `json:"rate" mandatory:"required"`
 }
 
 // BlockIO for Linux cgroup 'blkio' resource management
 type BlockIO struct {
 	// Specifies per cgroup weight, range is from 10 to 1000
-	Weight uint16 `json:"blkioWeight"`
+	Weight uint16 `json:"blkioWeight" mandatory:"optional"`
 	// Specifies tasks' weight in the given cgroup while competing with the cgroup's child cgroups, range is from 10 to 1000, cfq scheduler only
-	LeafWeight uint16 `json:"blkioLeafWeight"`
+	LeafWeight uint16 `json:"blkioLeafWeight" mandatory:"optional"`
 	// Weight per cgroup per device, can override BlkioWeight
-	WeightDevice []*WeightDevice `json:"blkioWeightDevice"`
+	WeightDevice []*WeightDevice `json:"blkioWeightDevice" mandatory:"optional"`
 	// IO read rate limit per cgroup per device, bytes per second
-	ThrottleReadBpsDevice []*ThrottleDevice `json:"blkioThrottleReadBpsDevice"`
+	ThrottleReadBpsDevice []*ThrottleDevice `json:"blkioThrottleReadBpsDevice" mandatory:"optional"`
 	// IO write rate limit per cgroup per device, bytes per second
-	ThrottleWriteBpsDevice []*ThrottleDevice `json:"blkioThrottleWriteBpsDevice"`
+	ThrottleWriteBpsDevice []*ThrottleDevice `json:"blkioThrottleWriteBpsDevice" mandatory:"optional"`
 	// IO read rate limit per cgroup per device, IO per second
-	ThrottleReadIOPSDevice []*ThrottleDevice `json:"blkioThrottleReadIOPSDevice"`
+	ThrottleReadIOPSDevice []*ThrottleDevice `json:"blkioThrottleReadIOPSDevice" mandatory:"optional"`
 	// IO write rate limit per cgroup per device, IO per second
-	ThrottleWriteIOPSDevice []*ThrottleDevice `json:"blkioThrottleWriteIOPSDevice"`
+	ThrottleWriteIOPSDevice []*ThrottleDevice `json:"blkioThrottleWriteIOPSDevice" mandatory:"optional"`
 }
 
 // Memory for Linux cgroup 'memory' resource management
 type Memory struct {
 	// Memory limit (in bytes)
-	Limit int64 `json:"limit"`
+	Limit int64 `json:"limit" mandatory:"optional"`
 	// Memory reservation or soft_limit (in bytes)
-	Reservation int64 `json:"reservation"`
+	Reservation int64 `json:"reservation" mandatory:"optional"`
 	// Total memory usage (memory + swap); set `-1' to disable swap
-	Swap int64 `json:"swap"`
+	Swap int64 `json:"swap" mandatory:"optional"`
 	// Kernel memory limit (in bytes)
-	Kernel int64 `json:"kernel"`
+	Kernel int64 `json:"kernel" mandatory:"optional"`
 	// How aggressive the kernel will swap memory pages. Range from 0 to 100. Set -1 to use system default
-	Swappiness int64 `json:"swappiness"`
+	Swappiness int64 `json:"swappiness" mandatory:"optional"`
 }
 
 // CPU for Linux cgroup 'cpu' resource management
 type CPU struct {
 	// CPU shares (relative weight vs. other cgroups with cpu shares)
-	Shares int64 `json:"shares"`
+	Shares int64 `json:"shares" mandatory:"optional"`
 	// CPU hardcap limit (in usecs). Allowed cpu time in a given period
-	Quota int64 `json:"quota"`
+	Quota int64 `json:"quota" mandatory:"optional"`
 	// CPU period to be used for hardcapping (in usecs). 0 to use system default
-	Period int64 `json:"period"`
+	Period int64 `json:"period" mandatory:"optional"`
 	// How many time CPU will use in realtime scheduling (in usecs)
-	RealtimeRuntime int64 `json:"realtimeRuntime"`
+	RealtimeRuntime int64 `json:"realtimeRuntime" mandatory:"optional"`
 	// CPU period to be used for realtime scheduling (in usecs)
-	RealtimePeriod int64 `json:"realtimePeriod"`
+	RealtimePeriod int64 `json:"realtimePeriod" mandatory:"optional"`
 	// CPU to use within the cpuset
-	Cpus string `json:"cpus"`
+	Cpus string `json:"cpus" mandatory:"optional"`
 	// MEM to use within the cpuset
-	Mems string `json:"mems"`
+	Mems string `json:"mems" mandatory:"optional"`
 }
 
 // Pids for Linux cgroup 'pids' resource management (Linux 4.3)
 type Pids struct {
 	// Maximum number of PIDs. A value < 0 implies "no limit".
-	Limit int64 `json:"limit"`
+	Limit int64 `json:"limit" mandatory:"required"`
 }
 
 // Network identification and priority configuration
 type Network struct {
 	// Set class identifier for container's network packets
-	ClassID string `json:"classId"`
+	ClassID string `json:"classId" mandatory:"required"`
 	// Set priority of network traffic for container
-	Priorities []InterfacePriority `json:"priorities"`
+	Priorities []InterfacePriority `json:"priorities" mandatory:"required"`
 }
 
 // Resources has container runtime resource constraints
 type Resources struct {
 	// DisableOOMKiller disables the OOM killer for out of memory conditions
-	DisableOOMKiller bool `json:"disableOOMKiller"`
+	DisableOOMKiller bool `json:"disableOOMKiller" mandatory:"optional"`
 	// Specify an oom_score_adj for the container. Optional.
-	OOMScoreAdj int `json:"oomScoreAdj"`
+	OOMScoreAdj int `json:"oomScoreAdj" mandatory:"optional"`
 	// Memory restriction configuration
-	Memory Memory `json:"memory"`
+	Memory Memory `json:"memory" mandatory:"optional"`
 	// CPU resource restriction configuration
-	CPU CPU `json:"cpu"`
+	CPU CPU `json:"cpu" mandatory:"optional"`
 	// Task resource restriction configuration.
-	Pids Pids `json:"pids"`
+	Pids Pids `json:"pids" mandatory:"optional"`
 	// BlockIO restriction configuration
-	BlockIO BlockIO `json:"blockIO"`
+	BlockIO BlockIO `json:"blockIO" mandatory:"optional"`
 	// Hugetlb limit (in bytes)
-	HugepageLimits []HugepageLimit `json:"hugepageLimits"`
+	HugepageLimits []HugepageLimit `json:"hugepageLimits" mandatory:"optional"`
 	// Network restriction configuration
-	Network Network `json:"network"`
+	Network Network `json:"network" mandatory:"optional"`
 }
 
 // Device represents the information on a Linux special device file
 type Device struct {
 	// Path to the device.
-	Path string `json:"path"`
+	Path string `json:"path" mandatory:"required"`
 	// Device type, block, char, etc.
-	Type rune `json:"type"`
+	Type rune `json:"type" mandatory:"required"`
 	// Major is the device's major number.
-	Major int64 `json:"major"`
+	Major int64 `json:"major" mandatory:"required"`
 	// Minor is the device's minor number.
-	Minor int64 `json:"minor"`
+	Minor int64 `json:"minor" mandatory:"required"`
 	// Cgroup permissions format, rwm.
-	Permissions string `json:"permissions"`
+	Permissions string `json:"permissions" mandatory:"required"`
 	// FileMode permission bits for the device.
-	FileMode os.FileMode `json:"fileMode"`
+	FileMode os.FileMode `json:"fileMode" mandatory:"required"`
 	// UID of the device.
-	UID uint32 `json:"uid"`
+	UID uint32 `json:"uid" mandatory:"required"`
 	// Gid of the device.
-	GID uint32 `json:"gid"`
+	GID uint32 `json:"gid" mandatory:"required"`
 }
 
 // Seccomp represents syscall restrictions
 type Seccomp struct {
-	DefaultAction Action     `json:"defaultAction"`
-	Architectures []Arch     `json:"architectures"`
-	Syscalls      []*Syscall `json:"syscalls"`
+	DefaultAction Action     `json:"defaultAction" mandatory:"required"`
+	Architectures []Arch     `json:"architectures" mandatory:"required"`
+	Syscalls      []*Syscall `json:"syscalls" mandatory:"required"`
 }
 
 // Additional architectures permitted to be used for system calls
@@ -285,15 +285,15 @@ const (
 
 // Arg used for matching specific syscall arguments in Seccomp
 type Arg struct {
-	Index    uint     `json:"index"`
-	Value    uint64   `json:"value"`
-	ValueTwo uint64   `json:"valueTwo"`
-	Op       Operator `json:"op"`
+	Index    uint     `json:"index" mandatory:"required"`
+	Value    uint64   `json:"value" mandatory:"required"`
+	ValueTwo uint64   `json:"valueTwo" mandatory:"required"`
+	Op       Operator `json:"op" mandatory:"required"`
 }
 
 // Syscall is used to match a syscall in Seccomp
 type Syscall struct {
-	Name   string `json:"name"`
-	Action Action `json:"action"`
-	Args   []*Arg `json:"args"`
+	Name   string `json:"name" mandatory:"required"`
+	Action Action `json:"action" mandatory:"requried"`
+	Args   []*Arg `json:"args" mandatory:"optional"`
 }

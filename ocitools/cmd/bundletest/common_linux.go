@@ -92,15 +92,3 @@ func requiredDevices() []string {
 	}
 	return devices
 }
-
-func seccompValid(secc string) bool {
-	seccs := map[string]int{
-		"SCMP_ACT_KILL":  0x00000000,
-		"SCMP_ACT_TRAP":  0x00030000,
-		"SCMP_ACT_ERRNO": 0x00050000,
-		"SCMP_ACT_TRACE": 0x7ff00000,
-		"SCMP_ACT_ALLOW": 0x7fff0000,
-	}
-	_, ok := seccs[secc]
-	return ok
-}

@@ -11,7 +11,8 @@ import (
 
 const (
 	// Path to config file inside the bundle
-	ConfigFile  = "config.json"
+	ConfigFile = "config.json"
+	// Path to runtime file inside the bundle
 	RuntimeFile = "runtime.json"
 	// Path to rootfs directory inside the bundle
 	RootfsDir = "rootfs"

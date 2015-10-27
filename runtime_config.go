@@ -31,10 +31,10 @@ type Hooks struct {
 // Mount specifies a mount for a container
 type Mount struct {
 	// Type specifies the mount kind.
-	Type string `json:"type"`
+	Type string `json:"type" mandatory:"required"`
 	// Source specifies the source path of the mount.  In the case of bind mounts on
 	// linux based systems this would be the file on the host.
-	Source string `json:"source"`
+	Source string `json:"source" mandatory:"required"`
 	// Options are fstab style mount options.
-	Options []string `json:"options"`
+	Options []string `json:"options" mandatory:"optional"`
 }

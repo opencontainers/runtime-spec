@@ -71,16 +71,12 @@ func LinuxRuntimeSpecValid(lrs specs.LinuxRuntimeSpec, rootfs string) ([]string,
 	}
 
 	switch lr.RootfsPropagation {
-	case "":
 	case "slave":
 	case "private":
 	case "shared":
-		break
 	default:
 		valid = false
 		msgs = append(msgs, "RootfsPropagation should limited to 'slave', 'private', or 'shared'")
-		break
-
 	}
 
 	return msgs, valid
@@ -89,21 +85,15 @@ func LinuxRuntimeSpecValid(lrs specs.LinuxRuntimeSpec, rootfs string) ([]string,
 func NamespaceValid(ns specs.Namespace) (msgs []string, valid bool) {
 	valid = true
 	switch ns.Type {
-	case "":
-		valid = false
-		msgs = append(msgs, "The type of the namespace should not be empty")
-		break
-	case "pid":
-	case "network":
-	case "mount":
-	case "ipc":
-	case "uts":
-	case "user":
-		break
+	case specs.PIDNamespace:
+	case specs.NetworkNamespace:
+	case specs.MountNamespace:
+	case specs.IPCNamespace:
+	case specs.UTSNamespace:
+	case specs.UserNamespace:
 	default:
 		valid = false
 		msgs = append(msgs, "The type of the namespace should limited to 'pid/network/mount/ipc/nts/user'")
-		break
 	}
 	return msgs, valid
 }
@@ -142,9 +132,23 @@ func DeviceValid(d specs.Device) (msgs []string, valid bool) {
 	return msgs, valid
 }
 
+func seccompActionValid(secc specs.Action) bool {
+	switch secc {
+	case specs.ActKill:
+	case specs.ActTrap:
+	case specs.ActErrno:
+	case specs.ActTrace:
+	case specs.ActAllow:
+	default:
+		return false
+	}
+	return true
+}
+
 func SeccompValid(s specs.Seccomp) (msgs []string, valid bool) {
 	valid = true
-	if !seccompValid(string(s.DefaultAction)) {
+
+	if !seccompActionValid(s.DefaultAction) {
 		msgs = append(msgs, "Seccomp.DefaultAction is invalid")
 		valid = false
 	}
@@ -156,15 +160,47 @@ func SeccompValid(s specs.Seccomp) (msgs []string, valid bool) {
 			}
 		}
 	}
+	for index := 0; index < len(s.Architectures); index++ {
+		switch s.Architectures[index] {
+		case specs.ArchX86:
+		case specs.ArchX86_64:
+		case specs.ArchX32:
+		case specs.ArchARM:
+		case specs.ArchAARCH64:
+		case specs.ArchMIPS:
+		case specs.ArchMIPS64:
+		case specs.ArchMIPS64N32:
+		case specs.ArchMIPSEL:
+		case specs.ArchMIPSEL64:
+		case specs.ArchMIPSEL64N32:
+		default:
+			msgs = append(msgs, fmt.Sprintf("Seccomp.Architecture [%s] is invalid", s.Architectures[index]))
+			valid = false
+		}
+	}
 	return msgs, valid
 }
 
 func SyscallValid(s specs.Syscall) (msgs []string, valid bool) {
 	valid = true
-	if !seccompValid(string(s.Action)) {
+
+	if !seccompActionValid(s.Action) {
 		msgs = append(msgs, fmt.Sprintf("Syscall.Action %s is invalid", s.Action))
 		valid = false
 	}
-
+	for index := 0; index < len(s.Args); index++ {
+		arg := *(s.Args[index])
+		switch arg.Op {
+		case specs.OpNotEqual:
+		case specs.OpLessEqual:
+		case specs.OpEqualTo:
+		case specs.OpGreaterEqual:
+		case specs.OpGreaterThan:
+		case specs.OpMaskedEqual:
+		default:
+			msgs = append(msgs, fmt.Sprintf("Syscall.Args.Op [%s] is invalid", arg.Op))
+			valid = false
+		}
+	}
 	return msgs, valid
 }
