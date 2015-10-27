@@ -1,0 +1,145 @@
+{
+	"mounts": {
+		"devshm": {
+			"options": [
+				"nosuid",
+				"nodev"
+			]
+		},
+		"proc": {
+			"type": "proc",
+			"source": "proc",
+			"options": [
+				"noexec",
+				"nosuid",
+				"nodev"
+			]
+		},
+		"sys": {
+			"type": "sysfs",
+			"source": "sysfs",
+			"options": [
+				"noexec",
+				"nosuid",
+				"nodev"
+			]
+		}
+	},
+	"hooks": {
+		"prestart": null,
+		"poststop": null
+	},
+	"linux": {
+		"uidMappings": null,
+		"gidMappings": null,
+		"rlimits": null,
+		"sysctl": null,
+		"resources": null,
+		"cgroupsPath": "",
+		"namespaces": [
+			{
+				"type": "pid",
+				"path": ""
+			},
+			{
+				"type": "network",
+				"path": ""
+			},
+			{
+				"type": "mount",
+				"path": ""
+			},
+			{
+				"type": "ipc",
+				"path": ""
+			},
+			{
+				"type": "uts",
+				"path": ""
+			},
+			{
+				"type": "user",
+				"path": ""
+			}
+		],
+		"devices": [
+			{
+				"path": "/dev/random",
+				"type": 99,
+				"major": 1,
+				"minor": 8,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/urandom",
+				"type": 99,
+				"major": 1,
+				"minor": 9,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/null",
+				"type": 99,
+				"major": 1,
+				"minor": 3,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/zero",
+				"type": 99,
+				"major": 1,
+				"minor": 5,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/tty",
+				"type": 99,
+				"major": 5,
+				"minor": 0,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/full",
+				"type": 99,
+				"major": 1,
+				"minor": 7,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			},
+			{
+				"path": "/dev/console",
+				"type": 99,
+				"major": 5,
+				"minor": 1,
+				"permissions": "rwm",
+				"fileMode": 438,
+				"uid": 0,
+				"gid": 0
+			}
+		],
+		"apparmorProfile": "",
+		"selinuxProcessLabel": "",
+		"seccomp": {
+			"defaultAction": "",
+			"syscalls": null
+		},
+		"rootfsPropagation": ""
+	}
+}

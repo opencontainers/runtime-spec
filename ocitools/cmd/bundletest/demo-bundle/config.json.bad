@@ -1,0 +1,151 @@
+{
+  "version": "0.0.a",
+  "platform": {
+    "os": "linux"
+  },
+  "process": {
+    "terminal": false,
+    "user": {
+      "uid": 0,
+      "gid": 0
+    },
+    "args": [
+      "bash"
+    ],
+    "env": [
+      "TERM=xterm"
+    ],
+    "cwd": "/testtool"
+  },
+  "root": {
+    "path": "./rootfs_rootconfig",
+    "readonly": true
+  },
+  "hostname": "bash",
+  "mounts": [
+    {
+      "destination": "/testtool",
+      "options": "rbind,rw"
+    },
+    {
+      "type": "proc",
+      "source": "proc",
+      "destination": "/proc",
+      "options": ""
+    },
+    {
+      "type": "tmpfs",
+      "source": "tmpfs",
+      "destination": "/dev",
+      "options": "nosuid,strictatime,mode=755,size=65536k"
+    },
+    {
+      "type": "devpts",
+      "source": "devpts",
+      "destination": "/dev/pts",
+      "options": "nosuid,noexec,newinstance,ptmxmode=0666,mode=0620,gid=5"
+    },
+    {
+      "type": "tmpfs",
+      "source": "shm",
+      "destination": "/dev/shm",
+      "options": "nosuid,noexec,nodev,mode=1777,size=65536k"
+    },
+    {
+      "type": "mqueue",
+      "source": "mqueue",
+      "destination": "/dev/mqueue",
+      "options": "nosuid,noexec,nodev"
+    },
+    {
+      "type": "sysfs",
+      "source": "sysfs",
+      "destination": "/sys",
+      "options": "nosuid,noexec,nodev"
+    },
+    {
+      "type": "cgroup",
+      "source": "cgroup",
+      "destination": "/sys/fs/cgroup",
+      "options": "nosuid,noexec,nodev,relatime,ro"
+    }
+  ],
+  "hooks": {
+    "prestart": null,
+    "poststop": null
+  },
+  "linux": {
+    "uidMappings": null,
+    "gidMappings": null,
+    "rlimits": null,
+    "sysctl": null,
+    "resources": {
+      "disableOOMKiller": false,
+      "memory": {
+        "limit": 0,
+        "reservation": 0,
+        "swap": 0,
+        "kernel": 0,
+        "swappiness": -1
+      },
+      "cpu": {
+        "shares": 0,
+        "quota": 0,
+        "period": 0,
+        "realtimeRuntime": 0,
+        "realtimePeriod": 0,
+        "cpus": "",
+        "mems": ""
+      },
+      "blockIO": {
+        "blkioWeight": 0,
+        "blkioWeightDevice": "",
+        "blkioThrottleReadBpsDevice": "",
+        "blkioThrottleWriteBpsDevice": "",
+        "blkioThrottleReadIopsDevice": "",
+        "blkioThrottleWriteIopsDevice": ""
+      },
+      "hugepageLimits": null,
+      "network": {
+        "classId": "",
+        "priorities": null
+      }
+    },
+    "namespaces": [
+      {
+        "type": "pid",
+        "path": ""
+      },
+      {
+        "type": "network",
+        "path": ""
+      },
+      {
+        "type": "ipc",
+        "path": ""
+      },
+      {
+        "type": "uts",
+        "path": ""
+      },
+      {
+        "type": "mount",
+        "path": ""
+      }
+    ],
+    "capabilities": [
+      "AUDIT_WRITE",
+      "KILL",
+      "NET_BIND_SERVICE"
+    ],
+    "devices": [
+      "null",
+      "random",
+      "full",
+      "tty",
+      "zero",
+      "urandom"
+    ],
+    "rootfsPropagation": ""
+  }
+}
