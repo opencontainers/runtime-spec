@@ -106,8 +106,8 @@ type InterfacePriority struct {
 	Priority uint32 `json:"priority"`
 }
 
-// blockIODevice holds major:minor format supported in blkio cgroup
-type blockIODevice struct {
+// BlockIODevice holds major:minor format supported in blkio cgroup
+type BlockIODevice struct {
 	// Major is the device's major number.
 	Major int64 `json:"major"`
 	// Minor is the device's minor number.
@@ -116,7 +116,7 @@ type blockIODevice struct {
 
 // WeightDevice struct holds a `major:minor weight` pair for blkioWeightDevice
 type WeightDevice struct {
-	blockIODevice
+	BlockIODevice
 	// Weight is the bandwidth rate for the device, range is from 10 to 1000
 	Weight uint16 `json:"weight"`
 	// LeafWeight is the bandwidth rate for the device while competing with the cgroup's child cgroups, range is from 10 to 1000, CFQ scheduler only
@@ -125,7 +125,7 @@ type WeightDevice struct {
 
 // ThrottleDevice struct holds a `major:minor rate_per_second` pair
 type ThrottleDevice struct {
-	blockIODevice
+	BlockIODevice
 	// Rate is the IO rate limit per cgroup per device
 	Rate uint64 `json:"rate"`
 }
