@@ -162,6 +162,9 @@ You can configure a container's cgroups via the `resources` field of the Linux c
 Do not specify `resources` unless limits have to be updated.
 For example, to run a new process in an existing container without updating limits, `resources` need not be specified.
 
+If neither `resources` nor `cgroupsPath` is specified, the runtime MUST not manipulate or require the existence of any cgroups.
+You probably only want to do this if you are handling cgroups yourself via [hooks](runtime-config.md#hooks).
+
 #### Disable out-of-memory killer
 
 `disableOOMKiller` contains a boolean (`true` or `false`) that enables or disables the Out of Memory killer for a cgroup.
