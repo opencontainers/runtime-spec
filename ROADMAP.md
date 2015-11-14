@@ -27,7 +27,7 @@ Runtimes would use this standard set of defaults for containers and `runtime.jso
 Containers have a lifecycle and being able to identify and document the lifecycle of a container is very helpful for implementations of the spec.  
 The lifecycle events of a container also help identify areas to implement hooks that are portable across various implementations and platforms.
 
-*Owner:* mrunalp
+*Owner:* mrunalp, robdolinms
 
 ### Define Standard Container Actions
 
