@@ -45,7 +45,7 @@ Is the rootfs needed or should it just be expected in the bundle without having 
 
 Define what a software container is and its attributes in a cross platform way.
 
-*Owner:*  
+*Owner:* robdolinms  
 
 ### Live Container Updates
 
