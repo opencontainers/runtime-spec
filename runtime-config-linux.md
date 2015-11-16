@@ -144,6 +144,12 @@ Also known as cgroups, they are used to restrict resource usage for a container 
 cgroups provide controls to restrict cpu, memory, IO, pids and network for the container.
 For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
 
+There are a few facets to this:
+
+* Managing the existence of cgroups within the hierarchy (`cgroupsPath`).
+* Moving processes to respective cgroups.
+* Configuring cgroups to apply resource limits (`resources`).
+
 The path to the cgroups can be specified in the Spec via `cgroupsPath`.
 `cgroupsPath` is expected to be relative to the cgroups mount point.
 If `cgroupsPath` is not specified, implementations can define the default cgroup path.
@@ -156,11 +162,13 @@ The cgroups will be created if they don't exist.
    "cgroupsPath": "/myRuntime/myContainer"
 ```
 
-`cgroupsPath` can be used to either control the cgroups hierarchy for containers or to run a new process in an existing container.
+The container process will be added to the cgroups at `cgroupsPath`.
 
 You can configure a container's cgroups via the `resources` field of the Linux configuration.
 Do not specify `resources` unless limits have to be updated.
-For example, to run a new process in an existing container without updating limits, `resources` need not be specified.
+For example, to run a new process in an existing container without updating limits, specify `cgroupsPath` but not `resources`.
+To run a new process in an existing container and update limits, specify both `cgroupsPath` and `resources`.
+To run a new process in a new container with explicit resource limits, specify `resources` and optionally set `cgroupsPath` to a cgroup that does not yet exist.
 
 #### Disable out-of-memory killer
 
