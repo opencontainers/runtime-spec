@@ -20,6 +20,10 @@ Although OCI doesn't define a transport method we should have a cryptographic di
 There are some discussions about having `runtime.json` being optional for containers and specifying defaults.
 Runtimes would use this standard set of defaults for containers and `runtime.json` would provide overrides for fine tuning of these extra host or platform specific settings.
 
+Proposals:
+
+* [Drop `runtime.json`, returning to the single `config.json` we had before #88](https://groups.google.com/a/opencontainers.org/forum/#!topic/dev/0QbyJDM9fWY)
+
 *Owner:*  
 
 ### Define Container Lifecycle
