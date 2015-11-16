@@ -33,7 +33,7 @@ The lifecycle events of a container also help identify areas to implement hooks 
 
 Define what type of actions a runtime can perform on a container without imposing hardships on authors of platforms that do not support advanced options.
 
-*Owner:*  
+*Owner:* robdolinms  
 
 ### Clarify rootfs requirement in base spec
 
