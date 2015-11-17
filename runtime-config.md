@@ -5,9 +5,9 @@
 Lifecycle hooks allow custom events for different points in a container's runtime.
 Presently there are `Prestart`, `Poststart` and `Poststop`.
 
-* [`Prestart`](#prestart) is a list of hooks to be run before the container process is executed
-* [`Poststart`](#poststart) is a list of hooks to be run immediately after the container process is started
-* [`Poststop`](#poststop) is a list of hooks to be run after the container process exits
+* [`Prestart`](#prestart) is a list of hooks to be run just after the container is created but before the container is started
+* [`Poststart`](#poststart) is a list of hooks to be run immediately after the container is started
+* [`Poststop`](#poststop) is a list of hooks to be run after the container is stopped
 
 Hooks allow one to run code before/after various lifecycle events of the container.
 Hooks MUST be called in the listed order.
