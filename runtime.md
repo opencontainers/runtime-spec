@@ -23,6 +23,9 @@ This allows the hooks to perform cleanup and teardown logic after the runtime de
 * **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
 
+* **`annotations`**: (interface) holds runtime-specified information that is not structured by this specification.
+The runtime could store experimental information here before it's standardized in this specification.
+
 *Example*
 
 ```json
