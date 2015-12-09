@@ -489,6 +489,16 @@ Operator Constants:
    }
 ```
 
+## Masked Paths
+
+Masked paths allow hiding paths in the container by bind mounting `/dev/null` over them to prevent access by the container process.
+
+```json
+   "maskedPaths": [
+       "/proc/kcore"
+   ]
+```
+
 ## Rootfs Mount Propagation
 
 rootfsPropagation sets the rootfs's mount propagation.
