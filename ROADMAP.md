@@ -64,7 +64,7 @@ If we change the specs format in the respository to be something like protobuf t
 
 Provide validation tooling for compliance with OCI spec and runtime environment.
 
-*Owner:* mrunalp
+*Owner:* mrunalp, robdolinms
 
 ### Testing Framework
 
