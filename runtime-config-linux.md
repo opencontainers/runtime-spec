@@ -145,7 +145,7 @@ cgroups provide controls to restrict cpu, memory, IO, pids and network for the c
 For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
 
 The path to the cgroups can be specified in the Spec via `cgroupsPath`.
-`cgroupsPath` is expected to be relative to the cgroups mount point.
+`cgroupsPath` is expected to be an absolute path which is relative to the cgroups mount point.
 If `cgroupsPath` is not specified, implementations can define the default cgroup path.
 Implementations of the Spec can choose to name cgroups in any manner.
 The Spec does not include naming schema for cgroups.
