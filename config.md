@@ -104,7 +104,7 @@ For Linux-based systems the user structure has the following fields:
 
 ## Hostname
 
-* **`hostname`** (string, optional) as it is accessible to processes running inside.  On Linux, you can only set this if your bundle creates a new [UTS namespace][uts-namespace].
+* **`hostname`** (string, optional) as it is accessible to processes running inside.  On Linux, you can only set and MUST set this if your bundle creates a new [UTS namespace][uts-namespace].
 
 *Example*
 
