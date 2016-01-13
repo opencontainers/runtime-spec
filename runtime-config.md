@@ -10,7 +10,7 @@ Presently there are `Prestart`, `Poststart` and `Poststop`.
 * [`Poststop`](#poststop) is a list of hooks to be run after the container process exits
 
 Hooks allow one to run code before/after various lifecycle events of the container.
-Hooks MUST be called in the listed order.
+Hooks MUST be called in the listed order, with each hook process being reaped before the next hook is executed.
 The state of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
 
 Hook paths are absolute and are executed from the host's filesystem.
