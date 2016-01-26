@@ -170,9 +170,19 @@ Also known as cgroups, they are used to restrict resource usage for a container 
 cgroups provide controls to restrict cpu, memory, IO, pids and network for the container.
 For more information, see the [kernel cgroups documentation](https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt).
 
-The path to the cgroups can be specified in the Spec via `cgroupsPath`.
-`cgroupsPath` is expected to be relative to the cgroups mount point.
-If `cgroupsPath` is not specified, implementations can define the default cgroup path.
+The name of the cgroups can be specified in the Spec via `cgroupsName`.
+Cgroup names mimic filesystem paths closely since they express a hierarchy of cgroups.
+`cgroupsName` is expected to be absolute.
+An absolute name is one that is defined from the root cgroup `/`.
+For example, `/foo/bar` is acceptable. `foo/bar` is not acceptable.
+Allowable characters for cgroup names are,
+Alpha numeric ([a-zA-Z0-9]+)
+Underscores (_)
+Dashes (-)
+Periods (.)
+In general and unless otherwise specified, regular filesystem path rules apply.
+
+If `cgroupsName` is not specified, implementations can choose to use (or not use) any cgroups.
 Implementations of the Spec can choose to name cgroups in any manner.
 The Spec does not include naming schema for cgroups.
 The Spec does not support [split hierarchy](https://www.kernel.org/doc/Documentation/cgroups/unified-hierarchy.txt).
@@ -181,10 +191,10 @@ The cgroups will be created if they don't exist.
 ###### Example
 
 ```json
-   "cgroupsPath": "/myRuntime/myContainer"
+   "cgroupsName": "/foo-runtime/bar.container"
 ```
 
-`cgroupsPath` can be used to either control the cgroups hierarchy for containers or to run a new process in an existing container.
+`cgroupsName` can be used to either control the cgroups for new containers or to run a new process in an existing container.
 
 You can configure a container's cgroups via the `resources` field of the Linux configuration.
 Do not specify `resources` unless limits have to be updated.
