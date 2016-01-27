@@ -1,9 +1,8 @@
 package specs
 
 // State holds information about the runtime state of the container.
-// This information will be stored in a file called `state.json`.
-// The location of this file will be operating system specific. On Linux
-// it will be in `/run/opencontainers/runc/<containerID>/state.json`
+// This information will be the struct of a `state` response from a runtime
+// regarding a created container.
 type State struct {
 	// Version is the version of the specification that is supported.
 	Version string `json:"version"`
