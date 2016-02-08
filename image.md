@@ -1,150 +1,309 @@
 # Image
 
 This section defines a format for encoding a container's *filesytem bundle* as a portable *image*.
-An image is a set of files organized in a certain way, and containing all of the necessary data and metadata, for any compliant runtime to verify the validity of the image's contents and to construct a filesystem bundle represented by the image.
+An image is a set of files organized in a certain way, containing all of the necessary data and metadata, for any compliant runtime to verify the validity of the image's contents and to construct a filesystem bundle represented by the image.
 Images are meant to be portable such that they can be used to reliably move filesystem bundles between instances of OCI compliant implementations.
+
+In its simplest form, an image is a tar file of the filesystem bundle (root file system directory plus a configuration file) along with some additional metadata.
+While the runtime only sees a single directory as the root filesystem, it might actually be stored as a layering of filesytems under the covers.
+When representing this layering within an image, each "layer" will be independently referenced.
 
 ## Image Contents
 
 A compliant image contains the following pieces of information:
 
-1. An OCI [`config.json`](config.md) file.
+1. A `manifest.json` file describing the contents of the image.
 This file is REQUIRED to be present in the image.
-The `config.json` file contains the host independent configuration information necessary to execute the container.
-See [`config.json`](config.md) for more information.
+This file extends the [`config.json`](config.md) file with some additional properties:
+  * `name`: This REQUIRED property is a URL-like string to aide in discovery of the image.
+  For example, `example.com/myApp`.
+  * `whiteout`: This OPTIONAL property is a JSON array of absolute file paths that are to be considered to be deleted from dependent layers, even though they are included within those layers root filesystems.
+  It is an implementation detail to decide how this whiteout list is processed, but an implementation MUST ensure that any container that is created from this image will behave as if those files were not in the root filesystem at all.
+  * `layers`: This OPTIONAL property contains references to the layers that make up the root filesystem of the image.
+  This property MUST be a JSON encoded array where each entry consists of a REQUIRED `name` and OPTIONAL `ID` properties.
+  The array MUST be in the order in which the images are to be "layed down" into the filesystem bundle that is generated from this image.
+  In other words, the first image in the array is written to the filesystem first, and subsequent images are overlayed on top - potentially overlaying an earlier image's files.
+  If a referenced layer is embedded within this image then an `ID` property MUST be included.
+  If a referenced layer is not embedded within this image then an `ID` property is OPTIONAL.
+  * `root/path`: ThiS REQUIRED property, defined within [`config.json`](config.md), is the name of the directory into which all layers MUST appear.
+  While the `manifest.json` file extends the `config.json` file, a compliant OCI image is NOT REQUIRED to have all of the required fields from `config.json` within its `manifest.json` file if that image is only used as a layer (dependent image) within other images.
+  This is due to the fact that a layer's `manifest.json` properties are not used to produce a container's `config.json` file and therefore not all of them are used.
+  However, if an image is used to create a container then all of the "required" fields of the `config.json` MUST be present in the `manifest.json`.
 
-1. References to dependent images.
-If present, this OPTIONAL information MUST be in a file called `required.json`.
-This file MUST be a JSON encoded array of references to images as specified in the [Dependent Images](#dependent-images) section.
+1. Layers.
+Each embedded layer MUST have a corresponding image (tar) file, at the root of the image.
+Each layer's tar file MUST be named with its ID followed by the appropriate file-extension based on how the tar file is written (e.g. `.tar` for uncompressed).
 
-1. Dependent images.
-An image MAY include dependent images as directories within the image.
-Each dependent image MUST be placed in a directory whose name is the same as its ID (see the [IDs](#ids) section for more details about IDs).
-The contents of each directory MUST adhere to the following:
-  * there MAY be a `whiteout.json` file (see [Whiteout List](#whiteout-list)).
-  * there MUST be a directory called `rootfs` which contains the root filesystem of that image.
-  *  there MAY be additional "extension files".
+1. `rootfs` directory.
+An image MAY optionally contain a directory that's the same as the `root/path` property of the `manifest.json` file.
+And if so, then it MUST be treated as the top-most layer of the root filesystem.
 
-  The ID MUST be generated over the above contents in the order specified.
-
-1. Whiteout list.
-An image MAY choose to include a list of files that are to be considered to be deleted from dependent images even though they are included within the dependent image's root filesystem directory.
-It is an implementation detail to decide how this whiteout list is processed but an implementation MUST ensure that any container that is created from this image will behave the same as if those files were not in the root filesystem at all.
-The whiteout list MUST be in a file called `whiteout.json`.
-See the [Whiteout List](#whiteout-list) section for more details.
-
-1. The root filesystem of the filesystem bundle.
-This directory MUST be present in the image, however it MAY be empty (not contain any files or folders).
-As specified in the `config.json` file, this directory contains the files that make up the root filesystem of the container.
-This directory MAY contain only a portion of the complete set of files that make up the filesystem bundle, in which case the remaining set of files MUST be found in one of the dependent images.
-
-1. ID of the root filesystem.
-This data MUST be a cryptographic hash of the whiteout list file, if present, and the root filesystem directory (including the directory itself), in that order.
-If there are dependent images then this MUST NOT include the dependent image's data.
-This REQUIRED information MUST be in a file called `rootfs.ID`
-See the [IDs](#ids) section for more details.
-
-1. Extension files.
-An image MAY choose to include additional files and directories in the image.
-
-1. The ID of the image.
-This data MUST be a cryptographic hash of all the data listed above, in the order specified.
-For the purposes of calculating the ID, the order of processing the extension files MUST be in case-sensitive alphabetical order.
-This REQUIRED information MUST be in a file called `ID`.
-See the [IDs](#ids) section for more details.
+1. There MAY be additional files within the image.
+This specification places no requirements on these files.
+A compliant OCI implementation is NOT REQUIRED to materialize these files into a container's filesystem bundle directory.
 
 ## Serialization of an Image
 
-An image MUST be a `tar` of the pieces of data that make up an image as specified in the [Image Contents](#image-contents) section.
-The order in which the data is serialized in the `tar` MUST be the same as the order specified in that section.
-The serialization of the "dependent images" directories, if any, MUST be in the same order in which those dependent images are listed in the `requires.json` file.
-The serialization of the  "extension files" MUST be in case-sensitive alphabetical order.
-Note that "extension files", irrespective of their names, MUST appear after the `rootfs.ID` file for the image.
-
-Each file or directory specified in the [Image Contents](#image-contents) section MUST appear at the root of the `tar` without a leading `/` in their names.
-
-For example, a listing of the `tar` of an image might look like this:
-```
-config.json
-requires.json
-sha512-1d62d181e9c1322d56ccd3a29d05018399147a16188dbd861c0279ad0dd7e14c/
-    rootfs/
-        bin/runit
-sha512-291e2a171ef9bef8a838c59406d9b0aeb6f2f0ebe5173415205733d3d18b8e03/
-    whiteout.json
-    rootfs/
-        bin/monitor
-sha512-98364ca873540185d83645e93745a94847f2f0ebe51733987154840afebc9921/
-whiteout.json
-rootfs/
-    bin/myapp
-rootfs.ID
-extraFile
-ID
-```
-
-## Dependent Images
-
-If an image has dependent images then it MUST include a `requires.json` file that references those images.
-The `requires.json` file MUST be a JSON encoded array matching this format:
-```
-{
-  "requires": [
-    {
-      "ID": "..."
-    },
-    {
-      "ID": "..."
-    }, ...
-  ]
-}
-```
-
-The order of the images, `ID`s, in the array MUST be in the order in which the images are to be "layed down" into the filesystem bundle that is generated from this image.
-In other words, the first image in the array is written to the filesystem first, and subsequent images are overlayed on top - potentially overlaying an ealier image's files.
-
-## IDs
-
-An `ID` MUST be a cryptographic hash of the data being protected, in the order specified for that ID.
-
+An image MUST be a `tar` of the files that make up an image as specified in the [Image Contents](#image-contents) section.
+The name of the tar file MUST be the ID of the image followed by the appropriate extension based on the type of tar file (e.g. `.tar` for uncompressed tar).
+The ID of an image MUST be a cryptographic hash of the uncompressed tar file.
 An `ID` MUST be a string of the form `<algorithm>-<hash value>`.
 The `algorithm` part of the string MUST be in lower-case.
 For example, `sha512` not `SHA512`.
-
 It is RECOMMENDED that implementations use the sha512 algorithm.
+Note that if the image does not contain all of its layers as embedded tar files, meaning there are external references, then the ID/hash of the image will not include those referenced layers.
 
-## Whiteout List
+Each file within an image MUST only appear once within the tar file.
+Within the tar file, the `manifest.json` file MUST be first, and each embedded image (layer) MUST come in the order specified in the `layers` properties, if present.
+If there are additional files within the image they MAY appear in any order within the tar file, except first (as that is reserved for the `manifest.json`).
 
-An image's `whiteout.json` file MUST be a JSON encoded file matching this format:
-```
-{
-  "files": [
-    "filename",
-    ...
-  ]
-}
-```
-where each `filename` MUST be the absolute path to the file.
+Each top-level file, or directory, specified in the tar file MUST appear without a leading `/` in its name.
+
+Each file or directory specified in the [Image Contents](#image-contents) section MUST appear at the root of the file file.
 
 ## Expanding an Image to Create a Filesystem Bundle
 
 When an image is expanded to create a filesystem bundle the image's `config.json` file MUST be written to the root of the filesystem bundle's directory.
-The expansion process MUST create a directory for the container's root filesystem with a name as specified in the `config.json` file - ie. the `root/path` property.
-The contents of this directory MUST appear to be materizlied in such a way as to contain all of the files from the image, without the whiteout (deleted) files, and its dependent images.
-The exact mechanism, process and order, by which those files are materialized on disk is an implementation detail, however in the end it MUST appear as though all of the files from the images were written to disk in the order they were specified in the `requires.json` file.
-This means that each dependent image's `whiteout.json` file MUST appear to be processed during the materialization of that image so that if a subsequent image creates a file by the same name as one mentioned in the `whiteout.json` file then it will not be deleted.
+The content of `config.json` are dervived from the `manifest.json` file in the image.
+The expansion process MUST create a directory for the container's root filesystem with a name as specified in the `manifest.json` file - ie. the `root/path` property.
+The contents of this directory MUST appear to be materialized in such a way as to contain all of the files from the image, without the whiteout (deleted) files, and its dependent images.
+The exact mechanism, process and order, by which those files are materialized on disk is an implementation detail, however in the end it MUST appear as though all of the files from the images were written to disk in the order they were specified in the `layers` property.
+This means that each dependent image's `whiteout` property MUST appear to be processed during the materialization of that image so that if a subsequent image creates a file by the same name as one mentioned in the `whiteout` property then it is present at the end of the process.
 
-If a dependent image is not present in the image, and the implementation is unable to locate the referenced image by its ID, then an error MUST be generated.
+If a dependent image is not present in the image, and the implementation is unable to locate the referenced image by its name or ID, then an error MUST be generated.
 
-The image, and dependent images, MUST be verified by calculating the hash/ID of the materialized image on disk and comparing that value with the ID from the image.
+The image, and dependent images, MUST be verified by calculating the hash/ID of the materialized (uncompressed) tar file on disk and comparing that value with the ID from the image.
 If they do not match then an error MUST be generated.
 
-This specification does not mandate any requirements on the processing of the extension files.
+This specification does not mandate any requirements on the processing of additional files that might appear in the image.
 In other words, implementations are not required to materialize them on disk in the filesystem bundle.
 
-This specification does not mandate any ordering to when each piece of information from the image is materialized.
+This specification does not mandate any ordering to when each piece of information from the image is materialized on disk.
 
 ## Misc Notes
 
-There is no requirement that importing an image into a compliant OCI implementation and then exporting it will result in the same image since each implementation might choose to create the root filesystem differently.
-Thus, exporting that root filesystem might look different from the original image.
+There is no requirement that importing an image into a compliant OCI implementation and then exporting it will result in the same image.
+Nor is there any requirement that an OCI compliant implementation retain the original layering during such an import/export process.
+
+## Examples
+
+In the following examples, the contents of some of the files within the images are included (in abbreviated form) for clarity.
+
+### Example 1 -  An image with one layer:
+```
+sha512-abc.tar:
+|-- manifest.json
+|   |==  {
+|   |==    ...config.json properties...
+|   |==    "name": "example.com/myTestApp",
+|   |==    "root": {
+|   |==      "path": "rootfs"
+|   |==    },
+|   |==    "layers": [
+|   |==      { "name": "example.com/myapp",
+|   |==        "ID": "sha512-ddd" }
+|   |==    ]
+|   |==  }
+|
+|-- sha512-ddd.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/myapp",
+|   |   |==   "root": {
+|   |   |==     "path": "myRoot"
+|   |   |==   }
+|   |   |== }
+|   |
+|   |-- myRoot/
+|   |   |-- home/jeff/runit
+```
+
+
+### Example 2 - An image with 4 layers, 2 of which are embedded:
+```
+sha512-def.tar:
+|-- manifest.json
+|   |== {
+|   |==   ...config.json properties...
+|   |==   "name": "example.com/myImage",
+|   |==   "root": {
+|   |==     "path": "myfs"
+|   |==   },
+|   |==   "layers": [
+|   |==     { "name": "example.com/ubuntu" },
+|   |==     { "name": "example.com/ubuntu-utils",
+|   |==       "ID": "sha512-bbb" },
+|   |==     { "name": "example.com/webserver",
+|   |==       "ID": "sha512-ccc" },
+|   |==     { "name": "example.com/myapp",
+|   |==       "ID": "sha512-ddd" },
+|   |==   ]
+|   |== }
+|
+|-- sha512-ccc.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/webserver",
+|   |   |==   "root": {
+|   |   |==     "path": "rootfs"
+|   |   |==   }
+|   |   |== }
+|   |
+|   |-- rootfs/
+|   |   |-- usr/bin/...
+|
+|-- sha512-ddd.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/myapp",
+|   |   |==   "root": {
+|   |   |==     "path": "myRoot"
+|   |   |==   },
+|   |   |==   "whiteout": [
+|   |   |==     { "/server/webapps/default" }
+|   |   |==   ]
+|   |   |== }
+|   |
+|   |-- myRoot/
+|   |   |-- home/jeff/runit
+```
+
+### Example 3 - An image with 1 layer, but that one layer references other images:
+
+```
+sha512-789.tar:
+|-- manifest.json
+|   |== {
+|   |==   ...config.json properties...
+|   |==   "name": "example.com/myImage",
+|   |==   "root": {
+|   |==     "path": "myfs"
+|   |==   },
+|   |==   "layers": [
+|   |==     { "name": "example.com/myapp",
+|   |==       "ID": "sha512-ddd" },
+|   |==   ]
+|   |== }
+|
+|-- sha512-ccc.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/webserver",
+|   |   |==   "root": {
+|   |   |==     "path": "rootfs"
+|   |   |==   },
+|   |   |==   "layers": [
+|   |   |==     { "name": "example.com/ubuntu-utils",
+|   |   |==       "ID": "sha512-bbb" }
+|   |   |==   ]
+|   |   |== }
+|   |
+|   |-- rootfs/
+|   |   |-- usr/bin/...
+|
+|-- sha512-ddd.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/myapp",
+|   |   |==   "root": {
+|   |   |==     "path": "myRoot"
+|   |   |==   },
+|   |   |==   "whiteout": [
+|   |   |==     { "/server/webapps/default" }
+|   |   |==   ],
+|   |   |==   "layers": [
+|   |   |==     { "name": "example.com/webserver",
+|   |   |==       "ID": "sha512-ccc" }
+|   |   |==   ],
+|   |   |== }
+|   |
+|   |-- myRoot/
+|   |   |-- home/jeff/runit
+```
+
+### Example 4 - Same as previous but all are included in the image.
+```
+sha512-234.tar
+|-- manifest.json
+|   |== {
+|   |==   ...config.json properties...
+|   |==   "name": "example.com/myImage",
+|   |==   "root": {
+|   |==     "path": "myfs"
+|   |==   },
+|   |==   "layers": [
+|   |==    { "name": "example.com/webserver",
+|   |==      "ID": "sha512-ccc" },
+|   |==    { "name": "example.com/myapp",
+|   |==      "ID": "sha512-ddd" },
+|   |==   ]
+|   |== }
+|
+|-- sha512-ccc.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/webserver",
+|   |   |==   "root": {
+|   |   |==     "path": "rootfs"
+|   |   |==   },
+|   |   |==   "layers": [
+|   |   |==   { "name": "example.com/ubuntu-utils",
+|   |   |==     "ID": "sha512-bbb" }
+|   |   |==   ]
+|   |   |== }
+|   |
+|   |-- sha512-bbb.tar
+|   |   |-- manifest.json
+|   |   |   |== {
+|   |   |   |==   ...config.json properties...
+|   |   |   |==   "name": "example.com/ubuntu-utils"
+|   |   |   |==   "root": {
+|   |   |   |==     "path": "rootfs"
+|   |   |   |==   },
+|   |   |   |==   "layers": [
+|   |   |   |==   { "name": "example.com/ubuntu",
+|   |   |   |==     "ID": "sha512-aaa" }
+|   |   |   |==   ]
+|   |   |   |== }
+|   |   |
+|   |   |-- sha512-aaa.tar
+|   |   |   |-- manifest.json
+|   |   |   |   |== {
+|   |   |   |   |==   ...config.json properties...
+|   |   |   |   |==   "name": "example.com/ubuntu",
+|   |   |   |   |==   "root": {
+|   |   |   |   |==     "path": "rootfs"
+|   |   |   |   |==   }
+|   |   |   |   |== }
+|   |   |   |
+|   |   |   |-- rootfs/
+|   |   |   |   |-- var/...
+|   |   |
+|   |   |-- rootfs/
+|   |   |   |-- opt/...
+|   |
+|   |-- rootfs/
+|   |   |-- usr/bin/...
+|
+|-- sha512-ddd.tar
+|   |-- manifest.json
+|   |   |== {
+|   |   |==   ...config.json properties...
+|   |   |==   "name": "example.com/myapp",
+|   |   |==   "root": {
+|   |   |==     "path": "myRoot"
+|   |   |==   },
+|   |   |==   "whiteout": [
+|   |   |==     { "/server/webapps/default" }
+|   |   |==   ]
+|   |   |== }
+|   |
+|   |-- myRoot/
+|   |   |-- home/jeff/runit
+```
