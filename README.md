@@ -67,7 +67,7 @@ When in doubt, start on the [mailing-list](#mailing-list).
 ## Weekly Call
 
 The contributors and maintainers of the project have a weekly meeting Wednesdays at 10:00 AM PST.
-Everyone is welcome to participate in the [BlueJeans call][BlueJeans].
+Everyone is welcome to participate in the [call][].
 An initial agenda will be posted to the [mailing list](#mailing-list) earlier in the week, and everyone is welcome to propose additional topics or suggest other agenda alterations there.
 Minutes are posted to the [mailing list](#mailing-list) and minutes from past calls are archived to the [wiki](https://github.com/opencontainers/specs/wiki) for those who are unable to join the call.
 
@@ -154,4 +154,4 @@ Read more on [How to Write a Git Commit Message](http://chris.beams.io/posts/git
   * If there was important/useful/essential conversation or information, copy or include a reference
 8. When possible, one keyword to scope the change in the subject (i.e. "README: ...", "runtime: ...")
 
-[BlueJeans]: https://bluejeans.com/1771332256/
+[call]: https://zoom.us/j/2799064236
