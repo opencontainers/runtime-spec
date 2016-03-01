@@ -36,11 +36,11 @@ type Linux struct {
 	// Devices are a list of device nodes that are created for the container
 	Devices []Device `json:"devices"`
 	// ApparmorProfile specified the apparmor profile for the container.
-	ApparmorProfile string `json:"apparmorProfile"`
+	ApparmorProfile string `json:"apparmorProfile,omitempty"`
 	// SelinuxProcessLabel specifies the selinux context that the container process is run as.
-	SelinuxProcessLabel string `json:"selinuxProcessLabel"`
+	SelinuxProcessLabel string `json:"selinuxProcessLabel,omitempty"`
 	// Seccomp specifies the seccomp security settings for the container.
-	Seccomp Seccomp `json:"seccomp"`
+	Seccomp *Seccomp `json:"seccomp,omitempty"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container.
 	RootfsPropagation string `json:"rootfsPropagation,omitempty"`
 	// NoNewPrivileges controls whether additional privileges could be gained by processes in the container.

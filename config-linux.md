@@ -488,7 +488,7 @@ The kernel enforces the `soft` limit for a resource while the `hard` limit acts 
 
 ## SELinux process label
 
-SELinux process label specifies the label with which the processes in a container are run.
+`selinuxProcessLabel` *(string, optional)* specifies the label with which the processes in a container are run.
 For more information about SELinux, see  [Selinux documentation](http://selinuxproject.org/page/Main_Page)
 
 ###### Example
@@ -499,7 +499,7 @@ For more information about SELinux, see  [Selinux documentation](http://selinuxp
 
 ## Apparmor profile
 
-Apparmor profile specifies the name of the apparmor profile that will be used for the container.
+`apparmorProfile` *(string, optional)* specifies the name of the apparmor profile that will be used for the container.
 For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
 
 ###### Example
@@ -510,7 +510,7 @@ For more information about Apparmor, see [Apparmor documentation](https://wiki.u
 
 ## seccomp
 
-Seccomp provides application sandboxing mechanism in the Linux kernel.
+`seccomp` *(pointer of object, optional)* provides application sandboxing mechanism in the Linux kernel.
 Seccomp configuration allows one to configure actions to take for matched syscalls and furthermore also allows matching on values passed as arguments to syscalls.
 For more information about Seccomp, see [Seccomp kernel documentation](https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt)
 The actions, architectures, and operators are strings that match the definitions in seccomp.h from [libseccomp](https://github.com/seccomp/libseccomp) and are translated to corresponding values.
