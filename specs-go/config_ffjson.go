@@ -11074,7 +11074,11 @@ func (mj *ThrottleDevice) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	var obj []byte
 	_ = obj
 	_ = err
-	buf.WriteString(`{ `)
+	buf.WriteString(`{ "major":`)
+	fflib.FormatBits2(buf, uint64(mj.Major), 10, mj.Major < 0)
+	buf.WriteString(`,"minor":`)
+	fflib.FormatBits2(buf, uint64(mj.Minor), 10, mj.Minor < 0)
+	buf.WriteByte(',')
 	if mj.Rate != nil {
 		if true {
 			buf.WriteString(`"rate":`)
@@ -11091,8 +11095,16 @@ const (
 	ffj_t_ThrottleDevicebase = iota
 	ffj_t_ThrottleDeviceno_such_key
 
+	ffj_t_ThrottleDevice_Major
+
+	ffj_t_ThrottleDevice_Minor
+
 	ffj_t_ThrottleDevice_Rate
 )
+
+var ffj_key_ThrottleDevice_Major = []byte("major")
+
+var ffj_key_ThrottleDevice_Minor = []byte("minor")
 
 var ffj_key_ThrottleDevice_Rate = []byte("rate")
 
@@ -11155,6 +11167,19 @@ mainparse:
 			} else {
 				switch kn[0] {
 
+				case 'm':
+
+					if bytes.Equal(ffj_key_ThrottleDevice_Major, kn) {
+						currentKey = ffj_t_ThrottleDevice_Major
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffj_key_ThrottleDevice_Minor, kn) {
+						currentKey = ffj_t_ThrottleDevice_Minor
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
 				case 'r':
 
 					if bytes.Equal(ffj_key_ThrottleDevice_Rate, kn) {
@@ -11167,6 +11192,18 @@ mainparse:
 
 				if fflib.SimpleLetterEqualFold(ffj_key_ThrottleDevice_Rate, kn) {
 					currentKey = ffj_t_ThrottleDevice_Rate
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffj_key_ThrottleDevice_Minor, kn) {
+					currentKey = ffj_t_ThrottleDevice_Minor
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffj_key_ThrottleDevice_Major, kn) {
+					currentKey = ffj_t_ThrottleDevice_Major
 					state = fflib.FFParse_want_colon
 					goto mainparse
 				}
@@ -11188,6 +11225,12 @@ mainparse:
 			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
 				switch currentKey {
 
+				case ffj_t_ThrottleDevice_Major:
+					goto handle_Major
+
+				case ffj_t_ThrottleDevice_Minor:
+					goto handle_Minor
+
 				case ffj_t_ThrottleDevice_Rate:
 					goto handle_Rate
 
@@ -11204,6 +11247,66 @@ mainparse:
 			}
 		}
 	}
+
+handle_Major:
+
+	/* handler: uj.Major type=int64 kind=int64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			uj.Major = int64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Minor:
+
+	/* handler: uj.Minor type=int64 kind=int64 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for int64", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			uj.Minor = int64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
 
 handle_Rate:
 
@@ -11643,7 +11746,11 @@ func (mj *WeightDevice) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	var obj []byte
 	_ = obj
 	_ = err
-	buf.WriteString(`{ `)
+	buf.WriteString(`{ "major":`)
+	fflib.FormatBits2(buf, uint64(mj.Major), 10, mj.Major < 0)
+	buf.WriteString(`,"minor":`)
+	fflib.FormatBits2(buf, uint64(mj.Minor), 10, mj.Minor < 0)
+	buf.WriteByte(',')
 	if mj.Weight != nil {
 		if true {
 			buf.WriteString(`"weight":`)
@@ -11667,10 +11774,18 @@ const (
 	ffj_t_WeightDevicebase = iota
 	ffj_t_WeightDeviceno_such_key
 
+	ffj_t_WeightDevice_Major
+
+	ffj_t_WeightDevice_Minor
+
 	ffj_t_WeightDevice_Weight
 
 	ffj_t_WeightDevice_LeafWeight
 )
+
+var ffj_key_WeightDevice_Major = []byte("major")
+
+var ffj_key_WeightDevice_Minor = []byte("minor")
 
 var ffj_key_WeightDevice_Weight = []byte("weight")
 
@@ -11743,6 +11858,19 @@ mainparse:
 						goto mainparse
 					}
 
+				case 'm':
+
+					if bytes.Equal(ffj_key_WeightDevice_Major, kn) {
+						currentKey = ffj_t_WeightDevice_Major
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffj_key_WeightDevice_Minor, kn) {
+						currentKey = ffj_t_WeightDevice_Minor
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
 				case 'w':
 
 					if bytes.Equal(ffj_key_WeightDevice_Weight, kn) {
@@ -11765,6 +11893,18 @@ mainparse:
 					goto mainparse
 				}
 
+				if fflib.SimpleLetterEqualFold(ffj_key_WeightDevice_Minor, kn) {
+					currentKey = ffj_t_WeightDevice_Minor
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffj_key_WeightDevice_Major, kn) {
+					currentKey = ffj_t_WeightDevice_Major
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
 				currentKey = ffj_t_WeightDeviceno_such_key
 				state = fflib.FFParse_want_colon
 				goto mainparse
@@ -11782,6 +11922,12 @@ mainparse:
 			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
 				switch currentKey {
 
+				case ffj_t_WeightDevice_Major:
+					goto handle_Major
+
+				case ffj_t_WeightDevice_Minor:
+					goto handle_Minor
+
 				case ffj_t_WeightDevice_Weight:
 					goto handle_Weight
 
@@ -11789,254 +11935,6 @@ mainparse:
 					goto handle_LeafWeight
 
 				case ffj_t_WeightDeviceno_such_key:
-					err = fs.SkipField(tok)
-					if err != nil {
-						return fs.WrapErr(err)
-					}
-					state = fflib.FFParse_after_value
-					goto mainparse
-				}
-			} else {
-				goto wantedvalue
-			}
-		}
-	}
-
-handle_Weight:
-
-	/* handler: uj.Weight type=uint16 kind=uint16 quoted=false*/
-
-	{
-		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
-			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for uint16", tok))
-		}
-	}
-
-	{
-
-		if tok == fflib.FFTok_null {
-
-			uj.Weight = nil
-
-		} else {
-
-			tval, err := fflib.ParseUint(fs.Output.Bytes(), 10, 16)
-
-			if err != nil {
-				return fs.WrapErr(err)
-			}
-
-			ttypval := uint16(tval)
-			uj.Weight = &ttypval
-
-		}
-	}
-
-	state = fflib.FFParse_after_value
-	goto mainparse
-
-handle_LeafWeight:
-
-	/* handler: uj.LeafWeight type=uint16 kind=uint16 quoted=false*/
-
-	{
-		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
-			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for uint16", tok))
-		}
-	}
-
-	{
-
-		if tok == fflib.FFTok_null {
-
-			uj.LeafWeight = nil
-
-		} else {
-
-			tval, err := fflib.ParseUint(fs.Output.Bytes(), 10, 16)
-
-			if err != nil {
-				return fs.WrapErr(err)
-			}
-
-			ttypval := uint16(tval)
-			uj.LeafWeight = &ttypval
-
-		}
-	}
-
-	state = fflib.FFParse_after_value
-	goto mainparse
-
-wantedvalue:
-	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
-wrongtokenerror:
-	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
-tokerror:
-	if fs.BigError != nil {
-		return fs.WrapErr(fs.BigError)
-	}
-	err = fs.Error.ToError()
-	if err != nil {
-		return fs.WrapErr(err)
-	}
-	panic("ffjson-generated: unreachable, please report bug.")
-done:
-	return nil
-}
-
-func (mj *blockIODevice) MarshalJSON() ([]byte, error) {
-	var buf fflib.Buffer
-	if mj == nil {
-		buf.WriteString("null")
-		return buf.Bytes(), nil
-	}
-	err := mj.MarshalJSONBuf(&buf)
-	if err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-func (mj *blockIODevice) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
-	if mj == nil {
-		buf.WriteString("null")
-		return nil
-	}
-	var err error
-	var obj []byte
-	_ = obj
-	_ = err
-	buf.WriteString(`{"major":`)
-	fflib.FormatBits2(buf, uint64(mj.Major), 10, mj.Major < 0)
-	buf.WriteString(`,"minor":`)
-	fflib.FormatBits2(buf, uint64(mj.Minor), 10, mj.Minor < 0)
-	buf.WriteByte('}')
-	return nil
-}
-
-const (
-	ffj_t_blockIODevicebase = iota
-	ffj_t_blockIODeviceno_such_key
-
-	ffj_t_blockIODevice_Major
-
-	ffj_t_blockIODevice_Minor
-)
-
-var ffj_key_blockIODevice_Major = []byte("major")
-
-var ffj_key_blockIODevice_Minor = []byte("minor")
-
-func (uj *blockIODevice) UnmarshalJSON(input []byte) error {
-	fs := fflib.NewFFLexer(input)
-	return uj.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
-}
-
-func (uj *blockIODevice) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
-	var err error = nil
-	currentKey := ffj_t_blockIODevicebase
-	_ = currentKey
-	tok := fflib.FFTok_init
-	wantedTok := fflib.FFTok_init
-
-mainparse:
-	for {
-		tok = fs.Scan()
-		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
-		if tok == fflib.FFTok_error {
-			goto tokerror
-		}
-
-		switch state {
-
-		case fflib.FFParse_map_start:
-			if tok != fflib.FFTok_left_bracket {
-				wantedTok = fflib.FFTok_left_bracket
-				goto wrongtokenerror
-			}
-			state = fflib.FFParse_want_key
-			continue
-
-		case fflib.FFParse_after_value:
-			if tok == fflib.FFTok_comma {
-				state = fflib.FFParse_want_key
-			} else if tok == fflib.FFTok_right_bracket {
-				goto done
-			} else {
-				wantedTok = fflib.FFTok_comma
-				goto wrongtokenerror
-			}
-
-		case fflib.FFParse_want_key:
-			// json {} ended. goto exit. woo.
-			if tok == fflib.FFTok_right_bracket {
-				goto done
-			}
-			if tok != fflib.FFTok_string {
-				wantedTok = fflib.FFTok_string
-				goto wrongtokenerror
-			}
-
-			kn := fs.Output.Bytes()
-			if len(kn) <= 0 {
-				// "" case. hrm.
-				currentKey = ffj_t_blockIODeviceno_such_key
-				state = fflib.FFParse_want_colon
-				goto mainparse
-			} else {
-				switch kn[0] {
-
-				case 'm':
-
-					if bytes.Equal(ffj_key_blockIODevice_Major, kn) {
-						currentKey = ffj_t_blockIODevice_Major
-						state = fflib.FFParse_want_colon
-						goto mainparse
-
-					} else if bytes.Equal(ffj_key_blockIODevice_Minor, kn) {
-						currentKey = ffj_t_blockIODevice_Minor
-						state = fflib.FFParse_want_colon
-						goto mainparse
-					}
-
-				}
-
-				if fflib.SimpleLetterEqualFold(ffj_key_blockIODevice_Minor, kn) {
-					currentKey = ffj_t_blockIODevice_Minor
-					state = fflib.FFParse_want_colon
-					goto mainparse
-				}
-
-				if fflib.SimpleLetterEqualFold(ffj_key_blockIODevice_Major, kn) {
-					currentKey = ffj_t_blockIODevice_Major
-					state = fflib.FFParse_want_colon
-					goto mainparse
-				}
-
-				currentKey = ffj_t_blockIODeviceno_such_key
-				state = fflib.FFParse_want_colon
-				goto mainparse
-			}
-
-		case fflib.FFParse_want_colon:
-			if tok != fflib.FFTok_colon {
-				wantedTok = fflib.FFTok_colon
-				goto wrongtokenerror
-			}
-			state = fflib.FFParse_want_value
-			continue
-		case fflib.FFParse_want_value:
-
-			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
-				switch currentKey {
-
-				case ffj_t_blockIODevice_Major:
-					goto handle_Major
-
-				case ffj_t_blockIODevice_Minor:
-					goto handle_Minor
-
-				case ffj_t_blockIODeviceno_such_key:
 					err = fs.SkipField(tok)
 					if err != nil {
 						return fs.WrapErr(err)
@@ -12103,6 +12001,72 @@ handle_Minor:
 			}
 
 			uj.Minor = int64(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Weight:
+
+	/* handler: uj.Weight type=uint16 kind=uint16 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for uint16", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+			uj.Weight = nil
+
+		} else {
+
+			tval, err := fflib.ParseUint(fs.Output.Bytes(), 10, 16)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			ttypval := uint16(tval)
+			uj.Weight = &ttypval
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_LeafWeight:
+
+	/* handler: uj.LeafWeight type=uint16 kind=uint16 quoted=false*/
+
+	{
+		if tok != fflib.FFTok_integer && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for uint16", tok))
+		}
+	}
+
+	{
+
+		if tok == fflib.FFTok_null {
+
+			uj.LeafWeight = nil
+
+		} else {
+
+			tval, err := fflib.ParseUint(fs.Output.Bytes(), 10, 16)
+
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			ttypval := uint16(tval)
+			uj.LeafWeight = &ttypval
 
 		}
 	}

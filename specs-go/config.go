@@ -22,7 +22,6 @@ type Spec struct {
 	Hooks Hooks `json:"hooks"`
 	// Annotations is an unstructured key value map that may be set by external tools to store and retrieve arbitrary metadata.
 	Annotations map[string]string `json:"annotations,omitempty"`
-
 	// Linux is platform specific configuration for Linux based containers.
 	Linux Linux `json:"linux" platform:"linux"`
 }
@@ -46,7 +45,6 @@ type Process struct {
 	Rlimits []Rlimit `json:"rlimits,omitempty"`
 	// NoNewPrivileges controls whether additional privileges could be gained by processes in the container.
 	NoNewPrivileges bool `json:"noNewPrivileges,omitempty"`
-
 	// ApparmorProfile specified the apparmor profile for the container. (this field is platform dependent)
 	ApparmorProfile string `json:"apparmorProfile,omitempty" platform:"linux"`
 	// SelinuxProcessLabel specifies the selinux context that the container process is run as. (this field is platform dependent)
@@ -201,17 +199,12 @@ type InterfacePriority struct {
 	Priority uint32 `json:"priority"`
 }
 
-// blockIODevice holds major:minor format supported in blkio cgroup
-type blockIODevice struct {
+// WeightDevice struct holds a `major:minor weight` pair for blkioWeightDevice
+type WeightDevice struct {
 	// Major is the device's major number.
 	Major int64 `json:"major"`
 	// Minor is the device's minor number.
 	Minor int64 `json:"minor"`
-}
-
-// WeightDevice struct holds a `major:minor weight` pair for blkioWeightDevice
-type WeightDevice struct {
-	blockIODevice
 	// Weight is the bandwidth rate for the device, range is from 10 to 1000
 	Weight *uint16 `json:"weight,omitempty"`
 	// LeafWeight is the bandwidth rate for the device while competing with the cgroup's child cgroups, range is from 10 to 1000, CFQ scheduler only
@@ -220,7 +213,10 @@ type WeightDevice struct {
 
 // ThrottleDevice struct holds a `major:minor rate_per_second` pair
 type ThrottleDevice struct {
-	blockIODevice
+	// Major is the device's major number.
+	Major int64 `json:"major"`
+	// Minor is the device's minor number.
+	Minor int64 `json:"minor"`
 	// Rate is the IO rate limit per cgroup per device
 	Rate *uint64 `json:"rate,omitempty"`
 }
