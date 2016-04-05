@@ -14,6 +14,7 @@ Table of Contents
 - [Filesystem Bundle](bundle.md)
 - [Runtime and Lifecycle](runtime.md)
   - [Linux Specific Runtime](runtime-linux.md)
+- [Image](image.md)
 - Configuration
   - [General](config.md)
   - [Linux-specific](config-linux.md)
