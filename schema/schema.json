@@ -4,9 +4,9 @@
     "id": "https://opencontainers.org/schema/bundle",
     "type": "object",
     "properties": {
-        "ociVersion": {
+        "ociRuntimeVersion": {
             "description": "The version of OpenContainer specification configuration complies with",
-            "id": "https://opencontainers.org/schema/bundle/ociVersion",
+            "id": "https://opencontainers.org/schema/bundle/ociRuntimeVersion",
             "type": "string"
         },
         "hooks": {
@@ -147,7 +147,7 @@
         }
     },
     "required": [
-        "ociVersion",
+        "ociRuntimeVersion",
         "platform",
         "process",
         "root",
