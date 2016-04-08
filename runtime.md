@@ -9,7 +9,7 @@ Whether other entities using the same, or other, instance of the runtime can see
 
 The state of a container MUST include, at least, the following propeties:
 
-* **`ociVersion`**: (string) is the OCI specification version used when creating the container.
+* **`ociRuntimeVersion`**: (string) is the OCI specification version used when creating the container.
 * **`id`**: (string) is the container's ID.
 This MUST be unique across all containers on this host.
 There is no requirement that it be unique across hosts.
@@ -22,7 +22,7 @@ This is provided so that consumers can find the container's configuration and ro
 When serialized in JSON, the format MUST adhere to the following pattern:
 ```json
 {
-    "ociVersion": "0.2.0",
+    "ociRuntimeVersion": "0.2.0",
     "id": "oci-container1",
     "pid": 4422,
     "bundlePath": "/containers/redis"

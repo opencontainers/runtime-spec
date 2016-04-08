@@ -10,7 +10,7 @@ Below is a detailed description of each field defined in the configuration forma
 
 ## Specification version
 
-* **`ociVersion`** (string, required) must be in [SemVer v2.0.0](http://semver.org/spec/v2.0.0.html) format and specifies the version of the OpenContainer specification with which the bundle complies.
+* **`ociRuntimeVersion`** (string, required) must be in [SemVer v2.0.0](http://semver.org/spec/v2.0.0.html) format and specifies the version of the OpenContainer specification with which the bundle complies.
 The OpenContainer spec follows semantic versioning and retains forward and backward compatibility within major versions.
 For example, if an implementation is compliant with version 1.0.1 of the spec, it is compatible with the complete 1.x series.
 NOTE that there is no guarantee for forward or backward compatibility for version 0.x.
@@ -18,7 +18,7 @@ NOTE that there is no guarantee for forward or backward compatibility for versio
 *Example*
 
 ```json
-    "ociVersion": "0.1.0"
+    "ociRuntimeVersion": "0.1.0"
 ```
 
 ## Root Configuration
@@ -269,7 +269,7 @@ Here is a full example `config.json` for reference.
 
 ```json
 {
-    "ociVersion": "0.3.0",
+    "ociRuntimeVersion": "0.3.0",
     "platform": {
         "os": "linux",
         "arch": "amd64"
