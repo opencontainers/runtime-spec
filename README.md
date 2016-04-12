@@ -47,6 +47,8 @@ Runtime developers can build runtime implementations that run OCI-compliant bund
 
 There is a loose [Road Map](./ROADMAP.md).
 During the `0.x` series of OCI releases we make no backwards compatibility guarantees and intend to break the schema during this series.
+Current and previous releases of the spec in HTML and PDF formats can be found in [Releases](./releases).
+Release notes summarizing key changes are also included here.
 
 # Contributing
 
