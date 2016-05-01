@@ -154,6 +154,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
 }
 ```
 
+If left empty, the user id and group id both defaults to 0 (root), and no additional group IDs are added.
 
 ## Hostname
 
