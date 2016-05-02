@@ -74,6 +74,7 @@ In particular, the state MUST be serialized as JSON.
 
 This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error.
+If the bundle does not comply with [this specification](bundle.md), the implementation MUST generate an error.
 Using the data in `config.json`, that are in the bundle's directory, this operation MUST create a new container.
 This includes creating the relevant namespaces, resource limits, etc and configuring the appropriate capabilities for the container.
 A new process within the scope of the container MUST be created as specified by the `config.json` file otherwise an error MUST be generated.
