@@ -1,12 +1,8 @@
 # Glossary
 
-## Bundle
-
-A [directory structure](bundle.md) that is written ahead of time, distributed, and used to seed the runtime for creating a [container](#container) and launching a process within it.
-
 ## Configuration
 
-The [`config.json`](config.md) file in a [bundle](#bundle) which defines the intended [container](#container) and container process.
+The [`config.json`](config.md) file which defines the intended [container](#container) and container process.
 
 ## Container
 
@@ -24,7 +20,7 @@ All configuration [JSON][] MUST be encoded in [UTF-8][].
 ## Runtime
 
 An implementation of this specification.
-It reads the [configuration files](#configuration) from a [bundle](#bundle), uses that information to create a [container](#container), launches a process inside the container, and performs other [lifecycle actions](runtime.md).
+It performs [operations](runtime.md#operations) on [containers](#container).
 
 ## Runtime namespace
 

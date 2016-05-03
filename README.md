@@ -12,7 +12,6 @@ Table of Contents
   - [Roadmap](ROADMAP.md)
   - [Implementations](implementations.md)
   - [project](project.md)
-- [Filesystem Bundle](bundle.md)
 - Runtime and Lifecycle
   - [General Runtime and Lifecycle](runtime.md)
   - [Linux-specific Runtime and Lifecycle](runtime-linux.md)
@@ -31,11 +30,11 @@ An implementation that satisfies all the MUST or REQUIRED and all the SHOULD req
 
 To provide context for users the following section gives example use cases for each part of the spec.
 
-#### Application Bundle Builders
+#### Application Publishers
 
-Application bundle builders can create a [bundle](bundle.md) directory that includes all of the files required for launching an application as a container.
-The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process-configuration) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
-Because the configuration includes host-specific settings, application bundle directories copied between two hosts may require configuration adjustments.
+Application publishers distribute OCI [configuration files](config.md) and related resources (for example, [referenced filesystems](config.md#root-configuration) for launching an application as a [container](glossary.md#container).
+The publisher can specify host-independent details such as [which executable to launch](config.md#process-configuration) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
+Because the configuration includes host-specific settings, configurations copied between two hosts may require local adjustments.
 
 #### Hook Developers
 
@@ -44,7 +43,7 @@ Example use cases include sophisticated network configuration, volume garbage co
 
 #### Runtime Developers
 
-Runtime developers can build runtime implementations that run OCI-compliant bundles and container configuration, containing low-level OS and host specific details, on a particular platform.
+Runtime developers can build runtime implementations that perform [operations](runtime.md#operations) on [containers](glossary.md#container) on a particular platform.
 
 # Releases
 

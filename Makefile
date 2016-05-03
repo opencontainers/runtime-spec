@@ -11,7 +11,6 @@ DOC_FILES := \
 	ROADMAP.md \
 	implementations.md \
 	project.md \
-	bundle.md \
 	runtime.md \
 	runtime-linux.md \
 	config.md \
