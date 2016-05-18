@@ -46,7 +46,9 @@ The parameters are similar to the ones in [the Linux mount system call](http://m
 * **`destination`** (string, required) Destination of mount point: path inside container.
 * **`type`** (string, required) Linux, *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). Windows: ntfs
 * **`source`** (string, required) a device name, but can also be a directory name or a dummy. Windows, the volume name that is the target of the mount point. \\?\Volume\{GUID}\ (on Windows source is called target)
-* **`options`** (list of strings, optional) in the fstab format [https://wiki.archlinux.org/index.php/Fstab](https://wiki.archlinux.org/index.php/Fstab).
+* **`options`** (list of strings, optional) in a platform-appropriate format for each operating system.
+  * For the Linux OS, if the options object is present, it MUST be in the fstab format [https://wiki.archlinux.org/index.php/Fstab](https://wiki.archlinux.org/index.php/Fstab).
+  * For the Solaris OS, if the options object is present, it MUST be in the the fstab format [https://wiki.archlinux.org/index.php/Fstab](https://wiki.archlinux.org/index.php/Fstab).
 
 ### Example (Linux)
 
