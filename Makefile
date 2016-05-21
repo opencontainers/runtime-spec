@@ -22,9 +22,9 @@ EPOCH_TEST_COMMIT := 78e6667ae2d67aad100b28ee9580b41b7a24e667
 default: docs
 
 .PHONY: docs
-docs: output/docs.pdf output/docs.html
+docs: output/runtime-spec.pdf output/runtime-spec.html
 
-output/docs.pdf: $(DOC_FILES)
+output/runtime-spec.pdf: $(DOC_FILES)
 	mkdir -p output/ && \
 	$(DOCKER) run \
 	-it \
@@ -34,7 +34,7 @@ output/docs.pdf: $(DOC_FILES)
 	-u $(shell id -u) \
 	vbatts/pandoc -f markdown_github -t latex -o /$@ $(patsubst %,/input/%,$(DOC_FILES))
 
-output/docs.html: $(DOC_FILES)
+output/runtime-spec.html: $(DOC_FILES)
 	mkdir -p output/ && \
 	$(DOCKER) run \
 	-it \
