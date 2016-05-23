@@ -1,6 +1,5 @@
 
 DOCKER ?= $(shell command -v docker)
-PANDOC ?= $(shell command -v pandoc)
 # These docs are in an order that determines how they show up in the PDF/HTML docs.
 DOC_FILES := \
 	version.md \
@@ -23,9 +22,9 @@ EPOCH_TEST_COMMIT := 78e6667ae2d67aad100b28ee9580b41b7a24e667
 default: docs
 
 .PHONY: docs
-docs: output/docs.pdf output/docs.html
+docs: output/runtime-spec.pdf output/runtime-spec.html
 
-output/docs.pdf: $(DOC_FILES)
+output/runtime-spec.pdf: $(DOC_FILES)
 	mkdir -p output/ && \
 	$(DOCKER) run \
 	-it \
@@ -33,9 +32,9 @@ output/docs.pdf: $(DOC_FILES)
 	-v $(shell pwd)/:/input/:ro \
 	-v $(shell pwd)/output/:/output/ \
 	-u $(shell id -u) \
-	$(PANDOC) -f markdown_github -t latex -o /$@ $(patsubst %,/input/%,$(DOC_FILES))
+	vbatts/pandoc -f markdown_github -t latex -o /$@ $(patsubst %,/input/%,$(DOC_FILES))
 
-output/docs.html: $(DOC_FILES)
+output/runtime-spec.html: $(DOC_FILES)
 	mkdir -p output/ && \
 	$(DOCKER) run \
 	-it \
@@ -43,7 +42,7 @@ output/docs.html: $(DOC_FILES)
 	-v $(shell pwd)/:/input/:ro \
 	-v $(shell pwd)/output/:/output/ \
 	-u $(shell id -u) \
-	$(PANDOC) -f markdown_github -t html5 -o /$@ $(patsubst %,/input/%,$(DOC_FILES))
+	vbatts/pandoc -f markdown_github -t html5 -o /$@ $(patsubst %,/input/%,$(DOC_FILES))
 
 code-of-conduct.md:
 	curl -o $@ https://raw.githubusercontent.com/opencontainers/tob/d2f9d68c1332870e40693fe077d311e0742bc73d/code-of-conduct.md
