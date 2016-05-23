@@ -71,9 +71,10 @@ In particular, the state MUST be serialized as JSON.
 
 ### Start
 
-`start <container-id> <path-to-bundle>`
+`start <container-id> [<path-to-bundle>]`
 
-This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
+This operation MUST generate an error if it is not provided the ID of a container.
+The path to the bundle is OPTIONAL, the implementation can define it's default path when path to the bundle is absent.
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error.
 Using the data in `config.json`, that are in the bundle's directory, this operation MUST create a new container.
 This includes creating the relevant namespaces, resource limits, etc and configuring the appropriate capabilities for the container.
