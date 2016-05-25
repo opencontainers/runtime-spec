@@ -16,7 +16,7 @@ There is no requirement that it be unique across hosts.
 The ID is provided in the state because hooks will be executed with the state as the payload.
 This allows the hooks to perform cleanup and teardown logic after the runtime destroys its own state.
 * **`pid`**: (int) is the ID of the main process within the container, as seen by the host.
-* **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
+* **`configPath`**: (string) is the absolute path to the container's [configuration](config.md).
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
 
 When serialized in JSON, the format MUST adhere to the following pattern:
@@ -26,7 +26,7 @@ When serialized in JSON, the format MUST adhere to the following pattern:
     "ociVersion": "0.2.0",
     "id": "oci-container1",
     "pid": 4422,
-    "bundlePath": "/containers/redis"
+    "configPath": "/containers/redis/config.json"
 }
 ```
 
@@ -35,7 +35,7 @@ See [Query State](#query-state) for information on retrieving the state of a con
 ## Lifecycle
 The lifecycle describes the timeline of events that happen from when a container is created to when it ceases to exist.
 
-1. OCI compliant runtime is invoked with a reference to the location of the bundle.
+1. OCI compliant runtime is invoked with a reference to the [configuration](config.md).
    How this reference is passed to the runtime is an implementation detail.
 2. The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
    Any updates to `config.json` after container is running MUST not affect the container.
@@ -73,17 +73,16 @@ In particular, the state MUST be serialized as JSON.
 
 ### Start
 
-`start <container-id> <path-to-bundle>`
+`start <container-id> <path-to-configuration>`
 
-This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
+This operation MUST generate an error if it is not provided a path to the [configuration](config.md) and the container ID to associate with the container.
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error.
-Using the data in `config.json`, that are in the bundle's directory, this operation MUST create a new container.
 This includes creating the relevant namespaces, resource limits, etc and configuring the appropriate capabilities for the container.
 A new process within the scope of the container MUST be created as specified by the `config.json` file otherwise an error MUST be generated.
 
 The runtime MAY validate `config.json` against this spec, either generically or with respect to the local system capabilities, before creating the container ([step 2](#lifecycle)).
 If the runtime does not perform initial validation and triggers an error due to an invalid or incompatible configuration, it MUST generate an error and jump to cleanup ([step 7](#lifecycle)).
-Runtime callers who are interested in pre-start validation can run [bundle-validation tools](implementations.md#testing--tools) before invoking the start operation.
+Runtime callers who are interested in pre-start validation can run [configuration-validation tools](implementations.md#testing--tools) before invoking the start operation.
 
 Attempting to start an already running container MUST have no effect on the container and MUST generate an error.
 

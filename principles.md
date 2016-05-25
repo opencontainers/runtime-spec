@@ -27,7 +27,7 @@ They are started in the same way whether they contain a postgres database, a php
 ## 3. Infrastructure-agnostic
 
 Standard Containers are INFRASTRUCTURE-AGNOSTIC: they can be run in any OCI supported infrastructure.
-For example, a standard container can be bundled on a laptop, uploaded to cloud storage, downloaded, run and snapshotted by a build server at a fiber hotel in Virginia, uploaded to 10 staging servers in a home-made private cloud cluster, then sent to 30 production instances across 3 public cloud regions.
+For example, a standard container can be packaged on a laptop, uploaded to cloud storage, downloaded, run and snapshotted by a build server at a fiber hotel in Virginia, uploaded to 10 staging servers in a home-made private cloud cluster, then sent to 30 production instances across 3 public cloud regions.
 
 ## 4. Designed for automation
 
@@ -35,7 +35,7 @@ Standard Containers are DESIGNED FOR AUTOMATION: because they offer the same sta
 In fact, you could say automation is their secret weapon.
 
 Many things that once required time-consuming and error-prone human effort can now be programmed.
-Before Standard Containers, by the time a software component ran in production, it had been individually built, configured, bundled, documented, patched, vendored, templated, tweaked and instrumented by 10 different people on 10 different computers.
+Before Standard Containers, by the time a software component ran in production, it had been individually built, configured, packaged, documented, patched, vendored, templated, tweaked and instrumented by 10 different people on 10 different computers.
 Builds failed, libraries conflicted, mirrors crashed, post-it notes were lost, logs were misplaced, cluster updates were half-broken.
 The process was slow, inefficient and cost a fortune - and was entirely different depending on the language and infrastructure provider.
 

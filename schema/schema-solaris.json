@@ -1,31 +1,31 @@
 {
     "solaris": {
         "description": "Solaris platform-specific configurations",
-        "id": "https://opencontainers.org/schema/bundle/solaris",
+        "id": "https://opencontainers.org/schema/runtime/config/solaris",
         "type": "object",
         "properties": {
             "milestone": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/milestone",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/milestone",
                 "type": "string"
             },
             "limitpriv": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/limitpriv",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/limitpriv",
                 "type": "string"
             },
             "maxShmMemory": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/maxShmMemory",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/maxShmMemory",
                 "type": "string"
             },
             "cappedCPU": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/cappedCPU",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/cappedCPU",
                 "$ref": "defs.json#/definitions/mapStringString"
             },
             "cappedMemory": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/cappedMemory",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/cappedMemory",
                 "$ref": "defs.json#/definitions/mapStringString"
             },
             "anet": {
-                "id": "https://opencontainers.org/schema/bundle/solaris/anet",
+                "id": "https://opencontainers.org/schema/runtime/config/solaris/anet",
                 "type": "array",
                 "items": {
                     "$ref": "defs.json#/definitions/mapStringString"

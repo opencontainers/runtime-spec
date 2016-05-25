@@ -10,7 +10,7 @@ Below is a detailed description of each field defined in the configuration forma
 
 ## Specification version
 
-* **`ociVersion`** (string, required) MUST be in [SemVer v2.0.0](http://semver.org/spec/v2.0.0.html) format and specifies the version of the OpenContainer specification with which the bundle complies.
+* **`ociVersion`** (string, required) MUST be in [SemVer v2.0.0](http://semver.org/spec/v2.0.0.html) format and specifies the version of the OpenContainer specification with which the configuration complies.
 The OpenContainer spec follows semantic versioning and retains forward and backward compatibility within major versions.
 For example, if an implementation is compliant with version 1.0.1 of the spec, it is compatible with the complete 1.x series.
 NOTE that there is no guarantee for forward or backward compatibility for version 0.x.
@@ -180,7 +180,7 @@ _Note: For Solaris, uid and gid specify the uid and gid of the process inside th
 
 ## Hostname
 
-* **`hostname`** (string, optional) as it is accessible to processes running inside.  On Linux, you can only set this if your bundle creates a new [UTS namespace][uts-namespace].
+* **`hostname`** (string, optional) as it is accessible to processes running inside.  On Linux, you can only set this if your configuration creates a new [UTS namespace][uts-namespace].
 
 ### Example
 
@@ -192,7 +192,7 @@ _Note: For Solaris, uid and gid specify the uid and gid of the process inside th
 
 * **`os`** (string, required) specifies the operating system family this image targets.
   The runtime MUST generate an error if it does not support the configured **`os`**.
-  Bundles SHOULD use, and runtimes SHOULD understand, **`os`** entries listed in the Go Language document for [`$GOOS`][go-environment].
+  Configuration authors SHOULD use, and runtimes SHOULD understand, **`os`** entries listed in the Go Language document for [`$GOOS`][go-environment].
   If an operating system is not included in the `$GOOS` documentation, it SHOULD be submitted to this specification for standardization.
 * **`arch`** (string, required) specifies the instruction set for which the binaries in the image have been compiled.
   The runtime MUST generate an error if it does not support the configured **`arch`**.

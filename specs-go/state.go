@@ -8,6 +8,6 @@ type State struct {
 	ID string `json:"id"`
 	// Pid is the process id for the container's main process.
 	Pid int `json:"pid"`
-	// BundlePath is the path to the container's bundle directory.
-	BundlePath string `json:"bundlePath"`
+	// ConfigPath is the path to the container's configuration.
+	ConfigPath string `json:"configPath"`
 }
