@@ -16,6 +16,7 @@ There is no requirement that it be unique across hosts.
 The ID is provided in the state because hooks will be executed with the state as the payload.
 This allows the hooks to perform cleanup and teardown logic after the runtime destroys its own state.
 * **`pid`**: (int) is the ID of the main process within the container, as seen by the host.
+The pid MAY be excluded or set to a value indicating empty or null if it is not seen by the host.
 * **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
 
