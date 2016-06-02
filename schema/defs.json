@@ -103,25 +103,6 @@
         "Env": {
             "$ref": "#/definitions/ArrayOfStrings"
         },
-        "Hook": {
-            "properties": {
-                "path": {
-                    "$ref": "#/definitions/FilePath"
-                },
-                "args": {
-                    "$ref": "#/definitions/ArrayOfStrings"
-                },
-                "env": {
-                    "$ref": "#/definitions/Env"
-                }
-            }
-        },
-        "ArrayOfHooks": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/Hook"
-            }
-        },
         "IDMapping": {
             "properties": {
                 "hostID": {

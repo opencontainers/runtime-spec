@@ -245,76 +245,6 @@ _Note: For Solaris, uid and gid specify the uid and gid of the process inside th
 }
 ```
 
-## Hooks
-
-Lifecycle hooks allow custom events for different points in a container's runtime.
-Presently there are `Prestart`, `Poststart` and `Poststop`.
-
-* [`Prestart`](#prestart) is a list of hooks to be run before the container process is executed
-* [`Poststart`](#poststart) is a list of hooks to be run immediately after the container process is started
-* [`Poststop`](#poststop) is a list of hooks to be run after the container process exits
-
-Hooks allow one to run code before/after various lifecycle events of the container.
-Hooks MUST be called in the listed order.
-The state of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
-
-Hook paths are absolute and are executed from the host's filesystem in the [runtime namespace][runtime-namespace].
-
-### Prestart
-
-The pre-start hooks are called after the container process is spawned, but before the user supplied command is executed.
-They are called after the container namespaces are created on Linux, so they provide an opportunity to customize the container.
-In Linux, for e.g., the network namespace could be configured in this hook.
-
-If a hook returns a non-zero exit code, then an error including the exit code and the stderr is returned to the caller and the container is torn down.
-
-### Poststart
-
-The post-start hooks are called after the user process is started.
-For example this hook can notify user that real process is spawned.
-
-If a hook returns a non-zero exit code, then an error is logged and the remaining hooks are executed.
-
-### Poststop
-
-The post-stop hooks are called after the container process is stopped.
-Cleanup or debugging could be performed in such a hook.
-If a hook returns a non-zero exit code, then an error is logged and the remaining hooks are executed.
-
-### Example
-
-```json
-    "hooks" : {
-        "prestart": [
-            {
-                "path": "/usr/bin/fix-mounts",
-                "args": ["fix-mounts", "arg1", "arg2"],
-                "env":  [ "key1=value1"]
-            },
-            {
-                "path": "/usr/bin/setup-network"
-            }
-        ],
-        "poststart": [
-            {
-                "path": "/usr/bin/notify-start",
-                "timeout": 5
-            }
-        ],
-        "poststop": [
-            {
-                "path": "/usr/sbin/cleanup.sh",
-                "args": ["cleanup.sh", "-f"]
-            }
-        ]
-    }
-```
-
-`path` is required for a hook.
-`args` and `env` are optional.
-`timeout` is the number of seconds before aborting the hook.
-The semantics are the same as `Path`, `Args` and `Env` in [golang Cmd](https://golang.org/pkg/os/exec/#Cmd).
-
 ## Annotations
 
 This OPTIONAL property contains arbitrary metadata for the container.
@@ -458,39 +388,6 @@ Here is a full example `config.json` for reference.
             ]
         }
     ],
-    "hooks": {
-        "prestart": [
-            {
-                "path": "/usr/bin/fix-mounts",
-                "args": [
-                    "fix-mounts",
-                    "arg1",
-                    "arg2"
-                ],
-                "env": [
-                    "key1=value1"
-                ]
-            },
-            {
-                "path": "/usr/bin/setup-network"
-            }
-        ],
-        "poststart": [
-            {
-                "path": "/usr/bin/notify-start",
-                "timeout": 5
-            }
-        ],
-        "poststop": [
-            {
-                "path": "/usr/sbin/cleanup.sh",
-                "args": [
-                    "cleanup.sh",
-                    "-f"
-                ]
-            }
-        ]
-    },
     "linux": {
         "devices": [
             {

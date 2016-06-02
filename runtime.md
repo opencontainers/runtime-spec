@@ -123,8 +123,3 @@ Attempting to delete a container whose process is still running MUST generate an
 Deleting a container MUST delete the resources that were created during the `create` step.
 Note that resources associated with the container, but not created by this container, MUST NOT be deleted.
 Once a container is deleted its ID MAY be used by a subsequent container.
-
-
-## Hooks
-Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
-See [runtime configuration for hooks](./config.md#hooks) for more information.
