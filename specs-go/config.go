@@ -38,7 +38,7 @@ type Process struct {
 	// User specifies user information for the process.
 	User User `json:"user"`
 	// Args specifies the binary and arguments for the application to execute.
-	Args []string `json:"args"`
+	Args []string `json:"args,omitempty"`
 	// Env populates the process environment for the process.
 	Env []string `json:"env,omitempty"`
 	// Cwd is the current working directory for the process and must be
