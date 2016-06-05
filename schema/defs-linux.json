@@ -1,5 +1,23 @@
 {
     "definitions": {
+        "user": {
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "$ref": "defs.json#/definitions/UID"
+                },
+                "gid": {
+                    "$ref": "defs.json#/definitions/GID"
+                },
+                "additionalGids": {
+                    "$ref": "defs.json#/definitions/ArrayOfGIDs"
+                }
+            },
+           "required": [
+               "uid",
+               "gid"
+           ]
+        },
         "SeccompArch": {
             "type": "string",
             "enum": [

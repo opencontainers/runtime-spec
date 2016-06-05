@@ -99,6 +99,8 @@ See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [Se
   * **`args`** (array of strings, optional) executable to launch and any flags as an array.
     The executable is the first element and MUST be available at the given path inside of the rootfs.
     If the executable path is not an absolute path then the search $PATH is interpreted to find the executable.
+  * **`user`** (object, required) the process user.
+    The properties for this object are [platform dependent](#user).
 
   For Linux-based systems the process structure supports the following process specific fields:
 
