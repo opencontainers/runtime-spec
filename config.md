@@ -83,26 +83,37 @@ For the Windows operating system, one mount destination MUST NOT be nested withi
 See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [SetVolumeMountPoint](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx) in Windows.
 
 
-## Process configuration
+## Process
 
-* **`terminal`** (bool, optional) specifies whether you want a terminal attached to that process. Defaults to false.
-* **`cwd`** (string, required) is the working directory that will be set for the executable. This value MUST be an absolute path.
-* **`env`** (array of strings, optional) contains a list of variables that will be set in the process's environment prior to execution. Elements in the array are specified as Strings in the form "KEY=value". The left hand side MUST consist solely of letters, digits, and underscores `_` as outlined in [IEEE Std 1003.1-2001](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html).
-* **`args`** (array of strings, required) executable to launch and any flags as an array. The executable is the first element and MUST be available at the given path inside of the rootfs. If the executable path is not an absolute path then the search $PATH is interpreted to find the executable.
+* **`process`** (object, required) configures the container process.
+  It supports the following properties:
 
-For Linux-based systems the process structure supports the following process specific fields:
+  * **`terminal`** (bool, optional) specifies whether you want a terminal attached to that process.
+    Defaults to false.
+  * **`cwd`** (string, required) is the working directory that will be set for the executable.
+    This value MUST be an absolute path.
+  * **`env`** (array of strings, optional) contains a list of variables that will be set in the process's environment prior to execution.
+    Elements in the array are specified as Strings in the form "KEY=value".
+    The left hand side MUST consist solely of letters, digits, and underscores `_` as outlined in [IEEE Std 1003.1-2001](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html).
+  * **`args`** (array of strings, optional) executable to launch and any flags as an array.
+    The executable is the first element and MUST be available at the given path inside of the rootfs.
+    If the executable path is not an absolute path then the search $PATH is interpreted to find the executable.
+  * **`user`** (object, required) the process user.
+    The properties for this object are [platform dependent](#user).
 
-* **`capabilities`** (array of strings, optional) capabilities is an array that specifies Linux capabilities that can be provided to the process inside the container.
-Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html)
-* **`rlimits`** (array of rlimits, optional) rlimits is an array of rlimits that allows setting resource limits for a process inside the container.
-The kernel enforces the `soft` limit for a resource while the `hard` limit acts as a ceiling for that value that could be set by an unprivileged process.
-Valid values for the 'type' field are the resources defined in [the man page](http://man7.org/linux/man-pages/man2/setrlimit.2.html).
-* **`apparmorProfile`** (string, optional) apparmor profile specifies the name of the apparmor profile that will be used for the container.
-For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
-* **`selinuxLabel`** (string, optional) SELinux process label specifies the label with which the processes in a container are run.
-For more information about SELinux, see  [Selinux documentation](http://selinuxproject.org/page/Main_Page)
-* **`noNewPrivileges`** (bool, optional) setting `noNewPrivileges` to true prevents the processes in the container from gaining additional privileges.
-[The kernel doc](https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt) has more information on how this is achieved using a prctl system call.
+  For Linux-based systems the process structure supports the following process specific fields:
+
+  * **`capabilities`** (array of strings, optional) capabilities is an array that specifies Linux capabilities that can be provided to the process inside the container.
+    Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html)
+  * **`rlimits`** (array of rlimits, optional) rlimits is an array of rlimits that allows setting resource limits for a process inside the container.
+    The kernel enforces the `soft` limit for a resource while the `hard` limit acts as a ceiling for that value that could be set by an unprivileged process.
+    Valid values for the 'type' field are the resources defined in [the man page](http://man7.org/linux/man-pages/man2/setrlimit.2.html).
+  * **`apparmorProfile`** (string, optional) apparmor profile specifies the name of the apparmor profile that will be used for the container.
+    For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
+  * **`selinuxLabel`** (string, optional) SELinux process label specifies the label with which the processes in a container are run.
+    For more information about SELinux, see  [Selinux documentation](http://selinuxproject.org/page/Main_Page)
+  * **`noNewPrivileges`** (bool, optional) setting `noNewPrivileges` to true prevents the processes in the container from gaining additional privileges.
+    [The kernel doc](https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt) has more information on how this is achieved using a prctl system call.
 
 ### User
 
