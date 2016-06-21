@@ -25,6 +25,8 @@ type Spec struct {
 	Linux Linux `json:"linux" platform:"linux,omitempty"`
 	// Solaris is platform specific configuration for Solaris containers.
 	Solaris Solaris `json:"solaris" platform:"solaris,omitempty"`
+	// Windows is the platform specific configuration for Windows based containers.
+	Windows *Windows `json:"windows,omitempty" platform:"windows"`
 }
 
 // Process contains information to start a specific application inside the container.
@@ -51,10 +53,12 @@ type Process struct {
 	ApparmorProfile string `json:"apparmorProfile,omitempty" platform:"linux"`
 	// SelinuxLabel specifies the selinux context that the container process is run as. (this field is platform dependent)
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
+
+	// InitialConsoleSize specifies the initial [h,w] of the console. (this field is platform dependent)
+	InitialConsoleSize [2]int `json:"initialConsoleSize,omitempty" platform:"windows"`
 }
 
-// User specifies Linux/Solaris specific user and group information for the container's
-// main process.
+// User specifies the user information for the container
 type User struct {
 	// UID is the user id. (this field is platform dependent)
 	UID uint32 `json:"uid" platform:"linux,solaris"`
@@ -62,6 +66,8 @@ type User struct {
 	GID uint32 `json:"gid" platform:"linux,solaris"`
 	// AdditionalGids are additional group ids set for the container's process. (this field is platform dependent)
 	AdditionalGids []uint32 `json:"additionalGids,omitempty" platform:"linux,solaris"`
+	//  User is the user name. (this field is platform dependent)
+	User string `json:"user" platform:"windows"`
 }
 
 // Root contains information about the container's root filesystem on the host.
@@ -79,6 +85,8 @@ type Platform struct {
 	OS string `json:"os"`
 	// Arch is the architecture
 	Arch string `json:"arch"`
+	// OSVersion is the version of the operating system. (this field is platform dependent)
+	OSVersion string `json:"os.version,omitempty" platform:"windows"`
 }
 
 // Mount specifies a mount for a container.
@@ -90,8 +98,10 @@ type Mount struct {
 	// Source specifies the source path of the mount.  In the case of bind mounts on
 	// Linux based systems this would be the file on the host.
 	Source string `json:"source"`
-	// Options are fstab style mount options.
-	Options []string `json:"options,omitempty"`
+	// Options are fstab style mount options. (this field is platform dependent)
+	Options []string `json:"options,omitempty" platform:"linux,solaris"`
+	// Readonly specifies if the mount should be read-only. (this field is platform dependent)
+	Readonly bool `json:"readonly" platform:"windows"`
 }
 
 // Hook specifies a command that is run at a particular event in the lifecycle of a container
@@ -123,7 +133,7 @@ type Linux struct {
 	Sysctl map[string]string `json:"sysctl,omitempty"`
 	// Resources contain cgroup information for handling resource constraints
 	// for the container
-	Resources *Resources `json:"resources,omitempty"`
+	Resources *LinuxResources `json:"resources,omitempty"`
 	// CgroupsPath specifies the path to cgroups that are created and/or joined by the container.
 	// The path is expected to be relative to the cgroups mountpoint.
 	// If resources are specified, the cgroups at CgroupsPath will be updated based on resources.
@@ -252,7 +262,7 @@ type BlockIO struct {
 }
 
 // Memory for Linux cgroup 'memory' resource management
-type Memory struct {
+type LinuxMemory struct {
 	// Memory limit (in bytes).
 	Limit *uint64 `json:"limit,omitempty"`
 	// Memory reservation or soft_limit (in bytes).
@@ -268,7 +278,7 @@ type Memory struct {
 }
 
 // CPU for Linux cgroup 'cpu' resource management
-type CPU struct {
+type LinuxCPU struct {
 	// CPU shares (relative weight (ratio) vs. other cgroups with cpu shares).
 	Shares *uint64 `json:"shares,omitempty"`
 	// CPU hardcap limit (in usecs). Allowed cpu time in a given period.
@@ -291,16 +301,16 @@ type Pids struct {
 	Limit *int64 `json:"limit,omitempty"`
 }
 
-// Network identification and priority configuration
-type Network struct {
+// LinuxNetwork identification and priority configuration
+type LinuxNetwork struct {
 	// Set class identifier for container's network packets
 	ClassID *uint32 `json:"classID"`
 	// Set priority of network traffic for container
 	Priorities []InterfacePriority `json:"priorities,omitempty"`
 }
 
-// Resources has container runtime resource constraints
-type Resources struct {
+// LinuxResources has container runtime resource constraints for Linux based containers
+type LinuxResources struct {
 	// Devices are a list of device rules for the whitelist controller
 	Devices []DeviceCgroup `json:"devices"`
 	// DisableOOMKiller disables the OOM killer for out of memory conditions
@@ -308,9 +318,9 @@ type Resources struct {
 	// Specify an oom_score_adj for the container.
 	OOMScoreAdj *int `json:"oomScoreAdj,omitempty"`
 	// Memory restriction configuration
-	Memory *Memory `json:"memory,omitempty"`
+	Memory *LinuxMemory `json:"memory,omitempty"`
 	// CPU resource restriction configuration
-	CPU *CPU `json:"cpu,omitempty"`
+	CPU *LinuxCPU `json:"cpu,omitempty"`
 	// Task resource restriction configuration.
 	Pids *Pids `json:"pids,omitempty"`
 	// BlockIO restriction configuration
@@ -318,7 +328,7 @@ type Resources struct {
 	// Hugetlb limit (in bytes)
 	HugepageLimits []HugepageLimit `json:"hugepageLimits,omitempty"`
 	// Network restriction configuration
-	Network *Network `json:"network,omitempty"`
+	Network *LinuxNetwork `json:"network,omitempty"`
 }
 
 // Device represents the mknod information for a Linux special device file
@@ -468,4 +478,78 @@ type Syscall struct {
 	Name   string `json:"name"`
 	Action Action `json:"action"`
 	Args   []Arg  `json:"args,omitempty"`
+}
+
+// Windows contains platform specific configuration for Windows based containers.
+type Windows struct {
+	// Resources contains constraints for containers.
+	Resources *WindowsResources `json:"resources,omitempty"`
+	// Networking contains the network connection settings for containers.
+	Networking *Networking `json:"networking,omitempty"`
+	// FirstStart is an optimization on first boot of a container.
+	FirstStart bool `json:"first_start,omitempty"`
+	// LayerFolder is the path to the current layer folder.
+	LayerFolder string `json:"layer_folder,omitempty"`
+	// Layer contains the filepaths of the parent layers.
+	LayerPaths []string `json:"layer_paths,omitempty"`
+	// Settings relating to Hyper-V containers, omitted otherwise.
+	HvRuntime *HvRuntime `json:"hv_runtime,omitempty"`
+}
+
+// WindowsResources has container runtime resource constraints for Windows based containers.
+type WindowsResources struct {
+	// Network resource configuration.
+	Network *WindowsNetwork `json:"network,omitempty"`
+	// Memory resource configuration.
+	Memory *WindowsMemory `json:"memory,omitempty"`
+	// CPU resource configuration.
+	CPU *WindowsCPU `json:"cpu,omitempty"`
+	// Storage resource configuration.
+	Storage *WindowsStorage `json:"storage,omitempty"`
+}
+
+// WindowsNetwork has network runtime resource constraings for Windows based containers.
+type WindowsNetwork struct {
+	// Bandwidth is the maximum egress bandwidth in bytes per second.
+	Bandwidth *uint64 `json:"bandwidth,omitempty"`
+}
+
+// WindowsMemory has memory runtime resource constraints for Windows based containers.
+type WindowsMemory struct {
+	// Memory limit (in bytes).
+	Limit *int64 `json:"limit,omitempty"`
+	// Memory reservation (in bytes).
+	Reservation *uint64 `json:"reservation,omitempty"`
+}
+
+// WindowsCPU has CPU runtime resource constraints for Windows based containers.
+type WindowsCPU struct {
+	// Number of CPUs available to the container. This is an approximation for Windows Server Containers.
+	Count *uint64 `json:"count,omitempty"`
+	// CPU shares (relative weight (ratio) vs. other containers with cpu shares). Range is from 1 to 10000.
+	Shares *uint64 `json:"shares,omitempty"`
+	// Percent of available CPUs usable by the container.
+	Percent *int64 `json:"percent,omitempty"`
+}
+
+// WindowsStorage has storage resource constraints for Windows based containers.
+type WindowsStorage struct {
+	// Specifies maximum Iops for the system drive.
+	Iops *uint64 `json:"iops,omitempty"`
+	// Specifies maximum bytes per second for the system drive.
+	Bps *uint64 `json:"bps,omitempty"`
+	// Sandbox size indicates the size to expand the system drive to if it is currently smaller.
+	SandboxSize *uint64 `json:"sandbox_size,omitempty"`
+}
+
+// Networking contains the network configuration for Windows based containers.
+type Networking struct {
+	// List of endpoints to be attached to the container.
+	EndpointList []string `json:"endpoints,omitempty"`
+}
+
+// HvRuntime contains the configuration for Windows based Hyper-V containers.
+type HvRuntime struct {
+	// ImagePath is the path to the Utility VM image.
+	ImagePath string `json:"image_path,omitempty"`
 }
