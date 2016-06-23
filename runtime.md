@@ -89,6 +89,8 @@ This operation MUST return the state of a container as specified in the [State](
 This operation MUST generate an error if it is not provided the ID of a container.
 Attempting to query a container that does not exist MUST generate an error.
 This operation MUST subscribe the caller to push-notification about future events in chronological order.
+If the container's [create operation](#create) requested an event buffer, the buffered events MUST be published in chronological order before any future events are published.
+If the runtime could not perform the requested buffering, it MUST generate an error.
 Events MUST be published when the container's [`status`](#state) changes, and MAY be published for additional events.
 Events MUST include, at least, the following properties:
 
@@ -111,7 +113,7 @@ So the `timestamp` and event publication may not exactly match the associated ke
 
 ### Create
 
-`create <container-id> <path-to-bundle>`
+`create <container-id> <path-to-bundle> <event-buffer>`
 
 This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error and a new container MUST not be created.
@@ -124,6 +126,8 @@ The runtime MAY validate `config.json` against this spec, either generically or 
 Runtime callers who are interested in pre-create validation can run [bundle-validation tools](implementations.md#testing--tools) before invoking the create operation.
 
 Any changes made to the [`config.json`](config.md) file after this operation will not have an effect on the container.
+
+Runtime callers MAY request an event buffer, in which case the runtime MUST buffer events associated with the container.
 
 ### Start
 `start <container-id>`
