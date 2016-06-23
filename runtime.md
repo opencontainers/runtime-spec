@@ -82,6 +82,33 @@ This operation MUST generate an error if it is not provided the ID of a containe
 Attempting to query a container that does not exist MUST generate an error.
 This operation MUST return the state of a container as specified in the [State](#state) section.
 
+### Event
+
+`event <container-id>`
+
+This operation MUST generate an error if it is not provided the ID of a container.
+Attempting to query a container that does not exist MUST generate an error.
+This operation MUST subscribe the caller to push-notification about future events in chronological order.
+Events MUST be published when the container's [`status`](#state) changes, and MAY be published for additional events.
+Events MUST include, at least, the following properties:
+
+* **`type`** (string, required) The type of the event.
+  For the following [`status`](#state) transitions, the `type` values MUST be:
+
+    * `creating` → `created`: `created`
+    * `created` → `running`: `started`
+    * * → `stopped`: `stopped`
+
+  A `deleted` event MUST be published after a successful [delete operation](#delete), after which further events MUST NOT be generated.
+
+* **`id`** (string, required) The ID of the container which experienced the event.
+* **`timestamp`** (string, required) The time at which the event took place in [`date-time` format as specified by RFC 3339][rfc3339-s5.6].
+
+The `started` and `stopped` transitions happen in the kernel, and there may be a lag before the runtime notices.
+For example, if the container process dies, a runtime which is [waiting][waitid.3p] on it will take some time in the `SIGCHLD` handler before adjusting the [state](#state).
+A runtime that detects transitions by polling the kernel may trail the associated kernel transition by an even longer period.
+So the `timestamp` and event publication may not exactly match the associated kernel transition, but they MUST match the [state](#state) transition.
+
 ### Create
 
 `create <container-id> <path-to-bundle>`
@@ -131,3 +158,7 @@ Once a container is deleted its ID MAY be used by a subsequent container.
 ## Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
 See [runtime configuration for hooks](./config.md#hooks) for more information.
+
+[rfc3339-s5.6]: https://tools.ietf.org/html/rfc3339#section-5.6
+
+[waitid.3p]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/waitid.html
