@@ -16,6 +16,7 @@ Table of Contents
 - Runtime and Lifecycle
   - [General Runtime and Lifecycle](runtime.md)
   - [Linux-specific Runtime and Lifecycle](runtime-linux.md)
+  - [Runtime Command Line Interface](cmd.md)
 - Configuration
   - [General Configuration](config.md)
   - [Linux-specific Configuration](config-linux.md)

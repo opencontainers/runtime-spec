@@ -32,6 +32,7 @@ DOC_FILES := \
 	bundle.md \
 	runtime.md \
 	runtime-linux.md \
+	cmd.md \
 	config.md \
 	config-linux.md \
 	config-solaris.md \
