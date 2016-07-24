@@ -26,6 +26,7 @@ Each container has exactly one *root filesystem*, specified in the *root* object
 
 * **`path`** (string, required) Specifies the path to the root filesystem for the container. A directory MUST exist at the path declared by the field.
 * **`readonly`** (bool, optional) If true then the root filesystem MUST be read-only inside the container. Defaults to false.
+If readonly is present and set to true, but not supported by the platform, the platform MAY ignore.  
 
 ### Example
 
