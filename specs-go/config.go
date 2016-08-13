@@ -16,8 +16,6 @@ type Spec struct {
 	Hostname string `json:"hostname,omitempty"`
 	// Mounts profile configuration for adding mounts to the container's filesystem.
 	Mounts []Mount `json:"mounts,omitempty"`
-	// Hooks are the commands run at various lifecycle events of the container.
-	Hooks Hooks `json:"hooks"`
 	// Annotations is an unstructured key value map that may be set by external tools to store and retrieve arbitrary metadata.
 	Annotations map[string]string `json:"annotations,omitempty"`
 
@@ -92,25 +90,6 @@ type Mount struct {
 	Source string `json:"source"`
 	// Options are fstab style mount options.
 	Options []string `json:"options,omitempty"`
-}
-
-// Hook specifies a command that is run at a particular event in the lifecycle of a container
-type Hook struct {
-	Path    string   `json:"path"`
-	Args    []string `json:"args,omitempty"`
-	Env     []string `json:"env,omitempty"`
-	Timeout *int     `json:"timeout,omitempty"`
-}
-
-// Hooks for container setup and teardown
-type Hooks struct {
-	// Prestart is a list of hooks to be run before the container process is executed.
-	// On Linux, they are run after the container namespaces are created.
-	Prestart []Hook `json:"prestart,omitempty"`
-	// Poststart is a list of hooks to be run after the container process is started.
-	Poststart []Hook `json:"poststart,omitempty"`
-	// Poststop is a list of hooks to be run after the container process exits.
-	Poststop []Hook `json:"poststop,omitempty"`
 }
 
 // Linux contains platform specific configuration for Linux based containers.

@@ -8,21 +8,6 @@
             "id": "https://opencontainers.org/schema/bundle/ociVersion",
             "$ref": "defs.json#/definitions/ociVersion"
         },
-        "hooks": {
-            "id": "https://opencontainers.org/schema/bundle/hooks",
-            "type": "object",
-            "properties": {
-                "prestart": {
-                    "$ref": "defs.json#/definitions/ArrayOfHooks"
-                },
-                "poststart": {
-                    "$ref": "defs.json#/definitions/ArrayOfHooks"
-                },
-                "poststop": {
-                    "$ref": "defs.json#/definitions/ArrayOfHooks"
-                }
-            }
-        },
         "annotations": {
             "$ref": "defs.json#/definitions/annotations"
         },
@@ -168,7 +153,6 @@
         "platform",
         "process",
         "root",
-        "mounts",
-        "hooks"
+        "mounts"
     ]
 }
