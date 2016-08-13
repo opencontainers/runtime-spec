@@ -55,18 +55,73 @@ For Windows, see [mountvol][mountvol] and [SetVolumeMountPoint][set-volume-mount
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
   This value MUST be an absolute path.
+  * Linux: runtimes MUST pass this value to [`mount(2)`][mount.2] as the `target` argument.
   * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
   * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`type`** (string, OPTIONAL) The filesystem type of the filesystem to be mounted.
-  * Linux: valid *filesystemtype* supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
-  * Windows: the type of file system on the volume, e.g. "ntfs".
-  * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+* **`type`** (string, OPTIONAL) The type of filesystem to mount.
+    If `type` is unset, the runtime MAY ask the kernel to guess the desired type.
+    Depending on the mount `options`, the `type` field MAY be ignored.
+    * Linux: when `type` is set, runtimes MUST pass the value to [`mount(2)`][mount.2] as the `filesystemtype` argument.
+        `type` is ignored when `options` contains `bind` or `rbind`; see the `MS_BIND` description in [mount(2)][mount.2].
+    * Windows: the type of file system on the volume, e.g. "ntfs".
+    * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
-  * Windows: the volume name that is the target of the mount point, \\?\Volume\{GUID}\ (on Windows source is called target).
-  * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * Linux: when `type` is set, runtimes MUST pass the value to [`mount(2)`][mount.2] as the `source` argument.
+        When `type` is not set, the value used for the `source` argument is unspecified.
+    * Windows: the volume name that is the target of the mount point, \\?\Volume\{GUID}\ (on Windows source is called target).
+    * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (list of strings, OPTIONAL) Mount options of the filesystem to be used.
-  * Linux: supported options are listed in the [mount(8)][mount.8] man page. Note both [filesystem-independent][mount.8-filesystem-independent] and [filesystem-specific][mount.8-filesystem-specific] options are listed.
-  * Solaris: corresponds to "options" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * Linux: runtimes MUST call [`mount(2)`][mount.2] with an initially-zero `mountflags` argument altered by applying the following `options` in the listed order:
+
+        | Option          | Set bits                 | Clear bits                                                                            |
+        | --------------- | ------------------------ | ------------------------------------------------------------------------------------- |
+        | `acl`           | `MS_POSIXACL`            |                                                                                       |
+        | `async`         |                          | `MS_SYNCHRONOUS`                                                                      |
+        | `atime`         |                          | `MS_NOATIME`                                                                          |
+        | `bind`          | `MS_BIND`                |                                                                                       |
+        | `defaults`      |                          | `MS_RDONLY | MS_NOSUID | MS_NODEV | MS_NOEXEC | MS_NOAUTO | MS_USER | MS_SYNCHRONOUS` |
+        | `dev`           |                          | `MS_NODEV`                                                                            |
+        | `diratime`      |                          | `MS_NODIRATIME`                                                                       |
+        | `dirsync`       | `MS_DIRSYNC`             |                                                                                       |
+        | `exec`          |                          | `MS_NOEXEC`                                                                           |
+        | `iversion`      | `MS_I_VERSION`           |                                                                                       |
+        | `lazytime`      | `MS_LAZYTIME`            |                                                                                       |
+        | `loud`          |                          | `MS_SILENT`                                                                           |
+        | `mand`          | `MS_MANDLOCK`            |                                                                                       |
+        | `move`          | `MS_MOVE`                |                                                                                       |
+        | `noacl`         |                          | `MS_POSIXACL`                                                                         |
+        | `noatime`       | `MS_NOATIME`             |                                                                                       |
+        | `nodev`         | `MS_NODEV`               |                                                                                       |
+        | `nodiratime`    | `MS_NODIRATIME`          |                                                                                       |
+        | `noexec`        | `MS_NOEXEC`              |                                                                                       |
+        | `noiversion`    |                          | `MS_I_VERSION`                                                                        |
+        | `nolazytime`    |                          | `MS_LAZYTIME`                                                                         |
+        | `nomand`        |                          | `MS_MANDLOCK`                                                                         |
+        | `norelatime`    |                          | `MS_RELATIME`                                                                         |
+        | `nostrictatime` |                          | `MS_STRICTATIME`                                                                      |
+        | `nosuid`        | `MS_NOSUID`              |                                                                                       |
+        | `private`       | `MS_PRIVATE`             |                                                                                       |
+        | `rbind`         | `MS_REC | MS_BIND`       |                                                                                       |
+        | `relatime`      | `MS_RELATIME`            |                                                                                       |
+        | `remount`       | `MS_REMOUNT`             |                                                                                       |
+        | `ro`            | `MS_RDONLY`              |                                                                                       |
+        | `rprivate`      | `MS_REC | MS_PRIVATE`    |                                                                                       |
+        | `rshared`       | `MS_REC | MS_SHARED`     |                                                                                       |
+        | `rslave`        | `MS_REC | MS_SLAVE`      |                                                                                       |
+        | `runbindable`   | `MS_REC | MS_UNBINDABLE` |                                                                                       |
+        | `rw`            |                          | `MS_RDONLY`                                                                           |
+        | `shared`        | `MS_SHARED`              |                                                                                       |
+        | `silent`        | `MS_SILENT`              |                                                                                       |
+        | `slave`         | `MS_SLAVE`               |                                                                                       |
+        | `strictatime`   | `MS_STRICTATIME`         |                                                                                       |
+        | `suid`          |                          | `MS_NOSUID`                                                                           |
+        | `sync`          | `MS_SYNCHRONOUS`         |                                                                                       |
+        | `unbindable`    | `MS_UNBINDABLE`          |                                                                                       |
+
+        Runtimes MUST call [`mount(2)`][mount.2] with the `data` pointing at a string containing, in the listed order, all options not listed in the above table joined with comma delimiters.
+        If `options` contains no options from the above table, `data` may be either a pointer to an empty string or `NULL`.
+
+    * Solaris: corresponds to "options" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
 
@@ -80,9 +135,8 @@ For Windows, see [mountvol][mountvol] and [SetVolumeMountPoint][set-volume-mount
     },
     {
         "destination": "/data",
-        "type": "bind",
         "source": "/volumes/testing",
-        "options": ["rbind","rw"]
+        "options": ["rbind", "rw"]
     }
 ]
 ```
@@ -829,9 +883,6 @@ Here is a full example `config.json` for reference.
 
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
-[mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
-[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT%20OPTIONS
-[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT%20OPTIONS
 [setrlimit.2]: http://man7.org/linux/man-pages/man2/setrlimit.2.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
 [uts-namespace.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html
