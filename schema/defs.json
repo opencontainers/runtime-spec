@@ -152,8 +152,7 @@
             },
             "required": [
                 "destination",
-                "source",
-                "type"
+                "source"
             ]
         },
         "ociVersion": {
