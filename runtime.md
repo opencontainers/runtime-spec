@@ -21,6 +21,7 @@ The value MAY be one of:
 
   Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
 * **`pid`**: (int) is the ID of the main process within the container, as seen by the host.
+The pid MAY be excluded or set to a value indicating empty or null if it is not seen by the host.
 * **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
 * **`annotations`**: (map) contains the list of annotations associated with the container.
