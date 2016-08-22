@@ -2,21 +2,21 @@
 
 ## One sentence per line
 
-To keep consistency throughout the Markdown files in the Open Container spec all files should be formatted one sentence per line.
+To keep consistency throughout the Markdown files in the Open Container spec format all files one sentence per line.
 This fixes two things: it makes diffing easier with git and it resolves fights about line wrapping length.
 For example, this paragraph will span three lines in the Markdown source.
 
-## Traditionally hex settings should use JSON integers, not JSON strings
+## Use JSON integers, not JSON strings, for traditionally hex settings
 
 For example, [`"classID": 1048577`][class-id] instead of `"classID": "0x100001"`.
 The config JSON isn't enough of a UI to be worth jumping through string <-> integer hoops to support an 0x… form ([source][integer-over-hex]).
 
-## Constant names should keep redundant prefixes
+## Keep redundant prefixes for constant names
 
 For example, `CAP_KILL` instead of `KILL` in [**`linux.capabilities`**][capabilities].
 The redundancy reduction from removing the namespacing prefix is not useful enough to be worth trimming the upstream identifier ([source][keep-prefix]).
 
-## Optional settings should have pointer Go types
+## Have pointer Go types for optional settings
 
 So we have a consistent way to identify unset values ([source][optional-pointer]).
 The exceptions are entries where the Go default for the type is a no-op in the spec, in which case `omitempty` is sufficient and no pointer is needed (sources [here][no-pointer-for-slices], [here][no-pointer-for-boolean], and [here][pointer-when-updates-require-changes]).
@@ -26,7 +26,7 @@ The exceptions are entries where the Go default for the type is a no-op in the s
 ### Anchoring
 
 For any given section that provides a notable example, it is ideal to have it denoted with [markdown headers][markdown-headers].
-The level of header should be such that it is a subheader of the header it is an example of.
+The level of header for an example is ideally such that it is a subheader of the header it is an example of.
 
 #### Example
 
@@ -51,7 +51,7 @@ To use Some Topic, ...
 
 Where necessary, the values in the example can be empty or unset, but accommodate with comments regarding this intention.
 
-Where feasible, the content and values used in an example should convey the fullest use of the data structures concerned.
+Where feasible, the content and values used in an example convey the fullest use of the data structures concerned.
 Most commonly onlookers will intend to copy-and-paste a "working example".
 If the intention of the example is to be a fully utilized example, rather than a copy-and-paste example, perhaps add a comment as such.
 
