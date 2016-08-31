@@ -26,7 +26,7 @@ The exceptions are entries where the Go default for the type is a no-op in the s
 ### Anchoring
 
 For any given section that provides a notable example, it is ideal to have it denoted with [markdown headers][markdown-headers].
-The level of header for an example is ideally such that it is a subheader of the header it is an example of.
+Make example headers a child of the header they illustrate.
 
 #### Example
 
