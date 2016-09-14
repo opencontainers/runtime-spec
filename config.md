@@ -43,17 +43,24 @@ For example, if an implementation is compliant with version 1.0.1 of the spec, i
 
 **`mounts`** (array, optional) configures additional mounts (on top of [`root`](#root-configuration)).
 The runtime MUST mount entries in the listed order.
-The parameters are similar to the ones in [the Linux mount system call](http://man7.org/linux/man-pages/man2/mount.2.html).
+The parameters are similar to the ones in [the Linux mount system call][mount.2].
 
 * **`destination`** (string, required) Destination of mount point: path inside container.
   For the Windows operating system, one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
-* **`type`** (string, required) The filesystem type of the filesystem to be mounted.
-  Linux: *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
+* **`type`** (string, optional) The type of filesystem to mount.
+  If `type` is unset, the runtime MAY ask the kernel to guess the desired type.
+  Depending on the mount `options`, the `type` field MAY be ignored.
+  For example, `type` is ignored when `options` contains `bind`; see the `MS_BIND` description in [mount(2)][mount.2].
+  Linux: [*filesystemtype*][mount.2] values supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
   Windows: ntfs.
 * **`source`** (string, required) A device name, but can also be a directory name or a dummy.
   Windows: the volume name that is the target of the mount point, \\?\Volume\{GUID}\ (on Windows source is called target).
 * **`options`** (list of strings, optional) Mount options of the filesystem to be used.
   Linux: [supported][mount.8-filesystem-independent] [options][mount.8-filesystem-specific] are listed in [mount(8)][mount.8].
+  Linux runtimes MUST also support the following options:
+
+    * `recursive`, with the semantics of [`MS_REC`][mount.2].
+    * `bind`, with the semantics of [`MS_BIND`][mount.2].
 
 ### Example (Linux)
 
@@ -67,9 +74,8 @@ The parameters are similar to the ones in [the Linux mount system call](http://m
     },
     {
         "destination": "/data",
-        "type": "bind",
         "source": "/volumes/testing",
-        "options": ["rbind","rw"]
+        "options": ["recursive", "bind", "rw"]
     }
 ]
 ```
@@ -704,6 +710,8 @@ Here is a full example `config.json` for reference.
 [go-environment]: https://golang.org/doc/install/source#environment
 [runtime-namespace]: glossary.md#runtime-namespace
 [uts-namespace]: http://man7.org/linux/man-pages/man7/namespaces.7.html
+[mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
 [mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT OPTIONS
 [mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT OPTIONS
+[mount.8-options]: http://man7.org/linux/man-pages/man8/mount.8.html#COMMAND-LINE_OPTIONS
 [mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
