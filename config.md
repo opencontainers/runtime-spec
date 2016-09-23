@@ -718,6 +718,9 @@ Here is a full example `config.json` for reference.
             "/proc/timer_stats",
             "/proc/sched_debug"
         ],
+        "maskedDirPaths": [
+            "/sys/firmware",
+        ],
         "readonlyPaths": [
             "/proc/asound",
             "/proc/bus",

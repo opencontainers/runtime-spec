@@ -562,6 +562,18 @@ Its value is either slave, private, or shared.
     ]
 ```
 
+## Masked Dir Paths
+
+`maskedDirPaths` is similar to `maskedPaths` but for directories rather than files.
+
+###### Example
+
+```json
+    "maskedPaths": [
+        "/sys/firmware"
+    ]
+```
+
 ## Readonly Paths
 
 `readonlyPaths` will set the provided paths as readonly inside the container.

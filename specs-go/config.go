@@ -148,6 +148,8 @@ type Linux struct {
 	RootfsPropagation string `json:"rootfsPropagation,omitempty"`
 	// MaskedPaths masks over the provided paths inside the container.
 	MaskedPaths []string `json:"maskedPaths,omitempty"`
+	// MaskedDirPaths masks over the provided directory paths inside the container.
+	MaskedDirPaths []string `json:"maskedDirPaths,omitempty"`
 	// ReadonlyPaths sets the provided paths as RO inside the container.
 	ReadonlyPaths []string `json:"readonlyPaths,omitempty"`
 	// MountLabel specifies the selinux context for the mounts in the container.
