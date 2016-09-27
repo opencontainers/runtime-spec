@@ -77,6 +77,17 @@
                 }
             }
         },
+        "Rlimit": {
+            "type": "object",
+            "properties": {
+                "hard": {
+                    "$ref": "defs.json#/definitions/uint64"
+                },
+                "soft": {
+                    "$ref": "defs.json#/definitions/uint64"
+                }
+            }
+        },
         "Capability": {
             "description": "Linux process permissions",
             "type": "string",
