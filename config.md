@@ -47,6 +47,7 @@ The parameters are similar to the ones in [the Linux mount system call](http://m
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
   For the Windows operating system, one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
+  The destination MUST be present in the root filesystem. Runtime MUST NOT create the destination.
 * **`type`** (string, REQUIRED) The filesystem type of the filesystem to be mounted.
   Linux: *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
   Windows: ntfs.
