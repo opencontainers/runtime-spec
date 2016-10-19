@@ -49,12 +49,12 @@ The lifecycle describes the timeline of events that happen from when a container
 1. OCI compliant runtime's `create` command is invoked with a reference to the location of the bundle and a unique identifier.
 2. The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
    If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST generate an error.
-   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified code (from [`process`](config.md#process-configuration) MUST NOT be run at this time.
+   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified code (from [`process configuration`](config.md#process-configuration)) MUST NOT be run at this time.
    Any updates to `config.json` after this step MUST NOT affect the container.
 3. Once the container is created additional actions MAY be performed based on the features the runtime chooses to support.
    However, some actions might only be available based on the current state of the container (e.g. only available while it is started).
 4. Runtime's `start` command is invoked with the unique identifier of the container.
-   The runtime MUST run the user-specified code, as specified by [`process`](config.md#process-configuration).
+   The runtime MUST run the user-specified code, as specified by [`process configuration`](config.md#process-configuration).
 5. The container's process is stopped.
    This MAY happen due to them erroring out, exiting, crashing or the runtime's `kill` operation being invoked.
 6. Runtime's `delete` command is invoked with the unique identifier of the container.
