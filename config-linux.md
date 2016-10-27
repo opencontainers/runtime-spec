@@ -23,10 +23,9 @@ A namespace wraps a global system resource in an abstraction that makes it appea
 Changes to the global resource are visible to other processes that are members of the namespace, but are invisible to other processes.
 For more information, see [the man page](http://man7.org/linux/man-pages/man7/namespaces.7.html).
 
-Namespaces are specified as an array of entries inside the `namespaces` root field.
-The following parameters can be specified to setup namespaces:
+* **`namespaces`** (object, OPTIONAL) specifies the container namespaces.
+    Valid keys are:
 
-* **`type`** *(string, REQUIRED)* - namespace type. The following namespaces types are supported:
     * **`pid`** processes inside the container will only be able to see other processes inside the same container.
     * **`network`** the container will have its own network stack.
     * **`mount`** the container will have an isolated mount table.
@@ -35,39 +34,29 @@ The following parameters can be specified to setup namespaces:
     * **`user`** the container will be able to remap user and group IDs from the host to local users and groups within the container.
     * **`cgroup`** the container will have an isolated view of the cgroup hierarchy.
 
-* **`path`** *(string, OPTIONAL)* - path to namespace file in the [runtime mount namespace](glossary.md#runtime-namespace)
+    Values have the following properties:
+
+    * **`path`** *(string, OPTIONAL)* - path to namespace file in the [runtime mount namespace](glossary.md#runtime-namespace)
 
 If a path is specified, that particular file is used to join that type of namespace.
-If a namespace type is not specified in the `namespaces` array, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
+If a namespace type is not specified in the `namespaces` object, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
 If a new namespace is not created (because the namespace type is not listed, or because it is listed with a `path`), runtimes MUST assume that the setup for that namespace has already been done and error out if the config specifies anything else related to that namespace.
 
 ###### Example
 
 ```json
-    "namespaces": [
-        {
-            "type": "pid",
+    "namespaces": {
+        "pid": {
             "path": "/proc/1234/ns/pid"
         },
-        {
-            "type": "network",
+        "network": {
             "path": "/var/run/netns/neta"
         },
-        {
-            "type": "mount"
-        },
-        {
-            "type": "ipc"
-        },
-        {
-            "type": "uts"
-        },
-        {
-            "type": "user"
-        },
-        {
-            "type": "cgroup"
-        }
+        "mount": {},
+        "ipc": {},
+        "uts": {},
+        "user": {},
+        "cgroup": {}
     ]
 ```
 

@@ -262,24 +262,9 @@
                 }
             }
         },
-        "NamespaceType": {
-            "type": "string",
-            "enum": [
-                "mount",
-                "pid",
-                "network",
-                "uts",
-                "ipc",
-                "user",
-                "cgroup"
-            ]
-        },
-        "NamespaceReference": {
+        "Namespace": {
             "type": "object",
             "properties": {
-                "type": {
-                    "$ref": "#/definitions/NamespaceType"
-                },
                 "path": {
                     "$ref": "defs.json#/definitions/FilePath"
                 }

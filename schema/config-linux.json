@@ -48,13 +48,29 @@
             },
             "namespaces": {
                 "id": "https://opencontainers.org/schema/bundle/linux/namespaces",
-                "type": "array",
-                "items": {
-                    "anyOf": [
-                        {
-                            "$ref": "defs-linux.json#/definitions/NamespaceReference"
-                        }
-                    ]
+                "type": "object",
+                "properties": {
+                    "cgroup": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "ipc": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "mount": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "network": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "pid": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "user": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    },
+                    "uts": {
+                        "$ref": "defs-linux.json#/definitions/Namespace"
+                    }
                 }
             },
             "resources": {
