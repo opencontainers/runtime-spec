@@ -355,7 +355,7 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
 ```
 
 `path` is REQUIRED for a hook.
-`args` and `env` are OPTIONAL.
+`args`, `env` and `timeout` are OPTIONAL.
 `timeout` is the number of seconds before aborting the hook.
 The semantics are the same as `Path`, `Args` and `Env` in [golang Cmd](https://golang.org/pkg/os/exec/#Cmd).
 
