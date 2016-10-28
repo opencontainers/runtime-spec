@@ -279,11 +279,9 @@ For Windows based systems the user structure has the following fields:
         "arch": "amd64"
     },
     "linux": {
-        "namespaces": [
-          {
-            "type": "pid"
-          }
-        ]
+        "namespaces": {
+            "pid": {}
+        }
     }
 }
 ```
@@ -691,28 +689,14 @@ Here is a full example `config.json` for reference.
                 }
             ]
         },
-        "namespaces": [
-            {
-                "type": "pid"
-            },
-            {
-                "type": "network"
-            },
-            {
-                "type": "ipc"
-            },
-            {
-                "type": "uts"
-            },
-            {
-                "type": "mount"
-            },
-            {
-                "type": "user"
-            },
-            {
-                "type": "cgroup"
-            }
+        "namespaces": {
+            "pid": {},
+            "network": {},
+            "ipc": {},
+            "uts": {},
+            "mount": {},
+            "user": {},
+            "cgroup": {}
         ],
         "maskedPaths": [
             "/proc/kcore",

@@ -141,7 +141,7 @@ type Linux struct {
 	// If resources are specified, the cgroups at CgroupsPath will be updated based on resources.
 	CgroupsPath *string `json:"cgroupsPath,omitempty"`
 	// Namespaces contains the namespaces that are created and/or joined by the container
-	Namespaces []LinuxNamespace `json:"namespaces,omitempty"`
+	Namespaces map[LinuxNamespaceType]LinuxNamespace `json:"namespaces,omitempty"`
 	// Devices are a list of device nodes that are created for the container
 	Devices []LinuxDevice `json:"devices,omitempty"`
 	// Seccomp specifies the seccomp security settings for the container.
@@ -158,8 +158,6 @@ type Linux struct {
 
 // LinuxNamespace is the configuration for a Linux namespace
 type LinuxNamespace struct {
-	// Type is the type of Linux namespace
-	Type LinuxNamespaceType `json:"type"`
 	// Path is a path to an existing namespace persisted on disk that can be joined
 	// and is of the same type
 	Path string `json:"path,omitempty"`
