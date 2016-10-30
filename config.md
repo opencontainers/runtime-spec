@@ -8,6 +8,22 @@ This includes the process to run, environment variables to inject, sandboxing fe
 
 Below is a detailed description of each field defined in the configuration format.
 
+## Ownership
+
+This specification treats system attributes as belonging to a particular container.
+It does not support one container adjusting attributes that belong to another container.
+Runtimes MUST generate an error if the configuration sets an attribute that belongs to another container.
+
+For example, the following are valid:
+
+* A Linux configuration that creates a new [UTS namespace](config-linux.md#namespaces) and sets [`hostname`](#hostname).
+* A Linux configuration that sets [network limits][config-linux.md#network] with a new [control group][config-linux.md#control-groups], regardless of whether it creates a new [network namespace](config-linux.md#namespaces).
+
+While the following are invalid:
+
+* A Linux configuration that sets [`hostname`](#hostname) but does not create a new [UTS namespace](config-linux.md#namespaces).
+* A Linux configuration that sets [network limits][config-linux.md#network] with an existing [control group][config-linux.md#control-groups].
+
 ## Specification version
 
 * **`ociVersion`** (string, REQUIRED) MUST be in [SemVer v2.0.0](http://semver.org/spec/v2.0.0.html) format and specifies the version of the Open Container Runtime Specification with which the bundle complies.
