@@ -288,9 +288,9 @@ type LinuxCPU struct {
 	// CPU period to be used for hardcapping (in usecs).
 	Period *uint64 `json:"period,omitempty"`
 	// How much time realtime scheduling may use (in usecs).
-	RealtimeRuntime *uint64 `json:"realtimeRuntime,omitempty"`
+	RtRuntime *uint64 `json:"rtRuntime,omitempty"`
 	// CPU period to be used for realtime scheduling (in usecs).
-	RealtimePeriod *uint64 `json:"realtimePeriod,omitempty"`
+	RtPeriod *uint64 `json:"rtPeriod,omitempty"`
 	// CPUs to use within the cpuset. Default is to use any CPU available.
 	Cpus *string `json:"cpus,omitempty"`
 	// List of memory nodes in the cpuset. Default is to use any available memory node.
