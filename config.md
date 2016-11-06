@@ -2,6 +2,7 @@
 
 The container's top-level directory MUST contain a configuration file called `config.json`.
 The canonical schema is defined in this document, but there is a JSON Schema in [`schema/config-schema.json`](schema/config-schema.json) and Go bindings in [`specs-go/config.go`](specs-go/config.go).
+The media type for this configuration format is `application/vnd.oci.runtime.config.v1+json`, and all specifications using that media type will require [JSON](glossary.md#json) objects with an [`ociVersion`](#specification-version).
 
 The configuration file contains metadata necessary to implement standard operations against the container.
 This includes the process to run, environment variables to inject, sandboxing features to use, etc.
