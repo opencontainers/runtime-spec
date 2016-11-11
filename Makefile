@@ -1,57 +1,35 @@
 
 EPOCH_TEST_COMMIT	:= 78e6667ae2d67aad100b28ee9580b41b7a24e667
-OUTPUT_DIRNAME		?= output/
+OUTPUT_DIRNAME		?= output
 DOC_FILENAME		?= oci-runtime-spec
-DOCKER			?= $(shell command -v docker 2>/dev/null)
-PANDOC			?= $(shell command -v pandoc 2>/dev/null)
-ifeq "$(strip $(PANDOC))" ''
-	ifneq "$(strip $(DOCKER))" ''
-		PANDOC = $(DOCKER) run \
-			-it \
-			--rm \
-			-v $(shell pwd)/:/input/:ro \
-			-v $(shell pwd)/$(OUTPUT_DIRNAME)/:/$(OUTPUT_DIRNAME)/ \
-			-u $(shell id -u) \
-			vbatts/pandoc
-		PANDOC_SRC := /input/
-		PANDOC_DST := /
-	endif
-endif
+A2X			?= $(shell command -v a2x 2>/dev/null)
+DBLATEX			?= $(shell command -v dblatex 2>/dev/null)
 
 # These docs are in an order that determines how they show up in the PDF/HTML docs.
-DOC_FILES := \
-	version.md \
-	README.md \
-	code-of-conduct.md \
-	principles.md \
-	style.md \
-	ROADMAP.md \
-	implementations.md \
-	project.md \
-	bundle.md \
-	runtime.md \
-	runtime-linux.md \
-	config.md \
-	config-linux.md \
-	config-solaris.md \
-	glossary.md
+DOC_FILES := $(wildcard *.asc)
 
 default: docs
 
 .PHONY: docs
 docs: $(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html
 
-ifeq "$(strip $(PANDOC))" ''
-$(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html:
-	$(error cannot build $@ without either pandoc or docker)
+ifeq "$(strip $(A2X) $(DBLATEX))" ''
+$(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf:
+	$(error cannot build $@ without a2x and dblatex)
 else
 $(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf: $(DOC_FILES)
-	mkdir -p $(OUTPUT_DIRNAME)/ && \
-	$(PANDOC) -f markdown_github -t latex -o $(PANDOC_DST)$@ $(patsubst %,$(PANDOC_SRC)%,$(DOC_FILES))
+	mkdir -p $(OUTPUT_DIRNAME)
+	$(A2X) -f pdf --no-xmllint $(ASCIIDOC_SRC)$(DOC_FILENAME).asc
+	mv $(ASCIIDOC_SRC)$(DOC_FILENAME).pdf $@
+endif
 
+ifeq "$(strip $(A2X))" ''
+$(OUTPUT_DIRNAME)/$(DOC_FILENAME).html:
+	$(error cannot build $@ without a2x)
+else
 $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html: $(DOC_FILES)
-	mkdir -p $(OUTPUT_DIRNAME)/ && \
-	$(PANDOC) -f markdown_github -t html5 -o $(PANDOC_DST)$@ $(patsubst %,$(PANDOC_SRC)%,$(DOC_FILES))
+	mkdir -p $(OUTPUT_DIRNAME)
+	$(A2X) -f xhtml --no-xmllint -D $(OUTPUT_DIRNAME) $(ASCIIDOC_SRC)$(DOC_FILENAME).asc
 endif
 
 code-of-conduct.md:
