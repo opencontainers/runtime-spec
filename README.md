@@ -23,25 +23,6 @@ Table of Contents
     - [Windows-specific Configuration](config-windows.md)
 - [Glossary](glossary.md)
 
-# Use Cases
-
-To provide context for users the following section gives example use cases for each part of the spec.
-
-#### Application Bundle Builders
-
-Application bundle builders can create a [bundle](bundle.md) directory that includes all of the files required for launching an application as a container.
-The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process-configuration) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
-Because the configuration includes host-specific settings, application bundle directories copied between two hosts may require configuration adjustments.
-
-#### Hook Developers
-
-[Hook](config.md#hooks) developers can extend the functionality of an OCI-compliant runtime by hooking into a container's lifecycle with an external application.
-Example use cases include sophisticated network configuration, volume garbage collection, etc.
-
-#### Runtime Developers
-
-Runtime developers can build runtime implementations that run OCI-compliant bundles and container configuration, containing low-level OS and host specific details, on a particular platform.
-
 # Releases
 
 There is a loose [Road Map](./ROADMAP.md).
