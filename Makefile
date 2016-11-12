@@ -4,6 +4,7 @@ OUTPUT_DIRNAME		?= output
 DOC_FILENAME		?= oci-runtime-spec
 A2X			?= $(shell command -v a2x 2>/dev/null)
 DBLATEX			?= $(shell command -v dblatex 2>/dev/null)
+DBLATEX_DIR		?= /usr/share/asciidoc/dblatex
 
 # These docs are in an order that determines how they show up in the PDF/HTML docs.
 DOC_FILES := $(wildcard *.asc)
@@ -17,9 +18,13 @@ ifeq "$(strip $(A2X) $(DBLATEX))" ''
 $(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf:
 	$(error cannot build $@ without a2x and dblatex)
 else
-$(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf: $(DOC_FILES)
+$(OUTPUT_DIRNAME)/$(DOC_FILENAME).pdf: $(DOC_FILES) asciidoc-dblatex.sty
 	mkdir -p $(OUTPUT_DIRNAME)
-	$(A2X) -f pdf --no-xmllint $(ASCIIDOC_SRC)$(DOC_FILENAME).asc
+	$(A2X) -f pdf --no-xmllint \
+		--xsltproc-opts '--stringparam section.autolabel.max.depth 8' \
+		--dblatex-opts '-s $(ASCIIDOC_SRC)asciidoc-dblatex.sty' \
+		--dblatex-opts '--param toc.section.depth=4' \
+		$(ASCIIDOC_SRC)$(DOC_FILENAME).asc
 	mv $(ASCIIDOC_SRC)$(DOC_FILENAME).pdf $@
 endif
 
@@ -29,8 +34,17 @@ $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html:
 else
 $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html: $(DOC_FILES)
 	mkdir -p $(OUTPUT_DIRNAME)
-	$(A2X) -f xhtml --no-xmllint -D $(OUTPUT_DIRNAME) $(ASCIIDOC_SRC)$(DOC_FILENAME).asc
+	$(A2X) -f xhtml --no-xmllint \
+		--xsltproc-opts '--stringparam section.autolabel.max.depth 8' \
+		--xsltproc-opts '--stringparam toc.section.depth 4' \
+		-D $(OUTPUT_DIRNAME) \
+		$(ASCIIDOC_SRC)$(DOC_FILENAME).asc
 endif
+
+asciidoc-dblatex.sty: $(DBLATEX_DIR)/asciidoc-dblatex.sty
+	cp $< $@
+	echo '\usepackage{listings}' >>$@
+	echo '\lstalias{json}{python}' >>$@
 
 code-of-conduct.md:
 	curl -o $@ https://raw.githubusercontent.com/opencontainers/tob/d2f9d68c1332870e40693fe077d311e0742bc73d/code-of-conduct.md
@@ -83,5 +97,5 @@ endif
 .PHONY: clean
 clean:
 	rm -rf $(OUTPUT_DIRNAME) *~
-	rm -f code-of-conduct.md version.md
+	rm -f asciidoc-dblatex-json.sty code-of-conduct.md version.md
 
