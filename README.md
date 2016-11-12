@@ -23,11 +23,6 @@ Table of Contents
     - [Windows-specific Configuration](config-windows.md)
 - [Glossary](glossary.md)
 
-Protocols defined by this specification are:
-* Linux containers: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), and [runtime-linux.md](runtime-linux.md).
-* Solaris containers: [runtime.md](runtime.md), [config.md](config.md), and [config-solaris.md](config-solaris.md).
-* Windows containers: [runtime.md](runtime.md), [config.md](config.md), and [config-windows.md](config-windows.md).
-
 # Use Cases
 
 To provide context for users the following section gives example use cases for each part of the spec.
