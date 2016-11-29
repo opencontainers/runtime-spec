@@ -43,8 +43,8 @@ type VMKernel struct {
 	Path string `json:"path"`
 	// Parameters specifies parameters to pass to the kernel.
 	Parameters string `json:"parameters,omitempty"`
-	// InitRd is the host path to an initial ramdisk to be used by the kernel.
-	InitRd string `json:"initrd,omitempty"`
+	// InitRD is the host path to an initial ramdisk to be used by the kernel.
+	InitRD string `json:"initrd,omitempty"`
 }
 
 // Process contains information to start a specific application inside the container.
