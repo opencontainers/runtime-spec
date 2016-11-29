@@ -32,13 +32,13 @@ type Spec struct {
 // VM contains information for virtual-machine-based runtimes.
 type VM struct {
 	// Kernel specifies kernel-related configuration for virtual-machine-based runtimes.
-	Kernel Kernel `json:"kernel"`
+	Kernel VMKernel `json:"kernel"`
 	// ImagePath is the host path to the root filesystem image on the host which can be used by a virtual-machine-based runtime.
 	ImagePath string `json:"imagePath"`
 }
 
-// Kernel contains information about the kernel to use for a virtual machine.
-type Kernel struct {
+// VMKernel contains information about the kernel to use for a virtual machine.
+type VMKernel struct {
 	// Path is the host path to the kernel used to boot the virtual machine.
 	Path string `json:"path"`
 	// Parameters specifies parameters to pass to the kernel.
