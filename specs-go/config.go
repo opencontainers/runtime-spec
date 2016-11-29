@@ -25,6 +25,8 @@ type Spec struct {
 	Solaris *Solaris `json:"solaris,omitempty" platform:"solaris"`
 	// Windows is platform-specific configuration for Windows based containers.
 	Windows *Windows `json:"windows,omitempty" platform:"windows"`
+	// VM specifies configuration for virtual-machine-based containers.
+	VM *VM `json:"vm,omitempty" platform:"vm"`
 }
 
 // Process contains information to start a specific application inside the container.
@@ -497,6 +499,42 @@ type WindowsNetwork struct {
 type WindowsHyperV struct {
 	// UtilityVMPath is an optional path to the image used for the Utility VM.
 	UtilityVMPath string `json:"utilityVMPath,omitempty"`
+}
+
+// VM contains information for virtual-machine-based containers.
+type VM struct {
+	// Hypervisor specifies hypervisor-related configuration for virtual-machine-based containers.
+	Hypervisor VMHypervisor `json:"hypervisor,omitempty"`
+	// Kernel specifies kernel-related configuration for virtual-machine-based containers.
+	Kernel VMKernel `json:"kernel"`
+	// Image specifies guest image related configuration for virtual-machine-based containers.
+	Image VMImage `json:"image,omitempty"`
+}
+
+// VMHypervisor contains information about the hypervisor to use for a virtual machine.
+type VMHypervisor struct {
+	// Path is the host path to the hypervisor used to manage the virtual machine.
+	Path string `json:"path"`
+	// Parameters specifies parameters to pass to the hypervisor.
+	Parameters string `json:"parameters,omitempty"`
+}
+
+// VMKernel contains information about the kernel to use for a virtual machine.
+type VMKernel struct {
+	// Path is the host path to the kernel used to boot the virtual machine.
+	Path string `json:"path"`
+	// Parameters specifies parameters to pass to the kernel.
+	Parameters string `json:"parameters,omitempty"`
+	// InitRD is the host path to an initial ramdisk to be used by the kernel.
+	InitRD string `json:"initrd,omitempty"`
+}
+
+// VMImage contains information about the virtual machine root image.
+type VMImage struct {
+	// Path is the host path to the root image that the VM kernel would boot into.
+	Path string `json:"path"`
+	// Format is the root image format type (e.g. "qcow2", "raw", "vhd", etc).
+	Format string `json:"format"`
 }
 
 // LinuxSeccomp represents syscall restrictions
