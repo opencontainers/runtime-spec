@@ -18,6 +18,8 @@ type Spec struct {
 	Hooks *Hooks `json:"hooks,omitempty" platform:"linux,solaris"`
 	// Annotations contains arbitrary metadata for the container.
 	Annotations map[string]string `json:"annotations,omitempty"`
+	// VM specifies configuration for virtual-machine-based runtimes.
+	VM VM `json:"vm,omitempty"`
 
 	// Linux is platform-specific configuration for Linux based containers.
 	Linux *Linux `json:"linux,omitempty" platform:"linux"`
@@ -25,6 +27,24 @@ type Spec struct {
 	Solaris *Solaris `json:"solaris,omitempty" platform:"solaris"`
 	// Windows is platform-specific configuration for Windows based containers.
 	Windows *Windows `json:"windows,omitempty" platform:"windows"`
+}
+
+// VM contains information for virtual-machine-based runtimes.
+type VM struct {
+	// Kernel specifies kernel-related configuration for virtual-machine-based runtimes.
+	Kernel Kernel `json:"kernel"`
+	// ImagePath is the path to the root filesystem image on the host which can be used by a virtual-machine-based runtime.
+	ImagePath string `json:"imagePath"`
+}
+
+// Kernel contains information about the kernel to use for a virtual machine.
+type Kernel struct {
+	// Path is the path to the kernel used to boot the virtual machine.
+	Path string `json:"path"`
+	// Parameters specifies parameters to pass to the kernel.
+	Parameters string `json:"parameters,omitempty"`
+	// InitRd is the path to an initial ramdisk to be used by the kernel.
+	InitRd string `json:"initrd,omitempty"`
 }
 
 // Process contains information to start a specific application inside the container.

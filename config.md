@@ -462,6 +462,12 @@ Instead they MUST ignore unknown properties.
 Runtimes that are reading or processing this configuration file MUST generate an error when invalid or unsupported values are encountered.
 Unless support for a valid value is explicitly required, runtimes MAY choose which subset of the valid values it will support.
 
+## VM
+
+VM is an optional object used by virtual-machine-based runtimes.
+
+See [Virtual-machine-specific schema](config-vm.md) for details.
+
 ## Configuration Schema Example
 
 Here is a full example `config.json` for reference.

@@ -1,0 +1,43 @@
+{
+    "vm": {
+        "description": "configuration for virtual-machine-based runtimes",
+        "id": "https://opencontainers.org/schema/bundle/vm",
+        "type": "object",
+        "required" : [
+            "imagePath",
+            "kernel"
+        ],
+        "properties": {
+            "imagePath": {
+                "description": "path to rootfs image on host system which is used for VM-based runtimes",
+                "id": "https://opencontainers.org/schema/bundle/vm/imagePath",
+                "type": "string"
+            },
+            "kernel": {
+                "description": "kernel config used by VM-based runtimes",
+                "id": "https://opencontainers.org/schema/bundle/vm/kernel",
+                "type": "object",
+                "required": [
+                    "path"
+                ],
+                "properties": {
+                    "path": {
+                        "id": "https://opencontainers.org/schema/bundle/vm/kernel/path",
+                        "description": "path to kernel image",
+                        "type": "string"
+                    },
+                    "parameters": {
+                        "description": "space-separated list of kernel parameters",
+                        "id": "https://opencontainers.org/schema/bundle/vm/kernel/parameters",
+                        "type": "string"
+                    },
+                    "initrd": {
+                        "description": "path to initial ramdisk image",
+                        "id": "https://opencontainers.org/schema/bundle/vm/kernel/initrd",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

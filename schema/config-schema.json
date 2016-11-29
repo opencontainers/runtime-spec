@@ -191,6 +191,9 @@
                 }
             }
         },
+        "vm": {
+            "$ref": "schema-vm.json#/vm"
+        },
         "linux": {
             "$ref": "config-linux.json#/linux"
         },
