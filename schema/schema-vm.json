@@ -9,7 +9,7 @@
         ],
         "properties": {
             "imagePath": {
-                "description": "path to rootfs image on host system which is used for VM-based runtimes",
+                "description": "host path to rootfs image on host system which is used for VM-based runtimes",
                 "id": "https://opencontainers.org/schema/bundle/vm/imagePath",
                 "type": "string"
             },
@@ -23,7 +23,7 @@
                 "properties": {
                     "path": {
                         "id": "https://opencontainers.org/schema/bundle/vm/kernel/path",
-                        "description": "path to kernel image",
+                        "description": "host path to kernel image",
                         "type": "string"
                     },
                     "parameters": {
@@ -32,7 +32,7 @@
                         "type": "string"
                     },
                     "initrd": {
-                        "description": "path to initial ramdisk image",
+                        "description": "host path to initial ramdisk image",
                         "id": "https://opencontainers.org/schema/bundle/vm/kernel/initrd",
                         "type": "string"
                     }
