@@ -643,8 +643,8 @@ Here is a full example `config.json` for reference.
                 "shares": 1024,
                 "quota": 1000000,
                 "period": 500000,
-                "realtimeRuntime": 950000,
-                "realtimePeriod": 1000000,
+                "rtRuntime": 950000,
+                "rtPeriod": 1000000,
                 "cpus": "2-3",
                 "mems": "0-7"
             },

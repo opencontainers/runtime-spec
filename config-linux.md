@@ -315,19 +315,19 @@ For more information, see [the cpusets cgroup man page][cgroup-v1-cpusets].
 
 The following parameters can be specified to setup the controller:
 
-* **`shares`** *(uint64, OPTIONAL)* - specifies a relative share of CPU time available to the tasks in a cgroup
+* **`shares`** *(uint64, OPTIONAL)* - specifies a relative share of CPU time available to the tasks in a cgroup.
 
-* **`quota`** *(uint64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
+* **`quota`** *(uint64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below).
 
-* **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
+* **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only).
 
-* **`realtimeRuntime`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
+* **`rtRuntime`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources, it applies to realtime (RT) scheduler only).
 
-* **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
+* **`rtPeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime (RT) scheduler only.
 
-* **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run in
+* **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run in.
 
-* **`mems`** *(string, OPTIONAL)* - list of Memory Nodes the container will run in
+* **`mems`** *(string, OPTIONAL)* - list of Memory Nodes the container will run in.
 
 ###### Example
 
@@ -336,8 +336,8 @@ The following parameters can be specified to setup the controller:
         "shares": 1024,
         "quota": 1000000,
         "period": 500000,
-        "realtimeRuntime": 950000,
-        "realtimePeriod": 1000000,
+        "rtRuntime": 950000,
+        "rtPeriod": 1000000,
         "cpus": "2-3",
         "mems": "0-7"
     }

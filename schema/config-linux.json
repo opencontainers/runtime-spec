@@ -190,12 +190,12 @@
                                 "id": "https://opencontainers.org/schema/bundle/linux/resources/cpu/quota",
                                 "$ref": "defs.json#/definitions/uint64Pointer"
                             },
-                            "realtimePeriod": {
-                                "id": "https://opencontainers.org/schema/bundle/linux/resources/cpu/realtimePeriod",
+                            "rtPeriod": {
+                                "id": "https://opencontainers.org/schema/bundle/linux/resources/cpu/rtPeriod",
                                 "$ref": "defs.json#/definitions/uint64Pointer"
                             },
-                            "realtimeRuntime": {
-                                "id": "https://opencontainers.org/schema/bundle/linux/resources/cpu/realtimeRuntime",
+                            "rtRuntime": {
+                                "id": "https://opencontainers.org/schema/bundle/linux/resources/cpu/rtRuntime",
                                 "$ref": "defs.json#/definitions/uint64Pointer"
                             },
                             "shares": {
