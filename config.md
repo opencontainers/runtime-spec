@@ -325,7 +325,14 @@ Hooks allow one to run programs before/after various lifecycle events of the con
 Hooks MUST be called in the listed order.
 The state of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
 
-Hook paths are absolute and are executed from the host's filesystem in the [runtime namespace][runtime-namespace].
+The hook structure supports the following fields:
+
+* **`path`** (string, REQUIRED) is absolute path of the command to run from the host's filesystem in the [runtime namespace][runtime-namespace]
+* **`args`** (array of string, OPTIONAL) holds command line arguments, including the command as Args[0]
+* **`env`** (array of string, OPTIONAL) is the environment of the process
+* **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook
+
+The semantics of `path`, `args` and `env` are the same as in [golang Cmd](https://golang.org/pkg/os/exec/#Cmd).
 
 ### Prestart
 
@@ -376,11 +383,6 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
         ]
     }
 ```
-
-`path` is REQUIRED for a hook.
-`args` and `env` are OPTIONAL.
-`timeout` is the number of seconds before aborting the hook.
-The semantics are the same as `Path`, `Args` and `Env` in [golang Cmd](https://golang.org/pkg/os/exec/#Cmd).
 
 ## Annotations
 
