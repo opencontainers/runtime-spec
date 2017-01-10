@@ -129,13 +129,21 @@ See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [Se
 * **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2001 `execvp`'s *argv*][ieee-1003.1-2001-xsh-exec].
   This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
 
-For Linux-based systems the process structure supports the following process specific fields:
+For Linux and Solaris systems, the process structure supports the following process-specific fields:
+
+* **`rlimits`** (object, OPTIONAL) configures [rlimits][setrlimit.3] for the container process.
+    Valid keys are `RLIMIT_*` resources.
+    POSIX [defines several][setrlimit.3], and [Linux][setrlimit.2-linux] and [Solaris][setrlimit.2-solaris] add additional, platform-specific resources.
+    Values have the following properties:
+
+    * **`soft`** (uint64, OPTIONAL) The current limit on the resource.
+    * **`hard`** (uint64, OPTIONAL) The ceiling for soft limts going forward.
+      Only a process with appropriate privileges can raise a hard limit.
+
+For Linux-based systems, the process structure supports the following process-specific fields:
 
 * **`capabilities`** (array of strings, OPTIONAL) capabilities is an array that specifies Linux capabilities that can be provided to the process inside the container.
 Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html)
-* **`rlimits`** (array of rlimits, OPTIONAL) rlimits is an array of rlimits that allows setting resource limits for a process inside the container.
-The kernel enforces the `soft` limit for a resource while the `hard` limit acts as a ceiling for that value that could be set by an unprivileged process.
-Valid values for the 'type' field are the resources defined in [the man page](http://man7.org/linux/man-pages/man2/setrlimit.2.html).
 * **`apparmorProfile`** (string, OPTIONAL) apparmor profile specifies the name of the apparmor profile that will be used for the container.
 For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
 * **`selinuxLabel`** (string, OPTIONAL) SELinux process label specifies the label with which the processes in a container are run.
@@ -187,9 +195,8 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
         "CAP_KILL",
         "CAP_NET_BIND_SERVICE"
     ],
-    "rlimits": [
-        {
-            "type": "RLIMIT_NOFILE",
+    "rlimits": {
+        "RLIMIT_NOFILE": {
             "hard": 1024,
             "soft": 1024
         }
@@ -435,18 +442,16 @@ Here is a full example `config.json` for reference.
             "CAP_KILL",
             "CAP_NET_BIND_SERVICE"
         ],
-        "rlimits": [
-            {
-                "type": "RLIMIT_CORE",
+        "rlimits": {
+            "RLIMIT_CORE": {
                 "hard": 1024,
                 "soft": 1024
             },
-            {
-                "type": "RLIMIT_NOFILE",
+            "RLIMIT_NOFILE": {
                 "hard": 1024,
                 "soft": 1024
             }
-        ],
+        },
         "apparmorProfile": "acme_secure_profile",
         "selinuxLabel": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675",
         "noNewPrivileges": true
@@ -758,6 +763,9 @@ Here is a full example `config.json` for reference.
 ```
 
 [container-namespace]: glossary.md#container-namespace
+[setrlimit.2-linux]: http://man7.org/linux/man-pages/man2/setrlimit.2.html
+[setrlimit.2-solaris]: http://docs.oracle.com/cd/E36784_01/html/E36872/setrlimit-2.html
+[setrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/setrlimit.html
 [go-environment]: https://golang.org/doc/install/source#environment
 [ieee-1003.1-2001-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html#tag_08_01
 [ieee-1003.1-2001-xsh-exec]: http://pubs.opengroup.org/onlinepubs/009695399/functions/exec.html
