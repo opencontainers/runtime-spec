@@ -20,7 +20,7 @@ For example, if a configuration is compliant with version 1.1 of this specificat
     "ociVersion": "0.1.0"
 ```
 
-## Root Configuration
+## Root
 
 **`root`** (object, REQUIRED) configures the container's root filesystem.
 
@@ -41,7 +41,7 @@ For example, if a configuration is compliant with version 1.1 of this specificat
 
 ## Mounts
 
-**`mounts`** (array, OPTIONAL) configures additional mounts (on top of [`root`](#root-configuration)).
+**`mounts`** (array, OPTIONAL) configures additional mounts (on top of [`root`](#root)).
 The runtime MUST mount entries in the listed order.
 The parameters are similar to the ones in [the Linux mount system call](http://man7.org/linux/man-pages/man2/mount.2.html).
 For Solaris, the mounts corresponds to fs resource in zonecfg(8).
