@@ -209,6 +209,43 @@ A container joins an existing [UTS namespace](config-linux.md#namespaces) on Lin
 
 When the example container is deleted, neither removing the preexisting UTS namespace nor undoing the hostname change are allowed.
 
+##### Joining cgroups (Linux)
+
+A container joins an existing [cgroup](config-linux.md#control-groups) on Linux and changes a [memory limit](config.md#memory) with the following [configuration](config.md):
+
+```json
+{
+    "ociVersion": "1.0.0-rc3",
+    "platform": {
+        "os": "linux",
+        "arch": "amd64"
+    },
+    "process": {
+        "cwd": "/",
+        "args": [
+            "sh"
+        ],
+        "user": {
+            "uid": 1,
+            "gid": 1
+        }
+    },
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "cgroupsPath": "/some/existing/container",
+        "resources": {
+            "memory": {
+                "limit": 100000
+            }
+        }
+    }
+}
+```
+
+When the example container is deleted, neither removing the preexisting cgroup not undoing the memory limit change are allowed.
+
 ## Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
 See [runtime configuration for hooks](./config.md#hooks) for more information.
