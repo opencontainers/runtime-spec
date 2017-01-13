@@ -290,14 +290,8 @@
                 }
             },
             "cgroupsPath": {
-                "oneOf": [
-                    {
-                        "type": "null"
-                    },
-                    {
-                        "type": "string"
-                    }
-                ]
+                "id": "https://opencontainers.org/schema/bundle/linux/cgroupsPath",
+                "$ref": "defs.json#/definitions/stringPointer"
             },
             "rootfsPropagation": {
                 "id": "https://opencontainers.org/schema/bundle/linux/rootfsPropagation",
