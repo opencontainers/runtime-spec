@@ -6,9 +6,9 @@ The Linux container specification uses various kernel features like namespaces, 
 ## Default Filesystems
 
 The Linux ABI includes both syscalls and several special file paths.
-Applications expecting a Linux environment will very likely expect these files paths to be setup correctly.
+Applications expecting a Linux environment will very likely expect these file paths to be setup correctly.
 
-The following filesystems MUST be made available in each container's filesystem
+The following filesystems MUST be made available in each container's filesystem:
 
 |   Path   |  Type  |
 | -------- | ------ |
@@ -26,7 +26,7 @@ For more information, see [the man page](http://man7.org/linux/man-pages/man7/na
 Namespaces are specified as an array of entries inside the `namespaces` root field.
 The following parameters can be specified to setup namespaces:
 
-* **`type`** *(string, required)* - namespace type. The following namespaces types are supported:
+* **`type`** *(string, REQUIRED)* - namespace type. The following namespace types are supported:
     * **`pid`** processes inside the container will only be able to see other processes inside the same container.
     * **`network`** the container will have its own network stack.
     * **`mount`** the container will have an isolated mount table.
@@ -35,11 +35,11 @@ The following parameters can be specified to setup namespaces:
     * **`user`** the container will be able to remap user and group IDs from the host to local users and groups within the container.
     * **`cgroup`** the container will have an isolated view of the cgroup hierarchy.
 
-* **`path`** *(string, optional)* - path to namespace file in the [runtime mount namespace](glossary.md#runtime-namespace)
+* **`path`** *(string, OPTIONAL)* - path to namespace file in the [runtime mount namespace](glossary.md#runtime-namespace)
 
 If a path is specified, that particular file is used to join that type of namespace.
 If a namespace type is not specified in the `namespaces` array, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
-If a new namespace is not created (because the namespace type is not listed, or because it is listed with a `path`), runtimes MUST assume that the setup for that namespace has already been done and error out if the config specifies anything else related to that namespace.
+If a `namespaces` field contains duplicated namespaces with same `type`, the runtime MUST error out.
 
 ###### Example
 
@@ -73,6 +73,18 @@ If a new namespace is not created (because the namespace type is not listed, or 
 
 ## User namespace mappings
 
+**`uidMappings`** (array of objects, OPTIONAL) describes the user namespace uid mappings from the host to the container.
+**`gidMappings`** (array of objects, OPTIONAL) describes the user namespace gid mappings from the host to the container.
+
+Each entry has the following structure:
+
+* **`hostID`** (uint32, REQUIRED)* - is the starting uid/gid on the host to be mapped to *containerID*.
+* **`containerID`** (uint32, REQUIRED)* - is the starting uid/gid in the container.
+* **`size`** (uint32, REQUIRED)* - is the number of ids to be mapped.
+
+The runtime SHOULD NOT modify the ownership of referenced filesystems to realize the mapping.
+There is a limit of 5 mappings which is the Linux kernel hard limit.
+
 ###### Example
 
 ```json
@@ -80,38 +92,36 @@ If a new namespace is not created (because the namespace type is not listed, or 
         {
             "hostID": 1000,
             "containerID": 0,
-            "size": 10
+            "size": 32000
         }
     ],
     "gidMappings": [
         {
             "hostID": 1000,
             "containerID": 0,
-            "size": 10
+            "size": 32000
         }
     ]
 ```
 
-uid/gid mappings describe the user namespace mappings from the host to the container.
-The runtime SHOULD NOT modify the ownership of referenced filesystems to realize the mapping.
-*hostID* is the starting uid/gid on the host to be mapped to *containerID* which is the starting uid/gid in the container and *size* refers to the number of ids to be mapped.
-There is a limit of 5 mappings which is the Linux kernel hard limit.
-
 ## Devices
 
-**`devices`** (array, optional) lists devices that MUST be available in the container.
+**`devices`** (array of objects, OPTIONAL) lists devices that MUST be available in the container.
 The runtime may supply them however it likes (with [mknod][mknod.2], by bind mounting from the runtime mount namespace, etc.).
 
-The following parameters can be specified:
+Each entry has the following structure:
 
-* **`type`** *(string, required)* - type of device: `c`, `b`, `u` or `p`.
+* **`type`** *(string, REQUIRED)* - type of device: `c`, `b`, `u` or `p`.
   More info in [mknod(1)][mknod.1].
-* **`path`** *(string, required)* - full path to device inside container.
-* **`major, minor`** *(int64, required unless **`type`** is `p`)* - [major, minor numbers][devices] for the device.
-* **`fileMode`** *(uint32, optional)* - file mode for the device.
+* **`path`** *(string, REQUIRED)* - full path to device inside container.
+  If a [file][file.1] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
+* **`major, minor`** *(int64, REQUIRED unless **`type`** is `p`)* - [major, minor numbers][devices] for the device.
+* **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
   You can also control access to devices [with cgroups](#device-whitelist).
-* **`uid`** *(uint32, optional)* - id of device owner.
-* **`gid`** *(uint32, optional)* - id of device group.
+* **`uid`** *(uint32, OPTIONAL)* - id of device owner.
+* **`gid`** *(uint32, OPTIONAL)* - id of device group.
+
+The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
 
 ###### Example
 
@@ -148,7 +158,7 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/random`][random.4]
 * [`/dev/urandom`][random.4]
 * [`/dev/tty`][tty.4]
-* [`/dev/console`][console.4]
+* [`/dev/console`][console.4] is setup if terminal is enabled in the config by bind mounting the pseudoterminal slave to /dev/console.
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
@@ -199,17 +209,17 @@ However, a runtime MAY attach the container process to additional cgroup control
 
 #### Device whitelist
 
-**`devices`** (array, optional) configures the [device whitelist][cgroup-v1-devices].
+**`devices`** (array of objects, OPTIONAL) configures the [device whitelist][cgroup-v1-devices].
 The runtime MUST apply entries in the listed order.
 
-The following parameters can be specified:
+Each entry has the following structure:
 
-* **`allow`** *(boolean, required)* - whether the entry is allowed or denied.
-* **`type`** *(string, optional)* - type of device: `a` (all), `c` (char), or `b` (block).
+* **`allow`** *(boolean, REQUIRED)* - whether the entry is allowed or denied.
+* **`type`** *(string, OPTIONAL)* - type of device: `a` (all), `c` (char), or `b` (block).
   `null` or unset values mean "all", mapping to `a`.
-* **`major, minor`** *(int64, optional)* - [major, minor numbers][devices] for the device.
+* **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
   `null` or unset values mean "all", mapping to [`*` in the filesystem API][cgroup-v1-devices].
-* **`access`** *(string, optional)* - cgroup permissions for device.
+* **`access`** *(string, OPTIONAL)* - cgroup permissions for device.
   A composition of `r` (read), `w` (write), and `m` (mknod).
 
 ###### Example
@@ -245,7 +255,7 @@ The OOM killer is enabled by default in every cgroup using the `memory` subsyste
 To disable it, specify a value of `true`.
 For more information, see [the memory cgroup man page][cgroup-v1-memory].
 
-* **`disableOOMKiller`** *(bool, optional)* - enables or disables the OOM killer
+* **`disableOOMKiller`** *(bool, OPTIONAL)* - enables or disables the OOM killer
 
 ###### Example
 
@@ -260,7 +270,7 @@ For more information, see [the proc filesystem documentation section 3.1](https:
 This is a kernel/system level setting, where as `disableOOMKiller` is scoped for a memory cgroup.
 For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory].
 
-* **`oomScoreAdj`** *(int, optional)* - adjust the oom-killer score
+* **`oomScoreAdj`** *(int, OPTIONAL)* - adjust the oom-killer score
 
 ###### Example
 
@@ -270,22 +280,22 @@ For more information on how these two settings work together, see [the memory cg
 
 #### Memory
 
-`memory` represents the cgroup subsystem `memory` and it's used to set limits on the container's memory usage.
+**`memory`** (object, OPTIONAL) represents the cgroup subsystem `memory` and it's used to set limits on the container's memory usage.
 For more information, see [the memory cgroup man page][cgroup-v1-memory].
 
 The following parameters can be specified to setup the controller:
 
-* **`limit`** *(uint64, optional)* - sets limit of memory usage in bytes
+* **`limit`** *(int64, OPTIONAL)* - sets limit of memory usage in bytes
 
-* **`reservation`** *(uint64, optional)* - sets soft limit of memory usage in bytes
+* **`reservation`** *(int64, OPTIONAL)* - sets soft limit of memory usage in bytes
 
-* **`swap`** *(uint64, optional)* - sets limit of memory+Swap usage
+* **`swap`** *(int64, OPTIONAL)* - sets limit of memory+Swap usage
 
-* **`kernel`** *(uint64, optional)* - sets hard limit for kernel memory
+* **`kernel`** *(int64, OPTIONAL)* - sets hard limit for kernel memory
 
-* **`kernelTCP`** *(uint64, optional)* - sets hard limit in bytes for kernel TCP buffer memory
+* **`kernelTCP`** *(int64, OPTIONAL)* - sets hard limit in bytes for kernel TCP buffer memory
 
-* **`swappiness`** *(uint64, optional)* - sets swappiness parameter of vmscan (See sysctl's vm.swappiness)
+* **`swappiness`** *(uint64, OPTIONAL)* - sets swappiness parameter of vmscan (See sysctl's vm.swappiness)
 
 ###### Example
 
@@ -302,24 +312,24 @@ The following parameters can be specified to setup the controller:
 
 #### CPU
 
-`cpu` represents the cgroup subsystems `cpu` and `cpusets`.
+**`cpu`** (object, OPTIONAL) represents the cgroup subsystems `cpu` and `cpusets`.
 For more information, see [the cpusets cgroup man page][cgroup-v1-cpusets].
 
 The following parameters can be specified to setup the controller:
 
-* **`shares`** *(uint64, optional)* - specifies a relative share of CPU time available to the tasks in a cgroup
+* **`shares`** *(uint64, OPTIONAL)* - specifies a relative share of CPU time available to the tasks in a cgroup
 
-* **`quota`** *(uint64, optional)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
+* **`quota`** *(int64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
 
-* **`period`** *(uint64, optional)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
+* **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
 
-* **`realtimeRuntime`** *(uint64, optional)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
+* **`realtimeRuntime`** *(int64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
 
-* **`realtimePeriod`** *(uint64, optional)* - same as **`period`** but applies to realtime scheduler only
+* **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
 
-* **`cpus`** *(string, optional)* - list of CPUs the container will run in
+* **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run in
 
-* **`mems`** *(string, optional)* - list of Memory Nodes the container will run in
+* **`mems`** *(string, OPTIONAL)* - list of Memory Nodes the container will run in
 
 ###### Example
 
@@ -337,25 +347,26 @@ The following parameters can be specified to setup the controller:
 
 #### Block IO Controller
 
-`blockIO` represents the cgroup subsystem `blkio` which implements the block io controller.
+**`blockIO`** (object, OPTIONAL) represents the cgroup subsystem `blkio` which implements the block IO controller.
 For more information, see [the kernel cgroups documentation about blkio][cgroup-v1-blkio].
 
 The following parameters can be specified to setup the controller:
 
-* **`blkioWeight`** *(uint16, optional)* - specifies per-cgroup weight. This is default weight of the group on all devices until and unless overridden by per-device rules. The range is from 10 to 1000.
+* **`blkioWeight`** *(uint16, OPTIONAL)* - specifies per-cgroup weight. This is default weight of the group on all devices until and unless overridden by per-device rules. The range is from 10 to 1000.
 
-* **`blkioLeafWeight`** *(uint16, optional)* - equivalents of `blkioWeight` for the purpose of deciding how much weight tasks in the given cgroup has while competing with the cgroup's child cgroups. The range is from 10 to 1000.
+* **`blkioLeafWeight`** *(uint16, OPTIONAL)* - equivalents of `blkioWeight` for the purpose of deciding how much weight tasks in the given cgroup has while competing with the cgroup's child cgroups. The range is from 10 to 1000.
 
-* **`blkioWeightDevice`** *(array, optional)* - specifies the list of devices which will be bandwidth rate limited. The following parameters can be specified per-device:
-    * **`major, minor`** *(int64, required)* - major, minor numbers for device. More info in `man mknod`.
-    * **`weight`** *(uint16, optional)* - bandwidth rate for the device, range is from 10 to 1000
-    * **`leafWeight`** *(uint16, optional)* - bandwidth rate for the device while competing with the cgroup's child cgroups, range is from 10 to 1000, CFQ scheduler only
+* **`blkioWeightDevice`** *(array, OPTIONAL)* - specifies the list of devices which will be bandwidth rate limited. The following parameters can be specified per-device:
+    * **`major, minor`** *(int64, REQUIRED)* - major, minor numbers for device. More info in `man mknod`.
+    * **`weight`** *(uint16, OPTIONAL)* - bandwidth rate for the device, range is from 10 to 1000
+    * **`leafWeight`** *(uint16, OPTIONAL)* - bandwidth rate for the device while competing with the cgroup's child cgroups, range is from 10 to 1000, CFQ scheduler only
 
     You must specify at least one of `weight` or `leafWeight` in a given entry, and can specify both.
 
-* **`blkioThrottleReadBpsDevice`**, **`blkioThrottleWriteBpsDevice`**, **`blkioThrottleReadIOPSDevice`**, **`blkioThrottleWriteIOPSDevice`** *(array, optional)* - specify the list of devices which will be IO rate limited. The following parameters can be specified per-device:
-    * **`major, minor`** *(int64, required)* - major, minor numbers for device. More info in `man mknod`.
-    * **`rate`** *(uint64, required)* - IO rate limit for the device
+* **`blkioThrottleReadBpsDevice`**, **`blkioThrottleWriteBpsDevice`**, **`blkioThrottleReadIOPSDevice`**, **`blkioThrottleWriteIOPSDevice`** *(array, OPTIONAL)* - specify the list of devices which will be IO rate limited.
+  The following parameters can be specified per-device:
+    * **`major, minor`** *(int64, REQUIRED)* - major, minor numbers for device. More info in `man mknod`.
+    * **`rate`** *(uint64, REQUIRED)* - IO rate limit for the device
 
 ###### Example
 
@@ -395,15 +406,15 @@ The following parameters can be specified to setup the controller:
 
 #### Huge page limits
 
-`hugepageLimits` represents the `hugetlb` controller which allows to limit the
+**`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the
 HugeTLB usage per control group and enforces the controller limit during page fault.
 For more information, see the [kernel cgroups documentation about HugeTLB][cgroup-v1-hugetlb].
 
-`hugepageLimits` is an array of entries, each having the following structure:
+Each entry has the following structure:
 
-* **`pageSize`** *(string, required)* - hugepage size
+* **`pageSize`** *(string, REQUIRED)* - hugepage size
 
-* **`limit`** *(uint64, required)* - limit in bytes of *hugepagesize* HugeTLB usage
+* **`limit`** *(int64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
 
 ###### Example
 
@@ -411,24 +422,24 @@ For more information, see the [kernel cgroups documentation about HugeTLB][cgrou
    "hugepageLimits": [
         {
             "pageSize": "2MB",
-            "limit": 9223372036854771712
+            "limit": 209715200
         }
    ]
 ```
 
 #### Network
 
-`network` represents the cgroup subsystems `net_cls` and `net_prio`.
+**`network`** (object, OPTIONAL) represents the cgroup subsystems `net_cls` and `net_prio`.
 For more information, see [the net\_cls cgroup man page][cgroup-v1-net-cls] and [the net\_prio cgroup man page][cgroup-v1-net-prio].
 
-The following parameters can be specified to setup these cgroup controllers:
+The following parameters can be specified to setup the controller:
 
-* **`classID`** *(uint32, optional)* - is the network class identifier the cgroup's network packets will be tagged with
+* **`classID`** *(uint32, OPTIONAL)* - is the network class identifier the cgroup's network packets will be tagged with
 
-* **`priorities`** *(array, optional)* - specifies a list of objects of the priorities assigned to traffic originating from
-processes in the group and egressing the system on various interfaces. The following parameters can be specified per-priority:
-    * **`name`** *(string, required)* - interface name
-    * **`priority`** *(uint32, required)* - priority applied to the interface
+* **`priorities`** *(array, OPTIONAL)* - specifies a list of objects of the priorities assigned to traffic originating from processes in the group and egressing the system on various interfaces.
+  The following parameters can be specified per-priority:
+    * **`name`** *(string, REQUIRED)* - interface name
+    * **`priority`** *(uint32, REQUIRED)* - priority applied to the interface
 
 ###### Example
 
@@ -450,12 +461,12 @@ processes in the group and egressing the system on various interfaces. The follo
 
 #### PIDs
 
-`pids` represents the cgroup subsystem `pids`.
+**`pids`** (object, OPTIONAL) represents the cgroup subsystem `pids`.
 For more information, see [the pids cgroup man page][cgroup-v1-pids].
 
 The following parameters can be specified to setup the controller:
 
-* **`limit`** *(int64, required)* - specifies the maximum number of tasks in the cgroup
+* **`limit`** *(int64, REQUIRED)* - specifies the maximum number of tasks in the cgroup
 
 ###### Example
 
@@ -467,7 +478,7 @@ The following parameters can be specified to setup the controller:
 
 ## Sysctl
 
-`sysctl` allows kernel parameters to be modified at runtime for the container.
+**`sysctl`** (object, OPTIONAL) allows kernel parameters to be modified at runtime for the container.
 For more information, see [the man page](http://man7.org/linux/man-pages/man8/sysctl.8.html)
 
 ###### Example
@@ -540,7 +551,7 @@ Operator Constants:
 
 ## Rootfs Mount Propagation
 
-`rootfsPropagation` sets the rootfs's mount propagation.
+**`rootfsPropagation`** (string, OPTIONAL) sets the rootfs's mount propagation.
 Its value is either slave, private, or shared.
 [The kernel doc](https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt) has more information about mount propagation.
 
@@ -552,7 +563,8 @@ Its value is either slave, private, or shared.
 
 ## Masked Paths
 
-`maskedPaths` will mask over the provided paths inside the container so that they cannot be read.
+**`maskedPaths`** (array of strings, OPTIONAL) will mask over the provided paths inside the container so that they cannot be read.
+The values MUST be absolute paths in the [container namespace][container-namespace2].
 
 ###### Example
 
@@ -564,7 +576,8 @@ Its value is either slave, private, or shared.
 
 ## Readonly Paths
 
-`readonlyPaths` will set the provided paths as readonly inside the container.
+**`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.
+The values MUST be absolute paths in the [container namespace][container-namespace2].
 
 ###### Example
 
@@ -576,7 +589,7 @@ Its value is either slave, private, or shared.
 
 ## Mount Label
 
-`mountLabel` will set the Selinux context for the mounts in the container.
+**`mountLabel`** (string, OPTIONAL) will set the Selinux context for the mounts in the container.
 
 ###### Example
 
@@ -584,6 +597,7 @@ Its value is either slave, private, or shared.
     "mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
 ```
 
+[container-namespace2]: glossary.md#container_namespace
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
 [cgroup-v1-cpusets]: https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt
@@ -596,6 +610,7 @@ Its value is either slave, private, or shared.
 [cgroup-v2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt
 [devices]: https://www.kernel.org/doc/Documentation/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
+[file.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
 
 [mknod.1]: http://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html

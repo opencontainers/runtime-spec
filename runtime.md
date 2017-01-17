@@ -15,11 +15,11 @@ This MUST be unique across all containers on this host.
 There is no requirement that it be unique across hosts.
 * **`status`**: (string) is the runtime state of the container.
 The value MAY be one of:
-    * `created`: the container has been created but the user-specified code has not yet been executed
-    * `running`: the container has been created and the user-specified code is running
-    * `stopped`: the container has been created and the user-specified code has been executed but is no longer running
+    * `created`: the container has been created but the user-specified program has not yet been executed
+    * `running`: the container has been created and the user-specified program is running
+    * `stopped`: the container has been created and the user-specified program has been executed but is no longer running
 
-  Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
+    Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
 * **`pid`**: (int) is the ID of the container process, as seen by the host.
 * **`bundlePath`**: (string) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
@@ -46,18 +46,18 @@ See [Query State](#query-state) for information on retrieving the state of a con
 ## Lifecycle
 The lifecycle describes the timeline of events that happen from when a container is created to when it ceases to exist.
 
-1. OCI compliant runtime's `create` command is invoked with a reference to the location of the bundle and a unique identifier.
+1. OCI compliant runtime's [`create`](runtime.md#create) command is invoked with a reference to the location of the bundle and a unique identifier.
 2. The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
    If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST generate an error.
-   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified code (from [`process`](config.md#process-configuration) MUST NOT be run at this time.
-   Any updates to `config.json` after this step MUST NOT affect the container.
+   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
+   Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
 3. Once the container is created additional actions MAY be performed based on the features the runtime chooses to support.
    However, some actions might only be available based on the current state of the container (e.g. only available while it is started).
-4. Runtime's `start` command is invoked with the unique identifier of the container.
-   The runtime MUST run the user-specified code, as specified by [`process`](config.md#process-configuration).
+4. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+   The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
 5. The container's process is stopped.
-   This MAY happen due to them erroring out, exiting, crashing or the runtime's `kill` operation being invoked.
-6. Runtime's `delete` command is invoked with the unique identifier of the container.
+   This MAY happen due to them erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
+6. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
    The container MUST be destroyed by undoing the steps performed during create phase (step 2).
 
 ## Errors
@@ -69,7 +69,7 @@ Unless otherwise stated, generating an error MUST leave the state of the environ
 
 OCI compliant runtimes MUST support the following operations, unless the operation is not supported by the base operating system.
 
-Note: these operations are not specifying any command-line APIs, and the paramenters are inputs for general operations.
+Note: these operations are not specifying any command-line APIs, and the parameters are inputs for general operations.
 
 ### Query State
 
@@ -84,9 +84,10 @@ This operation MUST return the state of a container as specified in the [State](
 `create <container-id> <path-to-bundle>`
 
 This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
-If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error and a new container MUST not be created.
+If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error and a new container MUST NOT be created.
 Using the data in [`config.json`](config.md), this operation MUST create a new container.
-This means that all of the resources associated with the container MUST be created, however, the user-specified code MUST NOT be run at this time.
+This means that all of the resources associated with the container MUST be created, however, the user-specified program MUST NOT be run at this time.
+If the runtime cannot create the container as specified in [`config.json`](config.md), it MUST generate an error and a new container MUST NOT be created.
 
 Upon successful completion of this operation the `status` property of this container MUST be `created`.
 
@@ -101,7 +102,7 @@ Any changes made to the [`config.json`](config.md) file after this operation wil
 This operation MUST generate an error if it is not provided the container ID.
 Attempting to start a container that does not exist MUST generate an error.
 Attempting to start an already started container MUST have no effect on the container and MUST generate an error.
-This operation MUST run the user-specified code as specified by [`process`](config.md#process-configuration).
+This operation MUST run the user-specified program as specified by [`process`](config.md#process).
 
 Upon successful completion of this operation the `status` property of this container MUST be `running`.
 

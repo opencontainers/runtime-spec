@@ -1,6 +1,6 @@
 
 EPOCH_TEST_COMMIT	:= 78e6667ae2d67aad100b28ee9580b41b7a24e667
-OUTPUT_DIRNAME		?= output/
+OUTPUT_DIRNAME		?= output
 DOC_FILENAME		?= oci-runtime-spec
 DOCKER			?= $(shell command -v docker 2>/dev/null)
 PANDOC			?= $(shell command -v pandoc 2>/dev/null)
@@ -21,13 +21,8 @@ endif
 # These docs are in an order that determines how they show up in the PDF/HTML docs.
 DOC_FILES := \
 	version.md \
-	README.md \
-	code-of-conduct.md \
+	spec.md \
 	principles.md \
-	style.md \
-	ROADMAP.md \
-	implementations.md \
-	project.md \
 	bundle.md \
 	runtime.md \
 	runtime-linux.md \
@@ -54,9 +49,6 @@ $(OUTPUT_DIRNAME)/$(DOC_FILENAME).html: $(DOC_FILES)
 	$(PANDOC) -f markdown_github -t html5 -o $(PANDOC_DST)$@ $(patsubst %,$(PANDOC_SRC)%,$(DOC_FILES))
 endif
 
-code-of-conduct.md:
-	curl -o $@ https://raw.githubusercontent.com/opencontainers/tob/d2f9d68c1332870e40693fe077d311e0742bc73d/code-of-conduct.md
-
 version.md: ./specs-go/version.go
 	go run ./.tool/version-doc.go > $@
 
@@ -73,7 +65,7 @@ test: .govet .golint .gitvalidation
 
 # `go get github.com/golang/lint/golint`
 .golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.5,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
 	@which golint > /dev/null 2>/dev/null || (echo "ERROR: golint not found. Consider 'make install.tools' target" && false)
 	golint ./...
 endif
@@ -92,9 +84,9 @@ endif
 .PHONY: install.tools
 install.tools: .install.golint .install.gitvalidation
 
-# golint does not even build for <go1.5
+# golint does not even build for <go1.6
 .install.golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.5,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
 	go get -u github.com/golang/lint/golint
 endif
 
@@ -105,5 +97,5 @@ endif
 .PHONY: clean
 clean:
 	rm -rf $(OUTPUT_DIRNAME) *~
-	rm -f code-of-conduct.md version.md
+	rm -f version.md
 

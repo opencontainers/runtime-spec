@@ -2,34 +2,17 @@
 
 The [Open Container Initiative](http://www.opencontainers.org/) develops specifications for standards on Operating System process and application containers.
 
+The specification can be found [here](spec.md).
 
-Table of Contents
+Additional documentation about how this group operates:
 
-- [Introduction](README.md)
-  - [Code of Conduct](#code-of-conduct)
-  - [Container Principles](principles.md)
-  - [Style and Conventions](style.md)
-  - [Roadmap](ROADMAP.md)
-  - [Implementations](implementations.md)
-  - [project](project.md)
-- [Filesystem Bundle](bundle.md)
-- Runtime and Lifecycle
-  - [General Runtime and Lifecycle](runtime.md)
-  - [Linux-specific Runtime and Lifecycle](runtime-linux.md)
-- Configuration
-  - [General Configuration](config.md)
-  - [Linux-specific Configuration](config-linux.md)
-  - [Solaris-specific Configuration](config-solaris.md)
-- [Glossary](glossary.md)
-
-In the specifications in the above table of contents, the keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119) (Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC 2119, March 1997).
-
-An implementation is not compliant for a given CPU architecture if it fails to satisfy one or more of the MUST, REQUIRED, or SHALL requirements for the protocols it implements.
-An implementation is compliant for a given CPU architecture if it satisfies all the MUST, REQUIRED, and SHALL requirements for the protocols it implements.
-
-Protocols defined by this specification are:
-* Linux containers: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), and [runtime-linux.md](runtime-linux.md).
-* Solaris containers: [runtime.md](runtime.md), [config.md](config.md), and [config-solaris.md](config-solaris.md).
+- [Code of Conduct](https://github.com/opencontainers/tob/blob/d2f9d68c1332870e40693fe077d311e0742bc73d/code-of-conduct.md)
+- [Style and Conventions](style.md)
+- [Roadmap](ROADMAP.md)
+- [Implementations](implementations.md)
+- [Releases](RELEASES.md)
+- [project](project.md)
+- [charter][charter]
 
 # Use Cases
 
@@ -38,7 +21,7 @@ To provide context for users the following section gives example use cases for e
 #### Application Bundle Builders
 
 Application bundle builders can create a [bundle](bundle.md) directory that includes all of the files required for launching an application as a container.
-The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process-configuration) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
+The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
 Because the configuration includes host-specific settings, application bundle directories copied between two hosts may require configuration adjustments.
 
 #### Hook Developers
@@ -61,10 +44,6 @@ Development happens on GitHub for the spec.
 Issues are used for bugs and actionable items and longer discussions can happen on the [mailing list](#mailing-list).
 
 The specification and code is licensed under the Apache 2.0 license found in the [LICENSE](./LICENSE) file.
-
-## Code of Conduct
-
-Participation in the OpenContainers community is governed by [OpenContainer's Code of Conduct](https://github.com/opencontainers/tob/blob/d2f9d68c1332870e40693fe077d311e0742bc73d/code-of-conduct.md).
 
 ## Discuss your design
 
@@ -163,3 +142,4 @@ Read more on [How to Write a Git Commit Message](http://chris.beams.io/posts/git
 
 [UberConference]: https://www.uberconference.com/opencontainers
 [irc-logs]: http://ircbot.wl.linuxfoundation.org/eavesdrop/%23opencontainers/
+[charter]: https://www.opencontainers.org/about/governance
