@@ -414,7 +414,7 @@ Each entry has the following structure:
 
 * **`pageSize`** *(string, REQUIRED)* - hugepage size
 
-* **`limit`** *(int64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
+* **`limit`** *(uint64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
 
 ###### Example
 
