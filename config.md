@@ -133,6 +133,9 @@ For Linux-based systems the process structure supports the following process spe
 
 * **`capabilities`** (array of strings, OPTIONAL) capabilities is an array that specifies Linux capabilities that can be provided to the process inside the container.
   Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html).
+
+    If the `noNewPrivileges` flag is set the runtime SHOULD try to apply Linux ambient capabilities. If this flag is not set it MUST NOT apply ambient capabilities.
+
 * **`rlimits`** (array of objects, OPTIONAL) allows setting resource limits for a process inside the container.
   Each entry has the following structure:
 
