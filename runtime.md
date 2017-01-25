@@ -7,24 +7,30 @@ Whether other entities using the same, or other, instance of the runtime can see
 
 ## <a name="state" />State
 
-The state of a container MUST include, at least, the following properties:
+The state of a container includes the following properties:
 
-* <a name="stateOciVersion" />**`ociVersion`**: (string) is the OCI specification version used when creating the container.
-* <a name="stateId" />**`id`**: (string) is the container's ID.
+* <a name="stateOciVersion" />**`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
+* <a name="stateId" />**`id`** (string, REQUIRED) is the container's ID.
 This MUST be unique across all containers on this host.
 There is no requirement that it be unique across hosts.
-* <a name="stateStatus" />**`status`**: (string) is the runtime state of the container.
+* <a name="stateStatus" />**`status`** (string, REQUIRED) is the runtime state of the container.
+
 The value MAY be one of:
-    * `created`: the container has been created but the user-specified code has not yet been executed
-    * `running`: the container has been created and the user-specified code is running
-    * `stopped`: the container has been created and the user-specified code has been executed but is no longer running
+
+    * `created`: the container process has neither exited nor executed the user-specified program
+    * `running`: the container process has executed the user-specified program but has not exited
+    * `stopped`: the container process has exited
 
     Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
-* <a name="statePid" />**`pid`**: (int) is the ID of the container process, as seen by the host.
-* <a name="stateBundlePath" />**`bundlePath`**: (string) is the absolute path to the container's bundle directory.
+
+* <a name="statePid" />**`pid`** (int, REQUIRED when `status` is `created` or `running`) is the ID of the container process, as seen by the host.
+* <a name="stateBundlePath" />**`bundlePath`** (string, REQUIRED) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
-* <a name="stateAnnotations" />**`annotations`**: (map) contains the list of annotations associated with the container.
+* <a name="stateAnnotations" />**`annotations`** (map, OPTIONAL) contains the list of annotations associated with the container.
+
 If no annotations were provided then this property MAY either be absent or an empty map.
+
+The state MAY include additional properties.
 
 When serialized in JSON, the format MUST adhere to the following pattern:
 
@@ -49,14 +55,14 @@ The lifecycle describes the timeline of events that happen from when a container
 1. <a name="lifecycle01" />OCI compliant runtime's [`create`](runtime.md#create) command is invoked with a reference to the location of the bundle and a unique identifier.
 2. <a name="lifecycle02" />The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
    If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST generate an error.
-   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified code (from [`process`](config.md#process-configuration)) MUST NOT be run at this time.
+   While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
    Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
 3. <a name="lifecycle03" />Once the container is created additional actions MAY be performed based on the features the runtime chooses to support.
    However, some actions might only be available based on the current state of the container (e.g. only available while it is started).
 4. <a name="lifecycle04" />Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
-   The runtime MUST run the user-specified code, as specified by [`process`](config.md#process-configuration).
-5. <a name="lifecycle05" />The container's process is stopped.
-   This MAY happen due to them erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
+   The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
+5. <a name="lifecycle05" />The container process exits.
+   This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
 6. <a name="lifecycle06" />Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
    The container MUST be destroyed by undoing the steps performed during create phase (step 2).
 
@@ -86,8 +92,8 @@ This operation MUST return the state of a container as specified in the [State](
 This operation MUST generate an error if it is not provided a path to the bundle and the container ID to associate with the container.
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST generate an error and a new container MUST NOT be created.
 Using the data in [`config.json`](config.md), this operation MUST create a new container.
-This means that all of the resources associated with the container MUST be created, however, the user-specified code MUST NOT be run at this time.
-If the runtime cannot create the container as specified in [`config.md`](config.md), it MUST generate an error and a new container MUST NOT be created.
+This means that all of the resources associated with the container MUST be created, however, the user-specified program MUST NOT be run at this time.
+If the runtime cannot create the container as specified in [`config.json`](config.md), it MUST generate an error and a new container MUST NOT be created.
 
 Upon successful completion of this operation the `status` property of this container MUST be `created`.
 
@@ -102,7 +108,7 @@ Any changes made to the [`config.json`](config.md) file after this operation wil
 This operation MUST generate an error if it is not provided the container ID.
 Attempting to start a container that does not exist MUST generate an error.
 Attempting to start an already started container MUST have no effect on the container and MUST generate an error.
-This operation MUST run the user-specified code as specified by [`process`](config.md#process-configuration).
+This operation MUST run the user-specified program as specified by [`process`](config.md#process).
 
 Upon successful completion of this operation the `status` property of this container MUST be `running`.
 

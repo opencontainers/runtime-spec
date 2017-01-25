@@ -17,7 +17,7 @@ type Spec struct {
 	// Mounts configures additional mounts (on top of Root).
 	Mounts []Mount `json:"mounts,omitempty"`
 	// Hooks configures callbacks for container lifecycle events.
-	Hooks Hooks `json:"hooks"`
+	Hooks *Hooks `json:"hooks,omitempty"`
 	// Annotations contains arbitrary metadata for the container.
 	Annotations map[string]string `json:"annotations,omitempty"`
 
@@ -139,7 +139,7 @@ type Linux struct {
 	// CgroupsPath specifies the path to cgroups that are created and/or joined by the container.
 	// The path is expected to be relative to the cgroups mountpoint.
 	// If resources are specified, the cgroups at CgroupsPath will be updated based on resources.
-	CgroupsPath *string `json:"cgroupsPath,omitempty"`
+	CgroupsPath string `json:"cgroupsPath,omitempty"`
 	// Namespaces contains the namespaces that are created and/or joined by the container
 	Namespaces []LinuxNamespace `json:"namespaces,omitempty"`
 	// Devices are a list of device nodes that are created for the container
@@ -210,7 +210,7 @@ type LinuxHugepageLimit struct {
 	// Pagesize is the hugepage size
 	Pagesize string `json:"pageSize"`
 	// Limit is the limit of "hugepagesize" hugetlb usage
-	Limit uint64 `json:"limit"`
+	Limit int64 `json:"limit"`
 }
 
 // LinuxInterfacePriority for network interfaces
@@ -266,15 +266,15 @@ type LinuxBlockIO struct {
 // LinuxMemory for Linux cgroup 'memory' resource management
 type LinuxMemory struct {
 	// Memory limit (in bytes).
-	Limit *uint64 `json:"limit,omitempty"`
+	Limit *int64 `json:"limit,omitempty"`
 	// Memory reservation or soft_limit (in bytes).
-	Reservation *uint64 `json:"reservation,omitempty"`
+	Reservation *int64 `json:"reservation,omitempty"`
 	// Total memory limit (memory + swap).
-	Swap *uint64 `json:"swap,omitempty"`
+	Swap *int64 `json:"swap,omitempty"`
 	// Kernel memory limit (in bytes).
-	Kernel *uint64 `json:"kernel,omitempty"`
+	Kernel *int64 `json:"kernel,omitempty"`
 	// Kernel memory limit for tcp (in bytes)
-	KernelTCP *uint64 `json:"kernelTCP,omitempty"`
+	KernelTCP *int64 `json:"kernelTCP,omitempty"`
 	// How aggressive the kernel will swap memory pages. Range from 0 to 100.
 	Swappiness *uint64 `json:"swappiness,omitempty"`
 }
@@ -284,17 +284,17 @@ type LinuxCPU struct {
 	// CPU shares (relative weight (ratio) vs. other cgroups with cpu shares).
 	Shares *uint64 `json:"shares,omitempty"`
 	// CPU hardcap limit (in usecs). Allowed cpu time in a given period.
-	Quota *uint64 `json:"quota,omitempty"`
+	Quota *int64 `json:"quota,omitempty"`
 	// CPU period to be used for hardcapping (in usecs).
 	Period *uint64 `json:"period,omitempty"`
 	// How much time realtime scheduling may use (in usecs).
-	RealtimeRuntime *uint64 `json:"realtimeRuntime,omitempty"`
+	RealtimeRuntime *int64 `json:"realtimeRuntime,omitempty"`
 	// CPU period to be used for realtime scheduling (in usecs).
 	RealtimePeriod *uint64 `json:"realtimePeriod,omitempty"`
 	// CPUs to use within the cpuset. Default is to use any CPU available.
-	Cpus *string `json:"cpus,omitempty"`
+	Cpus string `json:"cpus,omitempty"`
 	// List of memory nodes in the cpuset. Default is to use any available memory node.
-	Mems *string `json:"mems,omitempty"`
+	Mems string `json:"mems,omitempty"`
 }
 
 // LinuxPids for Linux cgroup 'pids' resource management (Linux 4.3)
@@ -356,13 +356,13 @@ type LinuxDeviceCgroup struct {
 	// Allow or deny
 	Allow bool `json:"allow"`
 	// Device type, block, char, etc.
-	Type *string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 	// Major is the device's major number.
 	Major *int64 `json:"major,omitempty"`
 	// Minor is the device's minor number.
 	Minor *int64 `json:"minor,omitempty"`
 	// Cgroup access permissions format, rwm.
-	Access *string `json:"access,omitempty"`
+	Access string `json:"access,omitempty"`
 }
 
 // LinuxSeccomp represents syscall restrictions
@@ -505,7 +505,7 @@ const (
 	ActAllow LinuxSeccompAction = "SCMP_ACT_ALLOW"
 )
 
-// LinuxOperatorOperator used to match syscall arguments in Seccomp
+// LinuxSeccompOperator used to match syscall arguments in Seccomp
 type LinuxSeccompOperator string
 
 // Define operators for syscall arguments in Seccomp
@@ -519,7 +519,7 @@ const (
 	OpMaskedEqual  LinuxSeccompOperator = "SCMP_CMP_MASKED_EQ"
 )
 
-// Arg used for matching specific syscall arguments in Seccomp
+// LinuxSeccompArg used for matching specific syscall arguments in Seccomp
 type LinuxSeccompArg struct {
 	Index    uint                 `json:"index"`
 	Value    uint64               `json:"value"`

@@ -44,17 +44,22 @@ For example, if a configuration is compliant with version 1.1 of this specificat
 **`mounts`** (array, OPTIONAL) configures additional mounts (on top of [`root`](#root-configuration)).
 The runtime MUST mount entries in the listed order.
 The parameters are similar to the ones in [the Linux mount system call](http://man7.org/linux/man-pages/man2/mount.2.html).
+For Solaris, the mounts corresponds to fs resource in zonecfg(8).
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
   This value MUST be an absolute path.
   For the Windows operating system, one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
+  For the Solaris operating system, this corresponds to "dir" of the fs resource in zonecfg(8).
 * **`type`** (string, REQUIRED) The filesystem type of the filesystem to be mounted.
   Linux: *filesystemtype* argument supported by the kernel are listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
   Windows: ntfs.
+  Solaris: corresponds to "type" of the fs resource in zonecfg(8).
 * **`source`** (string, REQUIRED) A device name, but can also be a directory name or a dummy.
   Windows: the volume name that is the target of the mount point, \\?\Volume\{GUID}\ (on Windows source is called target).
+  Solaris: corresponds to "special" of the fs resource in zonecfg(8).
 * **`options`** (list of strings, OPTIONAL) Mount options of the filesystem to be used.
   Linux: [supported][mount.8-filesystem-independent] [options][mount.8-filesystem-specific] are listed in [mount(8)][mount.8].
+  Solaris: corresponds to "options" of the fs resource in zonecfg(8).
 
 ### Example (Linux)
 
@@ -90,38 +95,60 @@ The parameters are similar to the ones in [the Linux mount system call](http://m
 
 See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [SetVolumeMountPoint](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx) in Windows.
 
+### Example (Solaris)
 
-## Process configuration
+```json
+"mounts": [
+    {
+        "destination": "/opt/local",
+        "type": "lofs",
+        "source": "/usr/local",
+        "options": ["ro","nodevices"]
+    },
+    {
+        "destination": "/opt/sfw",
+        "type": "lofs",
+        "source": "/opt/sfw"
+    }
+]
+```
+
+
+## Process
 
 **`process`** (object, REQUIRED) configures the container process.
 
-* **`terminal`** (bool, optional) specifies whether a terminal is attached to that process, defaults to false.
+* **`terminal`** (bool, OPTIONAL) specifies whether a terminal is attached to that process, defaults to false.
   On Linux, a pseudoterminal pair is allocated for the container process and the pseudoterminal slave is duplicated on the container process's [standard streams][stdin.3].
 * **`consoleSize`** (object, OPTIONAL) specifies the console size of the terminal if attached, containing the following properties:
   * **`height`** (uint, REQUIRED)
   * **`width`** (uint, REQUIRED)
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
   This value MUST be an absolute path.
-* **`env`** (array of strings, OPTIONAL) contains a list of variables that will be set in the process's environment prior to execution.
-  Elements in the array are specified as Strings in the form "KEY=value".
-  The left hand side MUST consist solely of letters, digits, and underscores `_` as outlined in [IEEE Std 1003.1-2001](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html).
-* **`args`** (array of strings, REQUIRED) executable to launch and any flags as an array.
-  The executable is the first element and MUST be available at the given path inside of the rootfs.
-  If the executable path is not an absolute path then the search $PATH is interpreted to find the executable.
+* **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2001's `environ`][ieee-1003.1-2001-xbd-c8.1].
+* **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2001 `execvp`'s *argv*][ieee-1003.1-2001-xsh-exec].
+  This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
 
 For Linux-based systems the process structure supports the following process specific fields:
 
 * **`capabilities`** (array of strings, OPTIONAL) capabilities is an array that specifies Linux capabilities that can be provided to the process inside the container.
-Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html)
-* **`rlimits`** (array of rlimits, OPTIONAL) rlimits is an array of rlimits that allows setting resource limits for a process inside the container.
-The kernel enforces the `soft` limit for a resource while the `hard` limit acts as a ceiling for that value that could be set by an unprivileged process.
-Valid values for the 'type' field are the resources defined in [the man page](http://man7.org/linux/man-pages/man2/setrlimit.2.html).
+  Valid values are the strings for capabilities defined in [the man page](http://man7.org/linux/man-pages/man7/capabilities.7.html).
+* **`rlimits`** (array of objects, OPTIONAL) allows setting resource limits for a process inside the container.
+  Each entry has the following structure:
+
+    * **`type`** (string, REQUIRED) - the 'type' field are the resources defined in [the man page](http://man7.org/linux/man-pages/man2/setrlimit.2.html).
+    * **`soft`** (uint64, REQUIRED) - the value that the kernel enforces for the corresponding resource.
+    * **`hard`** (uint64, REQUIRED) - the ceiling for the soft limit that could be set by an unprivileged process.
+      Only privileged process (under Linux: one with the CAP_SYS_RESOURCE capability) can raise a hard limit.
+
+    If `rlimits` contains duplicated entries with same `type`, the runtime MUST error out.
+
 * **`apparmorProfile`** (string, OPTIONAL) apparmor profile specifies the name of the apparmor profile that will be used for the container.
-For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
+  For more information about Apparmor, see [Apparmor documentation](https://wiki.ubuntu.com/AppArmor)
 * **`selinuxLabel`** (string, OPTIONAL) SELinux process label specifies the label with which the processes in a container are run.
-For more information about SELinux, see  [Selinux documentation](http://selinuxproject.org/page/Main_Page)
+  For more information about SELinux, see  [Selinux documentation](http://selinuxproject.org/page/Main_Page)
 * **`noNewPrivileges`** (bool, OPTIONAL) setting `noNewPrivileges` to true prevents the processes in the container from gaining additional privileges.
-[The kernel doc](https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt) has more information on how this is achieved using a prctl system call.
+  [The kernel doc](https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt) has more information on how this is achieved using a prctl system call.
 
 ### User
 
@@ -136,8 +163,6 @@ For Linux and Solaris based systems the user structure has the following fields:
 * **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs (in the [container namespace][container-namespace]) to be added to the process.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
-
-_Note: For Solaris, uid and gid specify the uid and gid of the process inside the container and need not be same as in the host._
 
 ### Example (Linux)
 
@@ -231,7 +256,8 @@ For Windows based systems the user structure has the following fields:
 ## Hostname
 
 * **`hostname`** (string, OPTIONAL) configures the container's hostname as seen by processes running inside the container.
-  On Linux, you can only set this if your bundle creates a new [UTS namespace][uts-namespace].
+  On Linux, this will change the hostname in the [container][container-namespace] [UTS namespace][uts-namespace].
+  Depending on your [namespace configuration](config-linux.md#namespaces), the container UTS namespace may be the [runtime UTS namespace][runtime-namespace].
 
 ### Example
 
@@ -269,7 +295,7 @@ For Windows based systems the user structure has the following fields:
   This SHOULD only be set if **`platform.os`** is `linux`.
 * **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
   This SHOULD only be set if **`platform.os`** is `solaris`.
-* **`windows`** (object, optional) [Windows-specific configuration](config-windows.md).
+* **`windows`** (object, OPTIONAL) [Windows-specific configuration](config-windows.md).
   This SHOULD only be set if **`platform.os`** is `windows`.
 
 ### Example (Linux)
@@ -292,19 +318,24 @@ For Windows based systems the user structure has the following fields:
 
 ## Hooks
 
-**`hooks`** (object, OPTIONAL) configures callbacks for container lifecycle events.
 Lifecycle hooks allow custom events for different points in a container's runtime.
-Presently there are `Prestart`, `Poststart` and `Poststop`.
 
-* [`Prestart`](#prestart) is a list of hooks to be run before the container process is executed
-* [`Poststart`](#poststart) is a list of hooks to be run immediately after the container process is started
-* [`Poststop`](#poststop) is a list of hooks to be run after the container process exits
+* **`hooks`** (object, OPTIONAL) MAY contain any of the following properties:
+  * **`prestart`** (array, OPTIONAL) is an array of [pre-start hooks](#prestart).
+    Entries in the array contain the following properties:
+    * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2001 `execv`'s *path*][ieee-1003.1-2001-xsh-exec].
+      This specification extends the IEEE standard in that **`path`** MUST be absolute.
+    * **`args`** (array of strings, REQUIRED) with the same semantics as [IEEE Std 1003.1-2001 `execv`'s *argv*][ieee-1003.1-2001-xsh-exec].
+    * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2001's `environ`][ieee-1003.1-2001-xbd-c8.1].
+    * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+  * **`poststart`** (array, OPTIONAL) is an array of [post-start hooks](#poststart).
+    Entries in the array have the same schema as pre-start entries.
+  * **`poststop`** (array, OPTIONAL) is an array of [post-stop hooks](#poststop).
+    Entries in the array have the same schema as pre-start entries.
 
-Hooks allow one to run code before/after various lifecycle events of the container.
+Hooks allow one to run programs before/after various lifecycle events of the container.
 Hooks MUST be called in the listed order.
-The state of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
-
-Hook paths are absolute and are executed from the host's filesystem in the [runtime namespace][runtime-namespace].
+The [state](runtime.md#state) of the container is passed to the hooks over stdin, so the hooks could get the information they need to do their work.
 
 ### Prestart
 
@@ -356,22 +387,22 @@ If a hook returns a non-zero exit code, then an error is logged and the remainin
     }
 ```
 
-`path` is REQUIRED for a hook.
-`args` and `env` are OPTIONAL.
-`timeout` is the number of seconds before aborting the hook.
-The semantics are the same as `Path`, `Args` and `Env` in [golang Cmd](https://golang.org/pkg/os/exec/#Cmd).
-
 ## Annotations
 
 **`annotations`** (object, OPTIONAL) contains arbitrary metadata for the container.
 This information MAY be structured or unstructured.
-Annotations MUST be a key-value map where both the key and value MUST be strings.
-While the value MUST be present, it MAY be an empty string.
-Keys MUST be unique within this map, and best practice is to namespace the keys.
+Annotations MUST be a key-value map.
+If there are no annotations then this property MAY either be absent or an empty map.
+
+Keys MUST be strings.
+Keys MUST be unique within this map.
+Keys MUST NOT be an empty string.
 Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
 Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
-If there are no annotations then this property MAY either be absent or an empty map.
 Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
+
+Values MUST be strings.
+Values MAY be an empty string.
 
 ```json
 "annotations": {
@@ -741,6 +772,8 @@ Here is a full example `config.json` for reference.
 
 [container-namespace]: glossary.md#container-namespace
 [go-environment]: https://golang.org/doc/install/source#environment
+[ieee-1003.1-2001-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html#tag_08_01
+[ieee-1003.1-2001-xsh-exec]: http://pubs.opengroup.org/onlinepubs/009695399/functions/exec.html
 [runtime-namespace]: glossary.md#runtime-namespace
 [uts-namespace]: http://man7.org/linux/man-pages/man7/namespaces.7.html
 [mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT%20OPTIONS

@@ -96,9 +96,6 @@
             "minimum": 0,
             "maximum": 512
         },
-        "FilePermissions": {
-            "type": "string"
-        },
         "FileType": {
             "description": "Type of a block or special character device",
             "type": "string",
@@ -106,12 +103,15 @@
         },
         "Device": {
             "type": "object",
+            "required": [
+                "type",
+                "path",
+                "major",
+                "minor"
+            ],
             "properties": {
                 "type": {
                     "$ref": "#/definitions/FileType"
-                },
-                "permissions": {
-                    "$ref": "#/definitions/FilePermissions"
                 },
                 "path": {
                     "$ref": "defs.json#/definitions/FilePath"
@@ -126,10 +126,24 @@
                     "$ref": "#/definitions/Minor"
                 },
                 "uid": {
-                    "$ref": "defs.json#/definitions/UID"
+                    "oneOf": [
+                        {
+                            "$ref": "defs.json#/definitions/UID"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "gid": {
-                    "$ref": "defs.json#/definitions/GID"
+                    "oneOf": [
+                        {
+                            "$ref": "defs.json#/definitions/GID"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 }
             }
         },
@@ -182,16 +196,6 @@
                 }
             ]
         },
-        "blockIODeviceWeightPointer": {
-            "oneOf": [
-                {
-                    "$ref": "#/definitions/blockIODeviceWeight"
-                },
-                {
-                    "type": "null"
-                }
-            ]
-        },
         "blockIODeviceThrottle": {
             "allOf": [
                 {
@@ -201,19 +205,9 @@
                     "type": "object",
                     "properties": {
                         "rate": {
-                            "$ref": "defs.json#/definitions/uint64Pointer"
+                            "$ref": "defs.json#/definitions/uint64"
                         }
                     }
-                }
-            ]
-        },
-        "blockIODeviceThrottlePointer": {
-            "oneOf": [
-                {
-                    "$ref": "#/definitions/blockIODeviceThrottle"
-                },
-                {
-                    "type": "null"
                 }
             ]
         },
@@ -224,7 +218,7 @@
                     "type": "boolean"
                 },
                 "type": {
-                    "$ref": "defs.json#/definitions/stringPointer"
+                    "$ref": "string"
                 },
                 "major": {
                     "oneOf": [
@@ -247,9 +241,12 @@
                     ]
                 },
                 "access": {
-                    "$ref": "defs.json#/definitions/stringPointer"
+                    "$ref": "string"
                 }
-            }
+            },
+            "required": [
+                "allow"
+            ]
         },
         "NetworkInterfacePriority": {
             "type": "object",
@@ -260,7 +257,11 @@
                 "priority": {
                     "$ref": "defs.json#/definitions/uint32"
                 }
-            }
+            },
+            "required": [
+                "name",
+                "priority"
+            ]
         },
         "NamespaceType": {
             "type": "string",
@@ -283,7 +284,10 @@
                 "path": {
                     "$ref": "defs.json#/definitions/FilePath"
                 }
-            }
+            },
+            "required": [
+                "type"
+            ]
         }
     }
 }

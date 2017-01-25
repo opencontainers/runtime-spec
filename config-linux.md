@@ -8,7 +8,7 @@ The Linux container specification uses various kernel features like namespaces, 
 The Linux ABI includes both syscalls and several special file paths.
 Applications expecting a Linux environment will very likely expect these file paths to be setup correctly.
 
-The following filesystems MUST be made available in each application's filesystem:
+The following filesystems MUST be made available in each container's filesystem:
 
 |   Path   |  Type  |
 | -------- | ------ |
@@ -39,7 +39,6 @@ The following parameters can be specified to setup namespaces:
 
 If a path is specified, that particular file is used to join that type of namespace.
 If a namespace type is not specified in the `namespaces` array, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
-If a new namespace is not created (because the namespace type is not listed, or because it is listed with a `path`), runtimes MUST assume that the setup for that namespace has already been done and error out if the config specifies anything else related to that namespace.
 If a `namespaces` field contains duplicated namespaces with same `type`, the runtime MUST error out.
 
 ###### Example
@@ -93,14 +92,14 @@ There is a limit of 5 mappings which is the Linux kernel hard limit.
         {
             "hostID": 1000,
             "containerID": 0,
-            "size": 10
+            "size": 32000
         }
     ],
     "gidMappings": [
         {
             "hostID": 1000,
             "containerID": 0,
-            "size": 10
+            "size": 32000
         }
     ]
 ```
@@ -115,11 +114,14 @@ Each entry has the following structure:
 * **`type`** *(string, REQUIRED)* - type of device: `c`, `b`, `u` or `p`.
   More info in [mknod(1)][mknod.1].
 * **`path`** *(string, REQUIRED)* - full path to device inside container.
+  If a [file][file.1] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
 * **`major, minor`** *(int64, REQUIRED unless **`type`** is `p`)* - [major, minor numbers][devices] for the device.
 * **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
   You can also control access to devices [with cgroups](#device-whitelist).
 * **`uid`** *(uint32, OPTIONAL)* - id of device owner.
 * **`gid`** *(uint32, OPTIONAL)* - id of device group.
+
+The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
 
 ###### Example
 
@@ -283,15 +285,15 @@ For more information, see [the memory cgroup man page][cgroup-v1-memory].
 
 The following parameters can be specified to setup the controller:
 
-* **`limit`** *(uint64, OPTIONAL)* - sets limit of memory usage in bytes
+* **`limit`** *(int64, OPTIONAL)* - sets limit of memory usage in bytes
 
-* **`reservation`** *(uint64, OPTIONAL)* - sets soft limit of memory usage in bytes
+* **`reservation`** *(int64, OPTIONAL)* - sets soft limit of memory usage in bytes
 
-* **`swap`** *(uint64, OPTIONAL)* - sets limit of memory+Swap usage
+* **`swap`** *(int64, OPTIONAL)* - sets limit of memory+Swap usage
 
-* **`kernel`** *(uint64, OPTIONAL)* - sets hard limit for kernel memory
+* **`kernel`** *(int64, OPTIONAL)* - sets hard limit for kernel memory
 
-* **`kernelTCP`** *(uint64, OPTIONAL)* - sets hard limit in bytes for kernel TCP buffer memory
+* **`kernelTCP`** *(int64, OPTIONAL)* - sets hard limit in bytes for kernel TCP buffer memory
 
 * **`swappiness`** *(uint64, OPTIONAL)* - sets swappiness parameter of vmscan (See sysctl's vm.swappiness)
 
@@ -317,11 +319,11 @@ The following parameters can be specified to setup the controller:
 
 * **`shares`** *(uint64, OPTIONAL)* - specifies a relative share of CPU time available to the tasks in a cgroup
 
-* **`quota`** *(uint64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
+* **`quota`** *(int64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
 
 * **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
 
-* **`realtimeRuntime`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
+* **`realtimeRuntime`** *(int64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
 
 * **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
 
@@ -412,7 +414,7 @@ Each entry has the following structure:
 
 * **`pageSize`** *(string, REQUIRED)* - hugepage size
 
-* **`limit`** *(uint64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
+* **`limit`** *(int64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
 
 ###### Example
 
@@ -420,7 +422,7 @@ Each entry has the following structure:
    "hugepageLimits": [
         {
             "pageSize": "2MB",
-            "limit": 9223372036854771712
+            "limit": 209715200
         }
    ]
 ```
@@ -562,7 +564,7 @@ Its value is either slave, private, or shared.
 ## Masked Paths
 
 **`maskedPaths`** (array of strings, OPTIONAL) will mask over the provided paths inside the container so that they cannot be read.
-The values MUST be absolute paths in the [container namespace][container-namespace].
+The values MUST be absolute paths in the [container namespace][container-namespace2].
 
 ###### Example
 
@@ -575,7 +577,7 @@ The values MUST be absolute paths in the [container namespace][container-namespa
 ## Readonly Paths
 
 **`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.
-The values MUST be absolute paths in the [container namespace][container-namespace].
+The values MUST be absolute paths in the [container namespace][container-namespace2].
 
 ###### Example
 
@@ -595,7 +597,7 @@ The values MUST be absolute paths in the [container namespace][container-namespa
     "mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
 ```
 
-[container-namespace]: glossary.md#container_namespace
+[container-namespace2]: glossary.md#container_namespace
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
 [cgroup-v1-cpusets]: https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt
@@ -608,6 +610,7 @@ The values MUST be absolute paths in the [container namespace][container-namespa
 [cgroup-v2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt
 [devices]: https://www.kernel.org/doc/Documentation/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
+[file.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
 
 [mknod.1]: http://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html

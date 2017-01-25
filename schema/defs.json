@@ -56,6 +56,16 @@
                 }
             ]
         },
+        "int64Pointer": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/int64"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
         "uint16Pointer": {
             "oneOf": [
                 {
@@ -80,16 +90,6 @@
             "oneOf": [
                 {
                     "$ref": "#/definitions/percent"
-                },
-                {
-                    "type": "null"
-                }
-            ]
-        },
-        "stringPointer": {
-            "oneOf": [
-                {
-                    "type": "string"
                 },
                 {
                     "type": "null"
@@ -163,7 +163,12 @@
                 "size": {
                     "$ref": "#/definitions/uint32"
                 }
-            }
+            },
+            "required": [
+                "hostID",
+                "containerID",
+                "size"
+            ]
         },
         "Mount": {
             "type": "object",
