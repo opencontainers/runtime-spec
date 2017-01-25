@@ -117,7 +117,14 @@
                     "$ref": "defs.json#/definitions/FilePath"
                 },
                 "fileMode": {
-                    "$ref": "#/definitions/FileMode"
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/FileMode"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "major": {
                     "$ref": "#/definitions/Major"
