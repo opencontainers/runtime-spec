@@ -1,19 +1,20 @@
-# Runtime and Lifecycle
+# <a name="runtimeAndLifecycle" />Runtime and Lifecycle
 
-## Scope of a Container
+## <a name="scopeOfAContainer" />Scope of a Container
 
 Barring access control concerns, the entity using a runtime to create a container MUST be able to use the operations defined in this specification against that same container.
 Whether other entities using the same, or other, instance of the runtime can see that container is out of scope of this specification.
 
-## State
+## <a name="state" />State
 
 The state of a container includes the following properties:
 
-* **`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
-* **`id`** (string, REQUIRED) is the container's ID.
+* <a name="stateOciVersion" />**`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
+* <a name="stateId" />**`id`** (string, REQUIRED) is the container's ID.
 This MUST be unique across all containers on this host.
 There is no requirement that it be unique across hosts.
-* **`status`** (string, REQUIRED) is the runtime state of the container.
+* <a name="stateStatus" />**`status`** (string, REQUIRED) is the runtime state of the container.
+
 The value MAY be one of:
 
     * `created`: the container process has neither exited nor executed the user-specified program
@@ -21,10 +22,12 @@ The value MAY be one of:
     * `stopped`: the container process has exited
 
     Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
-* **`pid`** (int, REQUIRED when `status` is `created` or `running`) is the ID of the container process, as seen by the host.
-* **`bundlePath`** (string, REQUIRED) is the absolute path to the container's bundle directory.
+
+* <a name="statePid" />**`pid`** (int, REQUIRED when `status` is `created` or `running`) is the ID of the container process, as seen by the host.
+* <a name="stateBundlePath" />**`bundlePath`** (string, REQUIRED) is the absolute path to the container's bundle directory.
 This is provided so that consumers can find the container's configuration and root filesystem on the host.
-* **`annotations`** (map, OPTIONAL) contains the list of annotations associated with the container.
+* <a name="stateAnnotations" />**`annotations`** (map, OPTIONAL) contains the list of annotations associated with the container.
+
 If no annotations were provided then this property MAY either be absent or an empty map.
 
 The state MAY include additional properties.
@@ -46,35 +49,35 @@ When serialized in JSON, the format MUST adhere to the following pattern:
 
 See [Query State](#query-state) for information on retrieving the state of a container.
 
-## Lifecycle
+## <a name="lifecycle" />Lifecycle
 The lifecycle describes the timeline of events that happen from when a container is created to when it ceases to exist.
 
-1. OCI compliant runtime's [`create`](runtime.md#create) command is invoked with a reference to the location of the bundle and a unique identifier.
-2. The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
+1. <a name="lifecycle01" />OCI compliant runtime's [`create`](runtime.md#create) command is invoked with a reference to the location of the bundle and a unique identifier.
+2. <a name="lifecycle02" />The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
    If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST generate an error.
    While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
    Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
-3. Once the container is created additional actions MAY be performed based on the features the runtime chooses to support.
+3. <a name="lifecycle03" />Once the container is created additional actions MAY be performed based on the features the runtime chooses to support.
    However, some actions might only be available based on the current state of the container (e.g. only available while it is started).
-4. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+4. <a name="lifecycle04" />Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
    The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
-5. The container process exits.
+5. <a name="lifecycle05" />The container process exits.
    This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
-6. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
+6. <a name="lifecycle06" />Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
    The container MUST be destroyed by undoing the steps performed during create phase (step 2).
 
-## Errors
+## <a name="errors" />Errors
 
 In cases where the specified operation generates an error, this specification does not mandate how, or even if, that error is returned or exposed to the user of an implementation.
 Unless otherwise stated, generating an error MUST leave the state of the environment as if the operation were never attempted - modulo any possible trivial ancillary changes such as logging.
 
-## Operations
+## <a name="operations" />Operations
 
 OCI compliant runtimes MUST support the following operations, unless the operation is not supported by the base operating system.
 
 Note: these operations are not specifying any command-line APIs, and the parameters are inputs for general operations.
 
-### Query State
+### <a name="queryState" />Query State
 
 `state <container-id>`
 
@@ -82,7 +85,7 @@ This operation MUST generate an error if it is not provided the ID of a containe
 Attempting to query a container that does not exist MUST generate an error.
 This operation MUST return the state of a container as specified in the [State](#state) section.
 
-### Create
+### <a name="create" />Create
 
 `create <container-id> <path-to-bundle>`
 
@@ -99,7 +102,7 @@ Runtime callers who are interested in pre-create validation can run [bundle-vali
 
 Any changes made to the [`config.json`](config.md) file after this operation will not have an effect on the container.
 
-### Start
+### <a name="start" />Start
 `start <container-id>`
 
 This operation MUST generate an error if it is not provided the container ID.
@@ -109,7 +112,7 @@ This operation MUST run the user-specified program as specified by [`process`](c
 
 Upon successful completion of this operation the `status` property of this container MUST be `running`.
 
-### Kill
+### <a name="kill" />Kill
 `kill <container-id> <signal>`
 
 This operation MUST generate an error if it is not provided the container ID.
@@ -118,7 +121,7 @@ This operation MUST send the specified signal to the process in the container.
 
 When the process in the container is stopped, irrespective of it being as a result of a `kill` operation or any other reason, the `status` property of this container MUST be `stopped`.
 
-### Delete
+### <a name="delete" />Delete
 `delete <container-id>`
 
 This operation MUST generate an error if it is not provided the container ID.
@@ -129,6 +132,6 @@ Note that resources associated with the container, but not created by this conta
 Once a container is deleted its ID MAY be used by a subsequent container.
 
 
-## Hooks
+## <a name="hooks" />Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
 See [runtime configuration for hooks](./config.md#hooks) for more information.
