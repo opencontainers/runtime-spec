@@ -3,20 +3,6 @@
 This document describes the schema for the [Linux-specific section](config.md#platform-specific-configuration) of the [container configuration](config.md).
 The Linux container specification uses various kernel features like namespaces, cgroups, capabilities, LSM, and filesystem jails to fulfill the spec.
 
-## Default Filesystems
-
-The Linux ABI includes both syscalls and several special file paths.
-Applications expecting a Linux environment will very likely expect these file paths to be setup correctly.
-
-The following filesystems SHOULD be made available in each container's filesystem:
-
-|   Path   |  Type  |
-| -------- | ------ |
-| /proc    | [procfs](https://www.kernel.org/doc/Documentation/filesystems/proc.txt)   |
-| /sys     | [sysfs](https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt)   |
-| /dev/pts | [devpts](https://www.kernel.org/doc/Documentation/filesystems/devpts.txt) |
-| /dev/shm | [tmpfs](https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt)   |
-
 ## Namespaces
 
 A namespace wraps a global system resource in an abstraction that makes it appear to the processes within the namespace that they have their own isolated instance of the global resource.
