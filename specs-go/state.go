@@ -10,6 +10,8 @@ type State struct {
 	Status string `json:"status"`
 	// Pid is the process ID for the container process.
 	Pid int `json:"pid"`
+	// Exit is the exit code the container process.
+	Exit uint `json:"exit,omitempty"`
 	// BundlePath is the path to the container's bundle directory.
 	BundlePath string `json:"bundlePath"`
 	// Annotations are the annotations associated with the container.
