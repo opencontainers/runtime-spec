@@ -77,8 +77,7 @@
             "id": "https://opencontainers.org/schema/bundle/process",
             "type": "object",
             "required": [
-                "cwd",
-                "args"
+                "cwd"
             ],
             "properties": {
                 "args": {

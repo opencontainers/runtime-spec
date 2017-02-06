@@ -126,8 +126,9 @@ See links for details about [mountvol](http://ss64.com/nt/mountvol.html) and [Se
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
   This value MUST be an absolute path.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2001's `environ`][ieee-1003.1-2001-xbd-c8.1].
-* **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2001 `execvp`'s *argv*][ieee-1003.1-2001-xsh-exec].
+* **`args`** (array of strings, OPTIONAL) with similar semantics to [IEEE Std 1003.1-2001 `execvp`'s *argv*][ieee-1003.1-2001-xsh-exec].
   This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
+  This property is REQUIRED when [`start`](runtime.md#start) is called.
 
 For Linux-based systems the process structure supports the following process specific fields:
 
