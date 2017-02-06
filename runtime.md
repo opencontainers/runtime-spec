@@ -124,11 +124,133 @@ When the process in the container is stopped, irrespective of it being as a resu
 This operation MUST generate an error if it is not provided the container ID.
 Attempting to delete a container that does not exist MUST generate an error.
 Attempting to delete a container whose process is still running MUST generate an error.
-Deleting a container MUST delete the resources that were created during the `create` step.
-Note that resources associated with the container, but not created by this container, MUST NOT be deleted.
 Once a container is deleted its ID MAY be used by a subsequent container.
 
+Deleting a container MUST delete the resources that were created during the `create` step.
+Resources associated with the container, but not created by this container, MUST NOT be altered.
+
+#### Examples of resource ownership
+
+This section contains informative elaborations of the above “resources created by the container” requirements.
+It is not intended to be exhaustive.
+
+##### Joining mount namespaces (Linux)
+
+A container joins an existing [mount namespace](config-linux.md#namespaces) on Linux and pivots [root](config.md#root) into the `rootfs` directory with the following [configuration](config.md):
+
+```json
+{
+    "ociVersion": "1.0.0-rc3",
+    "platform": {
+        "os": "linux",
+        "arch": "amd64"
+    },
+    "process": {
+        "cwd": "/",
+        "args": [
+            "sh"
+        ],
+        "user": {
+            "uid": 1,
+            "gid": 1
+        }
+    },
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "namespaces": [
+            {
+                "type": "mount",
+                "path": "/proc/1234/ns/mnt"
+            }
+        ]
+    }
+}
+```
+
+When the example container is deleted, neither removing the preexisting mount namespace nor undoing the pivot into `rootfs` are allowed.
+
+##### Joining UTS namespaces (Linux)
+
+A container joins an existing [UTS namespace](config-linux.md#namespaces) on Linux and changes the [hostname](config.md#hostname) with the following [configuration](config.md):
+
+```json
+{
+    "ociVersion": "1.0.0-rc3",
+    "platform": {
+        "os": "linux",
+        "arch": "amd64"
+    },
+    "process": {
+        "cwd": "/",
+        "args": [
+            "sh"
+        ],
+        "user": {
+            "uid": 1,
+            "gid": 1
+        }
+    },
+    "root": {
+        "path": "rootfs"
+    },
+    "hostname": "alice",
+    "linux": {
+        "namespaces": [
+            {
+                "type": "uts",
+                "path": "/proc/1234/ns/uts"
+            },
+            {
+                "type": "mount"
+            }
+        ]
+    }
+}
+```
+
+When the example container is deleted, neither removing the preexisting UTS namespace nor undoing the hostname change are allowed.
+
+##### Joining cgroups (Linux)
+
+A container joins an existing [cgroup](config-linux.md#control-groups) on Linux and changes a [memory limit](config.md#memory) with the following [configuration](config.md):
+
+```json
+{
+    "ociVersion": "1.0.0-rc3",
+    "platform": {
+        "os": "linux",
+        "arch": "amd64"
+    },
+    "process": {
+        "cwd": "/",
+        "args": [
+            "sh"
+        ],
+        "user": {
+            "uid": 1,
+            "gid": 1
+        }
+    },
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "cgroupsPath": "/some/existing/container",
+        "resources": {
+            "memory": {
+                "limit": 100000
+            }
+        }
+    }
+}
+```
+
+When the example container is deleted, neither removing the preexisting cgroup not undoing the memory limit change are allowed.
 
 ## Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
 See [runtime configuration for hooks](./config.md#hooks) for more information.
+
+[container-namespace3]: glossary.md#container-namespace
