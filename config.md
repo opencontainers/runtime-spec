@@ -131,7 +131,9 @@ For Windows, see links for details about [mountvol](http://ss64.com/nt/mountvol.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2001's `environ`][ieee-1003.1-2001-xbd-c8.1].
 * **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2001 `execvp`'s *argv*][ieee-1003.1-2001-xsh-exec].
   This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
-* **`capabilities`** (array of strings, OPTIONAL) is an array that specifies the set of capabilities of the process(es) inside the container. Valid values are platform-specific. For example, valid values for Linux are defined in the [CAPABILITIES(7)](http://man7.org/linux/man-pages/man7/capabilities.7.html) man page.
+* **`capabilities`** (array of strings, OPTIONAL) is an array that specifies the set of capabilities of the process(es) inside the container.
+  Valid values are platform-specific.
+  On Linux, valid values and their semantics are defined in the [capabilies(7) man page][capabilities.7].
 * **`rlimits`** (array of objects, OPTIONAL) allows setting resource limits for a process inside the container.
   Each entry has the following structure:
 
@@ -772,6 +774,7 @@ Here is a full example `config.json` for reference.
 }
 ```
 
+[capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [container-namespace]: glossary.md#container-namespace
 [go-environment]: https://golang.org/doc/install/source#environment
 [ieee-1003.1-2001-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html#tag_08_01
