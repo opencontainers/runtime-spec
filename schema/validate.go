@@ -19,12 +19,12 @@ func main() {
 
 	schemaPath := os.Args[1]
 	if !strings.Contains(schemaPath, "://") {
-		schemaPath, err := filepath.Abs(schemaPath)
+		absPath, err := filepath.Abs(schemaPath)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		schemaPath = "file://" + schemaPath
+		schemaPath = "file://" + absPath
 	}
 	schemaLoader := gojsonschema.NewReferenceLoader(schemaPath)
 
