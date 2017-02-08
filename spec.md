@@ -2,10 +2,16 @@
 
 The [Open Container Initiative](http://www.opencontainers.org/) develops specifications for standards on Operating System process and application containers.
 
+
 Protocols defined by this specification are:
-* Linux containers: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), and [runtime-linux.md](runtime-linux.md).
-* Solaris containers: [runtime.md](runtime.md), [config.md](config.md), and [config-solaris.md](config-solaris.md).
-* Windows containers: [runtime.md](runtime.md), [config.md](config.md), and [config-windows.md](config-windows.md).
+
+* Linux containers: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), [runtime-linux.md](runtime-linux.md), and at least one API.
+* Solaris containers: [runtime.md](runtime.md), [config.md](config.md), [config-solaris.md](config-solaris.md), and at least one API.
+* Windows containers: [runtime.md](runtime.md), [config.md](config.md), [config-windows.md](config-windows.md), and at least one API.
+
+APIs defined by this specification are:
+
+* The [command line API](command-line-interface.md).
 
 # Table of Contents
 
@@ -15,6 +21,7 @@ Protocols defined by this specification are:
 - [Filesystem Bundle](bundle.md)
 - [Runtime and Lifecycle](runtime.md)
     - [Linux-specific Runtime and Lifecycle](runtime-linux.md)
+    - [Runtime Command Line Interface](command-line-interface.md)
 - [Configuration](config.md)
     - [Linux-specific Configuration](config-linux.md)
     - [Solaris-specific Configuration](config-solaris.md)
