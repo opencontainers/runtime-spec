@@ -14,6 +14,8 @@
             "uidMappings": {
                 "id": "https://opencontainers.org/schema/bundle/linux/uidMappings",
                 "type": "array",
+                "minItems": 0,
+                "maxItems": 5,
                 "items": {
                     "$ref": "defs.json#/definitions/IDMapping"
                 }
@@ -21,6 +23,8 @@
             "gidMappings": {
                 "id": "https://opencontainers.org/schema/bundle/linux/gidMappings",
                 "type": "array",
+                "minItems": 0,
+                "maxItems": 5,
                 "items": {
                     "$ref": "defs.json#/definitions/IDMapping"
                 }
