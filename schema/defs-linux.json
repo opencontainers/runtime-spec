@@ -194,7 +194,8 @@
                     "type": "boolean"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^[acb]$"
                 },
                 "major": {
                     "$ref": "#/definitions/Major"
