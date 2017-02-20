@@ -254,6 +254,7 @@ For Windows based systems the user structure has the following fields:
 }
 ```
 
+If left empty, the user id and group id both defaults to 0 (root), and no additional group IDs are added.
 
 ## Hostname
 
