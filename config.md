@@ -70,19 +70,48 @@ For Windows, see links for details about [mountvol](http://ss64.com/nt/mountvol.
 
 ### Example (Linux)
 
+## Common Linux Filesystems
+
+The Linux ABI includes both syscalls and several special file paths.
+Applications expecting a Linux environment will very likely expect these file paths to be setup correctly.
+Configuration authors interested in providing common filesystems can consider entries like:
+
 ```json
 "mounts": [
     {
-        "destination": "/tmp",
-        "type": "tmpfs",
-        "source": "tmpfs",
-        "options": ["nosuid","strictatime","mode=755","size=65536k"]
+        "destination": "/proc",
+        "type": "proc",
+        "source": "proc"
     },
     {
-        "destination": "/data",
-        "type": "bind",
-        "source": "/volumes/testing",
-        "options": ["rbind","rw"]
+        "destination": "/dev",
+        "type": "tmpfs",
+        "source": "tmpfs",
+        "options": ["nosuid", "strictatime", "mode=755", "size=65536k"]
+    },
+    {
+        "destination": "/dev/pts",
+        "type": "devpts",
+        "source": "devpts",
+        "options": ["nosuid", "noexec", "newinstance", "ptmxmode=0666", "mode=0620", "gid=5"]
+    },
+    {
+        "destination": "/dev/shm",
+        "type": "tmpfs",
+        "source": "shm",
+        "options": ["nosuid", "noexec", "nodev", "mode=1777", "size=65536k"]
+    },
+    {
+        "destination": "/dev/mqueue",
+        "type": "mqueue",
+        "source": "mqueue",
+        "options": ["nosuid", "noexec", "nodev"]
+    },
+    {
+        "destination": "/sys",
+        "type": "sysfs",
+        "source": "sysfs",
+        "options": ["nosuid", "noexec", "nodev", "ro"]
     }
 ]
 ```
