@@ -48,7 +48,7 @@ When serialized in JSON, the format MUST adhere to the following pattern:
 See [Query State](#query-state) for information on retrieving the state of a container.
 
 ## Lifecycle
-The lifecycle describes the timeline of events that happen from when a container is created to when it ceases to exist.
+The lifecycle describes the timeline of events that happen from when a container is created to when it ceases to exit.
 
 1. OCI compliant runtime's [`create`](runtime.md#create) command is invoked with a reference to the location of the bundle and a unique identifier.
 2. The container's runtime environment MUST be created according to the configuration in [`config.json`](config.md).
