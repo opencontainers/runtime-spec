@@ -579,6 +579,18 @@ The values MUST be absolute paths in the [container namespace][container-namespa
     ]
 ```
 
+## Masked Dir Paths
+
+`maskedDirPaths` is similar to `maskedPaths` but for directories rather than files.
+
+###### Example
+
+```json
+    "maskedPaths": [
+        "/sys/firmware"
+    ]
+```
+
 ## Readonly Paths
 
 **`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.

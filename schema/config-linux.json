@@ -261,6 +261,10 @@
                 "id": "https://opencontainers.org/schema/bundle/linux/maskedPaths",
                 "$ref": "defs.json#/definitions/ArrayOfStrings"
             },
+            "maskedDirPaths": {
+                "id": "https://opencontainers.org/schema/bundle/linux/maskedDirPaths",
+                "$ref": "defs.json#/definitions/ArrayOfStrings"
+            },
             "readonlyPaths": {
                 "id": "https://opencontainers.org/schema/bundle/linux/readonlyPaths",
                 "$ref": "defs.json#/definitions/ArrayOfStrings"
