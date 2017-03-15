@@ -34,7 +34,7 @@ When serialized in JSON, the format MUST adhere to the following pattern:
 
 ```json
 {
-    "ociVersion": "0.2.0",
+    "ociVersion": "1.0.0",
     "id": "oci-container1",
     "status": "running",
     "pid": 4422,
