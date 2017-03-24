@@ -577,7 +577,7 @@ For more information, see the [sysctl(8)][sysctl.8] man page.
 
 ## <a name="configLinuxSeccomp" />Seccomp
 
-Seccomp provides application sandboxing mechanism in the Linux kernel.
+Seccomp provides an application sandboxing mechanism in the Linux kernel.
 Seccomp configuration allows one to configure actions to take for matched syscalls and furthermore also allows matching on values passed as arguments to syscalls.
 For more information about Seccomp, see [Seccomp][seccomp] kernel documentation.
 The actions, architectures, and operators are strings that match the definitions in seccomp.h from [libseccomp][] and are translated to corresponding values.
@@ -618,6 +618,23 @@ Operator Constants:
 * `SCMP_CMP_GE`
 * `SCMP_CMP_GT`
 * `SCMP_CMP_MASKED_EQ`
+
+**`seccomp`** *(object, OPTIONAL)* configures a filter that maps actions to specified syscalls.
+
+The following parameters can be specified to configure what actions are taken for specific system calls:
+
+* **`defaultAction`** *(string, REQUIRED)* - default action for system calls that don't match any rules in the filter. Must be one of the Action Constants listed above.
+
+* **`architectures`** *(array of strings, REQUIRED)* - supported architectures for this filter. Must be from the Architecture Constants.
+
+* **`syscalls`** *(array of objects, REQUIRED)* - the system calls that will be mapped to actions. Each syscall specification can have the following properties:
+    * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls that will apply this action.
+    * **`action`** *(string, REQUIRED)* - the action to take when the syscall is made.
+    * **`args`** *(array of objects, OPTIONAL)* - conditions to attach to a filter rule, the rule will only match it these conditions evaluate to true.
+        * **`Index`** *(uint, REQUIRED)* - the 0 based index of the syscall argument to use as the comparison value.
+        * **`Op`** *(string, REQUIRED)* - the comparison operator to use. Must be one of Operator Constants.
+        * **`Value`** *(uint64, REQUIRED)* - the value to compare against the value referenced by Index.
+        * **`ValueTwo`** *(uint64, OPTIONAL)* - value to mask value of syscall argument referenced by Index in SCMP_CMP_MASKED_EQ before comparison.
 
 ###### Example
 
