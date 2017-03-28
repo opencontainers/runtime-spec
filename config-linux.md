@@ -249,13 +249,11 @@ Each entry has the following structure:
 
 #### <a name="configLinuxDisableOutOfMemoryKiller" />Disable out-of-memory killer
 
-`disableOOMKiller` contains a boolean (`true` or `false`) that enables or disables the Out of Memory killer for a cgroup.
-If enabled (`false`), tasks that attempt to consume more memory than they are allowed are immediately killed by the OOM killer.
-The OOM killer is enabled by default in every cgroup using the `memory` subsystem.
-To disable it, specify a value of `true`.
-For more information, see [the memory cgroup man page][cgroup-v1-memory].
-
-* **`disableOOMKiller`** *(bool, OPTIONAL)* - enables or disables the OOM killer
+* **`disableOOMKiller`** *(bool, OPTIONAL)* - enables or disables the OOM killer.
+  This setting controls the value of `oom_kill_disable` in the `memory.oom_control` file of the [memory cgroup][cgroup-v1-memory] at [`cgroupsPath`](#control-groups).
+  If `disableOOMKiller` is set, the runtime MUST set `oom_kill_disable` to the appropriate value.
+  If `disableOOMKiller` is not set and the `cgroupsPath` value would result in a new cgroup being created, the value of `oom_kill_disable` is implementation-defined.
+  If `disableOOMKiller` is not set and the `cgroupsPath` value would not result in a new cgroup being created, the runtime MUST NOT change the value of `oom_kill_disable`.
 
 ###### Example
 
