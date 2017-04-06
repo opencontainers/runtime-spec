@@ -55,7 +55,14 @@ HOST_GOLANG_VERSION	= $(shell go version | cut -d ' ' -f3 | cut -c 3-)
 # this variable is used like a function. First arg is the minimum version, Second arg is the version to be checked.
 ALLOWED_GO_VERSION	= $(shell test '$(shell /bin/echo -e "$(1)\n$(2)" | sort -V | head -n1)' = '$(1)' && echo 'true')
 
-test: .govet .golint .gitvalidation
+TESTS := .govet .golint .gitvalidation
+
+# (*testing.T).Run is new in 1.7, https://golang.org/doc/go1.7#testing
+ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
+	TESTS += .specs-go
+endif
+
+test: $(TESTS)
 
 .govet:
 	go vet -x ./...
@@ -77,7 +84,10 @@ else
 	git-validation -v -run DCO,short-subject,dangling-whitespace -range $(EPOCH_TEST_COMMIT)..HEAD
 endif
 
-install.tools: .install.golint .install.gitvalidation
+.specs-go:
+	go test ./specs-go
+
+install.tools: .install.golint .install.gitvalidation .install.canonicaljson
 
 # golint does not even build for <go1.6
 .install.golint:
@@ -87,6 +97,9 @@ endif
 
 .install.gitvalidation:
 	go get -u github.com/vbatts/git-validation
+
+.install.canonicaljson:
+	go get -d -u github.com/docker/go/canonical/json
 
 clean:
 	rm -rf $(OUTPUT_DIRNAME) *~

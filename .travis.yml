@@ -17,9 +17,7 @@ install: true
 
 script:
   - env | grep TRAVIS_
-  - make .govet
-  - make .golint
   - echo "${TRAVIS_COMMIT_RANGE} -> ${TRAVIS_COMMIT_RANGE/.../..} (travis-ci/travis-ci#4596)"
-  - TRAVIS_COMMIT_RANGE="${TRAVIS_COMMIT_RANGE/.../..}" make .gitvalidation
+  - TRAVIS_COMMIT_RANGE="${TRAVIS_COMMIT_RANGE/.../..}" make test
   - make docs
   - make -C schema test
