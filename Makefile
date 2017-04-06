@@ -80,9 +80,10 @@ else
 	git-validation -v -run DCO,short-subject,dangling-whitespace -range $(EPOCH_TEST_COMMIT)..HEAD
 endif
 
+TOOLS := golint gitvalidation
 
-.PHONY: install.tools
-install.tools: .install.golint .install.gitvalidation
+.PHONY: install.tools $(TOOLS:%=.install.%)
+install.tools: $(TOOLS:%=.install.%)
 
 # golint does not even build for <go1.6
 .install.golint:
