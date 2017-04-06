@@ -84,9 +84,9 @@ type Box struct {
 // User specifies specific user (and group) information for the container process.
 type User struct {
 	// UID is the user id.
-	UID uint32 `json:"uid" platform:"linux,solaris"`
+	UID *uint32 `json:"uid,omitempty" platform:"linux,solaris"`
 	// GID is the group id.
-	GID uint32 `json:"gid" platform:"linux,solaris"`
+	GID *uint32 `json:"gid,omitempty" platform:"linux,solaris"`
 	// AdditionalGids are additional group ids set for the container's process.
 	AdditionalGids []uint32 `json:"additionalGids,omitempty" platform:"linux,solaris"`
 	// Username is the user name.
