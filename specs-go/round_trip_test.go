@@ -16,6 +16,9 @@ func TestConfigRoundTrip(t *testing.T) {
 
 		// minimal Linux example (removing optional fields from the config.md example)
 		`{"ociVersion":"1.0.0","platform":{"os":"linux","arch":"amd64"},"process":{"user":{"uid":1,"gid":1},"args":["sh"],"cwd":"/"},"root":{"path":"rootfs"}}`,
+
+		// minimal Windows example
+		`{"ociVersion":"1.0.0","platform":{"os":"windows","arch":"amd64"},"process":{"user":{"username":"containeradministrator"},"args":["sh"],"cwd":"C:\\"},"root":{"path":"rootfs"}}`,
 	} {
 		t.Run(fmt.Sprintf("config %d", i), func(t *testing.T) {
 			configBytes := []byte(configString)
