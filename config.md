@@ -260,6 +260,8 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
 For Windows based systems the user structure has the following fields:
 
 * **`username`** (string, OPTIONAL) specifies the user name for the process.
+    The value MUST NOT be an empty string.
+    The default `username` is implementation-defined.
 
 ### Example (Windows)
 
