@@ -45,6 +45,15 @@ When serialized in JSON, the format MUST adhere to the following pattern:
 }
 ```
 
+```json
+{
+    "ociVersion": "0.2.0",
+    "id": "oci-container1",
+    "pid": 4422,
+    "bundlePath": "C:\\containers\\redis"
+}
+```
+
 See [Query State](#query-state) for information on retrieving the state of a container.
 
 ## <a name="runtimeLifecycle" />Lifecycle
