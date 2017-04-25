@@ -150,12 +150,9 @@ For Windows, see [mountvol][mountvol] and [SetVolumeMountPoint][set-volume-mount
 
 * **`noNewPrivileges`** (bool, OPTIONAL) setting `noNewPrivileges` to true prevents the processes in the container from gaining additional privileges.
   As an example, the ['no_new_privs'][no-new-privs] article in the kernel documentation has information on how this is achieved using a prctl system call on Linux.
-
-For Linux-based systems the process structure supports the following process specific fields.
-
-* **`apparmorProfile`** (string, OPTIONAL) specifies the name of the AppArmor profile to be applied to processes in the container.
+* **`apparmorProfile`** (string, OPTIONAL, linux) specifies the name of the AppArmor profile to be applied to processes in the container.
   For more information about AppArmor, see [AppArmor documentation][apparmor].
-* **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label to be applied to the processes in the container.
+* **`selinuxLabel`** (string, OPTIONAL, linux) specifies the SELinux label to be applied to the processes in the container.
   For more information about SELinux, see  [SELinux documentation][selinux].
 
 ### <a name="configUser" />User
@@ -166,9 +163,9 @@ The user for the process is a platform-specific structure that allows specific c
 
 For Linux and Solaris based systems the user structure has the following fields:
 
-* **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
-* **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
-* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs (in the [container namespace](glossary.md#container-namespace) to be added to the process.
+* **`uid`** (int, REQUIRED, linux solaris) specifies the user ID in the [container namespace](glossary.md#container-namespace).
+* **`gid`** (int, REQUIRED, linux solaris) specifies the group ID in the [container namespace](glossary.md#container-namespace).
+* **`additionalGids`** (array of ints, OPTIONAL, linux solaris) specifies additional group IDs (in the [container namespace](glossary.md#container-namespace) to be added to the process.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
 
@@ -259,7 +256,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
 
 For Windows based systems the user structure has the following fields:
 
-* **`username`** (string, OPTIONAL) specifies the user name for the process.
+* **`username`** (string, OPTIONAL, windows) specifies the user name for the process.
 
 ### Example (Windows)
 
@@ -297,6 +294,7 @@ For Windows based systems the user structure has the following fields:
 **`platform`** (object, REQUIRED) specifies the configuration's target platform.
 
 * **`os`** (string, REQUIRED) specifies the operating system family of the container configuration's specified [`root`](#root) file system bundle.
+  **`os`** also selects the [specification platform](spec.md#platforms), which dermines which other [properties are specified](spec.md#property-specification).
   The runtime MUST generate an error if it does not support the specified **`os`**.
   Bundles SHOULD use, and runtimes SHOULD understand, **`os`** entries listed in the Go Language document for [`GOOS`][go-environment].
   If an operating system is not included in the `GOOS` documentation, it SHOULD be submitted to this specification for standardization.
@@ -320,12 +318,9 @@ For Windows based systems the user structure has the following fields:
 Runtime implementations MAY support any valid values for platform-specific fields as part of this configuration.
 Implementations MUST error out when invalid values are encountered and MUST generate an error message and error out when encountering valid values it chooses to not support.
 
-* **`linux`** (object, OPTIONAL) [Linux-specific configuration](config-linux.md).
-  This MAY be set if **`platform.os`** is `linux` and MUST NOT be set otherwise.
-* **`windows`** (object, OPTIONAL) [Windows-specific configuration](config-windows.md).
-  This MAY be set if **`platform.os`** is `windows` and MUST NOT be set otherwise.
-* **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
-  This MAY be set if **`platform.os`** is `solaris` and MUST NOT be set otherwise.
+* **`linux`** (object, OPTIONAL, linux) [Linux-specific configuration](config-linux.md).
+* **`windows`** (object, OPTIONAL, windows) [Windows-specific configuration](config-windows.md).
+* **`solaris`** (object, OPTIONAL, solaris) [Solaris-specific configuration](config-solaris.md).
 
 ### Example (Linux)
 

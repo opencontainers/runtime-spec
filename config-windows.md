@@ -5,17 +5,19 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 
 ## <a name="configWindowsResources" />Resources
 
-You can configure a container's resource limits via the OPTIONAL `resources` field of the Windows configuration.
+**`resources`** (object, OPTIONAL, windows) configurs the container's resource limits.
+
+The following subsections specify parameters for `resources`.
 
 ### <a name="configWindowsMemory" />Memory
 
-`memory` is an OPTIONAL configuration for the container's memory usage.
+**`memory`** *(object, OPTIONAL, windows)* configures the container's memory usage.
 
 The following parameters can be specified:
 
-* **`limit`** *(uint64, OPTIONAL)* - sets limit of memory usage in bytes.
+* **`limit`** *(uint64, OPTIONAL, windows)* - sets limit of memory usage in bytes.
 
-* **`reservation`** *(uint64, OPTIONAL)* - sets the guaranteed minimum amount of memory for a container in bytes.
+* **`reservation`** *(uint64, OPTIONAL, windows)* - sets the guaranteed minimum amount of memory for a container in bytes.
 
 #### Example
 
@@ -32,15 +34,15 @@ The following parameters can be specified:
 
 ### <a name="configWindowsCpu" />CPU
 
-`cpu` is an OPTIONAL configuration for the container's CPU usage.
+**`cpu`** *(object, OPTIONAL, windows)* configures for the container's CPU usage.
 
 The following parameters can be specified:
 
-* **`count`** *(uint64, OPTIONAL)* - specifies the number of CPUs available to the container.
+* **`count`** *(uint64, OPTIONAL, windows)* - specifies the number of CPUs available to the container.
 
-* **`shares`** *(uint16, OPTIONAL)* - specifies the relative weight to other containers with CPU shares. The range is from 1 to 10000.
+* **`shares`** *(uint16, OPTIONAL, windows)* - specifies the relative weight to other containers with CPU shares. The range is from 1 to 10000.
 
-* **`percent`** *(uint, OPTIONAL)* - specifies the percentage of available CPUs usable by the container.
+* **`percent`** *(uint, OPTIONAL, windows)* - specifies the percentage of available CPUs usable by the container.
 
 #### Example
 
@@ -56,15 +58,15 @@ The following parameters can be specified:
 
 ### <a name="configWindowsStorage" />Storage
 
-`storage` is an OPTIONAL configuration for the container's storage usage.
+**`storage`** *(object, OPTIONAL, windows)* configures the container's storage usage.
 
 The following parameters can be specified:
 
-* **`iops`** *(uint64, OPTIONAL)* - specifies the maximum IO operations per second for the system drive of the container.
+* **`iops`** *(uint64, OPTIONAL, windows)* - specifies the maximum IO operations per second for the system drive of the container.
 
-* **`bps`** *(uint64, OPTIONAL)* - specifies the maximum bytes per second for the system drive of the container.
+* **`bps`** *(uint64, OPTIONAL, windows)* - specifies the maximum bytes per second for the system drive of the container.
 
-* **`sandboxSize`** *(uint64, OPTIONAL)* - specifies the minimum size of the system drive in bytes.
+* **`sandboxSize`** *(uint64, OPTIONAL, windows)* - specifies the minimum size of the system drive in bytes.
 
 #### Example
 
@@ -80,11 +82,11 @@ The following parameters can be specified:
 
 ### <a name="configWindowsNetwork" />Network
 
-`network` is an OPTIONAL configuration for the container's network usage.
+**`network`** *(object, OPTIONAL, windows)* configures the container's network usage.
 
 The following parameters can be specified:
 
-* **`egressBandwidth`** *(uint64, OPTIONAL)* - specified the maximum egress bandwidth in bytes per second for the container.
+* **`egressBandwidth`** *(uint64, OPTIONAL, windows)* - specified the maximum egress bandwidth in bytes per second for the container.
 
 #### Example
 

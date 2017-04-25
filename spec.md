@@ -40,7 +40,37 @@ The key words "unspecified", "undefined", and "implementation-defined" are to be
 An implementation is not compliant for a given CPU architecture if it fails to satisfy one or more of the MUST, REQUIRED, or SHALL requirements for the [platforms](#platforms) it implements.
 An implementation is compliant for a given CPU architecture if it satisfies all the MUST, REQUIRED, and SHALL requirements for the [platforms](#platforms) it implements.
 
+## <a name="ociRuntimeSpecNotationalConventionsPropertySpecification" />Property Specification
+
+JSON properties are specified with the following [ABNF][rfc5234]:
+
+```ABNF
+property              = name *(", " name) " (" type ", " requirement-level [", " platforms] ")"
+name                  = ALPHA *(ALPHA / DIGIT)
+type                  = ALPHA *(ALPHA / DIGIT / " ")
+requirement-level     = ("REQUIRED" [requirement-condition]) / "OPTIONAL"
+requirement-condition = ("when" / "unless") " " *(ALPHA / DIGIT / " ")
+platforms             = platform *(" " platform)
+platform              = "linux" / "solaris" / "windows"
+```
+
+`platforms` lists the platforms for which the property is specified.
+For example, if a property specification did not list `linux` in `properties`, then the Linux specification should be read as if that property had not been mentioned.
+When `platforms` is not given the property is specified on all platforms.
+
+When a `requirement-condition` is given, the property is REQUIRED when the condition is met and OPTIONAL when the condition is not met.
+
+If an OPTIONAL parent property is an object with a REQUIRED child, the child is only REQUIRED if the parent is set.
+For example, with a definition like:
+
+* **`foo`** (object, OPTIONAL) Something about foo.
+    The following parameters are defined:
+
+    * **`bar`** (int, REQUIRED) Something about bar.
+
+both `{}` and `{"foo": {"bar": 0}}` would be compliant, but `{"foo": {}}` would not be compliant.
 
 [c99-unspecified]: http://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
 [oci]: http://www.opencontainers.org
 [rfc2119]: http://tools.ietf.org/html/rfc2119
+[rfc5234]: https://tools.ietf.org/html/rfc5234
