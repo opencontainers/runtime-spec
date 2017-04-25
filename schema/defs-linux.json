@@ -213,6 +213,11 @@
                 "allow"
             ]
         },
+        "memorySwappiness": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+        },
         "NetworkInterfacePriority": {
             "type": "object",
             "properties": {
