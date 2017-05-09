@@ -40,6 +40,9 @@ The following parameters can be specified to setup namespaces:
     The runtime MUST [generate an error](runtime.md#errors) if `path` is not associated with a namespace of type `type`.
 
     If `path` is not specified, the runtime MUST create a new [container namespace](glossary.md#container-namespace) of type `type`.
+    For hierarchical namespaces (e.g. `pid`, `user`), the new container namespace MUST be a child of the [runtime namespace](glossary.md#runtime-namespace) of that type.
+    For seeded namespaces (e.g. `mount`, `uts`), the new container namespace MUST be seeded by the runtime namespace of that type.
+    When `type` is not `user`, new namespaces MUST be owned by the container `user` namespace.
 
 If a namespace type is not specified in the `namespaces` array, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
 If a `namespaces` field contains duplicated namespaces with same `type`, the runtime MUST [generate an error](runtime.md#errors).
