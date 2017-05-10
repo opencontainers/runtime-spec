@@ -37,8 +37,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The key words "unspecified", "undefined", and "implementation-defined" are to be interpreted as described in the [rationale for the C99 standard][c99-unspecified].
 
-An implementation is not compliant for a given CPU architecture if it fails to satisfy one or more of the MUST, REQUIRED, or SHALL requirements for the [platforms](#platforms) it implements.
-An implementation is compliant for a given CPU architecture if it satisfies all the MUST, REQUIRED, and SHALL requirements for the [platforms](#platforms) it implements.
+An implementation is not compliant for a given CPU architecture if it fails to satisfy one or more of the MUST, MUST NOT, REQUIRED, SHALL or SHALL NOT requirements for the [platforms](#platforms) it implements.
+An implementation is compliant for a given CPU architecture if it satisfies all the MUST, MUST NOT, REQUIRED, SHALL and SHALL NOT requirements for the [platforms](#platforms) it implements.
 
 
 [c99-unspecified]: http://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
