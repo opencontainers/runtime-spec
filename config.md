@@ -60,7 +60,7 @@ For Windows, see [mountvol][mountvol] and [SetVolumeMountPoint][set-volume-mount
   * Linux: valid *filesystemtype* supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
   * Windows: the type of file system on the volume, e.g. "ntfs".
   * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
+* **`source`** (string, OPTIONAL) Mount source to be attached to mount destination. The valid value can be a device name, a directory name or a dummy. When the value is a deivce name or a directory name, it MUST be an absolute path.
   * Windows: the volume name that is the target of the mount point, \\?\Volume\{GUID}\ (on Windows source is called target).
   * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (list of strings, OPTIONAL) Mount options of the filesystem to be used.
