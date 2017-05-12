@@ -44,33 +44,33 @@ type Process struct {
 	// Cwd is the current working directory for the process and must be
 	// relative to the container's root.
 	Cwd string `json:"cwd"`
-	// Capabilities are Linux capabilities that are kept for the process.
-	Capabilities *LinuxCapabilities `json:"capabilities,omitempty" platform:"linux"`
+	// Capabilities are platform-specific capabilities that are kept for the process.
+	Capabilities *Capabilities `json:"capabilities,omitempty"`
 	// Rlimits specifies rlimit options to apply to the process.
-	Rlimits []LinuxRlimit `json:"rlimits,omitempty" platform:"linux"`
+	Rlimits []LinuxRlimit `json:"rlimits,omitempty"`
 	// NoNewPrivileges controls whether additional privileges could be gained by processes in the container.
-	NoNewPrivileges bool `json:"noNewPrivileges,omitempty" platform:"linux"`
+	NoNewPrivileges bool `json:"noNewPrivileges,omitempty"`
 	// ApparmorProfile specifies the apparmor profile for the container.
 	ApparmorProfile string `json:"apparmorProfile,omitempty" platform:"linux"`
 	// Specify an oom_score_adj for the container.
-	OOMScoreAdj *int `json:"oomScoreAdj,omitempty"`
+	OOMScoreAdj *int `json:"oomScoreAdj,omitempty" platform:"linux"`
 	// SelinuxLabel specifies the selinux context that the container process is run as.
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
 }
 
-// LinuxCapabilities specifies the whitelist of capabilities that are kept for a process.
+// Capabilities specifies the whitelist of capabilities that are kept for a process.
 // http://man7.org/linux/man-pages/man7/capabilities.7.html
-type LinuxCapabilities struct {
+type Capabilities struct {
 	// Bounding is the set of capabilities checked by the kernel.
-	Bounding []string `json:"bounding,omitempty" platform:"linux"`
+	Bounding []string `json:"bounding,omitempty"`
 	// Effective is the set of capabilities checked by the kernel.
-	Effective []string `json:"effective,omitempty" platform:"linux"`
+	Effective []string `json:"effective,omitempty"`
 	// Inheritable is the capabilities preserved across execve.
-	Inheritable []string `json:"inheritable,omitempty" platform:"linux"`
+	Inheritable []string `json:"inheritable,omitempty"`
 	// Permitted is the limiting superset for effective capabilities.
-	Permitted []string `json:"permitted,omitempty" platform:"linux"`
+	Permitted []string `json:"permitted,omitempty"`
 	// Ambient is the ambient set of capabilities that are kept.
-	Ambient []string `json:"ambient,omitempty" platform:"linux"`
+	Ambient []string `json:"ambient,omitempty"`
 }
 
 // Box specifies dimensions of a rectangle. Used for specifying the size of a console.
