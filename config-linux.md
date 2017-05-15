@@ -110,21 +110,37 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
 ## <a name="configLinuxDevices" />Devices
 
 **`devices`** (array of objects, OPTIONAL) lists devices that MUST be available in the container.
-The runtime may supply them however it likes (with [mknod][mknod.2], by bind mounting from the runtime mount namespace, etc.).
+The runtime MAY supply them however it likes (with [`mknod(2)`][mknod.2], by bind mounting from the runtime mount namespace, etc.).
 
 Each entry has the following structure:
 
-* **`type`** *(string, REQUIRED)* - type of device: `c`, `b`, `u` or `p`.
-    More info in [mknod(1)][mknod.1].
-* **`path`** *(string, REQUIRED)* - full path to device inside container.
+* **`path`** *(string, REQUIRED)* - full path to device inside container, with relative paths anchored at the container's [root](config.md#root).
     If a [file][] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
-* **`major, minor`** *(int64, REQUIRED unless `type` is `p`)* - [major, minor numbers][devices] for the device.
+    For each entry, a [`stat(3)`][stat.3] on `path` executed with `/` as the [working directory][working-directory] in [container's mount and PID namespaces](glossary.md#container-namespace) MUST succeed.
+    For the following properties, `st` refers to the status returned after recursively calling `stat(3)` to traverse any symlinks (where [`.st_mode | S_IFLNK`][sys/stat.h] is set).
+* **`type`** *(string, REQUIRED)* - type of device.
+    This configures the type returned by [`st.st_mode | S_IFMT`][sys/stat.h], which MUST have the following value:
+
+    | Configured value | Stat value              |
+    | ---------------- | ----------------------- |
+    | `c`              | [`S_IFCHR`][sys/stat.h] |
+    | `b`              | [`S_IFBLK`][sys/stat.h] |
+    | `u`              | [`S_IFCHR`][sys/stat.h] |
+    | `p`              | [`S_IFIFO`][sys/stat.h] |
+
+    The configuration MUST use a value from the above table.
+* **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
+    Calling [`major(3)` or `minor(3)`][major.3] on [`st.st_dev`][sys/stat.h] MUST match the configured value.
 * **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
+    [`st.st_mode | 0777`][sys/stat.h] MUST match the configured value.
     You can also control access to devices [with cgroups](#device-whitelist).
-* **`uid`** *(uint32, OPTIONAL)* - id of device owner.
-* **`gid`** *(uint32, OPTIONAL)* - id of device group.
+* **`uid`** *(uint32, OPTIONAL)* - User ID of the device.
+    `st.uid_t` MUST match the configured value.
+* **`gid`** *(uint32, OPTIONAL)* - Group ID for the device.
+    `st.gid_t` MUST match the configured value.
 
 The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
+The same `path` SHOULD NOT be used for multiple devices; if it is, only the final entry for a given `path` applies.
 
 ### Example
 
@@ -648,17 +664,21 @@ The following parameters can be specified to set up seccomp:
 [procfs]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [seccomp]: https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
 [sharedsubtree]: https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
+[sys/stat.h]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/sys_stat.h.html
 [sysfs]: https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt
 [tmpfs]: https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt
+[working-directory]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_447
 
 [console.4]: http://man7.org/linux/man-pages/man4/console.4.html
 [full.4]: http://man7.org/linux/man-pages/man4/full.4.html
+[major.3]: http://man7.org/linux/man-pages/man3/major.3.html
 [mknod.1]: http://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: http://man7.org/linux/man-pages/man7/namespaces.7.html
 [null.4]: http://man7.org/linux/man-pages/man4/null.4.html
 [pts.4]: http://man7.org/linux/man-pages/man4/pts.4.html
 [random.4]: http://man7.org/linux/man-pages/man4/random.4.html
+[stat.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/stat.html
 [sysctl.8]: http://man7.org/linux/man-pages/man8/sysctl.8.html
 [tty.4]: http://man7.org/linux/man-pages/man4/tty.4.html
 [zero.4]: http://man7.org/linux/man-pages/man4/zero.4.html
