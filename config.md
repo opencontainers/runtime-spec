@@ -310,13 +310,18 @@ For Windows based systems the user structure has the following fields:
   The runtime MUST generate an error if it does not support the specified **`arch`**.
   Values for **`arch`** SHOULD use, and runtimes SHOULD understand, **`arch`** entries listed in the Go Language document for [`GOARCH`][go-environment].
   If an architecture is not included in the `GOARCH` documentation, it SHOULD be submitted to this specification for standardization.
+* **`os.version`** (string, OPTIONAL) specifies the operating system version, for example `10.0.10586`.
+* **`os.features`** (array of strings, OPTIONAL) specifies an array of strings, each specifying a mandatory OS feature, for example `win32k`.
+* **`variant`** (string, OPTIONAL) specifies the variant of the CPU, for example `v8` to specify a perticular CPU variant of the ARM CPU.
+* **`features`** (array of strings, OPTIONAL) this property is RESERVED for future versions of the specification.
 
 ### Example
 
 ```json
 "platform": {
     "os": "linux",
-    "arch": "amd64"
+    "arch": "amd64",
+    "variant": "v8"
 }
 ```
 
@@ -338,7 +343,8 @@ Runtime implementations MAY support any valid values for platform-specific field
 {
     "platform": {
         "os": "linux",
-        "arch": "amd64"
+        "arch": "amd64",
+        "variant": "v8"
     },
     "linux": {
         "namespaces": [
