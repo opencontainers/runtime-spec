@@ -211,20 +211,29 @@ Runtimes MAY attach the container process to additional cgroup controllers beyon
 
 ### <a name="configLinuxDeviceWhitelist" />Device whitelist
 
-**`devices`** (array of objects, OPTIONAL) configures the [device whitelist][cgroup-v1-devices].
-The runtime MUST apply entries in the listed order.
+**`devices`** (array of objects, OPTIONAL) configures the [device whitelist controller][cgroup-v1-devices] at [`cgroupsPath`](#control-groups).
 
 Each entry has the following structure:
 
 * **`allow`** *(boolean, REQUIRED)* - whether the entry is allowed or denied.
-* **`type`** *(string, OPTIONAL)* - type of device: `a` (all), `c` (char), or `b` (block).
-    Unset values mean "all", mapping to `a`.
+    The line for this entry is:
+
+    > {type} {major}:{minor} {access}
+
+    When true, the runtime MUST write that to `devices.allow`.
+    When false, the runtime MUST write that line to `devices.deny`.
+* **`type`** *(string, OPTIONAL)* - type of device.
+    Defaults to `a`.
 * **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
-    Unset values mean "all", mapping to [`*` in the filesystem API][cgroup-v1-devices].
+    Defaults to `*`.
 * **`access`** *(string, OPTIONAL)* - cgroup permissions for device.
-    A composition of `r` (read), `w` (write), and `m` (mknod).
+    Defaults to `rwm`.
+
+The runtime MUST NOT write any other lines to either `devices.allow` or `devices.deny`.
 
 #### Example
+
+The configuration:
 
 ```json
     "devices": [
@@ -248,6 +257,12 @@ Each entry has the following structure:
         }
     ]
 ```
+
+would result in the runtime writting the following lines:
+
+* `a *:* rwm` to `devices.deny`
+* `c 10:229 rw` to `devices.allow`
+* `b 8:0 r` to `devices.allow`
 
 ### <a name="configLinuxDisableOutOfMemoryKiller" />Disable out-of-memory killer
 
