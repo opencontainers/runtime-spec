@@ -27,14 +27,17 @@
             },
             "namespaces": {
                 "id": "https://opencontainers.org/schema/bundle/linux/namespaces",
-                "type": "array",
-                "items": {
-                    "anyOf": [
-                        {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": {
                             "$ref": "defs-linux.json#/definitions/NamespaceReference"
                         }
-                    ]
-                }
+                    },
+                    {
+                        "type": "null"
+                    }
+                ]
             },
             "resources": {
                 "id": "https://opencontainers.org/schema/bundle/linux/resources",
