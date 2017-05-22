@@ -642,6 +642,7 @@ The values MUST be absolute paths in the [container namespace](glossary.md#conta
 ## <a name="configLinuxMountLabel" />Mount Label
 
 **`mountLabel`** (string, OPTIONAL) will set the Selinux context for the mounts in the container.
+    The value MUST NOT be an empty string.
 
 ### Example
 
