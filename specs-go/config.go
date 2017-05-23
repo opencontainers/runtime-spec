@@ -47,7 +47,7 @@ type Process struct {
 	// Capabilities are Linux capabilities that are kept for the process.
 	Capabilities *LinuxCapabilities `json:"capabilities,omitempty" platform:"linux"`
 	// Rlimits specifies rlimit options to apply to the process.
-	Rlimits []LinuxRlimit `json:"rlimits,omitempty" platform:"linux"`
+	Rlimits []Rlimit `json:"rlimits,omitempty"`
 	// NoNewPrivileges controls whether additional privileges could be gained by processes in the container.
 	NoNewPrivileges bool `json:"noNewPrivileges,omitempty" platform:"linux"`
 	// ApparmorProfile specifies the apparmor profile for the container.
@@ -215,8 +215,8 @@ type LinuxIDMapping struct {
 	Size uint32 `json:"size"`
 }
 
-// LinuxRlimit type and restrictions
-type LinuxRlimit struct {
+// Rlimit type and restrictions
+type Rlimit struct {
 	// Type of the rlimit to set
 	Type string `json:"type"`
 	// Hard is the hard limit for the specified type
