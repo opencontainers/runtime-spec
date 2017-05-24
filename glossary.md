@@ -30,9 +30,8 @@ It reads the [configuration files](#configuration) from a [bundle](#bundle), use
 
 ## <a name="glossaryRuntimeNamespace" />Runtime namespace
 
-On Linux, a leaf in the [namespace][namespaces.7] hierarchy from which the [runtime](#runtime) process is executed.
-New container namespaces will be created as children of the runtime namespaces.
-
+On Linux, the namespaces from which new [container namespaces](#container-namespace) are [created](config-linux.md#namespaces) and from which some configured resources are accessed.
+Examples of resources retrieved from this namespace include [`linux.namespaces[].path`](config-linux.md#namespaces) and the [`resctrl` psuedo-filesystem used for `linux.intelRdt`](config-linux.md#intelrdt).
 
 [JSON]: https://tools.ietf.org/html/rfc7159
 [UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
