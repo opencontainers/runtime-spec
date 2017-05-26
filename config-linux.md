@@ -185,9 +185,9 @@ The Spec does not include naming schema for cgroups.
 The Spec does not support per-controller paths for the reasons discussed in the [cgroupv2 documentation][cgroup-v2].
 The cgroups will be created if they don't exist.
 
-You can configure a container's cgroups via the `resources` field of the Linux configuration.
-Do not specify `resources` unless limits have to be updated.
-For example, to run a new process in an existing container without updating limits, `resources` need not be specified.
+You can configure a container's cgroups via the OPTIONAL `resources` property.
+When `resources` is empty or unset, the runtime MUST NOT alter properties of existing cgroups.
+When a subset of `resources` is empty or unset, the runtime MUST NOT alter the properties of existing cgroups covered by that subset.
 
 Runtimes MAY attach the container process to additional cgroup controllers beyond those necessary to fulfill the `resources` settings.
 
