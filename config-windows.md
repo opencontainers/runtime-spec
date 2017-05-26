@@ -155,14 +155,14 @@ You can indicate that a container should be started in an a mode where disk flus
 ## <a name="configWindowsHyperV" />HyperV
 
 `hyperv` is an OPTIONAL field of the Windows configuration.
-If present, the container MUST be run with Hyper-V isolation.
-If omitted, the container MUST be run as a Windows Server container.
+If [set](glossary.md#set), the container MUST be run with Hyper-V isolation.
+If [unset](glossary.md#set), the container MUST be run as a Windows Server container.
 
 The following parameters can be specified:
 
 * **`utilityVMPath`** *(string, OPTIONAL)* - specifies the path to the image used for the utility VM.
     This would be specified if using a base image which does not contain a utility VM image.
-    If not supplied, the runtime will search the container filesystem layers from the bottom-most layer upwards, until it locates "UtilityVM", and default to that path.
+    If [unset](glossary.md#set), the runtime MUST search the container filesystem layers from the bottom-most layer upwards, until it locates "UtilityVM", and default to that path.
 
 ### Example
 

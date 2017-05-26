@@ -39,7 +39,7 @@ The following parameters can be specified to set up namespaces:
     The runtime MUST place the container process in the namespace associated with that `path`.
     The runtime MUST [generate an error](runtime.md#errors) if `path` is not associated with a namespace of type `type`.
 
-    If `path` is not specified, the runtime MUST create a new [container namespace](glossary.md#container-namespace) of type `type`.
+    If `path` is [unset](glossary.md#set), the runtime MUST create a new [container namespace](glossary.md#container-namespace) of type `type`.
 
 If a namespace type is not specified in the `namespaces` array, the container MUST inherit the [runtime namespace](glossary.md#runtime-namespace) of that type.
 If a `namespaces` field contains duplicated namespaces with same `type`, the runtime MUST [generate an error](runtime.md#errors).
@@ -176,9 +176,9 @@ The path to the cgroups can be specified in the Spec via `cgroupsPath`.
 If `cgroupsPath` is:
 * ... an absolute path (starting with `/`), the runtime MUST take the path to be relative to the cgroup mount point.
 * ... a relative path (not starting with `/`), the runtime MAY interpret the path relative to a runtime-determined location in the cgroup hierarchy.
-* ... not specified, the runtime MAY define the default cgroup path.
+* ... [unset](glossary.md#set), the runtime MAY define the default cgroup path.
 Runtimes MAY consider certain `cgroupsPath` values to be invalid, and MUST generate an error if this is the case.
-If a `cgroupsPath` value is specified, the runtime MUST consistently attach to the same place in the cgroup hierarchy given the same value of `cgroupsPath`.
+If a `cgroupsPath` value is [set](glossary.md#set), the runtime MUST consistently attach to the same place in the cgroup hierarchy given the same value of `cgroupsPath`.
 
 Implementations of the Spec can choose to name cgroups in any manner.
 The Spec does not include naming schema for cgroups.
@@ -186,8 +186,8 @@ The Spec does not support per-controller paths for the reasons discussed in the 
 The cgroups will be created if they don't exist.
 
 You can configure a container's cgroups via the `resources` field of the Linux configuration.
-Do not specify `resources` unless limits have to be updated.
-For example, to run a new process in an existing container without updating limits, `resources` need not be specified.
+Do not [set](glossary.md#set) `resources` unless limits have to be updated.
+To run a new process in an existing container without updating limits, `resources` SHOULD be [unset](glossary.md#set).
 
 Runtimes MAY attach the container process to additional cgroup controllers beyond those necessary to fulfill the `resources` settings.
 
@@ -218,9 +218,9 @@ Each entry has the following structure:
 
 * **`allow`** *(boolean, REQUIRED)* - whether the entry is allowed or denied.
 * **`type`** *(string, OPTIONAL)* - type of device: `a` (all), `c` (char), or `b` (block).
-    Unset values mean "all", mapping to `a`.
+    Defaults to `a`.
 * **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
-    Unset values mean "all", mapping to [`*` in the filesystem API][cgroup-v1-devices].
+    Defaults to `*`, the semantics of which are documented [in the filesystem API][cgroup-v1-devices].
 * **`access`** *(string, OPTIONAL)* - cgroup permissions for device.
     A composition of `r` (read), `w` (write), and `m` (mknod).
 
@@ -335,7 +335,7 @@ The following parameters can be specified to set up the controller:
     * **`weight`** *(uint16, OPTIONAL)* - bandwidth rate for the device.
     * **`leafWeight`** *(uint16, OPTIONAL)* - bandwidth rate for the device while competing with the cgroup's child cgroups, CFQ scheduler only
 
-    You MUST specify at least one of `weight` or `leafWeight` in a given entry, and MAY specify both.
+    You MUST [set](glossary.md#set) at least one of `weight` or `leafWeight` in a given entry, and MAY [set](glossary.md#set) both.
 
 * **`blkioThrottleReadBpsDevice`**, **`blkioThrottleWriteBpsDevice`**, **`blkioThrottleReadIOPSDevice`**, **`blkioThrottleWriteIOPSDevice`** *(array of objects, OPTIONAL)* - specify the list of devices which will be IO rate limited.
     The following parameters can be specified per-device:
@@ -451,17 +451,17 @@ The following parameters can be specified to set up the controller:
 ## <a name="configLinuxIntelRdt" />IntelRdt
 
 **`intelRdt`** (object, OPTIONAL) represents the [Intel Resource Director Technology][intel-rdt-cat-kernel-interface].
-    If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
+    If `intelRdt` is [set](glossary.md#set), the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
     If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
-    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` psuedo-filesystems.
+    If `intelRdt` is [unset](glossary.md#set), the runtime MUST NOT manipulate any `resctrl` psuedo-filesystems.
 
 The following parameters can be specified for the container:
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
-    If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
+    If `l3CacheSchema` is [set](glossary.md#set), runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
 
-    If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` psuedo-filesystems.
+    If `l3CacheSchema` is [unset](glossary.md#set), runtimes MUST NOT write to `schemata` files in any `resctrl` psuedo-filesystems.
 
 ### Example
 
@@ -528,7 +528,7 @@ The following parameters can be specified to set up seccomp:
 * **`syscalls`** *(array of objects, OPTIONAL)* - match a syscall in seccomp.
 
     While this property is OPTIONAL, some values of `defaultAction` are not useful without `syscalls` entries.
-    For example, if `defaultAction` is `SCMP_ACT_KILL` and `syscalls` is empty or unset, the kernel will kill the container process on its first syscall.
+    For example, if `defaultAction` is `SCMP_ACT_KILL` and `syscalls` is empty or [unset](glossary.md#set), the kernel will kill the container process on its first syscall.
 
     Each entry has the following structure:
 

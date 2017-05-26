@@ -33,6 +33,9 @@ It reads the [configuration files](#configuration) from a [bundle](#bundle), use
 On Linux, a leaf in the [namespace][namespaces.7] hierarchy from which the [runtime](#runtime) process is executed.
 New container namespaces will be created as children of the runtime namespaces.
 
+## <a name="glossarySet" />Set
+
+A property is "set" if its key appears in the parent JSON object and "unset" if its key does not appear in the parent JSON object.
 
 [JSON]: https://tools.ietf.org/html/rfc7159
 [UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
