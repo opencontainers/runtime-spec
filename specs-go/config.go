@@ -108,6 +108,14 @@ type Platform struct {
 	OS string `json:"os"`
 	// Arch is the architecture
 	Arch string `json:"arch"`
+	// OSVersion specifies the operating system version, for example `10.0.10586`.
+	OSVersion string `json:"os.version,omitempry"`
+	// OSFeatures specifies an array of strings, each specifying a mandatory
+	// OS feature, for example `win32k`.
+	OSFeatures []string `json:"os.features,omitempry"`
+	// Variant specifies the variant of the CPU, for example `v8` to specify
+	// a perticular CPU variant of the ARM CPU.
+	Variant string `json:"variant,omitempry"`
 }
 
 // Mount specifies a mount for a container.
