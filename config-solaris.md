@@ -84,11 +84,11 @@ For additional information on properties, check the [zonecfg(1M)][zonecfg.1m_2] 
 * **`lowerLink`** *(string, OPTIONAL)* Specify the link over which the VNIC will be created.
 Mapped to `lower-link` in the [zonecfg(1M)][zonecfg.1m_2] man page.
 * **`allowedAddress`** *(string, OPTIONAL)* The set of IP addresses that the container can use might be constrained by specifying the `allowedAddress` property.
-    If `allowedAddress` has not been specified, then they can use any IP address on the associated physical interface for the network resource.
-    Otherwise, when `allowedAddress` is specified, the container cannot use IP addresses that are not in the `allowedAddress` list for the physical address.
+    If `allowedAddress` is [unset](glossary.md#set), then they can use any IP address on the associated physical interface for the network resource.
+    Otherwise, when `allowedAddress` is [set](glossary.md#set), the container cannot use IP addresses that are not in the `allowedAddress` list for the physical address.
     Mapped to `allowed-address` in the [zonecfg(1M)][zonecfg.1m_2] man page.
-* **`configureAllowedAddress`** *(string, OPTIONAL)* If `configureAllowedAddress` is set to true, the addresses specified by `allowedAddress` are automatically configured on the interface each time the container starts.
-    When it is set to false, the `allowedAddress` will not be configured on container start.
+* **`configureAllowedAddress`** *(string, OPTIONAL)* If `configureAllowedAddress` is `true`, the addresses specified by `allowedAddress` are automatically configured on the interface each time the container starts.
+    When it is `false`, the `allowedAddress` will not be configured on container start.
     Mapped to `configure-allowed-address` in the [zonecfg(1M)][zonecfg.1m_2] man page.
 * **`defrouter`** *(string, OPTIONAL)* The value for the OPTIONAL default router.
 * **`macAddress`** *(string, OPTIONAL)* Set the VNIC's MAC addresses based on the specified value or keyword.

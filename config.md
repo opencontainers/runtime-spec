@@ -31,15 +31,16 @@ For all platform-specific configuration values, the scope defined below in the [
 * **`path`** (string, OPTIONAL) Specifies the path to the root filesystem for the container.
     The path is either an absolute path or a relative path to the bundle.
 
-    * On Windows, for Windows Server Containers, this field is REQUIRED and MUST be specified as a [volume GUID path][naming-a-volume].
-      For Hyper-V Containers, this field MUST be omitted.
+    * On Windows, for Windows Server Containers, this field is REQUIRED and MUST be a [volume GUID path][naming-a-volume].
+      For Hyper-V Containers, this field MUST be [unset](glossary.md#set).
     * On all other platforms, this field is REQUIRED.
         The value SHOULD be the conventional `rootfs`.
     * On Linux, for example, with a bundle at `/to/bundle` and a root filesystem at `/to/bundle/rootfs`, the `path` value can be either `/to/bundle/rootfs` or `rootfs`.
 
     If defined, a directory MUST exist at the path declared by the field.
-* **`readonly`** (bool, OPTIONAL) If true then the root filesystem MUST be read-only inside the container, defaults to false.
-    * On Windows, this field MUST be omitted or false.
+* **`readonly`** (bool, OPTIONAL) If true then the root filesystem MUST be read-only inside the container.
+    Defaults to `false`.
+    * On Windows, this field MUST be [unset](glossary.md#set) or `false`.
 
 ### Example (POSIX)
 
@@ -175,8 +176,8 @@ For Linux-based systems the process structure supports the following process-spe
 * **`apparmorProfile`** (string, OPTIONAL) specifies the name of the AppArmor profile to be applied to processes in the container.
     For more information about AppArmor, see [AppArmor documentation][apparmor].
 * **`oomScoreAdj`** *(int, OPTIONAL)* adjusts the oom-killer score in `[pid]/oom_score_adj` for the container process's `[pid]` in a [proc pseudo-filesystem][procfs].
-    If `oomScoreAdj` is set, the runtime MUST set `oom_score_adj` to the given value.
-    If `oomScoreAdj` is not set, the runtime MUST NOT change the value of `oom_score_adj`.
+    If `oomScoreAdj` is [set](glossary.md#set), the runtime MUST set `oom_score_adj` to the given value.
+    If `oomScoreAdj` is [unset](glossary.md#set), the runtime MUST NOT change the value of `oom_score_adj`.
 
     This is a per-process setting, where as [`disableOOMKiller`](config-linux.md#disable-out-of-memory-killer) is scoped for a memory cgroup.
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
@@ -344,11 +345,11 @@ For Windows based systems the user structure has the following fields:
 [**`platform.os`**](#platform) is used to specify platform-specific configuration.
 
 * **`linux`** (object, OPTIONAL) [Linux-specific configuration](config-linux.md).
-    This MAY be set if **`platform.os`** is `linux` and MUST NOT be set otherwise.
+    This MAY be [set](glossary.md#set) if **`platform.os`** is `linux` and MUST be [unset](glossary.md#set) otherwise.
 * **`windows`** (object, OPTIONAL) [Windows-specific configuration](config-windows.md).
-    This MUST be set if **`platform.os`** is `windows` and MUST NOT be set otherwise.
+    This MUST be [set](glossary.md#set) if **`platform.os`** is `windows` and MUST NOT be set otherwise.
 * **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
-    This MAY be set if **`platform.os`** is `solaris` and MUST NOT be set otherwise.
+    This MAY be [set](glossary.md#set) if **`platform.os`** is `solaris` and MUST be [unset](glossary.md#set) otherwise.
 
 ### Example (Linux)
 
@@ -380,7 +381,7 @@ For Linux- and Solaris-based systems, the configuration structure supports `hook
         * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
         * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
         * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
-            If set, `timeout` MUST be greater than zero.
+            If [set](glossary.md#set), `timeout` MUST be greater than zero.
     * **`poststart`** (array of objects, OPTIONAL) is an array of [post-start hooks](#poststart).
         Entries in the array have the same schema as pre-start entries.
     * **`poststop`** (array of objects, OPTIONAL) is an array of [post-stop hooks](#poststop).
