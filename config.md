@@ -190,8 +190,11 @@ The user for the process is a platform-specific structure that allows specific c
 For Linux and Solaris based systems the user structure has the following fields:
 
 * **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
+    The runtime MUST set the [real user ID][real-user-id] of the process such that a call to [`getuid(3)`][getuid.3] returns the configured value.
 * **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
-* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs (in the [container namespace](glossary.md#container-namespace) to be added to the process.
+    The runtime MUST set the [real group ID][real-group-id] of the process such that a call to [`getgid(3)`][getgid.3] returns the configured value.
+* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs (in the [container namespace](glossary.md#container-namespace)) to be added to the process.
+    The runtime MUST set the [supplementary group IDs][supplementary-group-id] of the process such that the union of group IDs from a call to [`getgroups(3)`][getgroups.3] and a call to [`getegid(3)`][getegid] equals the union of the configured `additionalGroups` and `gid` values.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
 
@@ -855,8 +858,15 @@ Here is a full example `config.json` for reference.
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-xsh-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
 [naming-a-volume]: https://aka.ms/nb3hqb
+[real-group-id]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_312
+[real-user-id]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_315
+[supplementary-group-id]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_378
 
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
+[getegid.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getegid.html
+[getgid.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getgid.html
+[getgroups.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getgroups.html
+[getuid.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getuid.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
 [mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
 [mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT%20OPTIONS
