@@ -264,7 +264,8 @@
             },
             "mountLabel": {
                 "id": "https://opencontainers.org/schema/bundle/linux/mountLabel",
-                "type": "string"
+                "type": "string",
+                "minLength": 1
             }
         }
     }
