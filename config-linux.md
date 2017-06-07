@@ -622,7 +622,9 @@ The following parameters can be specified to set up seccomp:
 
 ## <a name="configLinuxMountLabel" />Mount Label
 
-**`mountLabel`** (string, OPTIONAL) will set the Selinux context for the mounts in the container.
+**`mountLabel`** (string, OPTIONAL) will set the SELinux context for the mounts in the container.
+If `mountLabel` is specified and SELinux is enabled, the runtime MUST set `mountLabel` for the mounts in the container.
+For more information about SELinux, see  [SELinux documentation][selinux].
 
 ### Example
 
