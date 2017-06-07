@@ -192,7 +192,7 @@
                             },
                             "swappiness": {
                                 "id": "https://opencontainers.org/schema/bundle/linux/resources/memory/swappiness",
-                                "$ref": "defs.json#/definitions/uint64"
+                                "$ref": "defs-linux.json#/definitions/memorySwappiness"
                             }
                         }
                     },
