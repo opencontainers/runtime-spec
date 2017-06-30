@@ -101,6 +101,7 @@ For POSIX platforms the `mounts` structure has the following fields:
 
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
   * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
+    Note: `type` is empty or SHOULD be ignored when `options` contains "bind" or "rbind", which means bind-mount directory `source` from host into `destination` in container. This is similar with "--bind" or "--rbind" optins in [mount(8)][mount.8].
   * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
