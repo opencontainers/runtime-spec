@@ -100,6 +100,10 @@
                 "user": {
                     "id": "https://opencontainers.org/schema/bundle/process/user",
                     "type": "object",
+                    "required": [
+                        "uid",
+                        "gid"
+                    ],
                     "properties": {
                         "uid": {
                             "id": "https://opencontainers.org/schema/bundle/process/user/uid",
