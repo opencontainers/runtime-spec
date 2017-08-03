@@ -74,7 +74,7 @@ For all platform-specific configuration values, the scope defined below in the [
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
-    Path values are either absolute or relative to the bundle.
+    Path values are either absolute path or relative path to the bundle.
     * Windows: a local directory on the filesystem of the container host. UNC paths and mapped drives are not supported.
     * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (array of strings, OPTIONAL) Mount options of the filesystem to be used.
@@ -372,7 +372,7 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
     * **`prestart`** (array of objects, OPTIONAL) is an array of [pre-start hooks](#prestart).
         Entries in the array contain the following properties:
         * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
-            This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            This specification extends the IEEE standard in that **`path`** MUST be an absolute path.
         * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
         * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
         * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
