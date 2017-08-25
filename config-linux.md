@@ -222,10 +222,10 @@ Each entry has the following structure:
 
 * **`allow`** *(boolean, REQUIRED)* - whether the entry is allowed or denied.
 * **`type`** *(string, OPTIONAL)* - type of device: `a` (all), `c` (char), or `b` (block).
-    Unset values mean "all", mapping to `a`.
+    Unset value means "all", mapping to `a`.
 * **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
-    Unset values mean "all", mapping to [`*` in the filesystem API][cgroup-v1-devices].
-* **`access`** *(string, OPTIONAL)* - cgroup permissions for device.
+    Unset value means "all", mapping to [`*` in the filesystem API][cgroup-v1-devices].
+* **`access`** *(string, REQUIRED unless `type` is `a`)* - cgroup permissions for device.
     A composition of `r` (read), `w` (write), and `m` (mknod).
 
 #### Example
