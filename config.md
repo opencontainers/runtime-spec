@@ -441,7 +441,7 @@ Cleanup or debugging functions are examples of such a hook.
     Keys MUST NOT be an empty string.
     Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
     Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
-    Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
+    Runtimes MUST handle unknown annotation keys like any other [unknown property](#extensibility).
 
     Values MUST be strings.
     Values MAY be an empty string.
@@ -454,12 +454,12 @@ Cleanup or debugging functions are examples of such a hook.
 
 ## <a name="configExtensibility" />Extensibility
 
-Runtimes that are reading or processing this configuration file MUST NOT generate an error if they encounter an unknown property.
-Instead they MUST ignore unknown properties.
+Runtimes MAY [log](runtime.md#warnings) unknown properties but MUST otherwise ignore them.
+That includes not [generating errors](runtime.md#errors) if they encounter an unknown property.
 
 ## Valid values
 
-Runtimes that are reading or processing this configuration file MUST generate an error when invalid or unsupported values are encountered.
+Runtimes MUST generate an error when invalid or unsupported values are encountered.
 Unless support for a valid value is explicitly required, runtimes MAY choose which subset of the valid values it will support.
 
 ## Configuration Schema Example
