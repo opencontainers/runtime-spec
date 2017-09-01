@@ -345,9 +345,9 @@ type LinuxDevice struct {
 	// Device type, block, char, etc.
 	Type string `json:"type"`
 	// Major is the device's major number.
-	Major int64 `json:"major"`
+	Major *int64 `json:"major,omitempty"`
 	// Minor is the device's minor number.
-	Minor int64 `json:"minor"`
+	Minor *int64 `json:"minor,omitempty"`
 	// FileMode permission bits for the device.
 	FileMode *os.FileMode `json:"fileMode,omitempty"`
 	// UID of the device.
