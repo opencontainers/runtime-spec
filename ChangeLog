@@ -1,5 +1,38 @@
 OpenContainers Specifications
 
+Changes with v1.0.1:
+
+	Minor fixes and documentation:
+
+	* spec: Expand "OCI" in spec-title reference and add "Initiative"
+	  (#900)
+	* config: Simplify title to "Configuration" (#901)
+	* config: Fix "procfs_2" -> "proc_2" link label (#906)
+	* config: Fix IEEE Std 1003.1-2008 exec link markup (#913)
+	* config: Add a trailing period to the "cannot be mapped" rlimits
+	  line (#915)
+	* config-linux: RFC 2119 MUST for absolute linux.namespaces[].path
+	  (#925).  This is technically a breaking change, because a config
+	  with a relative namespace path would have been compliant before,
+	  but will be non compliant with this change. However, the previous
+	  "an absolute path to namespace file" wording was clear enough that
+	  config authors are unlikely to be relying on relative namespace
+	  paths in configs.
+	* config-linux: More specific documentation for weightDevice and
+	  throttle* (#825)
+	* config-linux: Modify procfs to proc (#905)
+	* config-linux: Fix "psuedo" -> "pseudo" typo (#921)
+	* config-windows: Make maximum a uint16 (was a uint) (#891)
+	* runtime: Change "process in the container" -> "container
+	  process" (#907)
+	* schema/config-schema: Use ArrayOfStrings in capabilities
+	  properties. (#886)
+	* schema/config-linux:
+	  s/throttleWriteIopsDevice/throttleWriteIOPSDevice/ (#899)
+	* schema/config-linux: add intelRdt field (#889)
+	* schema/config-solaris: Replaced refs with some fields
+	  (cappedCPU.ncpus, etc.) (#892)
+
 Changes with v1.0.0:
 
 	Breaking changes:
