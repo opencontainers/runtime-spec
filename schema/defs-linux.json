@@ -209,7 +209,8 @@
                     "type": "boolean"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "^[abc]$"
                 },
                 "major": {
                     "$ref": "#/definitions/Major"
