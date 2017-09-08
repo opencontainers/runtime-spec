@@ -772,7 +772,13 @@ Here is a full example `config.json` for reference.
                         "rate": 300
                     }
                 ]
-            }
+            },
+            "vtpms": [
+                {
+                    "vtpmVersion": "1.2",
+                    "createCerts": false
+                }
+            ]
         },
         "rootfsPropagation": "slave",
         "seccomp": {

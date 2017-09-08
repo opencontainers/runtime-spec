@@ -384,6 +384,26 @@ The following parameters can be specified to set up the controller:
     }
 ```
 
+### <a name="configLinuxVTPMs" />vTPMs
+
+**`vtpms`** (array of objects, OPTIONAL) lists a number of emulated TPMs that will be made available to the container.
+
+Each entry has the following structure:
+
+* **`vtpmVersion`** *(string, OPTIONAL)* - The version of TPM to emulate, either 1.2 or 2; default is 1.2.
+* **`createCerts`** *(boolean, OPTIONAL)* - If true then create certificates for the vTPM, defaults to false.
+
+#### Example
+
+```json
+    "vtpms": [
+        {
+            "vtpmVersion": "1.2",
+            "createCerts": false
+        }
+    ]
+```
+
 ### <a name="configLinuxHugePageLimits" />Huge page limits
 
 **`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the
