@@ -460,14 +460,14 @@ The following parameters can be specified to set up the controller:
     If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
     If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
-    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` psuedo-filesystems.
+    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
 
 The following parameters can be specified for the container:
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
     If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
 
-    If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` psuedo-filesystems.
+    If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
 
 ### Example
 
