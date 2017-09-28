@@ -35,7 +35,8 @@ The following parameters can be specified to set up namespaces:
     * **`user`** the container will be able to remap user and group IDs from the host to local users and groups within the container.
     * **`cgroup`** the container will have an isolated view of the cgroup hierarchy.
 
-* **`path`** *(string, OPTIONAL)* - an absolute path to namespace file in the [runtime mount namespace](glossary.md#runtime-namespace).
+* **`path`** *(string, OPTIONAL)* - namespace file.
+    This value MUST be an absolute path in the [runtime mount namespace](glossary.md#runtime-namespace).
     The runtime MUST place the container process in the namespace associated with that `path`.
     The runtime MUST [generate an error](runtime.md#errors) if `path` is not associated with a namespace of type `type`.
 
