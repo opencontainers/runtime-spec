@@ -71,6 +71,7 @@ For all platform-specific configuration values, the scope defined below in the [
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
     This value MUST be an absolute path.
+    * Linux, Solaris: if the destination is a directory and it does not exist, the runtime SHOULD create the destination directory with mode `0755`.
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
@@ -153,6 +154,7 @@ For POSIX platforms the `mounts` structure has the following fields:
     * **`width`** (uint, REQUIRED)
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
     This value MUST be an absolute path.
+    On Linux and Solaris, if the directory does not exist, the runtime SHOULD create the directory with mode `0755`.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
 * **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
     This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
