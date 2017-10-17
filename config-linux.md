@@ -637,6 +637,29 @@ The following parameters can be specified to set up seccomp:
     "mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
 ```
 
+### <a name="configLinuxRdmaLimits" />RDMA resource limits
+
+**`rdma_limits`** (array of objects, OPTIONAL) limits resources for network interfaces which support RDMA (e.g. HCA handles).
+For more information, see the [the kernel RMDA controller documentation][cgroup-v1-rdma].
+
+Each entry has the following structure:
+
+* **`interface_name`** (string, REQUIRED) - A name of an interface.
+* **`hca_handle_limit`** (int64, REQUIRED) - Maximum number of HCA Handles (use `-1` to request the maximum available).
+* **`hca_object_limit`** (int64, REQUIRED) - Maximum number of HCA Objects (use `-1` to request the maximum available).
+
+#### Example
+
+```json
+    "rdma_limits": [
+        {
+            "interface_name": "mlx5_0",
+            "hca_handle_limit": 1,
+	    "hca_object_limit": 20
+        }
+   ]
+```
+
 
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
@@ -647,6 +670,7 @@ The following parameters can be specified to set up seccomp:
 [cgroup-v1-net-cls]: https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt
 [cgroup-v1-net-prio]: https://www.kernel.org/doc/Documentation/cgroup-v1/net_prio.txt
 [cgroup-v1-pids]: https://www.kernel.org/doc/Documentation/cgroup-v1/pids.txt
+[cgroup-v1-rdma]: https://www.kernel.org/doc/Documentation/cgroup-v1/rdma.txt
 [cgroup-v2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt
 [devices]: https://www.kernel.org/doc/Documentation/admin-guide/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
