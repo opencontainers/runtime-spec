@@ -26,7 +26,7 @@ For more information, see the [namespaces(7)][namespaces.7_2] man page.
 Namespaces are specified as an array of entries inside the `namespaces` root field.
 The following parameters can be specified to set up namespaces:
 
-* **`type`** *(string, REQUIRED)* - namespace type. The following namespace types are supported:
+* **`type`** *(string, REQUIRED)* - namespace type. The following namespace types SHOULD be supported:
     * **`pid`** processes inside the container will only be able to see other processes inside the same container.
     * **`network`** the container will have its own network stack.
     * **`mount`** the container will have an isolated mount table.
