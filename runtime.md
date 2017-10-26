@@ -137,4 +137,4 @@ Once a container is deleted its ID MAY be used by a subsequent container.
 
 ## <a name="runtimeHooks" />Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
-See [runtime configuration for hooks](./config.md#hooks) for more information.
+See [runtime configuration for hooks](./config.md#posix-platform-hooks) for more information.
