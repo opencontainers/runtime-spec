@@ -27,10 +27,10 @@ For all platform-specific configuration values, the scope defined below in the [
 ## <a name="configRoot" />Root
 
 **`root`** (object, OPTIONAL) specifies the container's root filesystem.
-    On Windows, for Windows Server Containers, this field is REQUIRED.
-    For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
+On Windows, for Windows Server Containers, this field is REQUIRED.
+For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
 
-    On all other platforms, this field is REQUIRED.
+On all other platforms, this field is REQUIRED.
 
 * **`path`** (string, REQUIRED) Specifies the path to the root filesystem for the container.
 
