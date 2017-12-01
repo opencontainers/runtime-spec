@@ -6,17 +6,17 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 ## <a name="configWindowsLayerFolders" />LayerFolders
 
 **`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer.
-  `layerFolders` MUST contain at least one entry.
+`layerFolders` MUST contain at least one entry.
 
 ### Example
 
 ```json
-    "windows": {
-        "layerFolders": [
-            "C:\\Layers\\layer1",
-            "C:\\Layers\\layer2"
-        ]
-    }
+"windows": {
+    "layerFolders": [
+        "C:\\Layers\\layer1",
+        "C:\\Layers\\layer2"
+    ]
+}
 ```
 
 ## <a name="configWindowsResources" />Resources
@@ -34,13 +34,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "memory": {
-                "limit": 2097152
-            }
+"windows": {
+    "resources": {
+        "memory": {
+            "limit": 2097152
         }
     }
+}
 ```
 
 ### <a name="configWindowsCpu" />CPU
@@ -56,13 +56,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "cpu": {
-                "maximum": 5000
-            }
+"windows": {
+    "resources": {
+        "cpu": {
+            "maximum": 5000
         }
     }
+}
 ```
 
 ### <a name="configWindowsStorage" />Storage
@@ -78,13 +78,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "storage": {
-                "iops": 50
-            }
+"windows": {
+    "resources": {
+        "storage": {
+            "iops": 50
         }
     }
+}
 ```
 
 ## <a name="configWindowsNetwork" />Network
@@ -101,19 +101,19 @@ The following parameters can be specified:
 ### Example
 
 ```json
-    "windows": {
-        "network": {
-            "endpointList": [
-                "7a010682-17e0-4455-a838-02e5d9655fe6"
-            ],
-            "allowUnqualifiedDNSQuery": true,
-            "DNSSearchList": [
-                "a.com",
-                "b.com"
-            ],
-            "networkSharedContainerName": "containerName"
-        }
-   }
+"windows": {
+    "network": {
+        "endpointList": [
+            "7a010682-17e0-4455-a838-02e5d9655fe6"
+        ],
+        "allowUnqualifiedDNSQuery": true,
+        "DNSSearchList": [
+            "a.com",
+            "b.com"
+        ],
+        "networkSharedContainerName": "containerName"
+    }
+}
 ```
 
 ## <a name="configWindowsCredentialSpec" />Credential Spec
@@ -135,9 +135,9 @@ You can indicate that a container should be started in a mode to apply pending s
 ### Example
 
 ```json
-    "windows": {
-        "servicing": true
-    }
+"windows": {
+    "servicing": true
+}
 ```
 
 ## <a name="configWindowsIgnoreFlushesDuringBoot" />IgnoreFlushesDuringBoot
@@ -147,9 +147,9 @@ You can indicate that a container should be started in an a mode where disk flus
 ### Example
 
 ```json
-    "windows": {
-        "ignoreFlushesDuringBoot": true
-    }
+"windows": {
+    "ignoreFlushesDuringBoot": true
+}
 ```
 
 ## <a name="configWindowsHyperV" />HyperV
@@ -167,9 +167,9 @@ The following parameters can be specified:
 ### Example
 
 ```json
-    "windows": {
-        "hyperv": {
-            "utilityVMPath": "C:\\path\\to\\utilityvm"
-        }
+"windows": {
+    "hyperv": {
+        "utilityVMPath": "C:\\path\\to\\utilityvm"
     }
+}
 ```

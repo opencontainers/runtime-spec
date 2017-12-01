@@ -21,7 +21,7 @@ For all platform-specific configuration values, the scope defined below in the [
 ### Example
 
 ```json
-    "ociVersion": "0.1.0"
+"ociVersion": "0.1.0"
 ```
 
 ## <a name="configRoot" />Root
@@ -33,9 +33,7 @@ For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
 On all other platforms, this field is REQUIRED.
 
 * **`path`** (string, REQUIRED) Specifies the path to the root filesystem for the container.
-
     * On Windows, `path` MUST be a [volume GUID path][naming-a-volume].
-
     * On POSIX platforms, `path` is either an absolute path or a relative path to the bundle.
         For example, with a bundle at `/to/bundle` and a root filesystem at `/to/bundle/rootfs`, the `path` value can be either `/to/bundle/rootfs` or `rootfs`.
         The value SHOULD be the conventional `rootfs`.
@@ -65,9 +63,9 @@ On all other platforms, this field is REQUIRED.
 ## <a name="configMounts" />Mounts
 
 **`mounts`** (array of objects, OPTIONAL) specifies additional mounts beyond [`root`](#root).
-    The runtime MUST mount entries in the listed order.
-    For Linux, the parameters are as documented in [mount(2)][mount.2] system call man page.
-    For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
+The runtime MUST mount entries in the listed order.
+For Linux, the parameters are as documented in [mount(2)][mount.2] system call man page.
+For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
     This value MUST be an absolute path.
@@ -100,8 +98,8 @@ On all other platforms, this field is REQUIRED.
 For POSIX platforms the `mounts` structure has the following fields:
 
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
-  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
-  * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
+    * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
 
@@ -143,7 +141,7 @@ For POSIX platforms the `mounts` structure has the following fields:
 ## <a name="configProcess" />Process
 
 **`process`** (object, OPTIONAL) specifies the container process.
-    This property is REQUIRED when [`start`](runtime.md#start) is called.
+This property is REQUIRED when [`start`](runtime.md#start) is called.
 
 * **`terminal`** (bool, OPTIONAL) specifies whether a terminal is attached to the process, defaults to false.
     As an example, if set to true on Linux a pseudoterminal pair is allocated for the process and the pseudoterminal slave is duplicated on the process's [standard streams][stdin.3].
@@ -404,47 +402,47 @@ Cleanup or debugging functions are examples of such a hook.
 ### Example
 
 ```json
-    "hooks": {
-        "prestart": [
-            {
-                "path": "/usr/bin/fix-mounts",
-                "args": ["fix-mounts", "arg1", "arg2"],
-                "env":  [ "key1=value1"]
-            },
-            {
-                "path": "/usr/bin/setup-network"
-            }
-        ],
-        "poststart": [
-            {
-                "path": "/usr/bin/notify-start",
-                "timeout": 5
-            }
-        ],
-        "poststop": [
-            {
-                "path": "/usr/sbin/cleanup.sh",
-                "args": ["cleanup.sh", "-f"]
-            }
-        ]
-    }
+"hooks": {
+    "prestart": [
+        {
+            "path": "/usr/bin/fix-mounts",
+            "args": ["fix-mounts", "arg1", "arg2"],
+            "env":  [ "key1=value1"]
+        },
+        {
+            "path": "/usr/bin/setup-network"
+        }
+    ],
+    "poststart": [
+        {
+            "path": "/usr/bin/notify-start",
+            "timeout": 5
+        }
+    ],
+    "poststop": [
+        {
+            "path": "/usr/sbin/cleanup.sh",
+            "args": ["cleanup.sh", "-f"]
+        }
+    ]
+}
 ```
 
 ## <a name="configAnnotations" />Annotations
 
 **`annotations`** (object, OPTIONAL) contains arbitrary metadata for the container.
-    This information MAY be structured or unstructured.
-    Annotations MUST be a key-value map.
-    If there are no annotations then this property MAY either be absent or an empty map.
+This information MAY be structured or unstructured.
+Annotations MUST be a key-value map.
+If there are no annotations then this property MAY either be absent or an empty map.
 
-    Keys MUST be strings.
-    Keys MUST NOT be an empty string.
-    Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
-    Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
-    Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
+Keys MUST be strings.
+Keys MUST NOT be an empty string.
+Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
+Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
+Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
 
-    Values MUST be strings.
-    Values MAY be an empty string.
+Values MUST be strings.
+Values MAY be an empty string.
 
 ```json
 "annotations": {

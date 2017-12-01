@@ -34,7 +34,6 @@ The following parameters can be specified to set up namespaces:
     * **`uts`** the container will be able to have its own hostname and domain name.
     * **`user`** the container will be able to remap user and group IDs from the host to local users and groups within the container.
     * **`cgroup`** the container will have an isolated view of the cgroup hierarchy.
-
 * **`path`** *(string, OPTIONAL)* - namespace file.
     This value MUST be an absolute path in the [runtime mount namespace](glossary.md#runtime-namespace).
     The runtime MUST place the container process in the namespace associated with that `path`.
@@ -48,31 +47,31 @@ If a `namespaces` field contains duplicated namespaces with same `type`, the run
 ### Example
 
 ```json
-    "namespaces": [
-        {
-            "type": "pid",
-            "path": "/proc/1234/ns/pid"
-        },
-        {
-            "type": "network",
-            "path": "/var/run/netns/neta"
-        },
-        {
-            "type": "mount"
-        },
-        {
-            "type": "ipc"
-        },
-        {
-            "type": "uts"
-        },
-        {
-            "type": "user"
-        },
-        {
-            "type": "cgroup"
-        }
-    ]
+"namespaces": [
+    {
+        "type": "pid",
+        "path": "/proc/1234/ns/pid"
+    },
+    {
+        "type": "network",
+        "path": "/var/run/netns/neta"
+    },
+    {
+        "type": "mount"
+    },
+    {
+        "type": "ipc"
+    },
+    {
+        "type": "uts"
+    },
+    {
+        "type": "user"
+    },
+    {
+        "type": "cgroup"
+    }
+]
 ```
 
 ## <a name="configLinuxUserNamespaceMappings" />User namespace mappings
@@ -92,20 +91,20 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
 ### Example
 
 ```json
-    "uidMappings": [
-        {
-            "hostID": 1000,
-            "containerID": 0,
-            "size": 32000
-        }
-    ],
-    "gidMappings": [
-        {
-            "hostID": 1000,
-            "containerID": 0,
-            "size": 32000
-        }
-    ]
+"uidMappings": [
+    {
+        "hostID": 1000,
+        "containerID": 0,
+        "size": 32000
+    }
+],
+"gidMappings": [
+    {
+        "hostID": 1000,
+        "containerID": 0,
+        "size": 32000
+    }
+]
 ```
 
 ## <a name="configLinuxDevices" />Devices
@@ -130,26 +129,26 @@ The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
 ### Example
 
 ```json
-    "devices": [
-        {
-            "path": "/dev/fuse",
-            "type": "c",
-            "major": 10,
-            "minor": 229,
-            "fileMode": 438,
-            "uid": 0,
-            "gid": 0
-        },
-        {
-            "path": "/dev/sda",
-            "type": "b",
-            "major": 8,
-            "minor": 0,
-            "fileMode": 432,
-            "uid": 0,
-            "gid": 0
-        }
-    ]
+"devices": [
+    {
+        "path": "/dev/fuse",
+        "type": "c",
+        "major": 10,
+        "minor": 229,
+        "fileMode": 438,
+        "uid": 0,
+        "gid": 0
+    },
+    {
+        "path": "/dev/sda",
+        "type": "b",
+        "major": 8,
+        "minor": 0,
+        "fileMode": 432,
+        "uid": 0,
+        "gid": 0
+    }
+]
 ```
 
 ### <a name="configLinuxDefaultDevices" />Default Devices
@@ -178,6 +177,7 @@ For more information, see the [kernel cgroups documentation][cgroup-v1].
 It can be used to either control the cgroups hierarchy for containers or to run a new process in an existing container.
 
 The value of `cgroupsPath` MUST be either an absolute path or a relative path.
+
 * In the case of an absolute path (starting with `/`), the runtime MUST take the path to be relative to the cgroups mount point.
 * In the case of a relative path (not starting with `/`), the runtime MAY interpret the path relative to a runtime-determined location in the cgroups hierarchy.
 
@@ -199,19 +199,19 @@ Runtimes MAY attach the container process to additional cgroup controllers beyon
 ### Example
 
 ```json
-    "cgroupsPath": "/myRuntime/myContainer",
-    "resources": {
-        "memory": {
-        "limit": 100000,
-        "reservation": 200000
-        },
-        "devices": [
-            {
-                "allow": false,
-                "access": "rwm"
-            }
-        ]
-   }
+"cgroupsPath": "/myRuntime/myContainer",
+"resources": {
+    "memory": {
+    "limit": 100000,
+    "reservation": 200000
+    },
+    "devices": [
+        {
+            "allow": false,
+            "access": "rwm"
+        }
+    ]
+}
 ```
 
 ### <a name="configLinuxDeviceWhitelist" />Device whitelist
@@ -232,26 +232,26 @@ Each entry has the following structure:
 #### Example
 
 ```json
-    "devices": [
-        {
-            "allow": false,
-            "access": "rwm"
-        },
-        {
-            "allow": true,
-            "type": "c",
-            "major": 10,
-            "minor": 229,
-            "access": "rw"
-        },
-        {
-            "allow": true,
-            "type": "b",
-            "major": 8,
-            "minor": 0,
-            "access": "r"
-        }
-    ]
+"devices": [
+    {
+        "allow": false,
+        "access": "rwm"
+    },
+    {
+        "allow": true,
+        "type": "c",
+        "major": 10,
+        "minor": 229,
+        "access": "rw"
+    },
+    {
+        "allow": true,
+        "type": "b",
+        "major": 8,
+        "minor": 0,
+        "access": "r"
+    }
+]
 ```
 
 ### <a name="configLinuxMemory" />Memory
@@ -279,15 +279,15 @@ The following properties do not specify memory limits, but are covered by the `m
 #### Example
 
 ```json
-    "memory": {
-        "limit": 536870912,
-        "reservation": 536870912,
-        "swap": 536870912,
-        "kernel": -1,
-        "kernelTCP": -1,
-        "swappiness": 0,
-        "disableOOMKiller": false
-    }
+"memory": {
+    "limit": 536870912,
+    "reservation": 536870912,
+    "swap": 536870912,
+    "kernel": -1,
+    "kernelTCP": -1,
+    "swappiness": 0,
+    "disableOOMKiller": false
+}
 ```
 
 ### <a name="configLinuxCPU" />CPU
@@ -308,15 +308,15 @@ The following parameters can be specified to set up the controller:
 #### Example
 
 ```json
-    "cpu": {
-        "shares": 1024,
-        "quota": 1000000,
-        "period": 500000,
-        "realtimeRuntime": 950000,
-        "realtimePeriod": 1000000,
-        "cpus": "2-3",
-        "mems": "0-7"
-    }
+"cpu": {
+    "shares": 1024,
+    "quota": 1000000,
+    "period": 500000,
+    "realtimeRuntime": 950000,
+    "realtimePeriod": 1000000,
+    "cpus": "2-3",
+    "mems": "0-7"
+}
 ```
 
 ### <a name="configLinuxBlockIO" />Block IO
@@ -352,37 +352,37 @@ The following parameters can be specified to set up the controller:
 #### Example
 
 ```json
-    "blockIO": {
-        "weight": 10,
-        "leafWeight": 10,
-        "weightDevice": [
-            {
-                "major": 8,
-                "minor": 0,
-                "weight": 500,
-                "leafWeight": 300
-            },
-            {
-                "major": 8,
-                "minor": 16,
-                "weight": 500
-            }
-        ],
-        "throttleReadBpsDevice": [
-            {
-                "major": 8,
-                "minor": 0,
-                "rate": 600
-            }
-        ],
-        "throttleWriteIOPSDevice": [
-            {
-                "major": 8,
-                "minor": 16,
-                "rate": 300
-            }
-        ]
-    }
+"blockIO": {
+    "weight": 10,
+    "leafWeight": 10,
+    "weightDevice": [
+        {
+            "major": 8,
+            "minor": 0,
+            "weight": 500,
+            "leafWeight": 300
+        },
+        {
+            "major": 8,
+            "minor": 16,
+            "weight": 500
+        }
+    ],
+    "throttleReadBpsDevice": [
+        {
+            "major": 8,
+            "minor": 0,
+            "rate": 600
+        }
+    ],
+    "throttleWriteIOPSDevice": [
+        {
+            "major": 8,
+            "minor": 16,
+            "rate": 300
+        }
+    ]
+}
 ```
 
 ### <a name="configLinuxHugePageLimits" />Huge page limits
@@ -399,12 +399,12 @@ Each entry has the following structure:
 #### Example
 
 ```json
-    "hugepageLimits": [
-        {
-            "pageSize": "2MB",
-            "limit": 209715200
-        }
-   ]
+"hugepageLimits": [
+    {
+        "pageSize": "2MB",
+        "limit": 209715200
+    }
+]
 ```
 
 ### <a name="configLinuxNetwork" />Network
@@ -423,19 +423,19 @@ The following parameters can be specified to set up the controller:
 #### Example
 
 ```json
-    "network": {
-        "classID": 1048577,
-        "priorities": [
-            {
-                "name": "eth0",
-                "priority": 500
-            },
-            {
-                "name": "eth1",
-                "priority": 1000
-            }
-        ]
-   }
+"network": {
+    "classID": 1048577,
+    "priorities": [
+        {
+            "name": "eth0",
+            "priority": 500
+        },
+        {
+            "name": "eth1",
+            "priority": 1000
+        }
+    ]
+}
 ```
 
 ### <a name="configLinuxPIDS" />PIDs
@@ -450,25 +450,24 @@ The following parameters can be specified to set up the controller:
 #### Example
 
 ```json
-    "pids": {
-        "limit": 32771
-   }
+"pids": {
+    "limit": 32771
+}
 ```
 
 ## <a name="configLinuxIntelRdt" />IntelRdt
 
 **`intelRdt`** (object, OPTIONAL) represents the [Intel Resource Director Technology][intel-rdt-cat-kernel-interface].
-    If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
-    If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
+If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
+If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
-    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
+If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
 
 The following parameters can be specified for the container:
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
-    If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
-
-    If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+    * If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
+    * If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
 
 ### Example
 
@@ -491,10 +490,10 @@ For more information, see the [sysctl(8)][sysctl.8] man page.
 ### Example
 
 ```json
-    "sysctl": {
-        "net.ipv4.ip_forward": "1",
-        "net.core.somaxconn": "256"
-   }
+"sysctl": {
+    "net.ipv4.ip_forward": "1",
+    "net.core.somaxconn": "256"
+}
 ```
 
 ## <a name="configLinuxSeccomp" />Seccomp
@@ -509,7 +508,6 @@ The actions, architectures, and operators are strings that match the definitions
 The following parameters can be specified to set up seccomp:
 
 * **`defaultAction`** *(string, REQUIRED)* - the default action for seccomp. Allowed values are the same as `syscalls[].action`.
-
 * **`architectures`** *(array of strings, OPTIONAL)* - the architecture used for system calls.
     A valid list of constants as of libseccomp v2.3.2 is shown below.
 
@@ -531,12 +529,9 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_S390X`
     * `SCMP_ARCH_PARISC`
     * `SCMP_ARCH_PARISC64`
-
 * **`syscalls`** *(array of objects, OPTIONAL)* - match a syscall in seccomp.
-
     While this property is OPTIONAL, some values of `defaultAction` are not useful without `syscalls` entries.
     For example, if `defaultAction` is `SCMP_ACT_KILL` and `syscalls` is empty or unset, the kernel will kill the container process on its first syscall.
-
     Each entry has the following structure:
 
     * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
@@ -549,9 +544,7 @@ The following parameters can be specified to set up seccomp:
         * `SCMP_ACT_ERRNO`
         * `SCMP_ACT_TRACE`
         * `SCMP_ACT_ALLOW`
-
     * **`args`** *(array of objects, OPTIONAL)* - the specific syscall in seccomp.
-
         Each entry has the following structure:
 
         * **`index`** *(uint, REQUIRED)* - the index for syscall arguments in seccomp.
@@ -571,60 +564,60 @@ The following parameters can be specified to set up seccomp:
 ### Example
 
 ```json
-    "seccomp": {
-        "defaultAction": "SCMP_ACT_ALLOW",
-        "architectures": [
-            "SCMP_ARCH_X86",
-            "SCMP_ARCH_X32"
-        ],
-        "syscalls": [
-            {
-                "names": [
-                    "getcwd",
-                    "chmod"
-                ],
-                "action": "SCMP_ACT_ERRNO"
-            }
-        ]
-    }
+"seccomp": {
+    "defaultAction": "SCMP_ACT_ALLOW",
+    "architectures": [
+        "SCMP_ARCH_X86",
+        "SCMP_ARCH_X32"
+    ],
+    "syscalls": [
+        {
+            "names": [
+                "getcwd",
+                "chmod"
+            ],
+            "action": "SCMP_ACT_ERRNO"
+        }
+    ]
+}
 ```
 
 ## <a name="configLinuxRootfsMountPropagation" />Rootfs Mount Propagation
 
 **`rootfsPropagation`** (string, OPTIONAL) sets the rootfs's mount propagation.
-    Its value is either slave, private, shared or unbindable.
-    The [Shared Subtrees][sharedsubtree] article in the kernel documentation has more information about mount propagation.
+Its value is either slave, private, shared or unbindable.
+The [Shared Subtrees][sharedsubtree] article in the kernel documentation has more information about mount propagation.
 
 ### Example
 
 ```json
-    "rootfsPropagation": "slave",
+"rootfsPropagation": "slave",
 ```
 
 ## <a name="configLinuxMaskedPaths" />Masked Paths
 
 **`maskedPaths`** (array of strings, OPTIONAL) will mask over the provided paths inside the container so that they cannot be read.
-    The values MUST be absolute paths in the [container namespace](glossary.md#container_namespace).
+The values MUST be absolute paths in the [container namespace](glossary.md#container_namespace).
 
 ### Example
 
 ```json
-    "maskedPaths": [
-        "/proc/kcore"
-    ]
+"maskedPaths": [
+    "/proc/kcore"
+]
 ```
 
 ## <a name="configLinuxReadonlyPaths" />Readonly Paths
 
 **`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.
-    The values MUST be absolute paths in the [container namespace](glossary.md#container-namespace).
+The values MUST be absolute paths in the [container namespace](glossary.md#container-namespace).
 
 ### Example
 
 ```json
-    "readonlyPaths": [
-        "/proc/sys"
-    ]
+"readonlyPaths": [
+    "/proc/sys"
+]
 ```
 
 ## <a name="configLinuxMountLabel" />Mount Label
@@ -634,7 +627,7 @@ The following parameters can be specified to set up seccomp:
 ### Example
 
 ```json
-    "mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
+"mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
 ```
 
 
