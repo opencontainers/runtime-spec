@@ -458,10 +458,10 @@ The following parameters can be specified to set up the controller:
 ## <a name="configLinuxIntelRdt" />IntelRdt
 
 **`intelRdt`** (object, OPTIONAL) represents the [Intel Resource Director Technology][intel-rdt-cat-kernel-interface].
-    If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
-    If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
+If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
+If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
-    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
+If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
 
 The following parameters can be specified for the container:
 
@@ -592,8 +592,8 @@ The following parameters can be specified to set up seccomp:
 ## <a name="configLinuxRootfsMountPropagation" />Rootfs Mount Propagation
 
 **`rootfsPropagation`** (string, OPTIONAL) sets the rootfs's mount propagation.
-    Its value is either slave, private, shared or unbindable.
-    The [Shared Subtrees][sharedsubtree] article in the kernel documentation has more information about mount propagation.
+Its value is either slave, private, shared or unbindable.
+The [Shared Subtrees][sharedsubtree] article in the kernel documentation has more information about mount propagation.
 
 ### Example
 
@@ -604,7 +604,7 @@ The following parameters can be specified to set up seccomp:
 ## <a name="configLinuxMaskedPaths" />Masked Paths
 
 **`maskedPaths`** (array of strings, OPTIONAL) will mask over the provided paths inside the container so that they cannot be read.
-    The values MUST be absolute paths in the [container namespace](glossary.md#container_namespace).
+The values MUST be absolute paths in the [container namespace](glossary.md#container_namespace).
 
 ### Example
 
@@ -617,7 +617,7 @@ The following parameters can be specified to set up seccomp:
 ## <a name="configLinuxReadonlyPaths" />Readonly Paths
 
 **`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.
-    The values MUST be absolute paths in the [container namespace](glossary.md#container-namespace).
+The values MUST be absolute paths in the [container namespace](glossary.md#container-namespace).
 
 ### Example
 
