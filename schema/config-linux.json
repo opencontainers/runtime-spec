@@ -175,6 +175,12 @@
                                 }
                             }
                         }
+                    },
+                    "rdma": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "defs-linux.json#/definitions/Rdma"
+                        }
                     }
                 }
             },
