@@ -229,7 +229,7 @@
                 "properties": {
                     "defaultAction": {
                         "id": "https://opencontainers.org/schema/bundle/linux/seccomp/defaultAction",
-                        "type": "string"
+                        "$ref": "defs-linux.json#/definitions/SeccompAction"
                     },
                     "architectures": {
                         "id": "https://opencontainers.org/schema/bundle/linux/seccomp/architectures",
