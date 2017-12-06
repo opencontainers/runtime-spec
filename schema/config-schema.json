@@ -109,6 +109,10 @@
                             "id": "https://opencontainers.org/schema/bundle/process/user/gid",
                             "$ref": "defs.json#/definitions/GID"
                         },
+                        "umask": {
+                            "id": "https://opencontainers.org/schema/bundle/process/user/umask",
+                            "$ref": "defs.json#/definitions/Umask"
+                        },
                         "additionalGids": {
                             "id": "https://opencontainers.org/schema/bundle/process/user/additionalGids",
                             "$ref": "defs.json#/definitions/ArrayOfGIDs"
