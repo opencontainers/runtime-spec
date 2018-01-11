@@ -26,7 +26,8 @@ The state of a container includes the following properties:
 * **`bundle`** (string, REQUIRED) is the absolute path to the container's bundle directory.
     This is provided so that consumers can find the container's configuration and root filesystem on the host.
 * **`annotations`** (map, OPTIONAL) contains the list of annotations associated with the container.
-    If no annotations were provided then this property MAY either be absent or an empty map.
+    If the configuration set [`annotations`](config.md#annotations), this value MUST exactly match the configured `annotations`.
+    If no annotations were configured then this property MAY either be absent or an empty map.
 
 The state MAY include additional properties.
 
