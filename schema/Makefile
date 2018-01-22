@@ -36,7 +36,7 @@ test: validate $(TESTS)
 		for FILE in $$(ls "test/$${TYPE}/bad"); \
 		do \
 			echo "  testing test/$${TYPE}/bad/$${FILE}"; \
-			if ./validate "$${TYPE}-schema.json" "test/$${TYPE}/good/$${FILE}" ; \
+			if ./validate "$${TYPE}-schema.json" "test/$${TYPE}/bad/$${FILE}" ; \
 			then \
 				echo "    received unexpected validation success" ; \
 				exit 1; \
