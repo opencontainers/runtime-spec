@@ -240,6 +240,17 @@
                 "priority"
             ]
         },
+        "Rdma": {
+            "type": "object",
+            "properties": {
+                "hcaHandles": {
+                    "$ref": "defs.json#/definitions/uint32"
+                },
+                "hcaObjects": {
+                    "$ref": "defs.json#/definitions/uint32"
+                }
+            }
+        },
         "NamespaceType": {
             "type": "string",
             "enum": [

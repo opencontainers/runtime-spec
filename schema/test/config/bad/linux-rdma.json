@@ -1,0 +1,15 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "resources": {
+            "rdma": {
+                "mlx5_1": {
+                    "hcaHandles": "not a uint32"
+                }
+            }
+        }
+    }
+}
