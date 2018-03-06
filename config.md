@@ -115,7 +115,6 @@ For POSIX platforms the `mounts` structure has the following fields:
     },
     {
         "destination": "/data",
-        "type": "bind",
         "source": "/volumes/testing",
         "options": ["rbind","rw"]
     }
