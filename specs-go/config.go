@@ -504,19 +504,11 @@ type WindowsHyperV struct {
 // VM contains information for virtual-machine-based containers.
 type VM struct {
 	// Hypervisor specifies hypervisor-related configuration for virtual-machine-based containers.
-	Hypervisor VMHypervisor `json:"hypervisor,omitempty"`
+	Hypervisor *Hook `json:"hypervisor,omitempty"`
 	// Kernel specifies kernel-related configuration for virtual-machine-based containers.
 	Kernel VMKernel `json:"kernel"`
 	// Image specifies guest image related configuration for virtual-machine-based containers.
 	Image VMImage `json:"image,omitempty"`
-}
-
-// VMHypervisor contains information about the hypervisor to use for a virtual machine.
-type VMHypervisor struct {
-	// Path is the host path to the hypervisor used to manage the virtual machine.
-	Path string `json:"path"`
-	// Parameters specifies parameters to pass to the hypervisor.
-	Parameters string `json:"parameters,omitempty"`
 }
 
 // VMKernel contains information about the kernel to use for a virtual machine.

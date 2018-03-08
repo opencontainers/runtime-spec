@@ -5,17 +5,14 @@ The virtual-machine container specification provides additional configuration fo
 
 ## <a name="HypervisorObject" /> Hypervisor Object
 
-**`hypervisor`** (object, OPTIONAL) specifies details of the hypervisor that manages the container virtual machine.
-* **`path`** (string, REQUIRED) path to the hypervisor binary that manages the container virtual machine.
-    This value MUST be an absolute path in the [runtime mount namespace](glossary.md#runtime-namespace).
-* **`parameters`** (array of strings, OPTIONAL) specifies an array of parameters to pass to the hypervisor.
+**`hypervisor`** (object, OPTIONAL) configures the hypervisor process using the [hook-process schema](config.md#hook-process).
 
 ### Example
 
 ```json
     "hypervisor": {
         "path": "/path/to/vmm",
-        "parameters": ["opts1=foo", "opts2=bar"]
+        "args": ["vmm", "opts1=foo", "opts2=bar"]
     }
 ```
 

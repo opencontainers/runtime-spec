@@ -7,19 +7,7 @@
         ],
         "properties": {
             "hypervisor": {
-                "description": "hypervisor config used by VM-based containers",
-                "type": "object",
-                "required": [
-                    "path"
-                ],
-                "properties": {
-                    "path": {
-                        "$ref": "defs.json#/definitions/FilePath"
-                    },
-                    "parameters": {
-                        "$ref": "defs.json#/definitions/ArrayOfStrings"
-                    }
-                }
+                "$ref": "defs.json#/definitions/Hook"
             },
             "kernel": {
                 "description": "kernel config used by VM-based containers",
