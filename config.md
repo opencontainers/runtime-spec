@@ -664,15 +664,15 @@ Here is a full example `config.json` for reference.
         ],
         "uidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
         "gidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],

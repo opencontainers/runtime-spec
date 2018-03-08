@@ -82,8 +82,8 @@ If a `namespaces` field contains duplicated namespaces with same `type`, the run
 
 Each entry has the following structure:
 
-* **`hostID`** *(uint32, REQUIRED)* - is the starting uid/gid on the host to be mapped to *containerID*.
 * **`containerID`** *(uint32, REQUIRED)* - is the starting uid/gid in the container.
+* **`hostID`** *(uint32, REQUIRED)* - is the starting uid/gid on the host to be mapped to *containerID*.
 * **`size`** *(uint32, REQUIRED)* - is the number of ids to be mapped.
 
 The runtime SHOULD NOT modify the ownership of referenced filesystems to realize the mapping.
@@ -94,15 +94,15 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
 ```json
     "uidMappings": [
         {
-            "hostID": 1000,
             "containerID": 0,
+            "hostID": 1000,
             "size": 32000
         }
     ],
     "gidMappings": [
         {
-            "hostID": 1000,
             "containerID": 0,
+            "hostID": 1000,
             "size": 32000
         }
     ]
