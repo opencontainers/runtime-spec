@@ -70,7 +70,7 @@ On all other platforms, this field is REQUIRED.
     For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
-    This value MUST be an absolute path.
+    This value MUST be an absolute path. If the path does not exist, the runtime MAY create it.
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
