@@ -194,10 +194,10 @@ const (
 
 // LinuxIDMapping specifies UID/GID mappings
 type LinuxIDMapping struct {
-	// HostID is the starting UID/GID on the host to be mapped to 'ContainerID'
-	HostID uint32 `json:"hostID"`
 	// ContainerID is the starting UID/GID in the container
 	ContainerID uint32 `json:"containerID"`
+	// HostID is the starting UID/GID on the host to be mapped to 'ContainerID'
+	HostID uint32 `json:"hostID"`
 	// Size is the number of IDs to be mapped
 	Size uint32 `json:"size"`
 }
