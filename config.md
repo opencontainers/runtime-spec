@@ -372,21 +372,26 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
 
 * **`hooks`** (object, OPTIONAL) MAY contain any of the following properties:
     * **`prestart`** (array of objects, OPTIONAL) is an array of [pre-start hooks](#prestart).
-        Entries in the array contain the following properties:
-        * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
-            This specification extends the IEEE standard in that **`path`** MUST be absolute.
-        * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
-        * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-        * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
-            If set, `timeout` MUST be greater than zero.
+        Entries in the array are [hook-process objects](#hook-process).
     * **`poststart`** (array of objects, OPTIONAL) is an array of [post-start hooks](#poststart).
-        Entries in the array have the same schema as pre-start entries.
+        Entries in the array are [hook-process objects](#hook-process).
     * **`poststop`** (array of objects, OPTIONAL) is an array of [post-stop hooks](#poststop).
-        Entries in the array have the same schema as pre-start entries.
+        Entries in the array are [hook-process objects](#hook-process).
 
 Hooks allow users to specify programs to run before or after various lifecycle events.
 Hooks MUST be called in the listed order.
 The [state](runtime.md#state) of the container MUST be passed to hooks over stdin so that they may do work appropriate to the current state of the container.
+
+### <a name="configHook" />Hook process
+
+Process configuration contains the following properties:
+
+* **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
+    This specification extends the IEEE standard in that **`path`** MUST be absolute.
+* **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
+* **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
+* **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+    If set, `timeout` MUST be greater than zero.
 
 ### <a name="configHooksPrestart" />Prestart
 
