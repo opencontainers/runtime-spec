@@ -163,6 +163,9 @@
         },
         "windows": {
             "$ref": "config-windows.json#/windows"
+        },
+        "vm": {
+            "$ref": "config-vm.json#/vm"
         }
     },
     "required": [
