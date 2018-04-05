@@ -122,8 +122,8 @@ Each entry has the following structure:
 * **`major, minor`** *(int64, REQUIRED unless `type` is `p`)* - [major, minor numbers][devices] for the device.
 * **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
     You can also control access to devices [with cgroups](#device-whitelist).
-* **`uid`** *(uint32, OPTIONAL)* - id of device owner.
-* **`gid`** *(uint32, OPTIONAL)* - id of device group.
+* **`uid`** *(uint32, OPTIONAL)* - id of device owner in the [container namespace](glossary.md#container-namespace).
+* **`gid`** *(uint32, OPTIONAL)* - id of device group in the [container namespace](glossary.md#container-namespace).
 
 The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
 
