@@ -162,7 +162,7 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/random`][random.4]
 * [`/dev/urandom`][random.4]
 * [`/dev/tty`][tty.4]
-* [`/dev/console`][console.4] is set up if terminal is enabled in the config by bind mounting the pseudoterminal slave to /dev/console.
+* `/dev/console` is set up if [`terminal`](config.md#process) is enabled in the config by bind mounting the pseudoterminal slave to `/dev/console`.
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
@@ -689,7 +689,6 @@ The following parameters can be specified to set up seccomp:
 [sysfs]: https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt
 [tmpfs]: https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt
 
-[console.4]: http://man7.org/linux/man-pages/man4/console.4.html
 [full.4]: http://man7.org/linux/man-pages/man4/full.4.html
 [mknod.1]: http://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html
