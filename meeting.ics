@@ -21,7 +21,7 @@ END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:tdc-meeting@opencontainers.org
-DTSTAMP:20171207T173000Z
+DTSTAMP:20180406T200000Z
 DTSTART;TZID=America/Los_Angeles:20170906T140000
 RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=1WE
 RDATE;TZID=America/Los_Angeles:20180110T140000
@@ -30,7 +30,8 @@ DURATION:PT1H
 SUMMARY:OCI TDC Meeting
 DESCRIPTION;ALTREP="https://github.com/opencontainers/runtime-spec#
  meetings":Open Containers Initiative Developer Meeting\n
- https://github.com/opencontainers/runtime-spec#meetings\n
+ https://github.com/opencontainers/runtime-spec/blob/master
+ /CONTRIBUTING.md#meetings\n
  Web: https://www.uberconference.com/opencontainers\n
  Audio-only: +1 415 968 0849 (no PIN needed)
 LOCATION:https://www.uberconference.com/opencontainers

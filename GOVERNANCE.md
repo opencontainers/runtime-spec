@@ -8,11 +8,11 @@ This section describes generic rules and procedures for fulfilling that mandate.
 
 ## Proposing a motion
 
-A maintainer SHOULD propose a motion on the dev@opencontainers.org mailing list (except [security issues](#security-issues)) with another maintainer as a co-sponsor.
+A maintainer SHOULD propose a motion on the dev@opencontainers.org mailing list (except [security issues](CONTRIBUTING.md#security-issues)) with another maintainer as a co-sponsor.
 
 ## Voting
 
-Voting on a proposed motion SHOULD happen on the dev@opencontainers.org mailing list (except [security issues](#security-issues)) with maintainers posting LGTM or REJECT.
+Voting on a proposed motion SHOULD happen on the dev@opencontainers.org mailing list (except [security issues](CONTRIBUTING.md#security-issues)) with maintainers posting LGTM or REJECT.
 Maintainers MAY also explicitly not vote by posting ABSTAIN (which is useful to revert a previous vote).
 Maintainers MAY post multiple times (e.g. as they revise their position based on feedback), but only their final post counts in the tally.
 A proposed motion is adopted if two-thirds of votes cast, a quorum having voted, are in favor of the release.
@@ -31,17 +31,10 @@ A quorum is established when at least two-thirds of maintainers have voted.
 
 For projects that are not specifications, a [motion to release](#release-approval) MAY be adopted if the tally is at least three LGTMs and no REJECTs, even if three votes does not meet the usual two-thirds quorum.
 
-## Security issues
-
-Motions with sensitive security implications MUST be proposed on the security@opencontainers.org mailing list instead of dev@opencontainers.org, but should otherwise follow the standard [proposal](#proposing-a-motion) process.
-The security@opencontainers.org mailing list includes all members of the TOB.
-The TOB will contact the project maintainers and provide a channel for discussing and voting on the motion, but voting will otherwise follow the standard [voting](#voting) and [quorum](#quorum) rules.
-The TOB and project maintainers will work together to notify affected parties before making an adopted motion public.
-
 ## Amendments
 
 The [project governance](#project-governance) rules and procedures MAY be amended or replaced using the procedures themselves.
-The MAINTAINERS of this project governance document is the total set of MAINTAINERS from all Open Containers projects (runC, runtime-spec, and image-spec).
+The MAINTAINERS of this project governance document is the total set of MAINTAINERS from all Open Containers projects (go-digest, image-spec, image-tools, runC, runtime-spec, runtime-tools, and selinux).
 
 ## Subject templates
 
