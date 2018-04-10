@@ -146,5 +146,6 @@ You can add the sign off when creating the git commit via `git commit -s`.
 [mailing-list]: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
 [meeting.ics]: meeting.ics
 [minutes]: http://ircbot.wl.linuxfoundation.org/meetings/opencontainers/
+[rfc5545]: https://tools.ietf.org/html/rfc5545
 [runtime-wiki]: https://github.com/opencontainers/runtime-spec/wiki
 [UberConference]: https://www.uberconference.com/opencontainers
