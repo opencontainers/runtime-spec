@@ -1,8 +1,7 @@
 language: go
 go:
-  - 1.7
-  - 1.6.3
-  - 1.5.4
+  - "1.10.x"
+  - "1.9.x"
 
 sudo: required
 
@@ -12,6 +11,7 @@ services:
 before_install:
   - make install.tools
   - docker pull vbatts/pandoc
+  - go get -d ./schema/...
 
 install: true
 
