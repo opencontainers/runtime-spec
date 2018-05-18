@@ -14,6 +14,7 @@ If you know of any associated projects that are not listed here, please file a p
 * [hyperhq/runv][runv] - Hypervisor-based runtime for OCI
 * [clearcontainers/runtime][cc-runtime] - Hypervisor-based OCI runtime utilising [virtcontainers][virtcontainers] by Intel®.
 * [google/gvisor][gvisor] - gVisor is a user-space kernel, contains runsc to run sandboxed containers.
+* [kata-containers/runtime][kata-runtime] - Hypervisor-based OCI runtime combining technology from [clearcontainers/runtime][cc-runtime] and [hyperhq/runv][runv].
 
 ## <a name="implementationsTestingTools" />Testing & Tools
 
@@ -25,6 +26,7 @@ If you know of any associated projects that are not listed here, please file a p
 [runc]: https://github.com/opencontainers/runc
 [runv]: https://github.com/hyperhq/runv
 [cc-runtime]: https://github.com/clearcontainers/runtime
+[kata-runtime]: https://github.com/kata-containers/runtime
 [virtcontainers]: https://github.com/containers/virtcontainers
 [octool]: https://github.com/kunalkushwaha/octool
 [oct]: https://github.com/huawei-openlab/oct
