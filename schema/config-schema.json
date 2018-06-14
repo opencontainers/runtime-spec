@@ -26,6 +26,9 @@
         "hostname": {
             "type": "string"
         },
+        "domainname": {
+            "type": "string"
+        },
         "mounts": {
             "type": "array",
             "items": {
