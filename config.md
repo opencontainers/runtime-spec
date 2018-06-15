@@ -341,6 +341,19 @@ For Windows based systems the user structure has the following fields:
 "hostname": "mrsdalloway"
 ```
 
+## <a name="configDomainName" />Domain Name
+
+* **`domainname`** (string, OPTIONAL) specifies the container's NIS domain name as seen by processes running inside the container.
+    On Linux, for example, this will [change the domain name][setdomainname.2] in the [container](glossary.md#container-namespace) [UTS namespace][uts-namespace.7].
+    Depending on your [namespace configuration](config-linux.md#namespaces), the container UTS namespace may be the [runtime](glossary.md#runtime-namespace) [UTS namespace][uts-namespace.7].
+
+### Example
+
+```json
+"hostname": "mrsdalloway",
+"domainname": "opencontainers.org"
+```
+
 ## <a name="configPlatformSpecificConfiguration" />Platform-specific configuration
 
 * **`linux`** (object, OPTIONAL) [Linux-specific configuration](config-linux.md).
@@ -860,5 +873,6 @@ Here is a full example `config.json` for reference.
 [getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
 [getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
+[setdomainname.2]: http://man7.org/linux/man-pages/man2/setdomainname.2.html
 [uts-namespace.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html
 [zonecfg.1m]: http://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html
