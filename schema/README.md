@@ -13,6 +13,7 @@ The layout of the files is as follows:
 * [state-schema.json](state-schema.json) - the primary entrypoint for the [state JSON](../runtime.md#state) schema
 * [defs.json](defs.json) - definitions for general types
 * [defs-linux.json](defs-linux.json) - definitions for Linux-specific types
+* [defs-windows.json](defs-windows.json) - definitions for Windows-specific types
 * [validate.go](validate.go) - validation utility source code
 
 
