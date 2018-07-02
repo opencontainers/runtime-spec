@@ -433,7 +433,7 @@ type SolarisAnet struct {
 type Windows struct {
 	// LayerFolders contains a list of absolute paths to directories containing image layers.
 	LayerFolders []string `json:"layerFolders"`
-	// Devices are a list of interface class GUIDs for which device objects need to be mapped into the container.
+	// Devices are the list of devices to be mapped into the container.
 	Devices []WindowsDevice `json:"devices,omitempty"`
 	// Resources contains information for handling resource constraints for the container.
 	Resources *WindowsResources `json:"resources,omitempty"`
@@ -452,9 +452,9 @@ type Windows struct {
 // WindowsDevice represents information about a host device to be mapped into the container.
 type WindowsDevice struct {
 	// Device identifier: interface class GUID, etc.
-	Id string `json:"id"`
+	ID string `json:"id"`
 	// Device identifier type: "class", etc.
-	IdType string `json:"id_type"`
+	IDType string `json:"id_type"`
 }
 
 // WindowsResources has container runtime resource constraints for containers running on Windows.
