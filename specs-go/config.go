@@ -454,7 +454,7 @@ type WindowsDevice struct {
 	// Device identifier: interface class GUID, etc.
 	ID string `json:"id"`
 	// Device identifier type: "class", etc.
-	IDType string `json:"id_type"`
+	IDType string `json:"idType"`
 }
 
 // WindowsResources has container runtime resource constraints for containers running on Windows.
