@@ -433,6 +433,8 @@ type SolarisAnet struct {
 type Windows struct {
 	// LayerFolders contains a list of absolute paths to directories containing image layers.
 	LayerFolders []string `json:"layerFolders"`
+	// Devices are the list of devices to be mapped into the container.
+	Devices []WindowsDevice `json:"devices,omitempty"`
 	// Resources contains information for handling resource constraints for the container.
 	Resources *WindowsResources `json:"resources,omitempty"`
 	// CredentialSpec contains a JSON object describing a group Managed Service Account (gMSA) specification.
@@ -445,6 +447,14 @@ type Windows struct {
 	HyperV *WindowsHyperV `json:"hyperv,omitempty"`
 	// Network restriction configuration.
 	Network *WindowsNetwork `json:"network,omitempty"`
+}
+
+// WindowsDevice represents information about a host device to be mapped into the container.
+type WindowsDevice struct {
+	// Device identifier: interface class GUID, etc.
+	ID string `json:"id"`
+	// Device identifier type: "class", etc.
+	IDType string `json:"idType"`
 }
 
 // WindowsResources has container runtime resource constraints for containers running on Windows.

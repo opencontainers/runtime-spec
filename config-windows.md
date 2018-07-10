@@ -19,6 +19,34 @@ The Windows container specification uses APIs provided by the Windows Host Compu
     }
 ```
 
+## <a name="configWindowsDevices" />Devices
+
+**`devices`** (array of objects, OPTIONAL) lists devices that MUST be available in the container.
+
+Each entry has the following structure:
+
+* **`id`** *(string, REQUIRED)* - specifies the device which the runtime MUST make available in the container.
+* **`idType`** *(string, REQUIRED)* - tells the runtime how to interpret `id`. Today, Windows only supports a value of `class`, which identifies `id` as a [device interface class GUID][interfaceGUID].
+
+[interfaceGUID]: https://docs.microsoft.com/en-us/windows-hardware/drivers/install/overview-of-device-interface-classes
+
+### Example
+
+```json
+    "windows": {
+        "devices": [
+            {
+                "id": "24E552D7-6523-47F7-A647-D3465BF1F5CA",
+                "idType": "class"
+            },
+            {
+                "id": "5175d334-c371-4806-b3ba-71fd53c9258d",
+                "idType": "class"
+            }
+        ]
+    }
+```
+
 ## <a name="configWindowsResources" />Resources
 
 You can configure a container's resource limits via the OPTIONAL `resources` field of the Windows configuration.

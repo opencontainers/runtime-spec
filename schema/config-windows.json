@@ -10,6 +10,12 @@
                 },
                 "minItems": 1
             },
+            "devices": {
+                "type": "array",
+                "items": {
+                    "$ref": "defs-windows.json#/definitions/Device"
+                }
+            },
             "resources": {
                 "type": "object",
                 "properties": {

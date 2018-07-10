@@ -1,0 +1,22 @@
+{
+    "definitions": {
+        "Device": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "idType": {
+                    "type": "string",
+                    "enum": [
+                        "class"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "idType"
+            ]
+        }
+    }
+}
