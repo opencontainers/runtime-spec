@@ -125,6 +125,7 @@ The following parameters can be specified:
 * **`allowUnqualifiedDNSQuery`** *(bool, OPTIONAL)* - specifies if unqualified DNS name resolution is allowed.
 * **`DNSSearchList`** *(array of strings, OPTIONAL)* - comma separated list of DNS suffixes to use for name resolution.
 * **`networkSharedContainerName`** *(string, OPTIONAL)* - name (ID) of the container that we will share with the network stack.
+* **`networkNamespace`** *(string, OPTIONAL)* - name (ID) of the network namespace that will be used for the container. If a network namespace is specified no other parameter must be specified.
 
 ### Example
 
@@ -139,7 +140,8 @@ The following parameters can be specified:
                 "a.com",
                 "b.com"
             ],
-            "networkSharedContainerName": "containerName"
+            "networkSharedContainerName": "containerName",
+            "networkNamespace": "168f3daf-efc6-4377-b20a-2c86764ba892"
         }
    }
 ```
