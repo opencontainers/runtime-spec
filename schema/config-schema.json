@@ -104,12 +104,6 @@
                         "bounding": {
                             "$ref": "defs.json#/definitions/ArrayOfStrings"
                         },
-                        "permitted": {
-                            "$ref": "defs.json#/definitions/ArrayOfStrings"
-                        },
-                        "effective": {
-                            "$ref": "defs.json#/definitions/ArrayOfStrings"
-                        },
                         "inheritable": {
                             "$ref": "defs.json#/definitions/ArrayOfStrings"
                         },

@@ -63,12 +63,8 @@ type Process struct {
 type LinuxCapabilities struct {
 	// Bounding is the set of capabilities checked by the kernel.
 	Bounding []string `json:"bounding,omitempty" platform:"linux"`
-	// Effective is the set of capabilities checked by the kernel.
-	Effective []string `json:"effective,omitempty" platform:"linux"`
 	// Inheritable is the capabilities preserved across execve.
 	Inheritable []string `json:"inheritable,omitempty" platform:"linux"`
-	// Permitted is the limiting superset for effective capabilities.
-	Permitted []string `json:"permitted,omitempty" platform:"linux"`
 	// Ambient is the ambient set of capabilities that are kept.
 	Ambient []string `json:"ambient,omitempty" platform:"linux"`
 }

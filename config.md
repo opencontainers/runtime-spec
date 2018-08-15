@@ -191,10 +191,8 @@ For Linux-based systems, the `process` object supports the following process-spe
     Any value which cannot be mapped to a relevant kernel interface MUST cause an error.
     `capabilities` contains the following properties:
 
-    * **`effective`** (array of strings, OPTIONAL) the `effective` field is an array of effective capabilities that are kept for the process.
     * **`bounding`** (array of strings, OPTIONAL) the `bounding` field is an array of bounding capabilities that are kept for the process.
     * **`inheritable`** (array of strings, OPTIONAL) the `inheritable` field is an array of inheritable capabilities that are kept for the process.
-    * **`permitted`** (array of strings, OPTIONAL) the `permitted` field is an array of permitted capabilities that are kept for the process.
     * **`ambient`** (array of strings, OPTIONAL) the `ambient` field is an array of ambient capabilities that are kept for the process.
 * **`noNewPrivileges`** (bool, OPTIONAL) setting `noNewPrivileges` to true prevents the process from gaining additional privileges.
     As an example, the [`no_new_privs`][no-new-privs] article in the kernel documentation has information on how this is achieved using a `prctl` system call on Linux.
@@ -252,19 +250,10 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
             "CAP_KILL",
             "CAP_NET_BIND_SERVICE"
         ],
-       "permitted": [
+        "inheritable": [
             "CAP_AUDIT_WRITE",
             "CAP_KILL",
             "CAP_NET_BIND_SERVICE"
-        ],
-       "inheritable": [
-            "CAP_AUDIT_WRITE",
-            "CAP_KILL",
-            "CAP_NET_BIND_SERVICE"
-        ],
-        "effective": [
-            "CAP_AUDIT_WRITE",
-            "CAP_KILL"
         ],
         "ambient": [
             "CAP_NET_BIND_SERVICE"
@@ -497,19 +486,10 @@ Here is a full example `config.json` for reference.
                 "CAP_KILL",
                 "CAP_NET_BIND_SERVICE"
             ],
-            "permitted": [
-                "CAP_AUDIT_WRITE",
-                "CAP_KILL",
-                "CAP_NET_BIND_SERVICE"
-            ],
             "inheritable": [
                 "CAP_AUDIT_WRITE",
                 "CAP_KILL",
                 "CAP_NET_BIND_SERVICE"
-            ],
-            "effective": [
-                "CAP_AUDIT_WRITE",
-                "CAP_KILL"
             ],
             "ambient": [
                 "CAP_NET_BIND_SERVICE"
