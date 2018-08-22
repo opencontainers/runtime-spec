@@ -275,6 +275,8 @@ The following properties do not specify memory limits, but are covered by the `m
     If enabled (`false`), tasks that attempt to consume more memory than they are allowed are immediately killed by the OOM killer.
     The OOM killer is enabled by default in every cgroup using the `memory` subsystem.
     To disable it, specify a value of `true`.
+* **`useHierarchy`** *(bool, OPTIONAL)* - enables or disables hierarchical memory accounting.
+    If enabled (`true`), child cgroups will share the memory limits of this cgroup.
 
 #### Example
 
