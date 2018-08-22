@@ -288,6 +288,8 @@ type LinuxMemory struct {
 	Swappiness *uint64 `json:"swappiness,omitempty"`
 	// DisableOOMKiller disables the OOM killer for out of memory conditions
 	DisableOOMKiller *bool `json:"disableOOMKiller,omitempty"`
+	// Enables hierarchical memory accounting
+	UseHierarchy *bool `json:"useHierarchy,omitempty"`
 }
 
 // LinuxCPU for Linux cgroup 'cpu' resource management
