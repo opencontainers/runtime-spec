@@ -71,6 +71,9 @@
                     },
                     "networkSharedContainerName": {
                         "type": "string"
+                    },
+                    "networkNamespace": {
+                        "type": "string"
                     }
                 }
             },
