@@ -491,7 +491,7 @@ You MUST specify at least one of the `hcaHandles` or `hcaObjects` in a given ent
     If `intelRdt` is set, the runtime MUST write the container process ID to the `tasks` file in a proper sub-directory in a mounted `resctrl` pseudo-filesystem. That sub-directory name is specified by `closID` parameter.
     If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
-    If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
+If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
 
 The following parameters can be specified for the container:
 
@@ -499,20 +499,33 @@ The following parameters can be specified for the container:
     If `closID` is set, runtimes MUST create `closID` directory in a mounted `resctrl` pseudo-filesystem if it doesn't exist. If not set, runtimes MUST use the container ID from [`start`](runtime.md#start) and create the `<container-id>` directory.
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
-    If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in that sub-directory discussed in `closID`. If not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+    The value SHOULD start with `L3:` and SHOULD NOT contain newlines.
+* **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth percentage per L3 cache id.
+    The value MUST start with `MB:` and MUST NOT contain newlines.
 
-    If `closID` and `l3CacheSchema` both are set, runtimes MUST compare `l3CacheSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
+    If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
+    If `l3CacheSchema` contains a line beginning with `MB:`, the value written to `schemata` file MUST be the non-`MB:` line(s) from `l3CacheSchema` and the line from `memBWSchema`.
+
+    If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
+
+    If neither `l3CacheSchema` nor `memBwSchema` is set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+
+    If `closID` is set, `l3CacheSchema` and/or `memBwSchema` is set, runtimes MUST compare `l3CacheSchema` and/or `memBwSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
 
 ### Example
 
-Consider a two-socket machine with two L3 caches where the default CBM is 0xfffff and the max CBM length is 20 bits.
-Tasks inside the container only have access to the "upper" 80% of L3 cache id 0 and the "lower" 50% L3 cache id 1:
+Consider a two-socket machine with two L3 caches where the default CBM is 0x7ff and the max CBM length is 11 bits,
+and minimum memory bandwidth of 10% with a memory bandwidth granularity of 10%.
+
+Tasks inside the container only have access to the "upper" 7/11 of L3 cache on socket 0 and the "lower" 5/11 L3 cache on socket 1,
+and may use a maximum memory bandwidth of 20% on socket 0 and 70% on socket 1.
 
 ```json
 "linux": {
     "intelRdt": {
         "closID": "guaranteed_group",
-        "l3CacheSchema": "L3:0=ffff0;1=3ff"
+        "l3CacheSchema": "L3:0=7f0;1=1f",
+        "memBwSchema": "MB:0=20;1=70"
     }
 }
 ```

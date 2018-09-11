@@ -233,6 +233,10 @@
                     },
                     "l3CacheSchema": {
                         "type": "string"
+                    },
+                    "memBwSchema": {
+                        "type": "string",
+                        "pattern": "^MB:[^\\n]*$"
                     }
                 }
             }
