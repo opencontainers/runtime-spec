@@ -488,17 +488,20 @@ You MUST specify at least one of the `hcaHandles` or `hcaObjects` in a given ent
 ## <a name="configLinuxIntelRdt" />IntelRdt
 
 **`intelRdt`** (object, OPTIONAL) represents the [Intel Resource Director Technology][intel-rdt-cat-kernel-interface].
-    If `intelRdt` is set, the runtime MUST write the container process ID to the `<container-id>/tasks` file in a mounted `resctrl` pseudo-filesystem, using the container ID from [`start`](runtime.md#start) and creating the `<container-id>` directory if necessary.
+    If `intelRdt` is set, the runtime MUST write the container process ID to the `tasks` file in a proper sub-directory in a mounted `resctrl` pseudo-filesystem. That sub-directory name is specified by `closID` parameter.
     If no mounted `resctrl` pseudo-filesystem is available in the [runtime mount namespace](glossary.md#runtime-namespace), the runtime MUST [generate an error](runtime.md#errors).
 
     If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-filesystems.
 
 The following parameters can be specified for the container:
 
-* **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
-    If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in the `<container-id>` directory discussed in `intelRdt`.
+* **`closID`** *(string, OPTIONAL)* - specifies the identity for RDT Class of Service (CLOS).
+    If `closID` is set, runtimes MUST create `closID` directory in a mounted `resctrl` pseudo-filesystem if it doesn't exist. If not set, runtimes MUST use the container ID from [`start`](runtime.md#start) and create the `<container-id>` directory.
 
-    If `l3CacheSchema` is not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+* **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
+    If `l3CacheSchema` is set, runtimes MUST write the value to the `schemata` file in that sub-directory discussed in `closID`. If not set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+
+    If `closID` and `l3CacheSchema` both are set, runtimes MUST compare `l3CacheSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
 
 ### Example
 
@@ -508,6 +511,7 @@ Tasks inside the container only have access to the "upper" 80% of L3 cache id 0 
 ```json
 "linux": {
     "intelRdt": {
+        "closID": "guaranteed_group",
         "l3CacheSchema": "L3:0=ffff0;1=3ff"
     }
 }

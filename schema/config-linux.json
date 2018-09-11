@@ -228,6 +228,9 @@
             "intelRdt": {
                 "type": "object",
                 "properties": {
+                    "closID": {
+                        "type": "string"
+                    },
                     "l3CacheSchema": {
                         "type": "string"
                     }
