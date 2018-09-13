@@ -73,8 +73,9 @@ On all other platforms, this field is REQUIRED.
     This value MUST be an absolute path.
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
-    Path values are either absolute or relative to the bundle.
+* **`source`** (string, OPTIONAL) A device name, but can also be a file or directory name for bind mounts or a dummy.
+    Path values for bind mounts are either absolute or relative to the bundle.
+    A mount is a bind mount if it has either `bind` or `rbind` in the options.
     * Windows: a local directory on the filesystem of the container host. UNC paths and mapped drives are not supported.
     * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (array of strings, OPTIONAL) Mount options of the filesystem to be used.
@@ -100,7 +101,7 @@ On all other platforms, this field is REQUIRED.
 For POSIX platforms the `mounts` structure has the following fields:
 
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
-  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
+  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). For bind mounts (when `options` include either `bind` or `rbind`), the type is a dummy, often "none" (not listed in */proc/filesystems*).
   * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
@@ -115,7 +116,7 @@ For POSIX platforms the `mounts` structure has the following fields:
     },
     {
         "destination": "/data",
-        "type": "bind",
+        "type": "none",
         "source": "/volumes/testing",
         "options": ["rbind","rw"]
     }
