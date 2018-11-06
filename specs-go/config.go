@@ -528,7 +528,7 @@ type VMHypervisor struct {
 	// Path is the host path to the hypervisor used to manage the virtual machine.
 	Path string `json:"path"`
 	// Parameters specifies parameters to pass to the hypervisor.
-	Parameters string `json:"parameters,omitempty"`
+	Parameters []string `json:"parameters,omitempty"`
 }
 
 // VMKernel contains information about the kernel to use for a virtual machine.
@@ -536,7 +536,7 @@ type VMKernel struct {
 	// Path is the host path to the kernel used to boot the virtual machine.
 	Path string `json:"path"`
 	// Parameters specifies parameters to pass to the kernel.
-	Parameters string `json:"parameters,omitempty"`
+	Parameters []string `json:"parameters,omitempty"`
 	// InitRD is the host path to an initial ramdisk to be used by the kernel.
 	InitRD string `json:"initrd,omitempty"`
 }
