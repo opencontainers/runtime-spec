@@ -500,7 +500,7 @@ The following parameters can be specified for the container:
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
     The value SHOULD start with `L3:` and SHOULD NOT contain newlines.
-* **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth percentage per L3 cache id.
+* **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth per L3 cache id.
     The value MUST start with `MB:` and MUST NOT contain newlines.
 
     If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
