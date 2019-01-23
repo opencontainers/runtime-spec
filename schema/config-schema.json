@@ -50,12 +50,14 @@
         "process": {
             "type": "object",
             "required": [
-                "cwd",
-                "args"
+                "cwd"
             ],
             "properties": {
                 "args": {
                     "$ref": "defs.json#/definitions/ArrayOfStrings"
+                },
+                "commandLine": {
+                    "type": "string"
                 },
                 "consoleSize": {
                     "type": "object",
