@@ -155,8 +155,11 @@ For POSIX platforms the `mounts` structure has the following fields:
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
     This value MUST be an absolute path.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-* **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
-    This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
+* **`args`** (array of strings, OPTIONAL) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
+    This specification extends the IEEE standard in that at least one entry is REQUIRED (non-Windows), and that entry is used with the same semantics as `execvp`'s *file*. This field is OPTIONAL on Windows, and `commandLine` is REQUIRED if this field is omitted.
+* **`commandLine`** (string, OPTIONAL) specifies the full command line to be executed on Windows.
+    This is the preferred means of supplying the command line on Windows. If omitted, the runtime will fall back to escaping and concatenating fields from `args` before making the system call into Windows.
+
 
 ### <a name="configPOSIXProcess" />POSIX process
 
