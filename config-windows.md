@@ -5,7 +5,7 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 
 ## <a name="configWindowsLayerFolders" />LayerFolders
 
-**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer.
+**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer with the last entry being the scratch.
   `layerFolders` MUST contain at least one entry.
 
 ### Example
@@ -13,8 +13,10 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 ```json
     "windows": {
         "layerFolders": [
+            "C:\\Layers\\layer2",
             "C:\\Layers\\layer1",
-            "C:\\Layers\\layer2"
+            "C:\\Layers\\layer-base",
+            "C:\\scratch",
         ]
     }
 ```
