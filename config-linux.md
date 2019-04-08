@@ -27,7 +27,7 @@ Namespaces are specified as an array of entries inside the `namespaces` root fie
 The following parameters can be specified to set up namespaces:
 
 * **`type`** *(string, REQUIRED)* - namespace type. The following namespace types are supported:
-    * **`pid`** processes inside the container will only be able to see other processes inside the same container.
+    * **`pid`** processes inside the container will only be able to see other processes inside the same container or inside the same pid namespace.
     * **`network`** the container will have its own network stack.
     * **`mount`** the container will have an isolated mount table.
     * **`ipc`** processes inside the container will only be able to communicate to other processes inside the same container via system level IPC.
