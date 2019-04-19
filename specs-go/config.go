@@ -183,17 +183,17 @@ const (
 	// PIDNamespace for isolating process IDs
 	PIDNamespace LinuxNamespaceType = "pid"
 	// NetworkNamespace for isolating network devices, stacks, ports, etc
-	NetworkNamespace = "network"
+	NetworkNamespace LinuxNamespaceType = "network"
 	// MountNamespace for isolating mount points
-	MountNamespace = "mount"
+	MountNamespace LinuxNamespaceType = "mount"
 	// IPCNamespace for isolating System V IPC, POSIX message queues
-	IPCNamespace = "ipc"
+	IPCNamespace LinuxNamespaceType = "ipc"
 	// UTSNamespace for isolating hostname and NIS domain name
-	UTSNamespace = "uts"
+	UTSNamespace LinuxNamespaceType = "uts"
 	// UserNamespace for isolating user and group IDs
-	UserNamespace = "user"
+	UserNamespace LinuxNamespaceType = "user"
 	// CgroupNamespace for isolating cgroup hierarchies
-	CgroupNamespace = "cgroup"
+	CgroupNamespace LinuxNamespaceType = "cgroup"
 )
 
 // LinuxIDMapping specifies UID/GID mappings
