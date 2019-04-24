@@ -12,6 +12,15 @@
                 "prestart": {
                     "$ref": "defs.json#/definitions/ArrayOfHooks"
                 },
+                "createRuntime": {
+                    "$ref": "defs.json#/definitions/ArrayOfHooks"
+                },
+                "createContainer": {
+                    "$ref": "defs.json#/definitions/ArrayOfHooks"
+                },
+                "startContainer": {
+                    "$ref": "defs.json#/definitions/ArrayOfHooks"
+                },
                 "poststart": {
                     "$ref": "defs.json#/definitions/ArrayOfHooks"
                 },
