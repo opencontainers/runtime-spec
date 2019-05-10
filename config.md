@@ -476,7 +476,7 @@ Here is a full example `config.json` for reference.
 
 ```json
 {
-    "ociVersion": "0.5.0-dev",
+    "ociVersion": "1.0.1",
     "process": {
         "terminal": true,
         "user": {
