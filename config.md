@@ -710,6 +710,10 @@ Here is a full example `config.json` for reference.
                 {
                     "pageSize": "2MB",
                     "limit": 9223372036854772000
+                },
+                {
+                    "pageSize": "64KB",
+                    "limit": 1000000
                 }
             ],
             "memory": {
