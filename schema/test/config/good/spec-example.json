@@ -232,6 +232,10 @@
                 {
                     "pageSize": "2MB",
                     "limit": 9223372036854772000
+                },
+                {
+                    "pageSize": "64KB",
+                    "limit": 1000000
                 }
             ],
             "oomScoreAdj": 100,

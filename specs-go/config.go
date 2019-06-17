@@ -219,6 +219,7 @@ type POSIXRlimit struct {
 // LinuxHugepageLimit structure corresponds to limiting kernel hugepages
 type LinuxHugepageLimit struct {
 	// Pagesize is the hugepage size
+	// Format: "<size><unit-prefix>B' (e.g. 64KB, 2MB, 1GB, etc.)
 	Pagesize string `json:"pageSize"`
 	// Limit is the limit of "hugepagesize" hugetlb usage
 	Limit uint64 `json:"limit"`

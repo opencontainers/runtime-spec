@@ -124,7 +124,8 @@
                             "type": "object",
                             "properties": {
                                 "pageSize": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "pattern": "^[1-9][0-9]*[KMG]B$"
                                 },
                                 "limit": {
                                     "$ref": "defs.json#/definitions/uint64"

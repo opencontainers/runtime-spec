@@ -394,6 +394,9 @@ For more information, see the kernel cgroups documentation about [HugeTLB][cgrou
 Each entry has the following structure:
 
 * **`pageSize`** *(string, REQUIRED)* - hugepage size
+    The value has the format "<size><unit-prefix>B" (64KB, 2MB, 1GB), and must match the <hugepagesize> of the
+    corresponding control file found in "/sys/fs/cgroup/hugetlb/hugetlb.<hugepagesize>.limit_in_bytes".
+    Values of <unit-prefix> are intended to be parsed using base 1024 ("1KB" = 1024, "1MB" = 1048576, etc).
 * **`limit`** *(uint64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
 
 #### Example
@@ -403,6 +406,10 @@ Each entry has the following structure:
         {
             "pageSize": "2MB",
             "limit": 209715200
+        },
+        {
+            "pageSize": "64KB",
+            "limit": 1000000
         }
    ]
 ```

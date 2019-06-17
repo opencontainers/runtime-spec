@@ -1,0 +1,16 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "resources": {
+            "hugepageLimits": [
+                {
+                    "limit": 1234123,
+                    "pageSize": "64kB"
+                }
+            ]
+        }
+    }
+}
