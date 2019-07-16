@@ -54,11 +54,9 @@ When in doubt, start on the [mailing-list](#mailing-list).
 
 ### Meetings
 
-The contributors and maintainers of all OCI projects have monthly meetings, which are usually at 2:00 PM (USA Pacific) on the first Wednesday of every month.
-There is an [iCalendar][rfc5545] format for the meetings [here](meeting.ics).
-Everyone is welcome to participate via [UberConference web][uberconference] or audio-only: +1 415 968 0849 (no PIN needed).
-An initial agenda will be posted to the [mailing list](#mailing-list) in the week before each meeting, and everyone is welcome to propose additional topics or suggest other agenda alterations there.
-Minutes are posted to the [mailing list](#mailing-list) and minutes from past calls are archived [here][minutes], with minutes from especially old meetings (September 2015 and earlier) archived [here][runtime-wiki].
+Please see the [OCI org repository README](https://github.com/opencontainers/org#meetings) for the most up-to-date
+information on OCI contributor and maintainer meeting schedules. You can also find links to meeting agendas and
+minutes for all prior meetings.
 
 ### Mailing List
 
