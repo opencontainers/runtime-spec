@@ -7,7 +7,7 @@ If you know of any associated projects that are not listed here, please file a p
 
 * [opencontainers/runc][runc] - Reference implementation of OCI runtime
 * [projectatomic/bwrap-oci][bwrap-oci] - Convert the OCI spec file to a command line for [bubblewrap][bubblewrap]
-* [giuseppe/crun][crun] - Runtime implementation in C
+* [containers/crun][crun] - Runtime implementation in C
 
 ## <a name="implementationsRuntimeVirtualMachine" />Runtime (Virtual Machine)
 
@@ -33,5 +33,5 @@ If you know of any associated projects that are not listed here, please file a p
 [runtime-tools]: https://github.com/opencontainers/runtime-tools
 [bwrap-oci]: https://github.com/projectatomic/bwrap-oci
 [bubblewrap]: https://github.com/projectatomic/bubblewrap
-[crun]: https://github.com/giuseppe/crun
+[crun]: https://github.com/containers/crun
 [gvisor]: https://github.com/google/gvisor
