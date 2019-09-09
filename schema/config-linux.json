@@ -197,6 +197,12 @@
                     "defaultAction": {
                         "$ref": "defs-linux.json#/definitions/SeccompAction"
                     },
+                    "flags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompFlag"
+                        }
+                    },
                     "architectures": {
                         "type": "array",
                         "items": {
