@@ -586,6 +586,14 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_PARISC`
     * `SCMP_ARCH_PARISC64`
 
+* **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with seccomp(2).
+
+    A valid list of constants is shown below.
+
+    * `SECCOMP_FILTER_FLAG_TSYNC`
+    * `SECCOMP_FILTER_FLAG_LOG`
+    * `SECCOMP_FILTER_FLAG_SPEC_ALLOW`
+
 * **`syscalls`** *(array of objects, OPTIONAL)* - match a syscall in seccomp.
 
     While this property is OPTIONAL, some values of `defaultAction` are not useful without `syscalls` entries.
