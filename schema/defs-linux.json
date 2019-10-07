@@ -39,7 +39,8 @@
                 "SCMP_ACT_TRAP",
                 "SCMP_ACT_ERRNO",
                 "SCMP_ACT_TRACE",
-                "SCMP_ACT_ALLOW"
+                "SCMP_ACT_ALLOW",
+                "SCMP_ACT_LOG"
             ]
         },
         "SeccompFlag": {
