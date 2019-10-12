@@ -464,6 +464,7 @@ Cleanup or debugging functions are examples of such a hook.
 
 Runtimes that are reading or processing this configuration file MUST NOT generate an error if they encounter an unknown property.
 Instead they MUST ignore unknown properties.
+Properties defined for the [target platform](spec.md#platforms) by the [declared version](#specification-version) of this specification MUST NOT be ignored.
 
 ## Valid values
 
