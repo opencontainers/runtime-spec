@@ -92,6 +92,10 @@
                         "gid": {
                             "$ref": "defs.json#/definitions/GID"
                         },
+                        "umask": {
+                            "id": "https://opencontainers.org/schema/bundle/process/user/umask",
+                            "$ref": "defs.json#/definitions/Umask"
+                        },
                         "additionalGids": {
                             "$ref": "defs.json#/definitions/ArrayOfGIDs"
                         },

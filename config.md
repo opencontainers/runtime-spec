@@ -221,6 +221,7 @@ For POSIX platforms the `user` structure has the following fields:
 
 * **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
 * **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
+* **`umask`** (int, OPTIONAL) specifies the [umask][umask_2] of the user. If unspecified, the umask should not be changed from the calling process' umask.
 * **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the process.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
@@ -237,6 +238,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 63,
         "additionalGids": [5, 6]
     },
     "env": [
@@ -295,6 +297,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 7,
         "additionalGids": [2, 8]
     },
     "env": [
@@ -855,6 +858,7 @@ Here is a full example `config.json` for reference.
 [selinux]:http://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
+[umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
 [semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html

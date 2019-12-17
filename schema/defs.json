@@ -60,6 +60,9 @@
         "GID": {
             "$ref": "#/definitions/uint32"
         },
+		"Umask": {
+            "$ref": "#/definitions/uint32"
+		},
         "ArrayOfGIDs": {
             "type": "array",
             "items": {
