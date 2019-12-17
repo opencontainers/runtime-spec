@@ -702,6 +702,23 @@ The following parameters can be specified to set up seccomp:
     "mountLabel": "system_u:object_r:svirt_sandbox_file_t:s0:c715,c811"
 ```
 
+## <a name="configLinuxPersonality" />Personality
+
+**`personality`** (object, OPTIONAL) sets the Linux execution personality. For more information
+see the [personality](personality.2) syscall documentation. As most of the options are
+obsolete and rarely used, and some reduce security, the currently supported set is a small
+subset of the available options.
+
+* **`domain`** *(string, REQUIRED)* - the execution domain.
+    The valid list of constants is shown below. `LINUX32` will set the `uname` system call to show
+    a 32 bit CPU type, such as `i686`.
+
+    * `LINUX`
+    * `LINUX32`
+
+* **`flags`** *(array of strings, OPTIONAL)* - the additional flags to apply.
+    Currently no flag values are supported.
+
 
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
@@ -729,6 +746,7 @@ The following parameters can be specified to set up seccomp:
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: http://man7.org/linux/man-pages/man7/namespaces.7.html
 [null.4]: http://man7.org/linux/man-pages/man4/null.4.html
+[personality.2]: http://man7.org/linux/man-pages/man2/personality.2.html
 [pts.4]: http://man7.org/linux/man-pages/man4/pts.4.html
 [random.4]: http://man7.org/linux/man-pages/man4/random.4.html
 [sysctl.8]: http://man7.org/linux/man-pages/man8/sysctl.8.html

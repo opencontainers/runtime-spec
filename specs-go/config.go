@@ -167,6 +167,8 @@ type Linux struct {
 	// IntelRdt contains Intel Resource Director Technology (RDT) information for
 	// handling resource constraints (e.g., L3 cache, memory bandwidth) for the container
 	IntelRdt *LinuxIntelRdt `json:"intelRdt,omitempty"`
+	// Personality contains configuration for the Linux personality syscall
+	Personality *LinuxPersonality `json:"personality,omitempty"`
 }
 
 // LinuxNamespace is the configuration for a Linux namespace
@@ -389,6 +391,28 @@ type LinuxDeviceCgroup struct {
 	Minor *int64 `json:"minor,omitempty"`
 	// Cgroup access permissions format, rwm.
 	Access string `json:"access,omitempty"`
+}
+
+// LinuxPersonalityDomain refers to a personality domain.
+type LinuxPersonalityDomain string
+
+// LinuxPersonalityFlag refers to an additional personality flag. None are currently defined.
+type LinuxPersonalityFlag string
+
+// Define domain and flags for Personality
+const (
+	// PerLinux is the standard Linux personality
+	PerLinux LinuxPersonalityDomain = "LINUX"
+	// PerLinux32 sets personality to 32 bit
+	PerLinux32 LinuxPersonalityDomain = "LINUX32"
+)
+
+// LinuxPersonality represents the Linux personality syscall input
+type LinuxPersonality struct {
+	// Domain for the personality
+	Domain LinuxPersonalityDomain `json:"domain"`
+	// Additional flags
+	Flags []LinuxPersonalityFlag `json:"flags,omitempty"`
 }
 
 // Solaris contains platform-specific configuration for Solaris application containers.
