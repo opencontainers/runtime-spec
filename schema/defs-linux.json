@@ -1,5 +1,23 @@
 {
     "definitions": {
+        "PersonalityDomain": {
+            "type": "string",
+            "enum": [
+                "LINUX",
+                "LINUX32"
+            ]
+        },
+        "Personality": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "$ref": "#/definitions/PersonalityDomain"
+                },
+                "flags": {
+                    "$ref": "defs.json#/definitions/ArrayOfStrings"
+                }
+            }
+        },
         "RootfsPropagation": {
             "type": "string",
             "enum": [
