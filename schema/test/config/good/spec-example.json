@@ -246,7 +246,8 @@
                 "kernel": -1,
                 "kernelTCP": -1,
                 "swappiness": 0,
-                "disableOOMKiller": false
+                "disableOOMKiller": false,
+                "useHierarchy": false
             },
             "cpu": {
                 "shares": 1024,

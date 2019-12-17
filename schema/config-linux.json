@@ -160,6 +160,9 @@
                             },
                             "disableOOMKiller": {
                                 "type": "boolean"
+                            },
+                            "useHierarchy": {
+                                "type": "boolean"
                             }
                         }
                     },
