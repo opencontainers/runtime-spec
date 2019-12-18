@@ -9,7 +9,7 @@ Whether other entities using the same, or other, instance of the runtime can see
 
 The state of a container includes the following properties:
 
-* **`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
+* **`ociVersion`** (string, REQUIRED) is version of the Open Container Initiative Runtime Specification with which the state complies.
 * **`id`** (string, REQUIRED) is the container's ID.
     This MUST be unique across all containers on this host.
     There is no requirement that it be unique across hosts.
