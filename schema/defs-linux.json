@@ -160,7 +160,7 @@
             }
         },
         "weight": {
-            "type": "integer"
+            "$ref": "defs.json#/definitions/uint16"
         },
         "blockIODevice": {
             "type": "object",
