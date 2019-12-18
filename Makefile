@@ -62,7 +62,7 @@ test: .govet .golint .gitvalidation
 
 # `go get github.com/golang/lint/golint`
 .golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
 	@which golint > /dev/null 2>/dev/null || (echo "ERROR: golint not found. Consider 'make install.tools' target" && false)
 	golint ./...
 endif
@@ -79,9 +79,9 @@ endif
 
 install.tools: .install.golint .install.gitvalidation
 
-# golint does not even build for <go1.6
+# golint does not even build for <go1.7
 .install.golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
 	go get -u github.com/golang/lint/golint
 endif
 

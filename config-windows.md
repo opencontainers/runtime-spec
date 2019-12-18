@@ -5,7 +5,7 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 
 ## <a name="configWindowsLayerFolders" />LayerFolders
 
-**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer.
+**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer with the last entry being the scratch.
   `layerFolders` MUST contain at least one entry.
 
 ### Example
@@ -13,8 +13,38 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 ```json
     "windows": {
         "layerFolders": [
+            "C:\\Layers\\layer2",
             "C:\\Layers\\layer1",
-            "C:\\Layers\\layer2"
+            "C:\\Layers\\layer-base",
+            "C:\\scratch",
+        ]
+    }
+```
+
+## <a name="configWindowsDevices" />Devices
+
+**`devices`** (array of objects, OPTIONAL) lists devices that MUST be available in the container.
+
+Each entry has the following structure:
+
+* **`id`** *(string, REQUIRED)* - specifies the device which the runtime MUST make available in the container.
+* **`idType`** *(string, REQUIRED)* - tells the runtime how to interpret `id`. Today, Windows only supports a value of `class`, which identifies `id` as a [device interface class GUID][interfaceGUID].
+
+[interfaceGUID]: https://docs.microsoft.com/en-us/windows-hardware/drivers/install/overview-of-device-interface-classes
+
+### Example
+
+```json
+    "windows": {
+        "devices": [
+            {
+                "id": "24E552D7-6523-47F7-A647-D3465BF1F5CA",
+                "idType": "class"
+            },
+            {
+                "id": "5175d334-c371-4806-b3ba-71fd53c9258d",
+                "idType": "class"
+            }
         ]
     }
 ```
@@ -97,6 +127,7 @@ The following parameters can be specified:
 * **`allowUnqualifiedDNSQuery`** *(bool, OPTIONAL)* - specifies if unqualified DNS name resolution is allowed.
 * **`DNSSearchList`** *(array of strings, OPTIONAL)* - comma separated list of DNS suffixes to use for name resolution.
 * **`networkSharedContainerName`** *(string, OPTIONAL)* - name (ID) of the container that we will share with the network stack.
+* **`networkNamespace`** *(string, OPTIONAL)* - name (ID) of the network namespace that will be used for the container. If a network namespace is specified no other parameter must be specified.
 
 ### Example
 
@@ -111,7 +142,8 @@ The following parameters can be specified:
                 "a.com",
                 "b.com"
             ],
-            "networkSharedContainerName": "containerName"
+            "networkSharedContainerName": "containerName",
+            "networkNamespace": "168f3daf-efc6-4377-b20a-2c86764ba892"
         }
    }
 ```

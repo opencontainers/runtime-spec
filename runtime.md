@@ -9,7 +9,7 @@ Whether other entities using the same, or other, instance of the runtime can see
 
 The state of a container includes the following properties:
 
-* **`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
+* **`ociVersion`** (string, REQUIRED) is version of the Open Container Initiative Runtime Specification with which the state complies.
 * **`id`** (string, REQUIRED) is the container's ID.
     This MUST be unique across all containers on this host.
     There is no requirement that it be unique across hosts.
@@ -137,4 +137,4 @@ Once a container is deleted its ID MAY be used by a subsequent container.
 
 ## <a name="runtimeHooks" />Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
-See [runtime configuration for hooks](./config.md#hooks) for more information.
+See [runtime configuration for hooks](./config.md#posix-platform-hooks) for more information.

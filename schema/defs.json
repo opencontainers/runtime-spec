@@ -60,6 +60,9 @@
         "GID": {
             "$ref": "#/definitions/uint32"
         },
+		"Umask": {
+            "$ref": "#/definitions/uint32"
+		},
         "ArrayOfGIDs": {
             "type": "array",
             "items": {
@@ -108,10 +111,10 @@
         "IDMapping": {
             "type": "object",
             "properties": {
-                "hostID": {
+                "containerID": {
                     "$ref": "#/definitions/uint32"
                 },
-                "containerID": {
+                "hostID": {
                     "$ref": "#/definitions/uint32"
                 },
                 "size": {
@@ -119,8 +122,8 @@
                 }
             },
             "required": [
-                "hostID",
                 "containerID",
+                "hostID",
                 "size"
             ]
         },

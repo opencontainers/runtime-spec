@@ -16,6 +16,7 @@ Platforms defined by this specification are:
 * `linux`: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), and [runtime-linux.md](runtime-linux.md).
 * `solaris`: [runtime.md](runtime.md), [config.md](config.md), and [config-solaris.md](config-solaris.md).
 * `windows`: [runtime.md](runtime.md), [config.md](config.md), and [config-windows.md](config-windows.md).
+* `vm`: [runtime.md](runtime.md), [config.md](config.md), and [config-vm.md](config-vm.md).
 
 # <a name="ociRuntimeSpecTOC" />Table of Contents
 
@@ -29,6 +30,7 @@ Platforms defined by this specification are:
     - [Linux-specific Configuration](config-linux.md)
     - [Solaris-specific Configuration](config-solaris.md)
     - [Windows-specific Configuration](config-windows.md)
+    - [Virtual-Machine-specific Configuration](config-vm.md)
 - [Glossary](glossary.md)
 
 # <a name="ociRuntimeSpecNotationalConventions" />Notational Conventions

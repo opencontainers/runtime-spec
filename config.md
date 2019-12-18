@@ -27,10 +27,10 @@ For all platform-specific configuration values, the scope defined below in the [
 ## <a name="configRoot" />Root
 
 **`root`** (object, OPTIONAL) specifies the container's root filesystem.
-    On Windows, for Windows Server Containers, this field is REQUIRED.
-    For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
+On Windows, for Windows Server Containers, this field is REQUIRED.
+For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
 
-    On all other platforms, this field is REQUIRED.
+On all other platforms, this field is REQUIRED.
 
 * **`path`** (string, REQUIRED) Specifies the path to the root filesystem for the container.
 
@@ -73,8 +73,9 @@ For all platform-specific configuration values, the scope defined below in the [
     This value MUST be an absolute path.
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
-    Path values are either absolute or relative to the bundle.
+* **`source`** (string, OPTIONAL) A device name, but can also be a file or directory name for bind mounts or a dummy.
+    Path values for bind mounts are either absolute or relative to the bundle.
+    A mount is a bind mount if it has either `bind` or `rbind` in the options.
     * Windows: a local directory on the filesystem of the container host. UNC paths and mapped drives are not supported.
     * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (array of strings, OPTIONAL) Mount options of the filesystem to be used.
@@ -100,7 +101,7 @@ For all platform-specific configuration values, the scope defined below in the [
 For POSIX platforms the `mounts` structure has the following fields:
 
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
-  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
+  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). For bind mounts (when `options` include either `bind` or `rbind`), the type is a dummy, often "none" (not listed in */proc/filesystems*).
   * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
@@ -115,7 +116,7 @@ For POSIX platforms the `mounts` structure has the following fields:
     },
     {
         "destination": "/data",
-        "type": "bind",
+        "type": "none",
         "source": "/volumes/testing",
         "options": ["rbind","rw"]
     }
@@ -154,8 +155,11 @@ For POSIX platforms the `mounts` structure has the following fields:
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
     This value MUST be an absolute path.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-* **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
-    This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
+* **`args`** (array of strings, OPTIONAL) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
+    This specification extends the IEEE standard in that at least one entry is REQUIRED (non-Windows), and that entry is used with the same semantics as `execvp`'s *file*. This field is OPTIONAL on Windows, and `commandLine` is REQUIRED if this field is omitted.
+* **`commandLine`** (string, OPTIONAL) specifies the full command line to be executed on Windows.
+    This is the preferred means of supplying the command line on Windows. If omitted, the runtime will fall back to escaping and concatenating fields from `args` before making the system call into Windows.
+
 
 ### <a name="configPOSIXProcess" />POSIX process
 
@@ -217,6 +221,7 @@ For POSIX platforms the `user` structure has the following fields:
 
 * **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
 * **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
+* **`umask`** (int, OPTIONAL) specifies the [umask][umask_2] of the user. If unspecified, the umask should not be changed from the calling process' umask.
 * **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the process.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
@@ -233,6 +238,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 63,
         "additionalGids": [5, 6]
     },
     "env": [
@@ -291,6 +297,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 7,
         "additionalGids": [2, 8]
     },
     "env": [
@@ -349,6 +356,8 @@ For Windows based systems the user structure has the following fields:
     This MUST be set if the target platform of this spec is `windows`.
 * **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
     This MAY be set if the target platform of this spec is `solaris`.
+* **`vm`** (object, OPTIONAL) [Virtual-machine-specific configuration](config-vm.md).
+    This MAY be set if the target platform and architecture of this spec support hardware virtualization.
 
 ### Example (Linux)
 
@@ -373,6 +382,7 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
         Entries in the array contain the following properties:
         * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
             This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            Runtimes MUST resolve this value in the [runtime namespace](glossary.md#runtime-namespace).
         * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
         * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
         * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
@@ -384,6 +394,7 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
 
 Hooks allow users to specify programs to run before or after various lifecycle events.
 Hooks MUST be called in the listed order.
+Hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 The [state](runtime.md#state) of the container MUST be passed to hooks over stdin so that they may do work appropriate to the current state of the container.
 
 ### <a name="configHooksPrestart" />Prestart
@@ -441,7 +452,7 @@ Cleanup or debugging functions are examples of such a hook.
     Keys MUST NOT be an empty string.
     Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
     Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
-    Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
+    Runtimes MUST handle unknown annotation keys like any other [unknown property](#extensibility).
 
     Values MUST be strings.
     Values MAY be an empty string.
@@ -454,12 +465,12 @@ Cleanup or debugging functions are examples of such a hook.
 
 ## <a name="configExtensibility" />Extensibility
 
-Runtimes that are reading or processing this configuration file MUST NOT generate an error if they encounter an unknown property.
-Instead they MUST ignore unknown properties.
+Runtimes MAY [log](runtime.md#warnings) unknown properties but MUST otherwise ignore them.
+That includes not [generating errors](runtime.md#errors) if they encounter an unknown property.
 
 ## Valid values
 
-Runtimes that are reading or processing this configuration file MUST generate an error when invalid or unsupported values are encountered.
+Runtimes MUST generate an error when invalid or unsupported values are encountered.
 Unless support for a valid value is explicitly required, runtimes MAY choose which subset of the valid values it will support.
 
 ## Configuration Schema Example
@@ -468,7 +479,7 @@ Here is a full example `config.json` for reference.
 
 ```json
 {
-    "ociVersion": "0.5.0-dev",
+    "ociVersion": "1.0.1",
     "process": {
         "terminal": true,
         "user": {
@@ -664,15 +675,15 @@ Here is a full example `config.json` for reference.
         ],
         "uidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
         "gidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
@@ -702,6 +713,10 @@ Here is a full example `config.json` for reference.
                 {
                     "pageSize": "2MB",
                     "limit": 9223372036854772000
+                },
+                {
+                    "pageSize": "64KB",
+                    "limit": 1000000
                 }
             ],
             "memory": {
@@ -843,6 +858,7 @@ Here is a full example `config.json` for reference.
 [selinux]:http://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
+[umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
 [semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
@@ -851,8 +867,8 @@ Here is a full example `config.json` for reference.
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
 [mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
-[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT%20OPTIONS
-[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT%20OPTIONS
+[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
+[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
 [getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
 [getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
