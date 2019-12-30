@@ -125,13 +125,26 @@ type Hook struct {
 	Timeout *int     `json:"timeout,omitempty"`
 }
 
+// Hooks specifies a command that is run in the container at a particular event in the lifecycle of a container
 // Hooks for container setup and teardown
 type Hooks struct {
-	// Prestart is a list of hooks to be run before the container process is executed.
+	// Prestart is Deprecated. Prestart is a list of hooks to be run before the container process is executed.
+	// It is called in the Runtime Namespace
 	Prestart []Hook `json:"prestart,omitempty"`
+	// CreateRuntime is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
+	// It is called in the Runtime Namespace
+	CreateRuntime []Hook `json:"createRuntime,omitempty"`
+	// CreateContainer is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
+	// It is called in the Container Namespace
+	CreateContainer []Hook `json:"createContainer,omitempty"`
+	// StartContainer is a list of hooks to be run after the start operation is called but before the container process is started
+	// It is called in the Container Namespace
+	StartContainer []Hook `json:"startContainer,omitempty"`
 	// Poststart is a list of hooks to be run after the container process is started.
+	// It is called in the Runtime Namespace
 	Poststart []Hook `json:"poststart,omitempty"`
 	// Poststop is a list of hooks to be run after the container process exits.
+	// It is called in the Runtime Namespace
 	Poststop []Hook `json:"poststop,omitempty"`
 }
 

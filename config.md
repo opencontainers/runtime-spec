@@ -378,39 +378,118 @@ For Windows based systems the user structure has the following fields:
 For POSIX platforms, the configuration structure supports `hooks` for configuring custom actions related to the [lifecycle](runtime.md#lifecycle) of the container.
 
 * **`hooks`** (object, OPTIONAL) MAY contain any of the following properties:
-    * **`prestart`** (array of objects, OPTIONAL) is an array of [pre-start hooks](#prestart).
-        Entries in the array contain the following properties:
-        * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
-            This specification extends the IEEE standard in that **`path`** MUST be absolute.
-            Runtimes MUST resolve this value in the [runtime namespace](glossary.md#runtime-namespace).
-        * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
-        * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-        * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
-            If set, `timeout` MUST be greater than zero.
-    * **`poststart`** (array of objects, OPTIONAL) is an array of [post-start hooks](#poststart).
-        Entries in the array have the same schema as pre-start entries.
-    * **`poststop`** (array of objects, OPTIONAL) is an array of [post-stop hooks](#poststop).
-        Entries in the array have the same schema as pre-start entries.
+    * **`prestart`** (array of objects, OPTIONAL, **DEPRECATED**) is an array of [`prestart` hooks](#prestart).
+        * Entries in the array contain the following properties:
+            * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
+                This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
+            * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
+            * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+                If set, `timeout` MUST be greater than zero.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `prestart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`createRuntime`** (array of objects, OPTIONAL) is an array of [`createRuntime` hooks](#createRuntime-hooks).
+        * Entries in the array contain the following properties (the entries are identical to the entries in the deprecated `prestart` hooks):
+            * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
+                This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
+            * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
+            * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+                If set, `timeout` MUST be greater than zero.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `createRuntime` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`createContainer`** (array of objects, OPTIONAL) is an array of [`createContainer` hooks](#createContainer-hooks).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `createContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+    * **`startContainer`** (array of objects, OPTIONAL) is an array of [`startContainer` hooks](#startContainer-hooks).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [container namespace](glossary.md#container-namespace).
+        * The `startContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+    * **`poststart`** (array of objects, OPTIONAL) is an array of [`poststart` hooks](#poststart).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`poststop`** (array of objects, OPTIONAL) is an array of [`poststop` hooks](#poststop).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `poststop` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 
 Hooks allow users to specify programs to run before or after various lifecycle events.
 Hooks MUST be called in the listed order.
-Hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 The [state](runtime.md#state) of the container MUST be passed to hooks over stdin so that they may do work appropriate to the current state of the container.
 
 ### <a name="configHooksPrestart" />Prestart
 
-The pre-start hooks MUST be called after the [`start`](runtime.md#start) operation is called but [before the user-specified program command is executed](runtime.md#lifecycle).
+The `prestart` hooks MUST be called after the [`start`](runtime.md#start) operation is called but [before the user-specified program command is executed](runtime.md#lifecycle).
 On Linux, for example, they are called after the container namespaces are created, so they provide an opportunity to customize the container (e.g. the network namespace could be specified in this hook).
+
+Note: `prestart` hooks were deprecated in favor of `createRuntime`, `createContainer` and `startContainer` hooks, which allow more granular hook control during the create and start phase.
+
+The `prestart` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `prestart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+### <a name="configHooksCreateRuntime" />CreateRuntime Hooks
+
+The `createRuntime` hooks MUST be called as part of the [`create`](runtime.md#create) operation after the runtime environment has been created (according to the configuration in config.json) but before the `pivot_root` or any equivalent operation has been executed.
+
+The `createRuntime` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `createRuntime` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+On Linux, for example, they are called after the container namespaces are created, so they provide an opportunity to customize the container (e.g. the network namespace could be specified in this hook).
+
+The definition of `createRuntime` hooks is currently underspecified and hooks authors, should only expect from the runtime that the mount namespace have been created and the mount operations performed. Other operations such as cgroups and SELinux/AppArmor labels might not have been performed by the runtime.
+
+Note: `runc` originally implemented `prestart` hooks contrary to the spec, namely as part of the `create` operation (instead of during the `start` operation). This incorrect implementation actually corresponds to `createRuntime` hooks. For runtimes that implement the deprecated `prestart` hooks as `createRuntime` hooks, `createRuntime` hooks MUST be called after the `prestart` hooks.
+
+### <a name="configHooksCreateContainer" />CreateContainer Hooks
+
+The `createContainer` hooks MUST be called as part of the [`create`](runtime.md#create) operation after the runtime environment has been created (according to the configuration in config.json) but before the `pivot_root` or any equivalent operation has been executed.
+The `createContainer` hooks MUST be called after the `createRuntime` hooks.
+
+The `createContainer` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `createContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+
+For example, on Linux this would happen before the `pivot_root` operation is executed but after the mount namespace was created and setup.
+
+The definition of `createContainer` hooks is currently underspecified and hooks authors, should only expect from the runtime that the mount namespace and different mounts will be setup. Other operations such as cgroups and SELinux/AppArmor labels might not have been performed by the runtime.
+
+### <a name="configHooksStartContainer" />StartContainer Hooks
+
+The `startContainer` hooks MUST be called [before the user-specified process is executed](runtime.md#lifecycle) as part of the [`start`](runtime.md#start) operation.
+This hook can be used to execute some operations in the container, for example running the `ldconfig` binary on linux before the container process is spawned.
+
+The `startContainer` hooks' path MUST resolve in the [container namespace](glossary.md#container-namespace).
+The `startContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
 
 ### <a name="configHooksPoststart" />Poststart
 
-The post-start hooks MUST be called [after the user-specified process is executed](runtime.md#lifecycle) but before the [`start`](runtime.md#start) operation returns.
+The `poststart` hooks MUST be called [after the user-specified process is executed](runtime.md#lifecycle) but before the [`start`](runtime.md#start) operation returns.
 For example, this hook can notify the user that the container process is spawned.
+
+The `poststart` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 
 ### <a name="configHooksPoststop" />Poststop
 
-The post-stop hooks MUST be called [after the container is deleted](runtime.md#lifecycle) but before the [`delete`](runtime.md#delete) operation returns.
+The `poststop` hooks MUST be called [after the container is deleted](runtime.md#lifecycle) but before the [`delete`](runtime.md#delete) operation returns.
 Cleanup or debugging functions are examples of such a hook.
+
+The `poststop` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `poststop` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+### Summary
+
+See the below table for a summary of hooks and when they are called:
+
+|           Name          | Namespace |                                                            When                                                                    |
+| ----------------------- | --------- | -----------------------------------------------------------------------------------------------------------------------------------|
+| `prestart` (Deprecated) | runtime   | After the start  operation is called but before the user-specified program command is executed.                                    |
+| `createRuntime`         | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
+| `createContainer`       | container | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
+| `startContainer`        | container | After the start operation is called but before the user-specified program command is executed.                                     |
+| `poststart`             | runtime   | After the user-specified process is executed but before the start operation returns.                                               |
+| `poststop`              | runtime   | After the container is deleted but before the delete operation returns.                                                            |
 
 ### Example
 
@@ -424,6 +503,28 @@ Cleanup or debugging functions are examples of such a hook.
             },
             {
                 "path": "/usr/bin/setup-network"
+            }
+        ],
+        "createRuntime": [
+            {
+                "path": "/usr/bin/fix-mounts",
+                "args": ["fix-mounts", "arg1", "arg2"],
+                "env":  [ "key1=value1"]
+            },
+            {
+                "path": "/usr/bin/setup-network"
+            }
+        ],
+        "createContainer": [
+            {
+                "path": "/usr/bin/mount-hook",
+                "args": ["-mount", "arg1", "arg2"],
+                "env":  [ "key1=value1"]
+            }
+        ],
+        "startContainer": [
+            {
+                "path": "/usr/bin/refresh-ldcache"
             }
         ],
         "poststart": [

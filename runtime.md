@@ -55,18 +55,24 @@ The lifecycle describes the timeline of events that happen from when a container
     If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST [generate an error](#errors).
     While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
     Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
-3. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
-4. The [prestart hooks](config.md#prestart) MUST be invoked by the runtime.
-    If any prestart hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 9.
-5. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
-6. The [poststart hooks](config.md#poststart) MUST be invoked by the runtime.
-    If any poststart hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
-7. The container process exits.
+3. The [`prestart` hooks](config.md#prestart) MUST be invoked by the runtime.
+    If any `prestart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+4. The [`createRuntime` hooks](config.md#createRuntime-hooks) MUST be invoked by the runtime.
+    If any `createRuntime` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+5. The [`createContainer` hooks](config.md#createContainer-hooks) MUST be invoked by the runtime.
+    If any `createContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+6. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+7. The [`startContainer` hooks](config.md#startContainer-hooks) MUST be invoked by the runtime.
+    If any `startContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+8. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
+9. The [`poststart` hooks](config.md#poststart) MUST be invoked by the runtime.
+    If any `poststart` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+10. The container process exits.
     This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
-8. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
-9. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
-10. The [poststop hooks](config.md#poststop) MUST be invoked by the runtime.
-    If any poststop hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+11. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
+12. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
+13. The [`poststop` hooks](config.md#poststop) MUST be invoked by the runtime.
+    If any `poststop` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
 
 ## <a name="runtimeErrors" />Errors
 
