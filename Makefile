@@ -7,6 +7,7 @@ PANDOC			?= $(shell command -v pandoc 2>/dev/null)
 ifeq "$(strip $(PANDOC))" ''
 	ifneq "$(strip $(DOCKER))" ''
 		PANDOC = $(DOCKER) run \
+			--security-opt label=disable \
 			-it \
 			--rm \
 			-v $(shell pwd)/:/input/:ro \
