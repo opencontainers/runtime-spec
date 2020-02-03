@@ -670,6 +670,7 @@ The following parameters can be specified to set up seccomp:
 
 **`maskedPaths`** (array of strings, OPTIONAL) will mask over the provided paths inside the container so that they cannot be read.
     The values MUST be absolute paths in the [container namespace](glossary.md#container_namespace).
+    Unexistent paths MUST be skipped without generating an error.
 
 ### Example
 
@@ -683,6 +684,7 @@ The following parameters can be specified to set up seccomp:
 
 **`readonlyPaths`** (array of strings, OPTIONAL) will set the provided paths as readonly inside the container.
     The values MUST be absolute paths in the [container namespace](glossary.md#container-namespace).
+    Unexistent paths MUST be skipped without generating an error.
 
 ### Example
 
