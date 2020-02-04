@@ -49,3 +49,48 @@ Specifications have a variety of different timelines in their lifecycle.
 - Minor and patch releases SHOULD be made on an as-needed basis.
 
 [charter]: https://www.opencontainers.org/about/governance
+
+## Checklist
+
+Releases usually follow a few steps:
+
+* [ ] prepare a pull-request for the release
+  * [ ] a commit updating `./ChangeLog`
+    * [ ] `git log --oneline --no-merges --decorate --name-status v1.0.1..HEAD | vim -`
+    * [ ] `:% s/(pr\/\(\d*\))\(.*\)/\2 (#\1)/` to move the PR to the end of line and match previous formating
+    * [ ] review `(^M|^A|^D)` for impact of the commit
+    * [ ] group commits to `Additions:`, `Minor fixes and documentation:`, `Breaking changes:`
+    * [ ] delete the `(^M|^A|^D)` lines, `:%!grep -vE '(^M|^A|^D)'`
+    * [ ] merge multi-commit PRs (so each line has a `(#num)` suffix)
+    * [ ] drop hash and indent, `:'<,'> s/^\w*  /^I* /`
+  * [ ] a commit bumping `./specs-go/version.go` to next version and empty the `VersionDev` variable
+  * [ ] a commit adding back the "-dev" to `VersionDev`
+* [ ] send email to dev@opencontainers.org
+  * [ ] copy the exact commit hash for bumping the version from the pull-request (since master always stays as "-dev")
+  * [ ] count the PRs since last release (that this version is tracking, in the cases of multiple branching), like `git log --pretty=oneline --no-merges --decorate $priorTag..$versionBumpCommit  | grep \(pr\/ | wc -l`
+  * [ ] get the date for a week from now, like `TZ=UTC date --date='next week'`
+  * [ ] OPTIONAL find a cute animal gif to attach to the email, and subsequently the release description
+  * [ ] subject line like `[runtime-spec VOTE] tag $versionBumpCommit as $version (closes $dateWeekFromNowUTC)`
+  * [ ] email body like
+```
+Hey everyone,
+
+There have been $numPRs PRs merged since $priorTag release (https://github.com/opencontainers/runtime-spec/compare/$priorTag...$versionBumpCommit).
+
+$linkToPullRequest
+
+Please respond LGTM or REJECT (with reasoning).
+
+$sig
+```
+* [ ] edit/update the pull-request to link to the VOTE thread, from https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
+* [ ] a week later, if the vote passes, merge the PR
+  * [ ] `git tag -s $version $versionBumpCommit`
+  * [ ] `git push --tags`
+* [ ] produce release documents
+  * [ ] git checkout the release tag, like `git checkout $version`
+  * [ ] `make docs`
+  * [ ] rename the output PDF and HTML file to include version, like `mv output/oci-runtime-spec.pdf output/oci-runtime-spec-$version.pdf``
+  * [ ] attach these docs to the release on https://github.com/opencontainers/runtime-spec/releases
+  * [ ] link to the the VOTE thread and include the passing vote count
+  * [ ] link to the pull request that merged the release
