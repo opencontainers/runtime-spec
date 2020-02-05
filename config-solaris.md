@@ -47,7 +47,7 @@ cappedCPU is mapped to `capped-cpu` in [zonecfg(1M)][zonecfg.1m_2] man page.
 ### Example
 ```json
 "cappedCPU": {
-        "ncpus": "8"
+    "ncpus": "8"
 }
 ```
 
@@ -62,8 +62,8 @@ cappedMemory is mapped to `capped-memory` in [zonecfg(1M)][zonecfg.1m_2] man pag
 ### Example
 ```json
 "cappedMemory": {
-        "physical": "512m",
-        "swap": "512m"
+    "physical": "512m",
+    "swap": "512m"
 }
 ```
 
