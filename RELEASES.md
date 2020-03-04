@@ -23,7 +23,7 @@ However, specification releases have special restrictions in the [OCI charter][c
 * They are the target of backwards compatibility (§7.g), and
 * They are subject to the OFWa patent grant (§8.d and e).
 
-To avoid unfortunate side effects (onerous backwards compatibity requirements or Member resignations), the following additional procedures apply to specification releases:
+To avoid unfortunate side effects (onerous backwards compatibility requirements or Member resignations), the following additional procedures apply to specification releases:
 
 ### Planning a release
 
@@ -57,7 +57,7 @@ Releases usually follow a few steps:
 * [ ] prepare a pull-request for the release
   * [ ] a commit updating `./ChangeLog`
     * [ ] `git log --oneline --no-merges --decorate --name-status v1.0.1..HEAD | vim -`
-    * [ ] `:% s/(pr\/\(\d*\))\(.*\)/\2 (#\1)/` to move the PR to the end of line and match previous formating
+    * [ ] `:% s/(pr\/\(\d*\))\(.*\)/\2 (#\1)/` to move the PR to the end of line and match previous formatting
     * [ ] review `(^M|^A|^D)` for impact of the commit
     * [ ] group commits to `Additions:`, `Minor fixes and documentation:`, `Breaking changes:`
     * [ ] delete the `(^M|^A|^D)` lines, `:%!grep -vE '(^M|^A|^D)'`
