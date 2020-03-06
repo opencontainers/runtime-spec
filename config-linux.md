@@ -654,7 +654,7 @@ The following parameters can be specified to set up seccomp:
 ## <a name="configLinuxRootfsMountPropagation" />Rootfs Mount Propagation
 
 **`rootfsPropagation`** (string, OPTIONAL) sets the rootfs's mount propagation.
-Its value is either `shared`, `slave`, `shared+slave`, `private` or `unbindable`.
+Its value is either `shared`, `slave`, `private` or `unbindable`.
 It's worth noting that a peer group is defined as a group of VFS mounts that propagate events to each other.
 A nested container is defined as a container launched inside an existing container.
 
@@ -662,7 +662,6 @@ A nested container is defined as a container launched inside an existing contain
     This means that further mounts (e.g. nested containers) will also belong to that peer group and will propagate events to the rootfs.
     Note this does not mean that it's shared with the host.
 * **`slave`**: the rootfs mount receives propagation events from the host (e.g. if something is mounted on the host it will also appear in the container) but not the other way around.
-* **`shared+slave`**: the rootfs mount is slave to the host but it also has its own peer group, so mounts from the host will appear in the container and in a nested container (if the nested container `rootfsPropagation` option allows it), but mounts in a nested container can only propagate to the rootfs and not to the host.
 * **`private`**: the rootfs mount doesn't receive mount propagation events from the host and further mounts in nested containers will be isolated from the host and from the rootfs (even if the nested container `rootfsPropagation` option is shared).
 * **`unbindable`**: the rootfs mount is a private mount that cannot be bind-mounted.
 
