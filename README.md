@@ -12,7 +12,6 @@ Additional documentation about how this group operates:
 - [Style and Conventions](style.md)
 - [Implementations](implementations.md)
 - [Releases](RELEASES.md)
-- [project](project.md)
 - [charter][charter]
 
 ## Use Cases
