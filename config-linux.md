@@ -624,6 +624,9 @@ The following parameters can be specified to set up seccomp:
     * `SECCOMP_FILTER_FLAG_TSYNC`
     * `SECCOMP_FILTER_FLAG_LOG`
     * `SECCOMP_FILTER_FLAG_SPEC_ALLOW`
+    * `SECCOMP_FILTER_FLAG_NEW_LISTENER`
+
+* **`listenerPath`** *(string, OPTIONAL)* - specifies the path of UNIX domain socket which the runtime will pass the file descriptor of seccomp notification using SCM_RIGHT to.
 
 * **`syscalls`** *(array of objects, OPTIONAL)* - match a syscall in seccomp.
     While this property is OPTIONAL, some values of `defaultAction` are not useful without `syscalls` entries.
@@ -633,7 +636,7 @@ The following parameters can be specified to set up seccomp:
     * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
         `names` MUST contain at least one entry.
     * **`action`** *(string, REQUIRED)* - the action for seccomp rules.
-        A valid list of constants as of libseccomp v2.4.0 is shown below.
+        A valid list of constants is shown below.
 
         * `SCMP_ACT_KILL`
         * `SCMP_ACT_KILL_PROCESS`
@@ -642,6 +645,7 @@ The following parameters can be specified to set up seccomp:
         * `SCMP_ACT_TRACE`
         * `SCMP_ACT_ALLOW`
         * `SCMP_ACT_LOG`
+        * `SCMP_ACT_NOTIFY`
 
     * **`errnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
         Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno
