@@ -116,6 +116,9 @@
                 "action": {
                     "$ref": "#/definitions/SeccompAction"
                 },
+                "errnoRet": {
+                    "$ref": "defs.json#/definitions/uint32"
+                },
                 "args": {
                     "type": "array",
                     "items": {
