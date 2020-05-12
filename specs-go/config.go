@@ -669,7 +669,7 @@ type LinuxSeccompArg struct {
 type LinuxSyscall struct {
 	Names    []string           `json:"names"`
 	Action   LinuxSeccompAction `json:"action"`
-	ErrnoRet uint               `json:"errno"`
+	ErrnoRet *uint              `json:"errnoRet,omitempty"`
 	Args     []LinuxSeccompArg  `json:"args,omitempty"`
 }
 
