@@ -610,6 +610,7 @@ The following parameters can be specified to set up seccomp:
         A valid list of constants as of libseccomp v2.4.0 is shown below.
 
         * `SCMP_ACT_KILL`
+        * `SCMP_ACT_KILL_PROCESS`
         * `SCMP_ACT_TRAP`
         * `SCMP_ACT_ERRNO`
         * `SCMP_ACT_TRACE`
