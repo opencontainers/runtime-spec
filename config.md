@@ -208,6 +208,23 @@ For Linux-based systems, the `process` object supports the following process-spe
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
 * **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label for the process.
     For more information about SELinux, see  [SELinux documentation][selinux].
+* **`disableSpeculationMitigations`** (object, OPTIONAL) specifies whether CPU speculative execution mitigations should be disabled for the process. Several mitigations are auto-enabled under Linux, and can cause a noticeable performance impact (depending on your workload). Note that enabling this option may reduce the security properties of containers created with this configuration. See [the kernel documentation][speculative-control] for more information.
+    * **`defaultRule`** *(string, REQUIRED)*  sets up the default rule to enable or disable the mitigations.
+        * `enable` - The mitigation of speculations without `exceptions` is disabled.
+        * `disable` - The mitigation of speculations without `exceptions` is enabled.
+        * `force-disable` - Same as disable, but it cannot be undone.
+        * `disable-noexec` - Same as disable, but the state will be cleared on execve(2).
+    * **`exceptions`** *(array of objects, OPTIONAL)* - the configuration of specific mitigations.
+        Each entry has the following structure:
+        * **`mitigation`** *(string, REQUIRED)* - the name of specific mitigation.
+            A valid list of mitigations.
+            * `store-bypass` - Speculative Store Bypass
+            * `indirect-branch` - Indirect Branch Speculation in User Processes
+        * **`rule`** *(string, REQUIRED)* - enables or disables the specific mitigation.
+            * `enable` - The mitigation of this particular speculation is disabled.
+            * `disable` - The mitigation of this particular speculation is enabled.
+            * `force-disable` - Same as disable, but it cannot be undone.
+            * `disable-noexec` - Same as disable, but the state will be cleared on execve(2).
 
 ### <a name="configUser" />User
 
@@ -973,3 +990,4 @@ Here is a full example `config.json` for reference.
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
 [uts-namespace.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html
 [zonecfg.1m]: http://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html
+[speculative-control]: https://www.kernel.org/doc/html/latest/userspace-api/spec_ctrl.html
