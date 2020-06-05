@@ -372,6 +372,8 @@ type LinuxResources struct {
 	// Limits are a set of key value pairs that define RDMA resource limits,
 	// where the key is device name and value is resource limits.
 	Rdma map[string]LinuxRdma `json:"rdma,omitempty"`
+	// Unified resources.
+	Unified map[string]string `json:"unified,omitempty"`
 }
 
 // LinuxDevice represents the mknod information for a Linux special device file
