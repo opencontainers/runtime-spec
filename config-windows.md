@@ -174,7 +174,7 @@ You can indicate that a container should be started in a mode to apply pending s
 
 ## <a name="configWindowsIgnoreFlushesDuringBoot" />IgnoreFlushesDuringBoot
 
-You can indicate that a container should be started in an a mode where disk flushes are not performed during container boot via the OPTIONAL `ignoreFlushesDuringBoot` field of the Windows configuration.
+You can indicate that a container should be started in a mode where disk flushes are not performed during container boot via the OPTIONAL `ignoreFlushesDuringBoot` field of the Windows configuration.
 
 ### Example
 
