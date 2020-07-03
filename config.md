@@ -21,21 +21,19 @@ For all platform-specific configuration values, the scope defined below in the [
 ### Example
 
 ```json
-    "ociVersion": "0.1.0"
+"ociVersion": "0.1.0"
 ```
 
 ## <a name="configRoot" />Root
 
 **`root`** (object, OPTIONAL) specifies the container's root filesystem.
-    On Windows, for Windows Server Containers, this field is REQUIRED.
-    For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
+On Windows, for Windows Server Containers, this field is REQUIRED.
+For [Hyper-V Containers](config-windows.md#hyperv), this field MUST NOT be set.
 
-    On all other platforms, this field is REQUIRED.
+On all other platforms, this field is REQUIRED.
 
 * **`path`** (string, REQUIRED) Specifies the path to the root filesystem for the container.
-
     * On Windows, `path` MUST be a [volume GUID path][naming-a-volume].
-
     * On POSIX platforms, `path` is either an absolute path or a relative path to the bundle.
         For example, with a bundle at `/to/bundle` and a root filesystem at `/to/bundle/rootfs`, the `path` value can be either `/to/bundle/rootfs` or `rootfs`.
         The value SHOULD be the conventional `rootfs`.
@@ -65,16 +63,17 @@ For all platform-specific configuration values, the scope defined below in the [
 ## <a name="configMounts" />Mounts
 
 **`mounts`** (array of objects, OPTIONAL) specifies additional mounts beyond [`root`](#root).
-    The runtime MUST mount entries in the listed order.
-    For Linux, the parameters are as documented in [mount(2)][mount.2] system call man page.
-    For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
+The runtime MUST mount entries in the listed order.
+For Linux, the parameters are as documented in [mount(2)][mount.2] system call man page.
+For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
     This value MUST be an absolute path.
     * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
     * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`source`** (string, OPTIONAL) A device name, but can also be a directory name or a dummy.
-    Path values are either absolute or relative to the bundle.
+* **`source`** (string, OPTIONAL) A device name, but can also be a file or directory name for bind mounts or a dummy.
+    Path values for bind mounts are either absolute or relative to the bundle.
+    A mount is a bind mount if it has either `bind` or `rbind` in the options.
     * Windows: a local directory on the filesystem of the container host. UNC paths and mapped drives are not supported.
     * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (array of strings, OPTIONAL) Mount options of the filesystem to be used.
@@ -100,8 +99,8 @@ For all platform-specific configuration values, the scope defined below in the [
 For POSIX platforms the `mounts` structure has the following fields:
 
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
-  * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660").
-  * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). For bind mounts (when `options` include either `bind` or `rbind`), the type is a dummy, often "none" (not listed in */proc/filesystems*).
+    * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 
 ### Example (Linux)
 
@@ -115,7 +114,7 @@ For POSIX platforms the `mounts` structure has the following fields:
     },
     {
         "destination": "/data",
-        "type": "bind",
+        "type": "none",
         "source": "/volumes/testing",
         "options": ["rbind","rw"]
     }
@@ -143,7 +142,7 @@ For POSIX platforms the `mounts` structure has the following fields:
 ## <a name="configProcess" />Process
 
 **`process`** (object, OPTIONAL) specifies the container process.
-    This property is REQUIRED when [`start`](runtime.md#start) is called.
+This property is REQUIRED when [`start`](runtime.md#start) is called.
 
 * **`terminal`** (bool, OPTIONAL) specifies whether a terminal is attached to the process, defaults to false.
     As an example, if set to true on Linux a pseudoterminal pair is allocated for the process and the pseudoterminal slave is duplicated on the process's [standard streams][stdin.3].
@@ -154,8 +153,11 @@ For POSIX platforms the `mounts` structure has the following fields:
 * **`cwd`** (string, REQUIRED) is the working directory that will be set for the executable.
     This value MUST be an absolute path.
 * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-* **`args`** (array of strings, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-xsh-exec].
-    This specification extends the IEEE standard in that at least one entry is REQUIRED, and that entry is used with the same semantics as `execvp`'s *file*.
+* **`args`** (array of strings, OPTIONAL) with similar semantics to [IEEE Std 1003.1-2008 `execvp`'s *argv*][ieee-1003.1-2008-functions-exec].
+    This specification extends the IEEE standard in that at least one entry is REQUIRED (non-Windows), and that entry is used with the same semantics as `execvp`'s *file*. This field is OPTIONAL on Windows, and `commandLine` is REQUIRED if this field is omitted.
+* **`commandLine`** (string, OPTIONAL) specifies the full command line to be executed on Windows.
+    This is the preferred means of supplying the command line on Windows. If omitted, the runtime will fall back to escaping and concatenating fields from `args` before making the system call into Windows.
+
 
 ### <a name="configPOSIXProcess" />POSIX process
 
@@ -217,6 +219,7 @@ For POSIX platforms the `user` structure has the following fields:
 
 * **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
 * **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
+* **`umask`** (int, OPTIONAL) specifies the [umask][umask_2] of the user. If unspecified, the umask should not be changed from the calling process' umask.
 * **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the process.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
@@ -233,6 +236,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 63,
         "additionalGids": [5, 6]
     },
     "env": [
@@ -291,6 +295,7 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "user": {
         "uid": 1,
         "gid": 1,
+        "umask": 7,
         "additionalGids": [2, 8]
     },
     "env": [
@@ -349,6 +354,8 @@ For Windows based systems the user structure has the following fields:
     This MUST be set if the target platform of this spec is `windows`.
 * **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
     This MAY be set if the target platform of this spec is `solaris`.
+* **`vm`** (object, OPTIONAL) [Virtual-machine-specific configuration](config-vm.md).
+    This MAY be set if the target platform and architecture of this spec support hardware virtualization.
 
 ### Example (Linux)
 
@@ -369,18 +376,42 @@ For Windows based systems the user structure has the following fields:
 For POSIX platforms, the configuration structure supports `hooks` for configuring custom actions related to the [lifecycle](runtime.md#lifecycle) of the container.
 
 * **`hooks`** (object, OPTIONAL) MAY contain any of the following properties:
-    * **`prestart`** (array of objects, OPTIONAL) is an array of [pre-start hooks](#prestart).
-        Entries in the array contain the following properties:
-        * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
-            This specification extends the IEEE standard in that **`path`** MUST be absolute.
-        * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
-        * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
-        * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
-            If set, `timeout` MUST be greater than zero.
-    * **`poststart`** (array of objects, OPTIONAL) is an array of [post-start hooks](#poststart).
-        Entries in the array have the same schema as pre-start entries.
-    * **`poststop`** (array of objects, OPTIONAL) is an array of [post-stop hooks](#poststop).
-        Entries in the array have the same schema as pre-start entries.
+    * **`prestart`** (array of objects, OPTIONAL, **DEPRECATED**) is an array of [`prestart` hooks](#prestart).
+        * Entries in the array contain the following properties:
+            * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
+                This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
+            * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
+            * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+                If set, `timeout` MUST be greater than zero.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `prestart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`createRuntime`** (array of objects, OPTIONAL) is an array of [`createRuntime` hooks](#createRuntime-hooks).
+        * Entries in the array contain the following properties (the entries are identical to the entries in the deprecated `prestart` hooks):
+            * **`path`** (string, REQUIRED) with similar semantics to [IEEE Std 1003.1-2008 `execv`'s *path*][ieee-1003.1-2008-functions-exec].
+                This specification extends the IEEE standard in that **`path`** MUST be absolute.
+            * **`args`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008 `execv`'s *argv*][ieee-1003.1-2008-functions-exec].
+            * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
+            * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
+                If set, `timeout` MUST be greater than zero.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `createRuntime` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`createContainer`** (array of objects, OPTIONAL) is an array of [`createContainer` hooks](#createContainer-hooks).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `createContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+    * **`startContainer`** (array of objects, OPTIONAL) is an array of [`startContainer` hooks](#startContainer-hooks).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [container namespace](glossary.md#container-namespace).
+        * The `startContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+    * **`poststart`** (array of objects, OPTIONAL) is an array of [`poststart` hooks](#poststart).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+    * **`poststop`** (array of objects, OPTIONAL) is an array of [`poststop` hooks](#poststop).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `poststop` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 
 Hooks allow users to specify programs to run before or after various lifecycle events.
 Hooks MUST be called in the listed order.
@@ -388,63 +419,142 @@ The [state](runtime.md#state) of the container MUST be passed to hooks over stdi
 
 ### <a name="configHooksPrestart" />Prestart
 
-The pre-start hooks MUST be called after the [`start`](runtime.md#start) operation is called but [before the user-specified program command is executed](runtime.md#lifecycle).
+The `prestart` hooks MUST be called after the [`start`](runtime.md#start) operation is called but [before the user-specified program command is executed](runtime.md#lifecycle).
 On Linux, for example, they are called after the container namespaces are created, so they provide an opportunity to customize the container (e.g. the network namespace could be specified in this hook).
+
+Note: `prestart` hooks were deprecated in favor of `createRuntime`, `createContainer` and `startContainer` hooks, which allow more granular hook control during the create and start phase.
+
+The `prestart` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `prestart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+### <a name="configHooksCreateRuntime" />CreateRuntime Hooks
+
+The `createRuntime` hooks MUST be called as part of the [`create`](runtime.md#create) operation after the runtime environment has been created (according to the configuration in config.json) but before the `pivot_root` or any equivalent operation has been executed.
+
+The `createRuntime` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `createRuntime` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+On Linux, for example, they are called after the container namespaces are created, so they provide an opportunity to customize the container (e.g. the network namespace could be specified in this hook).
+
+The definition of `createRuntime` hooks is currently underspecified and hooks authors, should only expect from the runtime that the mount namespace have been created and the mount operations performed. Other operations such as cgroups and SELinux/AppArmor labels might not have been performed by the runtime.
+
+Note: `runc` originally implemented `prestart` hooks contrary to the spec, namely as part of the `create` operation (instead of during the `start` operation). This incorrect implementation actually corresponds to `createRuntime` hooks. For runtimes that implement the deprecated `prestart` hooks as `createRuntime` hooks, `createRuntime` hooks MUST be called after the `prestart` hooks.
+
+### <a name="configHooksCreateContainer" />CreateContainer Hooks
+
+The `createContainer` hooks MUST be called as part of the [`create`](runtime.md#create) operation after the runtime environment has been created (according to the configuration in config.json) but before the `pivot_root` or any equivalent operation has been executed.
+The `createContainer` hooks MUST be called after the `createRuntime` hooks.
+
+The `createContainer` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `createContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+
+For example, on Linux this would happen before the `pivot_root` operation is executed but after the mount namespace was created and setup.
+
+The definition of `createContainer` hooks is currently underspecified and hooks authors, should only expect from the runtime that the mount namespace and different mounts will be setup. Other operations such as cgroups and SELinux/AppArmor labels might not have been performed by the runtime.
+
+### <a name="configHooksStartContainer" />StartContainer Hooks
+
+The `startContainer` hooks MUST be called [before the user-specified process is executed](runtime.md#lifecycle) as part of the [`start`](runtime.md#start) operation.
+This hook can be used to execute some operations in the container, for example running the `ldconfig` binary on linux before the container process is spawned.
+
+The `startContainer` hooks' path MUST resolve in the [container namespace](glossary.md#container-namespace).
+The `startContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
 
 ### <a name="configHooksPoststart" />Poststart
 
-The post-start hooks MUST be called [after the user-specified process is executed](runtime.md#lifecycle) but before the [`start`](runtime.md#start) operation returns.
+The `poststart` hooks MUST be called [after the user-specified process is executed](runtime.md#lifecycle) but before the [`start`](runtime.md#start) operation returns.
 For example, this hook can notify the user that the container process is spawned.
+
+The `poststart` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 
 ### <a name="configHooksPoststop" />Poststop
 
-The post-stop hooks MUST be called [after the container is deleted](runtime.md#lifecycle) but before the [`delete`](runtime.md#delete) operation returns.
+The `poststop` hooks MUST be called [after the container is deleted](runtime.md#lifecycle) but before the [`delete`](runtime.md#delete) operation returns.
 Cleanup or debugging functions are examples of such a hook.
+
+The `poststop` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `poststop` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+### Summary
+
+See the below table for a summary of hooks and when they are called:
+
+|           Name          | Namespace |                                                            When                                                                    |
+| ----------------------- | --------- | -----------------------------------------------------------------------------------------------------------------------------------|
+| `prestart` (Deprecated) | runtime   | After the start  operation is called but before the user-specified program command is executed.                                    |
+| `createRuntime`         | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
+| `createContainer`       | container | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
+| `startContainer`        | container | After the start operation is called but before the user-specified program command is executed.                                     |
+| `poststart`             | runtime   | After the user-specified process is executed but before the start operation returns.                                               |
+| `poststop`              | runtime   | After the container is deleted but before the delete operation returns.                                                            |
 
 ### Example
 
 ```json
-    "hooks": {
-        "prestart": [
-            {
-                "path": "/usr/bin/fix-mounts",
-                "args": ["fix-mounts", "arg1", "arg2"],
-                "env":  [ "key1=value1"]
-            },
-            {
-                "path": "/usr/bin/setup-network"
-            }
-        ],
-        "poststart": [
-            {
-                "path": "/usr/bin/notify-start",
-                "timeout": 5
-            }
-        ],
-        "poststop": [
-            {
-                "path": "/usr/sbin/cleanup.sh",
-                "args": ["cleanup.sh", "-f"]
-            }
-        ]
-    }
+"hooks": {
+    "prestart": [
+        {
+            "path": "/usr/bin/fix-mounts",
+            "args": ["fix-mounts", "arg1", "arg2"],
+            "env":  [ "key1=value1"]
+        },
+        {
+            "path": "/usr/bin/setup-network"
+        }
+    ],
+    "createRuntime": [
+        {
+            "path": "/usr/bin/fix-mounts",
+            "args": ["fix-mounts", "arg1", "arg2"],
+            "env":  [ "key1=value1"]
+        },
+        {
+            "path": "/usr/bin/setup-network"
+        }
+    ],
+    "createContainer": [
+        {
+            "path": "/usr/bin/mount-hook",
+            "args": ["-mount", "arg1", "arg2"],
+            "env":  [ "key1=value1"]
+        }
+    ],
+    "startContainer": [
+        {
+            "path": "/usr/bin/refresh-ldcache"
+        }
+    ],
+    "poststart": [
+        {
+            "path": "/usr/bin/notify-start",
+            "timeout": 5
+        }
+    ],
+    "poststop": [
+        {
+            "path": "/usr/sbin/cleanup.sh",
+            "args": ["cleanup.sh", "-f"]
+        }
+    ]
+}
 ```
 
 ## <a name="configAnnotations" />Annotations
 
 **`annotations`** (object, OPTIONAL) contains arbitrary metadata for the container.
-    This information MAY be structured or unstructured.
-    Annotations MUST be a key-value map.
-    If there are no annotations then this property MAY either be absent or an empty map.
+This information MAY be structured or unstructured.
+Annotations MUST be a key-value map.
+If there are no annotations then this property MAY either be absent or an empty map.
 
-    Keys MUST be strings.
-    Keys MUST NOT be an empty string.
-    Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
-    Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
-    Implementations that are reading/processing this configuration file MUST NOT generate an error if they encounter an unknown annotation key.
+Keys MUST be strings.
+Keys MUST NOT be an empty string.
+Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
+Keys using the `org.opencontainers` namespace are reserved and MUST NOT be used by subsequent specifications.
+Runtimes MUST handle unknown annotation keys like any other [unknown property](#extensibility).
 
-    Values MUST be strings.
-    Values MAY be an empty string.
+Values MUST be strings.
+Values MAY be an empty string.
 
 ```json
 "annotations": {
@@ -454,12 +564,12 @@ Cleanup or debugging functions are examples of such a hook.
 
 ## <a name="configExtensibility" />Extensibility
 
-Runtimes that are reading or processing this configuration file MUST NOT generate an error if they encounter an unknown property.
-Instead they MUST ignore unknown properties.
+Runtimes MAY [log](runtime.md#warnings) unknown properties but MUST otherwise ignore them.
+That includes not [generating errors](runtime.md#errors) if they encounter an unknown property.
 
 ## Valid values
 
-Runtimes that are reading or processing this configuration file MUST generate an error when invalid or unsupported values are encountered.
+Runtimes MUST generate an error when invalid or unsupported values are encountered.
 Unless support for a valid value is explicitly required, runtimes MAY choose which subset of the valid values it will support.
 
 ## Configuration Schema Example
@@ -468,7 +578,7 @@ Here is a full example `config.json` for reference.
 
 ```json
 {
-    "ociVersion": "0.5.0-dev",
+    "ociVersion": "1.0.1",
     "process": {
         "terminal": true,
         "user": {
@@ -664,15 +774,15 @@ Here is a full example `config.json` for reference.
         ],
         "uidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
         "gidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
@@ -702,6 +812,10 @@ Here is a full example `config.json` for reference.
                 {
                     "pageSize": "2MB",
                     "limit": 9223372036854772000
+                },
+                {
+                    "pageSize": "64KB",
+                    "limit": 1000000
                 }
             ],
             "memory": {
@@ -849,16 +963,17 @@ Here is a full example `config.json` for reference.
 [selinux]:http://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
+[umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
 [semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
-[ieee-1003.1-2008-xsh-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
+[ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
 [naming-a-volume]: https://aka.ms/nb3hqb
 
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
 [mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
-[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT%20OPTIONS
-[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT%20OPTIONS
+[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
+[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
 [getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
 [getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html

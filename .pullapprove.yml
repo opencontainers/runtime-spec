@@ -2,7 +2,7 @@ version: 2
 
 requirements:
   signed_off_by:
-    required: true
+    required: false
 
 group_defaults:
   required: 2

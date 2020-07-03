@@ -155,6 +155,28 @@
                 "path": "/usr/bin/setup-network"
             }
         ],
+        "createRuntime": [
+            {
+                "path": "/usr/bin/fix-mounts",
+                "args": ["fix-mounts", "arg1", "arg2"],
+                "env":  [ "key1=value1"]
+            },
+            {
+                "path": "/usr/bin/setup-network"
+            }
+        ],
+        "createContainer": [
+            {
+                "path": "/usr/bin/mount-hook",
+                "args": ["-mount", "arg1", "arg2"],
+                "env":  [ "key1=value1"]
+            }
+        ],
+        "startContainer": [
+            {
+                "path": "/usr/bin/refresh-ldcache"
+            }
+        ],
         "poststart": [
             {
                 "path": "/usr/bin/notify-start",
@@ -194,15 +216,15 @@
         ],
         "uidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
         "gidMappings": [
             {
-                "hostID": 1000,
                 "containerID": 0,
+                "hostID": 1000,
                 "size": 32000
             }
         ],
@@ -232,6 +254,10 @@
                 {
                     "pageSize": "2MB",
                     "limit": 9223372036854772000
+                },
+                {
+                    "pageSize": "64KB",
+                    "limit": 1000000
                 }
             ],
             "oomScoreAdj": 100,
@@ -242,7 +268,8 @@
                 "kernel": -1,
                 "kernelTCP": -1,
                 "swappiness": 0,
-                "disableOOMKiller": false
+                "disableOOMKiller": false,
+                "useHierarchy": false
             },
             "cpu": {
                 "shares": 1024,

@@ -5,18 +5,48 @@ The Windows container specification uses APIs provided by the Windows Host Compu
 
 ## <a name="configWindowsLayerFolders" />LayerFolders
 
-**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer.
-  `layerFolders` MUST contain at least one entry.
+**`layerFolders`** (array of strings, REQUIRED) specifies a list of layer folders the container image relies on. The list is ordered from topmost layer to base layer with the last entry being the scratch.
+`layerFolders` MUST contain at least one entry.
 
 ### Example
 
 ```json
-    "windows": {
-        "layerFolders": [
-            "C:\\Layers\\layer1",
-            "C:\\Layers\\layer2"
-        ]
-    }
+"windows": {
+    "layerFolders": [
+        "C:\\Layers\\layer2",
+        "C:\\Layers\\layer1",
+        "C:\\Layers\\layer-base",
+        "C:\\scratch",
+    ]
+}
+```
+
+## <a name="configWindowsDevices" />Devices
+
+**`devices`** (array of objects, OPTIONAL) lists devices that MUST be available in the container.
+
+Each entry has the following structure:
+
+* **`id`** *(string, REQUIRED)* - specifies the device which the runtime MUST make available in the container.
+* **`idType`** *(string, REQUIRED)* - tells the runtime how to interpret `id`. Today, Windows only supports a value of `class`, which identifies `id` as a [device interface class GUID][interfaceGUID].
+
+[interfaceGUID]: https://docs.microsoft.com/en-us/windows-hardware/drivers/install/overview-of-device-interface-classes
+
+### Example
+
+```json
+"windows": {
+    "devices": [
+        {
+            "id": "24E552D7-6523-47F7-A647-D3465BF1F5CA",
+            "idType": "class"
+        },
+        {
+            "id": "5175d334-c371-4806-b3ba-71fd53c9258d",
+            "idType": "class"
+        }
+    ]
+}
 ```
 
 ## <a name="configWindowsResources" />Resources
@@ -34,13 +64,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "memory": {
-                "limit": 2097152
-            }
+"windows": {
+    "resources": {
+        "memory": {
+            "limit": 2097152
         }
     }
+}
 ```
 
 ### <a name="configWindowsCpu" />CPU
@@ -56,13 +86,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "cpu": {
-                "maximum": 5000
-            }
+"windows": {
+    "resources": {
+        "cpu": {
+            "maximum": 5000
         }
     }
+}
 ```
 
 ### <a name="configWindowsStorage" />Storage
@@ -78,13 +108,13 @@ The following parameters can be specified:
 #### Example
 
 ```json
-    "windows": {
-        "resources": {
-            "storage": {
-                "iops": 50
-            }
+"windows": {
+    "resources": {
+        "storage": {
+            "iops": 50
         }
     }
+}
 ```
 
 ## <a name="configWindowsNetwork" />Network
@@ -97,23 +127,25 @@ The following parameters can be specified:
 * **`allowUnqualifiedDNSQuery`** *(bool, OPTIONAL)* - specifies if unqualified DNS name resolution is allowed.
 * **`DNSSearchList`** *(array of strings, OPTIONAL)* - comma separated list of DNS suffixes to use for name resolution.
 * **`networkSharedContainerName`** *(string, OPTIONAL)* - name (ID) of the container that we will share with the network stack.
+* **`networkNamespace`** *(string, OPTIONAL)* - name (ID) of the network namespace that will be used for the container. If a network namespace is specified no other parameter must be specified.
 
 ### Example
 
 ```json
-    "windows": {
-        "network": {
-            "endpointList": [
-                "7a010682-17e0-4455-a838-02e5d9655fe6"
-            ],
-            "allowUnqualifiedDNSQuery": true,
-            "DNSSearchList": [
-                "a.com",
-                "b.com"
-            ],
-            "networkSharedContainerName": "containerName"
-        }
-   }
+"windows": {
+    "network": {
+        "endpointList": [
+            "7a010682-17e0-4455-a838-02e5d9655fe6"
+        ],
+        "allowUnqualifiedDNSQuery": true,
+        "DNSSearchList": [
+            "a.com",
+            "b.com"
+        ],
+        "networkSharedContainerName": "containerName",
+        "networkNamespace": "168f3daf-efc6-4377-b20a-2c86764ba892"
+    }
+}
 ```
 
 ## <a name="configWindowsCredentialSpec" />Credential Spec
@@ -135,21 +167,21 @@ You can indicate that a container should be started in a mode to apply pending s
 ### Example
 
 ```json
-    "windows": {
-        "servicing": true
-    }
+"windows": {
+    "servicing": true
+}
 ```
 
 ## <a name="configWindowsIgnoreFlushesDuringBoot" />IgnoreFlushesDuringBoot
 
-You can indicate that a container should be started in an a mode where disk flushes are not performed during container boot via the OPTIONAL `ignoreFlushesDuringBoot` field of the Windows configuration.
+You can indicate that a container should be started in a mode where disk flushes are not performed during container boot via the OPTIONAL `ignoreFlushesDuringBoot` field of the Windows configuration.
 
 ### Example
 
 ```json
-    "windows": {
-        "ignoreFlushesDuringBoot": true
-    }
+"windows": {
+    "ignoreFlushesDuringBoot": true
+}
 ```
 
 ## <a name="configWindowsHyperV" />HyperV
@@ -167,9 +199,9 @@ The following parameters can be specified:
 ### Example
 
 ```json
-    "windows": {
-        "hyperv": {
-            "utilityVMPath": "C:\\path\\to\\utilityvm"
-        }
+"windows": {
+    "hyperv": {
+        "utilityVMPath": "C:\\path\\to\\utilityvm"
     }
+}
 ```

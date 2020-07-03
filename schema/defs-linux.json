@@ -1,5 +1,23 @@
 {
     "definitions": {
+        "PersonalityDomain": {
+            "type": "string",
+            "enum": [
+                "LINUX",
+                "LINUX32"
+            ]
+        },
+        "Personality": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "$ref": "#/definitions/PersonalityDomain"
+                },
+                "flags": {
+                    "$ref": "defs.json#/definitions/ArrayOfStrings"
+                }
+            }
+        },
         "RootfsPropagation": {
             "type": "string",
             "enum": [
@@ -36,10 +54,20 @@
             "type": "string",
             "enum": [
                 "SCMP_ACT_KILL",
+                "SCMP_ACT_KILL_PROCESS",
                 "SCMP_ACT_TRAP",
                 "SCMP_ACT_ERRNO",
                 "SCMP_ACT_TRACE",
-                "SCMP_ACT_ALLOW"
+                "SCMP_ACT_ALLOW",
+                "SCMP_ACT_LOG"
+            ]
+        },
+        "SeccompFlag": {
+            "type": "string",
+            "enum": [
+                "SECCOMP_FILTER_FLAG_TSYNC",
+                "SECCOMP_FILTER_FLAG_LOG",
+                "SECCOMP_FILTER_FLAG_SPEC_ALLOW"
             ]
         },
         "SeccompOperators": {
@@ -88,6 +116,9 @@
                 },
                 "action": {
                     "$ref": "#/definitions/SeccompAction"
+                },
+                "errnoRet": {
+                    "$ref": "defs.json#/definitions/uint32"
                 },
                 "args": {
                     "type": "array",
@@ -159,7 +190,7 @@
             }
         },
         "weight": {
-            "type": "integer"
+            "$ref": "defs.json#/definitions/uint16"
         },
         "blockIODevice": {
             "type": "object",
@@ -258,6 +289,17 @@
                 "name",
                 "priority"
             ]
+        },
+        "Rdma": {
+            "type": "object",
+            "properties": {
+                "hcaHandles": {
+                    "$ref": "defs.json#/definitions/uint32"
+                },
+                "hcaObjects": {
+                    "$ref": "defs.json#/definitions/uint32"
+                }
+            }
         },
         "NamespaceType": {
             "type": "string",

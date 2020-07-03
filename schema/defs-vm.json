@@ -1,0 +1,14 @@
+{
+    "definitions": {
+        "RootImageFormat": {
+            "type": "string",
+            "enum": [
+                "raw",
+                "qcow2",
+                "vdi",
+                "vmdk",
+                "vhd"
+            ]
+        }
+    }
+}

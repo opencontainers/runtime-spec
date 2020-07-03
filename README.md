@@ -12,7 +12,6 @@ Additional documentation about how this group operates:
 - [Style and Conventions](style.md)
 - [Implementations](implementations.md)
 - [Releases](RELEASES.md)
-- [project](project.md)
 - [charter][charter]
 
 ## Use Cases
@@ -22,12 +21,12 @@ To provide context for users the following section gives example use cases for e
 ### Application Bundle Builders
 
 Application bundle builders can create a [bundle](bundle.md) directory that includes all of the files required for launching an application as a container.
-The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
+The bundle contains an OCI [configuration file](config.md) where the builder can specify host-independent details such as [which executable to launch](config.md#process) and host-specific settings such as [mount](config.md#mounts) locations, [hook](config.md#posix-platform-hooks) paths, Linux [namespaces](config-linux.md#namespaces) and [cgroups](config-linux.md#control-groups).
 Because the configuration includes host-specific settings, application bundle directories copied between two hosts may require configuration adjustments.
 
 ### Hook Developers
 
-[Hook](config.md#hooks) developers can extend the functionality of an OCI-compliant runtime by hooking into a container's lifecycle with an external application.
+[Hook](config.md#posix-platform-hooks) developers can extend the functionality of an OCI-compliant runtime by hooking into a container's lifecycle with an external application.
 Example use cases include sophisticated network configuration, volume garbage collection, etc.
 
 ### Runtime Developers
@@ -54,11 +53,9 @@ When in doubt, start on the [mailing-list](#mailing-list).
 
 ### Meetings
 
-The contributors and maintainers of all OCI projects have monthly meetings at 2:00 PM (USA Pacific) on the first Wednesday of every month.
-There is an [iCalendar][rfc5545] format for the meetings [here](meeting.ics).
-Everyone is welcome to participate via [UberConference web][uberconference] or audio-only: +1 415 968 0849 (no PIN needed).
-An initial agenda will be posted to the [mailing list](#mailing-list) in the week before each meeting, and everyone is welcome to propose additional topics or suggest other agenda alterations there.
-Minutes are posted to the [mailing list](#mailing-list) and minutes from past calls are archived [here][minutes], with minutes from especially old meetings (September 2015 and earlier) archived [here][runtime-wiki].
+Please see the [OCI org repository README](https://github.com/opencontainers/org#meetings) for the most up-to-date
+information on OCI contributor and maintainer meeting schedules. You can also find links to meeting agendas and
+minutes for all prior meetings.
 
 ### Mailing List
 
@@ -139,7 +136,7 @@ Read more on [How to Write a Git Commit Message][how-to-git-commit] or the Discu
 
 
 [charter]: https://www.opencontainers.org/about/governance
-[code-of-conduct]: https://github.com/opencontainers/tob/blob/master/code-of-conduct.md
+[code-of-conduct]: https://github.com/opencontainers/org/blob/master/CODE_OF_CONDUCT.md
 [dev-list]: https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
 [how-to-git-commit]: http://chris.beams.io/posts/git-commit
 [irc-logs]: http://ircbot.wl.linuxfoundation.org/eavesdrop/%23opencontainers/

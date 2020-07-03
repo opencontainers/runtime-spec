@@ -7,6 +7,7 @@ PANDOC			?= $(shell command -v pandoc 2>/dev/null)
 ifeq "$(strip $(PANDOC))" ''
 	ifneq "$(strip $(DOCKER))" ''
 		PANDOC = $(DOCKER) run \
+			--security-opt label=disable \
 			-it \
 			--rm \
 			-v $(shell pwd)/:/input/:ro \
@@ -62,7 +63,7 @@ test: .govet .golint .gitvalidation
 
 # `go get github.com/golang/lint/golint`
 .golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
 	@which golint > /dev/null 2>/dev/null || (echo "ERROR: golint not found. Consider 'make install.tools' target" && false)
 	golint ./...
 endif
@@ -72,16 +73,16 @@ endif
 .gitvalidation:
 	@which git-validation > /dev/null 2>/dev/null || (echo "ERROR: git-validation not found. Consider 'make install.tools' target" && false)
 ifdef TRAVIS_COMMIT_RANGE
-	git-validation -q -run DCO,short-subject,dangling-whitespace
+	git-validation -q -run short-subject,dangling-whitespace
 else
 	git-validation -v -run DCO,short-subject,dangling-whitespace -range $(EPOCH_TEST_COMMIT)..HEAD
 endif
 
 install.tools: .install.golint .install.gitvalidation
 
-# golint does not even build for <go1.6
+# golint does not even build for <go1.7
 .install.golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.6,$(HOST_GOLANG_VERSION)),true)
+ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
 	go get -u github.com/golang/lint/golint
 endif
 

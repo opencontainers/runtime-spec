@@ -9,7 +9,7 @@ Whether other entities using the same, or other, instance of the runtime can see
 
 The state of a container includes the following properties:
 
-* **`ociVersion`** (string, REQUIRED) is the OCI specification version used when creating the container.
+* **`ociVersion`** (string, REQUIRED) is version of the Open Container Initiative Runtime Specification with which the state complies.
 * **`id`** (string, REQUIRED) is the container's ID.
     This MUST be unique across all containers on this host.
     There is no requirement that it be unique across hosts.
@@ -22,7 +22,9 @@ The state of a container includes the following properties:
     * `stopped`: the container process has exited (step 7 in the [lifecycle](#lifecycle))
 
     Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
-* **`pid`** (int, REQUIRED when `status` is `created` or `running` on Linux, OPTIONAL on other platforms) is the ID of the container process, as seen by the host.
+* **`pid`** (int, REQUIRED when `status` is `created` or `running` on Linux, OPTIONAL on other platforms) is the ID of the container process.
+  For hooks executed in the runtime namespace, it is the pid as seen by the runtime.
+  For hooks executed in the container namespace, it is the pid as seen by the container.
 * **`bundle`** (string, REQUIRED) is the absolute path to the container's bundle directory.
     This is provided so that consumers can find the container's configuration and root filesystem on the host.
 * **`annotations`** (map, OPTIONAL) contains the list of annotations associated with the container.
@@ -55,18 +57,24 @@ The lifecycle describes the timeline of events that happen from when a container
     If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST [generate an error](#errors).
     While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
     Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
-3. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
-4. The [prestart hooks](config.md#prestart) MUST be invoked by the runtime.
-    If any prestart hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 9.
-5. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
-6. The [poststart hooks](config.md#poststart) MUST be invoked by the runtime.
-    If any poststart hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
-7. The container process exits.
+3. The [`prestart` hooks](config.md#prestart) MUST be invoked by the runtime.
+    If any `prestart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+4. The [`createRuntime` hooks](config.md#createRuntime-hooks) MUST be invoked by the runtime.
+    If any `createRuntime` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+5. The [`createContainer` hooks](config.md#createContainer-hooks) MUST be invoked by the runtime.
+    If any `createContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+6. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+7. The [`startContainer` hooks](config.md#startContainer-hooks) MUST be invoked by the runtime.
+    If any `startContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
+8. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
+9. The [`poststart` hooks](config.md#poststart) MUST be invoked by the runtime.
+    If any `poststart` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+10. The container process exits.
     This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
-8. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
-9. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
-10. The [poststop hooks](config.md#poststop) MUST be invoked by the runtime.
-    If any poststop hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+11. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
+12. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
+13. The [`poststop` hooks](config.md#poststop) MUST be invoked by the runtime.
+    If any `poststop` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
 
 ## <a name="runtimeErrors" />Errors
 
@@ -137,4 +145,4 @@ Once a container is deleted its ID MAY be used by a subsequent container.
 
 ## <a name="runtimeHooks" />Hooks
 Many of the operations specified in this specification have "hooks" that allow for additional actions to be taken before or after each operation.
-See [runtime configuration for hooks](./config.md#hooks) for more information.
+See [runtime configuration for hooks](./config.md#posix-platform-hooks) for more information.

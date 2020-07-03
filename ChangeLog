@@ -1,5 +1,102 @@
 OpenContainers Specifications
 
+Changes with v1.0.2:
+
+	Additions:
+
+	* Add create-container, create-runtime and start-container hooks (#1008)
+	* config-linux: add Intel RDT CLOS name sharing support (#988)
+	* config-linux: Add Intel RDT/MBA Linux support (#932)
+	* config-linux: Add Memory cgroup's use_hierarchy (#985)
+	* Add Linux personality support (#1012)
+	* config: Add Windows Devices to Schema (#976)
+	* Add support for SCMP_ACT_LOG (#1019)
+	* config-linux: support seccomp flags (#1018)
+
+	Minor fixes and documentation:
+
+	* Makefile: avoid SELinux for making docs
+	* Clarify case with pre-configured Intel RDT closID (#1034)
+	* config-linux: describe more about rootfs mount propagation (#1035)
+	* config-linux: add SHOULD to linux.namespaces.type (#1025)
+	* Reduce DCO checks per PR from 3 to 1 (#1029)
+	* Fix typo in RELEASES.md (#1033)
+	* Remove some unneeded indent (#1031)
+	* Add documentation how to do releases (#1027)
+	* Removed Vishnu Kannan & Brandon Philips from maintainers (#1030 & #1028)
+	* schema: drop id from umask (#1024)
+	* implementations.md: fix repository for crun (#1017)
+	* Update meeting info section to point to "org" repo (#1016)
+	* Fix markdown escape in config-linux (#1013)
+	* config-linux: add more info about hugetlb page size (#1011)
+	* Fix ociVersion of Configuration Schema Example to support ambient capability (#1009)
+	* Fix Namespaces to use LinuxNamespaceType (#1007)
+	* change new pid namespace description (#1006)
+	* updating link to code of conduct in org repository (#1001)
+	* Update Windows LayerFolder docs (#999)
+	* Windows:Have native CommandLine in Process (#998)
+	* vm: fix parameters field (#994)
+	* config-linux: documentation change for Intel RDT/MBA Software Controller support (#992)
+	* Bump Go versions (#993)
+	* Support for network namespace in windows (#989)
+	* config: clarify source mount (#981)
+	* Fix camelCasing on idType to align with other Windows spec conventions (#976)
+	* meeting: Bump July meeting from the 4th to the 11th (#977)
+	* docs: Added kata-runtime to implementations (#969)
+	* Add gVisor to the implementations list (#970)
+	* .travis.yml: Get schema dependencies in before_install (#968)
+	* config: Clarify execution environment for hooks (#953)
+	* config-linux: Drop console(4) reference (#965)
+	* Linux devices: uid/gid relative to container (#959)
+	* config: Add VM-based container configuration section (#949)
+	* uidMappings: change order of fields for clarity (#956)
+	* specs-go/config: Define RDMA cgroup (#942)
+	* schema/Makefile: fix test (#947)
+	* config: Fix Linux mount options links (#952)
+	* glossary: Bump JSON spec to RFC 8259 (#951)
+	* schema: Completely drop our JSON Schema 'id' properties (#945)
+	* meeting: Bump January meeting from the 3rd to the 10th (#943)
+	* config: add "umask" field to POSIX "user" section (#941)
+	* schema: add allowed values for defaultAction (#940)
+	* config: Dedent root paragraphs, since they aren't a list entry (#936)
+	* fix the link to hook (#933)
+	* config: Collapse extensibility to a single MUST (#916)
+	* schema/defs-linux: change weight type to uint16 (#898)
+	* runtime: Clarify ociVersion as based on the state schema (#903)
+
+Changes with v1.0.1:
+
+	Minor fixes and documentation:
+
+	* spec: Expand "OCI" in spec-title reference and add "Initiative"
+	  (#900)
+	* config: Simplify title to "Configuration" (#901)
+	* config: Fix "procfs_2" -> "proc_2" link label (#906)
+	* config: Fix IEEE Std 1003.1-2008 exec link markup (#913)
+	* config: Add a trailing period to the "cannot be mapped" rlimits
+	  line (#915)
+	* config-linux: RFC 2119 MUST for absolute linux.namespaces[].path
+	  (#925).  This is technically a breaking change, because a config
+	  with a relative namespace path would have been compliant before,
+	  but will be non compliant with this change. However, the previous
+	  "an absolute path to namespace file" wording was clear enough that
+	  config authors are unlikely to be relying on relative namespace
+	  paths in configs.
+	* config-linux: More specific documentation for weightDevice and
+	  throttle* (#825)
+	* config-linux: Modify procfs to proc (#905)
+	* config-linux: Fix "psuedo" -> "pseudo" typo (#921)
+	* config-windows: Make maximum a uint16 (was a uint) (#891)
+	* runtime: Change "process in the container" -> "container
+	  process" (#907)
+	* schema/config-schema: Use ArrayOfStrings in capabilities
+	  properties. (#886)
+	* schema/config-linux:
+	  s/throttleWriteIopsDevice/throttleWriteIOPSDevice/ (#899)
+	* schema/config-linux: add intelRdt field (#889)
+	* schema/config-solaris: Replaced refs with some fields
+	  (cappedCPU.ncpus, etc.) (#892)
+
 Changes with v1.0.0:
 
 	Breaking changes:

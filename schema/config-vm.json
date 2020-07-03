@@ -1,0 +1,60 @@
+{
+    "vm": {
+        "description": "configuration for virtual-machine-based containers",
+        "type": "object",
+        "required": [
+            "kernel"
+        ],
+        "properties": {
+            "hypervisor": {
+                "description": "hypervisor config used by VM-based containers",
+                "type": "object",
+                "required": [
+                    "path"
+                ],
+                "properties": {
+                    "path": {
+                        "$ref": "defs.json#/definitions/FilePath"
+                    },
+                    "parameters": {
+                        "$ref": "defs.json#/definitions/ArrayOfStrings"
+                    }
+                }
+            },
+            "kernel": {
+                "description": "kernel config used by VM-based containers",
+                "type": "object",
+                "required": [
+                    "path"
+                ],
+                "properties": {
+                    "path": {
+                        "$ref": "defs.json#/definitions/FilePath"
+                    },
+                    "parameters": {
+                        "$ref": "defs.json#/definitions/ArrayOfStrings"
+                    },
+                    "initrd": {
+                        "$ref": "defs.json#/definitions/FilePath"
+                    }
+                }
+            },
+            "image": {
+                "description": "root image config used by VM-based containers",
+                "type": "object",
+                "required": [
+                    "path",
+                    "format"
+                ],
+                "properties": {
+                    "path": {
+                        "$ref": "defs.json#/definitions/FilePath"
+                    },
+                    "format": {
+                        "$ref": "defs-vm.json#/definitions/RootImageFormat"
+                    }
+                }
+            }
+        }
+    }
+}
