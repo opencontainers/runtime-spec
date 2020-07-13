@@ -8,6 +8,7 @@ If you know of any associated projects that are not listed here, please file a p
 * [opencontainers/runc][runc] - Reference implementation of OCI runtime
 * [projectatomic/bwrap-oci][bwrap-oci] - Convert the OCI spec file to a command line for [bubblewrap][bubblewrap]
 * [containers/crun][crun] - Runtime implementation in C
+* [alibaba/inclavare-containers][rune] - Enclave OCI runtime for confidential computing
 
 ## <a name="implementationsRuntimeVirtualMachine" />Runtime (Virtual Machine)
 
@@ -35,3 +36,4 @@ If you know of any associated projects that are not listed here, please file a p
 [bubblewrap]: https://github.com/projectatomic/bubblewrap
 [crun]: https://github.com/containers/crun
 [gvisor]: https://github.com/google/gvisor
+[rune]: https://github.com/alibaba/inclavare-containers
