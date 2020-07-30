@@ -18,8 +18,8 @@
         },
         "int64": {
             "type": "integer",
-            "minimum": -9223372036854776000,
-            "maximum": 9223372036854776000
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
         },
         "uint8": {
             "type": "integer",
@@ -39,7 +39,7 @@
         "uint64": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 18446744073709552000
+            "maximum": 18446744073709551615
         },
         "percent": {
             "type": "integer",
