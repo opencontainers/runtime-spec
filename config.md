@@ -145,7 +145,7 @@ For POSIX platforms the `mounts` structure has the following fields:
 This property is REQUIRED when [`start`](runtime.md#start) is called.
 
 * **`terminal`** (bool, OPTIONAL) specifies whether a terminal is attached to the process, defaults to false.
-    As an example, if set to true on Linux a pseudoterminal pair is allocated for the process and the pseudoterminal slave is duplicated on the process's [standard streams][stdin.3].
+    As an example, if set to true on Linux a pseudoterminal pair is allocated for the process and the pseudoterminal pty is duplicated on the process's [standard streams][stdin.3].
 * **`consoleSize`** (object, OPTIONAL) specifies the console size in characters of the terminal.
     Runtimes MUST ignore `consoleSize` if `terminal` is `false` or unset.
     * **`height`** (uint, REQUIRED)

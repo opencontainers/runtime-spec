@@ -60,7 +60,7 @@ type Process struct {
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
 }
 
-// LinuxCapabilities specifies the whitelist of capabilities that are kept for a process.
+// LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
 // http://man7.org/linux/man-pages/man7/capabilities.7.html
 type LinuxCapabilities struct {
 	// Bounding is the set of capabilities checked by the kernel.
@@ -354,7 +354,7 @@ type LinuxRdma struct {
 
 // LinuxResources has container runtime resource constraints
 type LinuxResources struct {
-	// Devices configures the device whitelist.
+	// Devices configures the device allowlist.
 	Devices []LinuxDeviceCgroup `json:"devices,omitempty"`
 	// Memory restriction configuration
 	Memory *LinuxMemory `json:"memory,omitempty"`
@@ -392,7 +392,8 @@ type LinuxDevice struct {
 	GID *uint32 `json:"gid,omitempty"`
 }
 
-// LinuxDeviceCgroup represents a device rule for the whitelist controller
+// LinuxDeviceCgroup represents a device rule for the devices specified to
+// the device controller
 type LinuxDeviceCgroup struct {
 	// Allow or deny
 	Allow bool `json:"allow"`

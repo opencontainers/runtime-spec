@@ -120,7 +120,7 @@ Each entry has the following structure:
     If a [file][] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
 * **`major, minor`** *(int64, REQUIRED unless `type` is `p`)* - [major, minor numbers][devices] for the device.
 * **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
-    You can also control access to devices [with cgroups](#device-whitelist).
+    You can also control access to devices [with cgroups](#configLinuxDeviceAllowedlist).
 * **`uid`** *(uint32, OPTIONAL)* - id of device owner in the [container namespace](glossary.md#container-namespace).
 * **`gid`** *(uint32, OPTIONAL)* - id of device group in the [container namespace](glossary.md#container-namespace).
 
@@ -161,7 +161,7 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/random`][random.4]
 * [`/dev/urandom`][random.4]
 * [`/dev/tty`][tty.4]
-* `/dev/console` is set up if [`terminal`](config.md#process) is enabled in the config by bind mounting the pseudoterminal slave to `/dev/console`.
+* `/dev/console` is set up if [`terminal`](config.md#process) is enabled in the config by bind mounting the pseudoterminal pty to `/dev/console`.
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
@@ -214,9 +214,9 @@ Runtimes MAY attach the container process to additional cgroup controllers beyon
 }
 ```
 
-### <a name="configLinuxDeviceWhitelist" />Device whitelist
+### <a name="configLinuxDeviceAllowedlist" />Allowed Device list
 
-**`devices`** (array of objects, OPTIONAL) configures the [device whitelist][cgroup-v1-devices].
+**`devices`** (array of objects, OPTIONAL) configures the [allowed device list][cgroup-v1-devices].
 The runtime MUST apply entries in the listed order.
 
 Each entry has the following structure:
