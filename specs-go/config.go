@@ -629,6 +629,7 @@ const (
 	ArchS390X       Arch = "SCMP_ARCH_S390X"
 	ArchPARISC      Arch = "SCMP_ARCH_PARISC"
 	ArchPARISC64    Arch = "SCMP_ARCH_PARISC64"
+	ArchRISCV64     Arch = "SCMP_ARCH_RISCV64"
 )
 
 // LinuxSeccompAction taken upon Seccomp rule match

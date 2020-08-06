@@ -570,7 +570,7 @@ The following parameters can be specified to set up seccomp:
 
 * **`defaultAction`** *(string, REQUIRED)* - the default action for seccomp. Allowed values are the same as `syscalls[].action`.
 * **`architectures`** *(array of strings, OPTIONAL)* - the architecture used for system calls.
-    A valid list of constants as of libseccomp v2.3.2 is shown below.
+    A valid list of constants as of libseccomp v2.5.0 is shown below.
 
     * `SCMP_ARCH_X86`
     * `SCMP_ARCH_X86_64`
@@ -590,6 +590,7 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_S390X`
     * `SCMP_ARCH_PARISC`
     * `SCMP_ARCH_PARISC64`
+    * `SCMP_ARCH_RISCV64`
 
 * **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with seccomp(2).
 
