@@ -292,7 +292,8 @@
                 "uts",
                 "ipc",
                 "user",
-                "cgroup"
+                "cgroup",
+                "time"
             ]
         },
         "NamespaceReference": {
@@ -308,6 +309,17 @@
             "required": [
                 "type"
             ]
+        },
+        "TimeOffsets": {
+            "type": "object",
+            "properties": {
+                "secs": {
+                    "$ref": "defs.json#/definitions/int64"
+                },
+                "nanosecs": {
+                    "$ref": "defs.json#/definitions/uint32"
+                }
+            }
         }
     }
 }
