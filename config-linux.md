@@ -494,6 +494,31 @@ You MUST specify at least one of the `hcaHandles` or `hcaObjects` in a given ent
 }
 ```
 
+## <a name="configLinuxUnified" />Unified
+
+**`unified`** (object, OPTIONAL) allows cgroup v2 parameters to be to be set and modified for the container.
+
+Each key in the map refers to a file in the cgroup unified hierarchy.
+
+The OCI runtime MUST ensure that the needed cgroup controllers are enabled for the cgroup.
+
+Configuration unknown to the runtime MUST still be written to the relevant file.
+
+The runtime MUST generate an error when the configuration refers to a cgroup controller that is not present or that cannot be enabled.
+
+### Example
+
+```json
+"unified": {
+    "io.max": "259:0 rbps=2097152 wiops=120\n253:0 rbps=2097152 wiops=120",
+    "hugetlb.1GB.max": "1073741824"
+}
+```
+
+If a controller is enabled on the cgroup v2 hierarchy but the configuration is provided for the cgroup v1 equivalent controller, the runtime MAY attempt a conversion.
+
+If the conversion is not possible the runtime MUST generate an error.
+
 ## <a name="configLinuxIntelRdt" />IntelRdt
 
 **`intelRdt`** (object, OPTIONAL) represents the [Intel Resource Director Technology][intel-rdt-cat-kernel-interface].

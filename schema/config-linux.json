@@ -34,6 +34,9 @@
             "resources": {
                 "type": "object",
                 "properties": {
+                    "unified": {
+                        "$ref": "defs.json#/definitions/mapStringString"
+                    },
                     "devices": {
                         "type": "array",
                         "items": {
