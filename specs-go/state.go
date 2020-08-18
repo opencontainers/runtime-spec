@@ -1,7 +1,7 @@
 package specs
 
 // ContainerState represents the state of a container.
-type ContainerState string
+type ContainerState = string
 
 const (
 	// StateCreating indicates that the container is being created
