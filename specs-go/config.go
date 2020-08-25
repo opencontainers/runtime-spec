@@ -641,6 +641,7 @@ type LinuxSeccompAction string
 const (
 	ActKill        LinuxSeccompAction = "SCMP_ACT_KILL"
 	ActKillProcess LinuxSeccompAction = "SCMP_ACT_KILL_PROCESS"
+	ActKillThread  LinuxSeccompAction = "SCMP_ACT_KILL_THREAD"
 	ActTrap        LinuxSeccompAction = "SCMP_ACT_TRAP"
 	ActErrno       LinuxSeccompAction = "SCMP_ACT_ERRNO"
 	ActTrace       LinuxSeccompAction = "SCMP_ACT_TRACE"

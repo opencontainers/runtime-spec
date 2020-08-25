@@ -637,6 +637,7 @@ The following parameters can be specified to set up seccomp:
 
         * `SCMP_ACT_KILL`
         * `SCMP_ACT_KILL_PROCESS`
+        * `SCMP_ACT_KILL_THREAD`
         * `SCMP_ACT_TRAP`
         * `SCMP_ACT_ERRNO`
         * `SCMP_ACT_TRACE`
