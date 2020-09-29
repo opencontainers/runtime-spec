@@ -400,6 +400,11 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
         * Entries in the array have the same schema as `createRuntime` entries.
         * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
         * The `createContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+    * **`sendSeccompFd`** (array of objects, OPTIONAL) is an array of [`sendSeccompFd` hooks](#sendseccompfd).
+        * Entries in the array have the same schema as `createRuntime` entries.
+        * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+        * The `sendSeccompFd` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+        * The data passed over stdin is the [seccomp state](#seccompstate).
     * **`startContainer`** (array of objects, OPTIONAL) is an array of [`startContainer` hooks](#startContainer-hooks).
         * Entries in the array have the same schema as `createRuntime` entries.
         * The value of `path` MUST resolve in the [container namespace](glossary.md#container-namespace).
@@ -415,7 +420,8 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
 
 Hooks allow users to specify programs to run before or after various lifecycle events.
 Hooks MUST be called in the listed order.
-The [state](runtime.md#state) of the container MUST be passed to hooks over stdin so that they may do work appropriate to the current state of the container.
+All hooks MUST be passed a data structure over stdin so that they may do work appropriately.
+Except when specified otherwise above, the data structure is the [state](runtime.md#state) of the container.
 
 ### <a name="configHooksPrestart" />Prestart
 
@@ -452,6 +458,53 @@ For example, on Linux this would happen before the `pivot_root` operation is exe
 
 The definition of `createContainer` hooks is currently underspecified and hooks authors, should only expect from the runtime that the mount namespace and different mounts will be setup. Other operations such as cgroups and SELinux/AppArmor labels might not have been performed by the runtime.
 
+### <a name="configHooksSendSeccompFd" />SendSeccompFd Hooks
+
+The `sendSeccompFd` hooks MUST only be called if the seccomp policy contains `SCMP_ACT_NOTIFY` actions.
+
+The `sendSeccompFd` hooks MUST be called after the [`start`](runtime.md#start) operation is called and after the seccomp policy is installed but [before the user-specified program command is executed](runtime.md#lifecycle).
+The `sendSeccompFd` hooks MAY additionally be called while the container is in the [`running` state](runtime.md#runtimeState), for example during an `exec` operation.
+The goal of this hook is to pass the seccomp file descriptor to a seccomp agent.
+
+The `sendSeccompFd` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
+The `sendSeccompFd` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
+
+### <a name="seccompstate" />The Seccomp State
+
+The seccomp state is a data structure passed via stdin to the SendSeccompFd hooks.
+It includes the following properties:
+
+* **`ociVersion`** (string, REQUIRED) is version of the Open Container Initiative Runtime Specification with which the seccomp state complies.
+* **`seccompFd`** (int, REQUIRED) is the file descriptor for Seccomp User Notification passed via process inheritance to the SendSeccompFd hooks. The value MUST NOT be zero: zero is reserved for stdin.
+* **`pid`** (int, REQUIRED) is the process ID on which the seccomp filter is applied.
+* **`pidFd`** (int, OPTIONAL) is a pid file descriptor for the process on which the seccomp filter is applied. This file descriptor is also passed via process inheritance to the SendSeccompFd hooks. As the field is optional, the value MAY be zero, meaning `pidFd` is not passed to the hook. If passed, the file descriptor MUST NOT be zero: zero is reserved for stdin.
+* **`state`** (map, REQUIRED) is the [state](runtime.md#state) of the container.
+
+When serialized in JSON, the format MUST adhere to the following pattern:
+
+```json
+{
+    "ociVersion": "0.2.0",
+    "seccompFd": 3,
+    "pid": 4422,
+    "pidFd": 4,
+    "state": {
+        "ociVersion": "0.2.0",
+        "id": "oci-container1",
+        "status": "creating",
+        "pid": 4422,
+        "bundle": "/containers/redis",
+        "annotations": {
+            "myKey": "myValue"
+        }
+    }
+}
+```
+
+Note that if `state.status` is `creating`, the seccomp filter is created following the [`start`](runtime.md#start) command and `.pid` has the same value as `.state.pid`.
+And if `state.status` is `running`, the seccomp filter is created following an `exec` command and `.pid` has a different value than `.state.pid`.
+
+
 ### <a name="configHooksStartContainer" />StartContainer Hooks
 
 The `startContainer` hooks MUST be called [before the user-specified process is executed](runtime.md#lifecycle) as part of the [`start`](runtime.md#start) operation.
@@ -485,6 +538,7 @@ See the below table for a summary of hooks and when they are called:
 | `prestart` (Deprecated) | runtime   | After the start  operation is called but before the user-specified program command is executed.                                    |
 | `createRuntime`         | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `createContainer`       | container | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
+| `sendSeccompFd`         | runtime   | After the start operation is called but before the user-specified program command is executed.                                     |
 | `startContainer`        | container | After the start operation is called but before the user-specified program command is executed.                                     |
 | `poststart`             | runtime   | After the user-specified process is executed but before the start operation returns.                                               |
 | `poststop`              | runtime   | After the container is deleted but before the delete operation returns.                                                            |
@@ -517,6 +571,13 @@ See the below table for a summary of hooks and when they are called:
         {
             "path": "/usr/bin/mount-hook",
             "args": ["-mount", "arg1", "arg2"],
+            "env":  [ "key1=value1"]
+        }
+    ],
+    "sendSeccompFd": [
+        {
+            "path": "/usr/bin/seccomp-agent",
+            "args": ["seccomp-agent", "--allow-mknods=/dev/null,/dev/net/tun"],
             "env":  [ "key1=value1"]
         }
     ],

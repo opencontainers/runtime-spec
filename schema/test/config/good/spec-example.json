@@ -172,6 +172,13 @@
                 "env":  [ "key1=value1"]
             }
         ],
+        "sendSeccompFd": [
+            {
+                "path": "/usr/bin/seccomp-agent",
+                "args": ["seccomp-agent", "--allow-mknods=/dev/null,/dev/net/tun"],
+                "env":  [ "key1=value1"]
+            }
+        ],
         "startContainer": [
             {
                 "path": "/usr/bin/refresh-ldcache"

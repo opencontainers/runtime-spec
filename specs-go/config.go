@@ -137,6 +137,9 @@ type Hooks struct {
 	// CreateContainer is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
 	// It is called in the Container Namespace
 	CreateContainer []Hook `json:"createContainer,omitempty"`
+	// SendSeccompFd is a list of hooks to be run after a new seccomp fd is created
+	// It is called in the Runtime Namespace
+	SendSeccompFd []Hook `json:"sendSeccompFd,omitempty"`
 	// StartContainer is a list of hooks to be run after the start operation is called but before the container process is started
 	// It is called in the Container Namespace
 	StartContainer []Hook `json:"startContainer,omitempty"`
@@ -646,6 +649,7 @@ const (
 	ActTrace       LinuxSeccompAction = "SCMP_ACT_TRACE"
 	ActAllow       LinuxSeccompAction = "SCMP_ACT_ALLOW"
 	ActLog         LinuxSeccompAction = "SCMP_ACT_LOG"
+	ActNotify      LinuxSeccompAction = "SCMP_ACT_NOTIFY"
 )
 
 // LinuxSeccompOperator used to match syscall arguments in Seccomp

@@ -18,6 +18,9 @@
                 "createContainer": {
                     "$ref": "defs.json#/definitions/ArrayOfHooks"
                 },
+                "sendSeccompFd": {
+                    "$ref": "defs.json#/definitions/ArrayOfHooks"
+                },
                 "startContainer": {
                     "$ref": "defs.json#/definitions/ArrayOfHooks"
                 },

@@ -60,7 +60,8 @@
                 "SCMP_ACT_ERRNO",
                 "SCMP_ACT_TRACE",
                 "SCMP_ACT_ALLOW",
-                "SCMP_ACT_LOG"
+                "SCMP_ACT_LOG",
+                "SCMP_ACT_NOTIFY"
             ]
         },
         "SeccompFlag": {

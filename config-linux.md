@@ -633,7 +633,7 @@ The following parameters can be specified to set up seccomp:
     * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
         `names` MUST contain at least one entry.
     * **`action`** *(string, REQUIRED)* - the action for seccomp rules.
-        A valid list of constants as of libseccomp v2.4.0 is shown below.
+        A valid list of constants as of libseccomp v2.5.0 is shown below.
 
         * `SCMP_ACT_KILL`
         * `SCMP_ACT_KILL_PROCESS`
@@ -642,6 +642,7 @@ The following parameters can be specified to set up seccomp:
         * `SCMP_ACT_TRACE`
         * `SCMP_ACT_ALLOW`
         * `SCMP_ACT_LOG`
+        * `SCMP_ACT_NOTIFY`
 
     * **`errnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
         Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno
