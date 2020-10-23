@@ -6,6 +6,8 @@ go:
 
 sudo: required
 
+go_import_path: github.com/opencontainers/runtime-spec
+
 services:
   - docker
 
