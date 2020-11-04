@@ -212,6 +212,12 @@
                             "$ref": "defs-linux.json#/definitions/SeccompFlag"
                         }
                     },
+                    "listenerPath": {
+                        "type": "string"
+                    },
+                    "listenerMetadata": {
+                        "type": "string"
+                    },
                     "architectures": {
                         "type": "array",
                         "items": {
