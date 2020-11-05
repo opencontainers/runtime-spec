@@ -83,7 +83,7 @@ install.tools: .install.golint .install.gitvalidation
 # golint does not even build for <go1.7
 .install.golint:
 ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
-	go get -u github.com/golang/lint/golint
+	go get -u golang.org/x/lint/golint
 endif
 
 .install.gitvalidation:
