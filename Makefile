@@ -4,6 +4,8 @@ OUTPUT_DIRNAME		?= output
 DOC_FILENAME		?= oci-runtime-spec
 DOCKER			?= $(shell command -v docker 2>/dev/null)
 PANDOC			?= $(shell command -v pandoc 2>/dev/null)
+
+PANDOC_CONTAINER ?= quay.io/oci/pandoc:1.17.0.3-2.fc25.x86_64
 ifeq "$(strip $(PANDOC))" ''
 	ifneq "$(strip $(DOCKER))" ''
 		PANDOC = $(DOCKER) run \
@@ -13,7 +15,7 @@ ifeq "$(strip $(PANDOC))" ''
 			-v $(shell pwd)/:/input/:ro \
 			-v $(shell pwd)/$(OUTPUT_DIRNAME)/:/$(OUTPUT_DIRNAME)/ \
 			-u $(shell id -u) \
-			vbatts/pandoc
+			$(PANDOC_CONTAINER)
 		PANDOC_SRC := /input/
 		PANDOC_DST := /
 	endif
