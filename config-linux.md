@@ -594,6 +594,10 @@ The actions, architectures, and operators are strings that match the definitions
 The following parameters can be specified to set up seccomp:
 
 * **`defaultAction`** *(string, REQUIRED)* - the default action for seccomp. Allowed values are the same as `syscalls[].action`.
+* **`defaultErrnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
+    Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno code to return.
+    When the action doesn't support an errno, the runtime MUST print and error and fail.
+    If not specified then its default value is `EPERM`.
 * **`architectures`** *(array of strings, OPTIONAL)* - the architecture used for system calls.
     A valid list of constants as of libseccomp v2.5.0 is shown below.
 

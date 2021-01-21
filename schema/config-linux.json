@@ -203,6 +203,9 @@
                     "defaultAction": {
                         "$ref": "defs-linux.json#/definitions/SeccompAction"
                     },
+                    "defaultErrnoRet": {
+                        "$ref": "defs.json#/definitions/uint32"
+                    },
                     "flags": {
                         "type": "array",
                         "items": {
