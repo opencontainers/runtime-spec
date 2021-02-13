@@ -747,7 +747,7 @@ The values MUST be absolute paths in the [container namespace](glossary.md#conta
 ## <a name="configLinuxPersonality" />Personality
 
 **`personality`** (object, OPTIONAL) sets the Linux execution personality. For more information
-see the [personality](personality.2) syscall documentation. As most of the options are
+see the [personality][personality.2] syscall documentation. As most of the options are
 obsolete and rarely used, and some reduce security, the currently supported set is a small
 subset of the available options.
 
