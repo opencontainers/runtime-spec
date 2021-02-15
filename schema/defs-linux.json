@@ -143,10 +143,10 @@
             "$ref": "defs.json#/definitions/int64"
         },
         "FileMode": {
-            "description": "File permissions mode (typically an octal value)",
+            "description": "File mode (typically an octal value)",
             "type": "integer",
             "minimum": 0,
-            "maximum": 512
+            "maximum": 4096
         },
         "FileType": {
             "description": "Type of a block or special character device",
