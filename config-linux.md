@@ -645,8 +645,9 @@ The following parameters can be specified to set up seccomp:
         * `SCMP_ACT_LOG`
 
     * **`errnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
-        Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno
-        code to return. If not specified its default value is `EPERM`.
+        Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno code to return.
+        When the action doesn't support an errno, the runtime MUST print and error and fail.
+        If not specified its default value is `EPERM`.
 
     * **`args`** *(array of objects, OPTIONAL)* - the specific syscall in seccomp.
         Each entry has the following structure:
