@@ -139,6 +139,41 @@ For POSIX platforms the `mounts` structure has the following fields:
 ]
 ```
 
+### <a name="configLinuxMounts" />Linux Mounts
+
+For Linux, the `mounts` structure mounts MAY have the following additional fields:
+
+* **`attr`** (object, OPTIONAL) specifies `mount_setattr(2)` attributes. Requires kernel 5.12 or later.
+  The runtime MUST [generate an error](runtime.md#errors) for any values which cannot be mapped to a relevant kernel interface.
+    * **`flags`** (array of strings, OPTIONAL) specifies the `flags` argument of `mount_setattr(2)` syscall.
+       e.g.,  "AT_RECURSIVE"
+    * **`attr_set`** (array of strings, OPTIONAL) specifies the `attr_set` field of `mount_attr` struct.
+       e.g., "MOUNT_ATTR_RDONLY"
+    * **`attr_clr`** (array of strings, OPTIONAL) specifies the `attr_clr` field of `mount_attr` struct.
+    * **`propagation`** (string, OPTIONAL) specifies the `propagation` field of `mount_attr` struct.
+       See [Rootfs Mount Propagation](./config-linux.md#configLinuxRootfsMountPropagation) for the string format.
+
+<!-- TODO: consider supporting mount_attr.userns_fd -->
+
+### Example
+
+```json
+"mounts": [
+    {
+        "destination": "/ro",
+        "type": "none",
+        "source": "/volumes/ro",
+        "options": ["rbind"],
+        "attr": {
+          "flags": ["AT_RECURSIVE"],
+          "attr_set": ["MOUNT_ATTR_RDONLY"],
+          "attr_clr": ["MOUNT_ATTR_NOEXEC"],
+          "propagation": "private"
+        }
+    }
+]
+```
+
 ## <a name="configProcess" />Process
 
 **`process`** (object, OPTIONAL) specifies the container process.

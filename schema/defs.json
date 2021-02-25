@@ -141,11 +141,31 @@
                 },
                 "type": {
                     "type": "string"
+                },
+                "attr": {
+                    "$ref": "#/definitions/LinuxMountAttr"
                 }
             },
             "required": [
                 "destination"
             ]
+        },
+        "LinuxMountAttr": {
+          "type": "object",
+          "properties": {
+                "flags": {
+                    "$ref": "#/definitions/ArrayOfStrings"
+                },
+                "attr_set": {
+                    "$ref": "#/definitions/ArrayOfStrings"
+                },
+                "attr_clr": {
+                    "$ref": "#/definitions/ArrayOfStrings"
+                },
+                "propagation": {
+                    "type": "string"
+                }
+            }
         },
         "ociVersion": {
             "description": "The version of Open Container Initiative Runtime Specification that the document complies with",

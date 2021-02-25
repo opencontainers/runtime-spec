@@ -117,6 +117,22 @@ type Mount struct {
 	Source string `json:"source,omitempty"`
 	// Options are fstab style mount options.
 	Options []string `json:"options,omitempty"`
+	// Attr specifies mount_setattr(2) attributes.
+	Attr *LinuxMountAttr `json:"attr,omitempty"`
+}
+
+// LinuxMountAttr specifies mount_setattr(2) attributes.
+// Requires Linux kernel 5.12 or later.
+type LinuxMountAttr struct {
+	// Flags specifies the flags argument of mount_setattr(2) syscall. e.g., "AT_RECURSIVE"
+	Flags []string `json:"flags,omitempty"`
+	// AttrSet specifies the attr_set field of mount_attr struct. e.g., "MOUNT_ATTR_RDONLY"
+	AttrSet []string `json:"attr_set,omitempty"`
+	// AttrClr specifies the attr_clr field of mount_attr struct.
+	AttrClr []string `json:"attr_clr,omitempty"`
+	// Propagation specifies the propagation field of mount_attr struct.
+	// Format corresponds to Linux.RootfsPropagation .
+	Propagation string `json:"propagation,omitempty"`
 }
 
 // Hook specifies a command that is run at a particular event in the lifecycle of a container
