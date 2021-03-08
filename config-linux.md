@@ -264,8 +264,8 @@ Values for memory specify the limit in bytes, or `-1` for unlimited memory.
 * **`limit`** *(int64, OPTIONAL)* - sets limit of memory usage
 * **`reservation`** *(int64, OPTIONAL)* - sets soft limit of memory usage
 * **`swap`** *(int64, OPTIONAL)* - sets limit of memory+Swap usage
-* **`kernel`** *(int64, OPTIONAL)* - sets hard limit for kernel memory
-* **`kernelTCP`** *(int64, OPTIONAL)* - sets hard limit for kernel TCP buffer memory
+* **`kernel`** *(int64, OPTIONAL, NOT RECOMMENDED)* - sets hard limit for kernel memory
+* **`kernelTCP`** *(int64, OPTIONAL, NOT RECOMMENDED)* - sets hard limit for kernel TCP buffer memory
 
 The following properties do not specify memory limits, but are covered by the `memory` controller:
 
