@@ -629,6 +629,21 @@ The following parameters can be specified to set up seccomp:
     * `SECCOMP_FILTER_FLAG_LOG`
     * `SECCOMP_FILTER_FLAG_SPEC_ALLOW`
 
+* **`listenerPath`** *(string, OPTIONAL)* - specifies the path of UNIX domain socket over which the runtime will send the [container process state](#containerprocessstate) data structure when the `SCMP_ACT_NOTIFY` action is used.
+    This socket MUST use `AF_UNIX` domain and `SOCK_STREAM` type.
+    The runtime MUST send exactly one [container process state](#containerprocessstate) per connection.
+    The connection MUST NOT be reused and it MUST be closed after sending a seccomp state.
+    If sending to this socket fails, the runtime MUST [generate an error](runtime.md#errors).
+    If the `SCMP_ACT_NOTIFY` action is not used this value is ignored.
+
+    The runtime sends the following file descriptors using `SCM_RIGHTS` and set their names in the `fds` array of the [container process state](#containerprocessstate):
+
+    * **`seccompFd`** (string, REQUIRED) is the seccomp file descriptor returned by the seccomp syscall.
+
+* **`listenerMetadata`** *(string, OPTIONAL)* - specifies an opaque data to pass to the seccomp agent.
+    This string will be sent as the `metadata` field in the [container process state](#containerprocessstate).
+    This field MUST NOT be set if `listenerPath` is not set.
+
 * **`syscalls`** *(array of objects, OPTIONAL)* - match a syscall in seccomp.
     While this property is OPTIONAL, some values of `defaultAction` are not useful without `syscalls` entries.
     For example, if `defaultAction` is `SCMP_ACT_KILL` and `syscalls` is empty or unset, the kernel will kill the container process on its first syscall.
@@ -637,7 +652,7 @@ The following parameters can be specified to set up seccomp:
     * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
         `names` MUST contain at least one entry.
     * **`action`** *(string, REQUIRED)* - the action for seccomp rules.
-        A valid list of constants as of libseccomp v2.4.0 is shown below.
+        A valid list of constants as of libseccomp v2.5.0 is shown below.
 
         * `SCMP_ACT_KILL`
         * `SCMP_ACT_KILL_PROCESS`
@@ -647,6 +662,7 @@ The following parameters can be specified to set up seccomp:
         * `SCMP_ACT_TRACE`
         * `SCMP_ACT_ALLOW`
         * `SCMP_ACT_LOG`
+        * `SCMP_ACT_NOTIFY`
 
     * **`errnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
         Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno code to return.
@@ -688,6 +704,45 @@ The following parameters can be specified to set up seccomp:
             "action": "SCMP_ACT_ERRNO"
         }
     ]
+}
+```
+
+### <a name="containerprocessstate" />The Container Process State
+
+The container process state is a data structure passed via a UNIX socket.
+The container runtime MUST send the container process state over the UNIX socket as regular payload serialized in JSON and file descriptors MUST be sent using `SCM_RIGHTS`.
+The container runtime MAY use several `sendmsg(2)` calls to send the aforementioned data.
+If more than one `sendmsg(2)` is used, the file descriptors MUST be sent only in the first call.
+
+The container process state includes the following properties:
+
+* **`ociVersion`** (string, REQUIRED) is version of the Open Container Initiative Runtime Specification with which the container process state complies.
+* **`fds`** (array, OPTIONAL) is a string array containing the names of the file descriptors passed.
+    The index of the name in this array corresponds to index of the file descriptors in the `SCM_RIGHTS` array.
+* **`pid`** (int, REQUIRED) is the container process ID, as seen by the runtime.
+* **`metadata`** (string, OPTIONAL) opaque metadata.
+* **`state`** ([state](runtime.md#state), REQUIRED) is the state of the container.
+
+Example sending a single `seccompFD` file descriptor in the `SCM_RIGHTS` array:
+
+```json
+{
+    "ociVersion": "0.2.0",
+    "fds": [
+        "seccompFd"
+    ],
+    "pid": 4422,
+    "metadata": "MKNOD=/dev/null,/dev/net/tun;BPF_MAP_TYPES=hash,array",
+    "state": {
+        "ociVersion": "0.2.0",
+        "id": "oci-container1",
+        "status": "creating",
+        "pid": 4422,
+        "bundle": "/containers/redis",
+        "annotations": {
+            "myKey": "myValue"
+        }
+    }
 }
 ```
 
