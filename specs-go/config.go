@@ -489,6 +489,8 @@ type Windows struct {
 	IgnoreFlushesDuringBoot bool `json:"ignoreFlushesDuringBoot,omitempty"`
 	// HyperV contains information for running a container with Hyper-V isolation.
 	HyperV *WindowsHyperV `json:"hyperv,omitempty"`
+	// JobContainer contains information for running a Windows job container.
+	JobContainer *WindowsJobContainer `json:"jobContainer,omitempty"`
 	// Network restriction configuration.
 	Network *WindowsNetwork `json:"network,omitempty"`
 }
@@ -555,6 +557,13 @@ type WindowsNetwork struct {
 type WindowsHyperV struct {
 	// UtilityVMPath is an optional path to the image used for the Utility VM.
 	UtilityVMPath string `json:"utilityVMPath,omitempty"`
+}
+
+// WindowsJobContainer contains information for configuring a job container on Windows.
+type WindowsJobContainer struct {
+	// RootfsMountPoint is an optional path that indicates where the container's rootfs volume should
+	// be mounted on the host.
+	RootfsMountPoint string `json:"rootfsMountPoint,omitempty"`
 }
 
 // VM contains information for virtual-machine-based containers.

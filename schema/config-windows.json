@@ -93,6 +93,14 @@
                         "type": "string"
                     }
                 }
+            },
+            "jobContainer": {
+                "type": "object",
+                "properties": {
+                    "rootfsMountPoint": {
+                        "type": "string"
+                    }
+                }
             }
         },
         "required": [
