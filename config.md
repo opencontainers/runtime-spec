@@ -190,7 +190,11 @@ For Linux-based systems, the `process` object supports the following process-spe
     For more information about AppArmor, see [AppArmor documentation][apparmor].
 * **`capabilities`** (object, OPTIONAL) is an object containing arrays that specifies the sets of capabilities for the process.
     Valid values are defined in the [capabilities(7)][capabilities.7] man page, such as `CAP_CHOWN`.
-    Any value which cannot be mapped to a relevant kernel interface MUST cause an error.
+    Any value which cannot be mapped to a relevant kernel interface, or cannot
+    be granted otherwise MUST be [logged as a warning](runtime.md#warnings) by
+    the runtime. Runtimes SHOULD NOT fail if the container configuration requests
+    capabilities that cannot be granted, for example, if the runtime operates in
+    a restricted environment with a limited set of capabilities.
     `capabilities` contains the following properties:
 
     * **`effective`** (array of strings, OPTIONAL) the `effective` field is an array of effective capabilities that are kept for the process.
