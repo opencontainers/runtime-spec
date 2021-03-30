@@ -346,6 +346,8 @@ type LinuxNetwork struct {
 
 // LinuxRdma for Linux cgroup 'rdma' resource management (Linux 4.11)
 type LinuxRdma struct {
+	// Device name
+	Device string `json:"device,omitempty"`
 	// Maximum number of HCA handles that can be opened. Default is "no limit".
 	HcaHandles *uint32 `json:"hcaHandles,omitempty"`
 	// Maximum number of HCA objects that can be created. Default is "no limit".
@@ -369,9 +371,7 @@ type LinuxResources struct {
 	// Network restriction configuration
 	Network *LinuxNetwork `json:"network,omitempty"`
 	// Rdma resource restriction configuration.
-	// Limits are a set of key value pairs that define RDMA resource limits,
-	// where the key is device name and value is resource limits.
-	Rdma map[string]LinuxRdma `json:"rdma,omitempty"`
+	Rdma []LinuxRdma `json:"rdma,omitempty"`
 	// Unified resources.
 	Unified map[string]string `json:"unified,omitempty"`
 }

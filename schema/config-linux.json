@@ -184,8 +184,8 @@
                         }
                     },
                     "rdma": {
-                        "type": "object",
-                        "additionalProperties": {
+                        "type": "array",
+                        "items": {
                             "$ref": "defs-linux.json#/definitions/Rdma"
                         }
                     }

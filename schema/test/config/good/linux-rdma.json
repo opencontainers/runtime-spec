@@ -5,18 +5,21 @@
     },
     "linux": {
         "resources": {
-            "rdma": {
-                "mlx5_1": {
+            "rdma": [
+                {
+                    "device": "mlx5_1",
                     "hcaHandles": 3,
                     "hcaObjects": 10000
                 },
-                "mlx4_0": {
+                {
+                    "device": "mlx4_0",
                     "hcaObjects": 1000
                 },
-                "rxe3": {
+                {
+                    "device": "rxe3",
                     "hcaObjects": 10000
                 }
-            }
+            ]
         }
     }
 }

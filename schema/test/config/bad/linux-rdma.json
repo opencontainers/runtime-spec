@@ -5,11 +5,12 @@
     },
     "linux": {
         "resources": {
-            "rdma": {
-                "mlx5_1": {
+            "rdma": [
+                {
+                    "device": "mlx5_1",
                     "hcaHandles": "not a uint32"
                 }
-            }
+            ]
         }
     }
 }

@@ -277,6 +277,9 @@
         "Rdma": {
             "type": "object",
             "properties": {
+                "device": {
+                    "type": "string"
+                },
                 "hcaHandles": {
                     "$ref": "defs.json#/definitions/uint32"
                 },
