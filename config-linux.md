@@ -202,8 +202,8 @@ Runtimes MAY attach the container process to additional cgroup controllers beyon
 "cgroupsPath": "/myRuntime/myContainer",
 "resources": {
     "memory": {
-    "limit": 100000,
-    "reservation": 200000
+         "limit": 100000,
+         "reservation": 200000
     },
     "devices": [
         {
