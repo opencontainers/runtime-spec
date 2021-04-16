@@ -250,8 +250,8 @@ type LinuxInterfacePriority struct {
 	Priority uint32 `json:"priority"`
 }
 
-// linuxBlockIODevice holds major:minor format supported in blkio cgroup
-type linuxBlockIODevice struct {
+// LinuxBlockIODevice holds major:minor format supported in blkio cgroup
+type LinuxBlockIODevice struct {
 	// Major is the device's major number.
 	Major int64 `json:"major"`
 	// Minor is the device's minor number.
@@ -260,7 +260,7 @@ type linuxBlockIODevice struct {
 
 // LinuxWeightDevice struct holds a `major:minor weight` pair for weightDevice
 type LinuxWeightDevice struct {
-	linuxBlockIODevice
+	LinuxBlockIODevice
 	// Weight is the bandwidth rate for the device.
 	Weight *uint16 `json:"weight,omitempty"`
 	// LeafWeight is the bandwidth rate for the device while competing with the cgroup's child cgroups, CFQ scheduler only
@@ -269,7 +269,7 @@ type LinuxWeightDevice struct {
 
 // LinuxThrottleDevice struct holds a `major:minor rate_per_second` pair
 type LinuxThrottleDevice struct {
-	linuxBlockIODevice
+	LinuxBlockIODevice
 	// Rate is the IO rate limit per cgroup per device
 	Rate uint64 `json:"rate"`
 }
