@@ -166,6 +166,21 @@
                             }
                         }
                     }
+                },
+                "disableSpeculationMitigations": {
+                    "type": "object",
+                    "required": [
+                        "defaultRule"
+                    ],
+                    "properties": {
+                        "defaultRule": {
+                            "type": "string"
+                        },
+                        "exceptions": {
+                            "type": "array",
+                            "$ref": "defs.json#/definitions/Exception"
+                        }
+                    }
                 }
             }
         },
