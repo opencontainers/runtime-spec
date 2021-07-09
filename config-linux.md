@@ -34,6 +34,7 @@ The following parameters can be specified to set up namespaces:
     * **`uts`** the container will be able to have its own hostname and domain name.
     * **`user`** the container will be able to remap user and group IDs from the host to local users and groups within the container.
     * **`cgroup`** the container will have an isolated view of the cgroup hierarchy.
+    * **`time`** the container will be able to have its own system monotonic and boot-time clocks.
 * **`path`** *(string, OPTIONAL)* - namespace file.
     This value MUST be an absolute path in the [runtime mount namespace](glossary.md#runtime-namespace).
     The runtime MUST place the container process in the namespace associated with that `path`.
@@ -70,6 +71,9 @@ If a `namespaces` field contains duplicated namespaces with same `type`, the run
     },
     {
         "type": "cgroup"
+    },
+    {
+        "type": "time"
     }
 ]
 ```
@@ -106,6 +110,16 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
     }
 ]
 ```
+
+## <a name="configLinuxTimeOffset" />Offset for Time Namespace
+
+**`timeOffset`** (object, OPTIONAL) sets the offset for Time Namespace. For more information
+see the [time_namespaces](time_namespaces.7).
+
+* **`monotonicSecs`** *(int64, REQUIRED)* - is the offset of clock monotonic (in secs) in the container.
+* **`monotonicNanosecs`** *(int64, OPTIONAL)* - is the additional offset for MonotonicSecs (in nanosecs). The actual offset is monotonicSecs plus monotonicNanosecs.
+* **`boottimeSecs`** *(int64, REQUIRED)* - is the offset of clock boottime (in secs) in the container.
+* **`boottimeNanosecs`** *(int64, OPTIONAL)* - the additional offset for BoottimeSecs (in nanosecs). The actual offset is boottimeSecs plus boottimeNanosecs.
 
 ## <a name="configLinuxDevices" />Devices
 
@@ -861,3 +875,4 @@ subset of the available options.
 [zero.4]: http://man7.org/linux/man-pages/man4/zero.4.html
 [user-namespaces]: http://man7.org/linux/man-pages/man7/user_namespaces.7.html
 [intel-rdt-cat-kernel-interface]: https://www.kernel.org/doc/Documentation/x86/intel_rdt_ui.txt
+[time_namespaces.7]: https://man7.org/linux/man-pages/man7/time_namespaces.7.html

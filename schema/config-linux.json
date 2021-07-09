@@ -265,6 +265,27 @@
             "personality": {
                 "type": "object",
                 "$ref": "defs-linux.json#/definitions/Personality"
+            },
+            "timeOffset": {
+                "type": "object",
+                "properties": {
+                    "monotonicSecs": {
+                        "$ref": "defs.json#/definitions/int64"
+                    },
+                    "monotonicNanosecs": {
+                        "$ref": "defs.json#/definitions/int64"
+                    },
+                    "boottimeSecs": {
+                        "$ref": "defs.json#/definitions/int64"
+                    },
+                    "boottimeNanosecs": {
+                        "$ref": "defs.json#/definitions/int64"
+                    }
+                },
+                "required": [
+                    "monotonicSecs",
+                    "boottimeSecs"
+                ]
             }
         }
     }

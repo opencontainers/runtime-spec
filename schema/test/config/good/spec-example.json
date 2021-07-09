@@ -349,6 +349,12 @@
                 }
             ]
         },
+        "timeOffset": {
+            "monotonicSecs": 172800,
+            "monotonicNanosecs": 0,
+            "boottimeSecs": 604800,
+            "boottimeNanosecs": 0
+        },
         "namespaces": [
             {
                 "type": "pid"
@@ -370,6 +376,9 @@
             },
             {
                 "type": "cgroup"
+            },
+            {
+                "type": "time"
             }
         ],
         "maskedPaths": [
