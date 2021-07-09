@@ -23,10 +23,8 @@ There is also included a simple utility for facilitating validation.
 To build it:
 
 ```bash
-export GOPATH=`mktemp -d`
-go get -d ./...
+go get github.com/xeipuuv/gojsonschema
 go build ./validate.go
-rm -rf $GOPATH
 ```
 
 Or you can just use make command to create the utility:
