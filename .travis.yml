@@ -13,7 +13,7 @@ services:
 
 before_install:
   - make install.tools
-  - docker pull vbatts/pandoc
+  - docker pull quay.io/oci/pandoc:1.17.0.3-2.fc25.x86_64
   - go get -d ./schema/...
 
 install: true
