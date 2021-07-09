@@ -44,5 +44,5 @@ Then use it like:
 Or like:
 
 ```bash
-./validate https://raw.githubusercontent.com/opencontainers/runtime-spec/v1.0.0/schema/schema.json <yourpath>/config.json
+./validate https://raw.githubusercontent.com/opencontainers/runtime-spec/<runtime-spec-version>/schema/config-schema.json <yourpath>/config.json
 ```
