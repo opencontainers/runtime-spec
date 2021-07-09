@@ -205,3 +205,25 @@ The following parameters can be specified:
     }
 }
 ```
+
+## <a name="configWindowsJobContainer" />JobContainer
+
+`jobContainer` is an OPTIONAL field of the Windows configuration.
+If present, the container MUST be run as a Windows job container. This is a process or set of processes in a job object that is managed by the runtime.
+If omitted, the container MUST be run as either a Windows Server Container, or with Hyper-V isolation if `hyperv` is supplied.
+If `hyperv` and `jobContainer` are both present, the runtime MUST return an error.
+
+The following parameters can be specified:
+
+* **`rootfsMountPoint`** *(string, OPTIONAL)* - specifies the path that the container's rootfs volume should be mounted to.
+    If not supplied, the path will be determined by the runtime
+
+### Example
+
+```json
+"windows": {
+    "jobContainer": {
+        "rootfsMountPoint": "C:\\foo\\bar\\baz\\"
+    }
+}
+```
