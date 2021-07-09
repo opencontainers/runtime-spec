@@ -360,6 +360,8 @@ For Windows based systems the user structure has the following fields:
     This MAY be set if the target platform of this spec is `solaris`.
 * **`vm`** (object, OPTIONAL) [Virtual-machine-specific configuration](config-vm.md).
     This MAY be set if the target platform and architecture of this spec support hardware virtualization.
+* **`zos`** (object, OPTIONAL) [z/OS-specific configuration](config-zos.md).
+    This MAY be set if the target platform of this spec is `zos`.
 
 ### Example (Linux)
 

@@ -180,6 +180,9 @@
         },
         "vm": {
             "$ref": "config-vm.json#/vm"
+        },
+        "zos": {
+            "$ref": "config-zos.json#/zos"
         }
     },
     "required": [

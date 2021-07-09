@@ -1,0 +1,14 @@
+{
+    "zos": {
+        "description": "z/OS platform-specific configurations",
+        "type": "object",
+        "properties": {
+            "devices": {
+                "type": "array",
+                "items": {
+                    "$ref": "defs-zos.json#/definitions/Device"
+                }
+            }
+        }
+    }
+}
