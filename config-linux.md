@@ -530,24 +530,29 @@ If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-f
 The following parameters can be specified for the container:
 
 * **`closID`** *(string, OPTIONAL)* - specifies the identity for RDT Class of Service (CLOS).
-    If `closID` is set, runtimes MUST create `closID` directory in a mounted `resctrl` pseudo-filesystem if it doesn't exist. If not set, runtimes MUST use the container ID from [`start`](runtime.md#start) and create the `<container-id>` directory.
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
     The value SHOULD start with `L3:` and SHOULD NOT contain newlines.
 * **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth per L3 cache id.
-    * The value MUST start with `MB:` and MUST NOT contain newlines.
+    The value MUST start with `MB:` and MUST NOT contain newlines.
 
-    * If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
+The following rules on parameters MUST be applied:
 
-    * If `l3CacheSchema` contains a line beginning with `MB:`, the value written to `schemata` file MUST be the non-`MB:` line(s) from `l3CacheSchema` and the line from `memBWSchema`.
+* If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
 
-    * If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
+* If `l3CacheSchema` contains a line beginning with `MB:`, the value written to `schemata` file MUST be the non-`MB:` line(s) from `l3CacheSchema` and the line from `memBWSchema`.
 
-    * If neither `l3CacheSchema` nor `memBwSchema` is set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+* If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
 
-    * If `closID` is set, `l3CacheSchema` and/or `memBwSchema` is set, runtimes MUST compare `l3CacheSchema` and/or `memBwSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
+* If neither `l3CacheSchema` nor `memBwSchema` is set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
 
-    * If `closID` is set, and neither of `l3CacheSchema` and `memBwSchema` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
+* If `closID` is not set, runtimes MUST use the container ID from [`start`](runtime.md#start) and create the `<container-id>` directory.
+
+* If `closID` is set, `l3CacheSchema` and/or `memBwSchema` is set
+  * if `closID` directory in a mounted `resctrl` pseudo-filesystem doesn't exist, the runtimes MUST create it.
+  * if `closID` directory in a mounted `resctrl` pseudo-filesystem exists, runtimes MUST compare `l3CacheSchema` and/or `memBwSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
+
+* If `closID` is set, and neither of `l3CacheSchema` and `memBwSchema` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
 
 
 ### Example
