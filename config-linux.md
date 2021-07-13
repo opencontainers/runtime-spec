@@ -554,6 +554,13 @@ The following rules on parameters MUST be applied:
 
 * If `closID` is set, and neither of `l3CacheSchema` and `memBwSchema` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
 
+* **`enableCMT`** *(boolean, OPTIONAL)* - specifies if Intel RDT CMT should be enabled:
+    * CMT (Cache Monitoring Technology) supports monitoring of the last-level cache (LLC) occupancy
+      for the container.
+
+* **`enableMBM`** *(boolean, OPTIONAL)* - specifies if Intel RDT MBM should be enabled:
+    * MBM (Memory Bandwidth Monitoring) supports monitoring of total and local memory bandwidth
+      for the container.
 
 ### Example
 
