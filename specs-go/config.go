@@ -613,6 +613,13 @@ type Arch string
 // LinuxSeccompFlag is a flag to pass to seccomp(2).
 type LinuxSeccompFlag string
 
+// LinuxSeccompFlag options
+const (
+	FlagTSync LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_TSYNC"
+	FlagLog   LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_LOG"
+	FlagAllow LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_SPEC_ALLOW"
+)
+
 // Additional architectures permitted to be used for system calls
 // By default only the native architecture of the kernel is permitted
 const (
