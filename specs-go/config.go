@@ -96,7 +96,86 @@ type Process struct {
 	IOPriority *LinuxIOPriority `json:"ioPriority,omitempty" platform:"linux"`
 	// ExecCPUAffinity specifies CPU affinity for exec processes.
 	ExecCPUAffinity *CPUAffinity `json:"execCPUAffinity,omitempty" platform:"linux"`
+	// Landlock specifies the Landlock unprivileged access control settings for the container process.
+	// `noNewPrivileges` must be enabled to use Landlock.
+	Landlock *Landlock `json:"landlock,omitempty" platform:"linux"`
 }
+
+// Landlock specifies the Landlock unprivileged access control settings for the container process.
+type Landlock struct {
+	// Ruleset identifies a set of rules (i.e., actions on objects) that need to be handled.
+	Ruleset *LandlockRuleset `json:"ruleset,omitempty" platform:"linux"`
+	// Rules are the security policies (i.e., actions allowed on objects) to be added to an existing ruleset.
+	Rules *LandlockRules `json:"rules,omitempty" platform:"linux"`
+	// DisableBestEffort disables the best-effort security approach for Landlock access rights.
+	// This is for conditions when the Landlock access rights explicitly configured by the container are not
+	// supported or available in the running kernel.
+	// Default is false, i.e., following a best-effort security approach.
+	DisableBestEffort bool `json:"disableBestEffort,omitempty" platform:"linux"`
+}
+
+// LandlockRuleset identifies a set of rules (i.e., actions on objects) that need to be handled.
+type LandlockRuleset struct {
+	// HandledAccessFS is a list of actions that is handled by this ruleset and should then be
+	// forbidden if no rule explicitly allow them.
+	HandledAccessFS []LandlockFSAction `json:"handledAccessFS,omitempty" platform:"linux"`
+	// HandledAccessNetwork is a list of actions that is handled by this ruleset and should then be
+	// forbidden if no rule explicitly allow them.
+	HandledAccessNetwork []LandlockNetworkAction `json:"handledAccessNetwork,omitempty" platform:"linux"`
+}
+
+// LandlockRules represents the security policies (i.e., actions allowed on objects).
+type LandlockRules struct {
+	// PathBeneath specifies the file-hierarchy typed rules.
+	PathBeneath []LandlockRulePathBeneath `json:"pathBeneath,omitempty" platform:"linux"`
+	// PortBeneath specifies the network-socket typed rules.
+	PortBeneath []LandlockRulePortBeneath `json:"portBeneath,omitempty" platform:"linux"`
+}
+
+// LandlockRulePathBeneath defines the file-hierarchy typed rule that grants the access rights specified by
+// `AllowedAccess` to the file hierarchies under the given `Paths`.
+type LandlockRulePathBeneath struct {
+	// AllowedAccess contains a list of allowed filesystem actions for the file hierarchies.
+	AllowedAccess []LandlockFSAction `json:"allowedAccess,omitempty" platform:"linux"`
+	// Paths are the files or parent directories of the file hierarchies to restrict.
+	Paths []string `json:"paths,omitempty" platform:"linux"`
+}
+
+type LandlockRulePortBeneath struct {
+	// AllowedAccess contains a list of allowed network actions for the network sockets.
+	AllowedAccess []LandlockNetworkAction `json:"allowedAccess,omitempty" platform:"linux"`
+	// Ports are the network ports to restrict.
+	Ports []string `json:"ports,omitempty" platform:"linux"`
+}
+
+// LandlockFSAction used to specify the FS actions that are handled by a ruleset or allowed by a rule.
+type LandlockFSAction string
+
+// Define actions on files and directories that Landlock can restrict a sandboxed process to.
+const (
+	LLFSActExecute    LandlockFSAction = "execute"
+	LLFSActWriteFile  LandlockFSAction = "write_file"
+	LLFSActReadFile   LandlockFSAction = "read_file"
+	LLFSActReadDir    LandlockFSAction = "read_dir"
+	LLFSActRemoveDir  LandlockFSAction = "remove_dir"
+	LLFSActRemoveFile LandlockFSAction = "remove_file"
+	LLFSActMakeChar   LandlockFSAction = "make_char"
+	LLFSActMakeDir    LandlockFSAction = "make_dir"
+	LLFSActMakeReg    LandlockFSAction = "make_reg"
+	LLFSActMakeSock   LandlockFSAction = "make_sock"
+	LLFSActMakeFifo   LandlockFSAction = "make_fifo"
+	LLFSActMakeBlock  LandlockFSAction = "make_block"
+	LLFSActMakeSym    LandlockFSAction = "make_sym"
+	LLFSActRefer      LandlockFSAction = "refer"
+	LLFSActTruncate   LandlockFSAction = "truncate"
+)
+
+type LandlockNetworkAction string
+
+const (
+	LLNetworkActConnect LandlockNetworkAction = "connect"
+	LLNetworkActBind    LandlockNetworkAction = "bind"
+)
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
 // https://man7.org/linux/man-pages/man7/capabilities.7.html
