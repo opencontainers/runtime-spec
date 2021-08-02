@@ -163,6 +163,20 @@
                         }
                     }
                 },
+                "landlock": {
+                    "type": "object",
+                    "properties": {
+                        "ruleset": {
+                            "$ref": "defs.json#/definitions/LandlockRuleset"
+                        },
+                        "rules": {
+                            "$ref": "defs.json#/definitions/LandlockRules"
+                        },
+                        "disableBestEffort": {
+                            "type": "boolean"
+                        }
+                    }
+                },
                 "noNewPrivileges": {
                     "type": "boolean"
                 },
