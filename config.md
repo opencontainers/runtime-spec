@@ -216,7 +216,27 @@ For Linux-based systems, the `process` object supports the following process-spe
     This is a per-process setting, where as [`disableOOMKiller`](config-linux.md#memory) is scoped for a memory cgroup.
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
 * **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label for the process.
-    For more information about SELinux, see  [SELinux documentation][selinux].
+    For more information about SELinux, see [SELinux documentation][selinux].
+* **`landlock`** (object, OPTIONAL) specifies the Landlock unprivileged access control settings for the container process.
+    Note that `noNewPrivileges` must be set to true to use this feature.
+    For more information about Landlock, see [Landlock documentation][landlock].
+    `landlock` contains the following properties:
+
+    * **`ruleset`** (object, OPTIONAL) the `ruleset` field identifies a set of rules (i.e., actions on objects) that need to be handled (i.e., restricted).
+    The `ruleset` currently contains the following types:
+        * **`handledAccessFS`** (array of strings, OPTIONAL) is an array of FS typed actions that are handled by a ruleset.
+        If no rule explicitly allow them, they should then be forbidden.
+    * **`rules`** (object, OPTIONAL) the `rules` field specifies the security policies (i.e., actions allowed on objects) to be added to an existing ruleset.
+    The `rules` currently contains the following types:
+        * **`pathBeneath`** (array of objects, OPTIONAL) is an array of the file-hierarchy typed rules.
+        Entries in the array contain the following properties:
+            * **`allowedAccess`** (array of strings, OPTIONAL) is an array of FS typed actions that are allowed by a rule.
+            * **`paths`** (array of strings, OPTIONAL) is an array of files or parent directories of the file hierarchies to restrict.
+    * **`disableBestEffort`** (bool, OPTIONAL) the `disableBestEffort` field disables the best-effort security approach for Landlock access rights.
+    This is for conditions when the Landlock access rights explicitly configured by the container are not supported or available in the running kernel.
+    If the best-effort security approach is enabled (`false`), the runtime SHOULD enforce the strongest rules configured up to the current kernel support, and only be [logged as a warning](runtime.md#warnings) for those not supported.
+    If disabled (`true`), the runtime MUST [generate an error](runtime.md#errors) if one or more rules specified by the container is not supported.
+	Default is `false`, i.e., following a best-effort security approach.
 
 ### <a name="configUser" />User
 
@@ -258,6 +278,61 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     ],
     "apparmorProfile": "acme_secure_profile",
     "selinuxLabel": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675",
+    "landlock": {
+        "ruleset": {
+            "handledAccessFS": [
+                "execute",
+                "write_file",
+                "read_file",
+                "read_dir",
+                "remove_dir",
+                "remove_file",
+                "make_char",
+                "make_dir",
+                "make_reg",
+                "make_sock",
+                "make_fifo",
+                "make_block",
+                "make_sym"
+            ]
+        },
+        "rules": {
+            "pathBeneath": [
+                {
+                    "allowedAccess": [
+                        "execute",
+                        "read_file",
+                        "read_dir"
+                    ],
+                    "paths": [
+                        "/usr",
+                        "/bin"
+                    ]
+                },
+                {
+                    "allowedAccess": [
+                        "execute",
+                        "write_file",
+                        "read_file",
+                        "read_dir",
+                        "remove_dir",
+                        "remove_file",
+                        "make_char",
+                        "make_dir",
+                        "make_reg",
+                        "make_sock",
+                        "make_fifo",
+                        "make_block",
+                        "make_sym"
+                    ],
+                    "paths": [
+                        "/tmp"
+                    ]
+                }
+            ]
+        },
+        "disableBestEffort": false
+    },
     "noNewPrivileges": true,
     "capabilities": {
         "bounding": [
@@ -978,7 +1053,8 @@ Here is a full example `config.json` for reference.
 
 [apparmor]: https://wiki.ubuntu.com/AppArmor
 [cgroup-v1-memory_2]: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
-[selinux]:http://selinuxproject.org/page/Main_Page
+[selinux]: http://selinuxproject.org/page/Main_Page
+[landlock]: https://landlock.io
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
