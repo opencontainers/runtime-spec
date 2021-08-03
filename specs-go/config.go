@@ -182,6 +182,8 @@ type Linux struct {
 	IntelRdt *LinuxIntelRdt `json:"intelRdt,omitempty"`
 	// Personality contains configuration for the Linux personality syscall
 	Personality *LinuxPersonality `json:"personality,omitempty"`
+	// Keyrings specifies the kernel keyrings that are created and/or joined by the container.
+	Keyrings *LinuxKeyrings `json:"keyrings,omitempty"`
 }
 
 // LinuxNamespace is the configuration for a Linux namespace
@@ -429,6 +431,38 @@ type LinuxPersonality struct {
 	Domain LinuxPersonalityDomain `json:"domain"`
 	// Additional flags
 	Flags []LinuxPersonalityFlag `json:"flags,omitempty"`
+}
+
+// LinuxKeyrings specifies the list of keyrings used to anchor keys on behalf of a process.
+// https://man7.org/linux/man-pages/man7/keyrings.7.html
+type LinuxKeyrings struct {
+	// Session is the session shared process keyring.
+	// It is inherited and shared by all child processes.
+	Session LinuxSessionKeyring `json:"session,omitempty"`
+	// Process is the per-process shared keyring.
+	// It is shared by all threads in a process.
+	Process LinuxProcessKeyring `json:"process,omitempty"`
+	// Session is the per-thread keyring.
+	// It is specific to a particular thread.
+	Thread LinuxThreadKeyring `json:"thread,omitempty"`
+}
+
+// LinuxSessionKeyring defines the session shared process keyring.
+type LinuxSessionKeyring struct {
+	// Name is the name of the session-specific keyring.
+	Name string `json:"name,omitempty"`
+}
+
+// LinuxProcessKeyring defines the per-process shared keyring.
+type LinuxProcessKeyring struct {
+	// Name is the name of the process-specific keyring.
+	Name string `json:"name,omitempty"`
+}
+
+// LinuxThreadKeyring defines the per-thread keyring.
+type LinuxThreadKeyring struct {
+	// Name is the name of the thread-specific keyring.
+	Name string `json:"name,omitempty"`
 }
 
 // Solaris contains platform-specific configuration for Solaris application containers.
