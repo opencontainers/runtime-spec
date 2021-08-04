@@ -212,6 +212,20 @@ For Linux-based systems, the `process` object supports the following process-spe
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
 * **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label for the process.
     For more information about SELinux, see  [SELinux documentation][selinux].
+* **`coreSched`** (object, OPTIONAL) is an object containing the Core Scheduling config options for the container.
+    This provides support for setting and copying core scheduling 'task cookies' between the
+    container process and the threads (PID), processes (TGID), and process groups (PGID), which
+    helps define groups of tasks that can be co-scheduled on the same core.
+    These groups can be specified either for security usecases (one group of tasks don’t trust
+    another), or for performance usecases (some workloads may benefit from running on the same core
+    as they don’t need the same hardware resources of the shared core, or may prefer different cores
+    if they do share hardware resource needs).
+    For more information about Core Scheduling, see [Core Scheduling documentation][core-scheduling].
+    `coreSched` defines the following operations:
+
+    * **`create`** (bool, OPTIONAL) controls whether to create a new unique cookie for the process in the container.
+    * **`shareTo`** (array of objects, OPTIONAL) specifies the PIDs that the core_sched cookie of the current process should push to.
+    * **`shareFrom`** (array of objects, OPTIONAL) specifies the PIDs that the core_sched cookie of the current process should pull from.
 
 ### <a name="configUser" />User
 
@@ -253,6 +267,16 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     ],
     "apparmorProfile": "acme_secure_profile",
     "selinuxLabel": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675",
+    "coreSched": {
+        "create": true,
+        "shareTo": {
+            "tgids": [1, 3],
+            "pgids": [0]
+        },
+        "shareFrom": {
+            "tgids": [2, 8]
+        }
+    },
     "noNewPrivileges": true,
     "capabilities": {
         "bounding": [
@@ -958,6 +982,7 @@ Here is a full example `config.json` for reference.
 
 [apparmor]: https://wiki.ubuntu.com/AppArmor
 [cgroup-v1-memory_2]: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
+[core-scheduling]: https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/core-scheduling.html
 [selinux]:http://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
