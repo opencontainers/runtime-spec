@@ -186,10 +186,29 @@ containers.
 **`cgroupsPath`** (string, OPTIONAL) path to the cgroups.
 It can be used to either control the cgroups hierarchy for containers or to run a new process in an existing container.
 
-The value of `cgroupsPath` MUST be either an absolute path or a relative path.
+If the runtime manages cgroups on its own (i.e. works with cgroupfs directly), the value of `cgroupsPath` MUST be either an absolute path or a relative path.
 
 * In the case of an absolute path (starting with `/`), the runtime MUST take the path to be relative to the cgroups mount point.
 * In the case of a relative path (not starting with `/`), the runtime MAY interpret the path relative to a runtime-determined location in the cgroups hierarchy.
+
+If the runtime manages cgroups indirectly, via systemd, the value of `cgroupsPath` MUST be in the "slice:prefix:name" form (e.g. "system.slice:runtime:434234").
+By specifying with the transient systemd unit to create for the container and the containing slice which hosts the unit, the systemd units directly map to objects in the cgroup tree.
+When these units are activated, they map directly to cgroup paths built from the unit names.
+
+This form specifies the following systemd cgroup properties which are all optional:
+
+* `slice` - name of the parent slice systemd unit, under which the container is placed.
+    Note that `slice` can contain dashes to denote a sub-slice (e.g. `user-1000.slice` is a correct
+    notation, meaning a subslice of `user.slice`), but it must not contain slashes (e.g.
+    `user.slice/user-1000.slice` is invalid). A `slice` of `-` represents a root slice.
+    If not specified, it can default to:
+    `system.slice` - the default place for all system services;
+    `user.slice` - the default place for all user sessions, used for cgroup v2 and rootless containers.
+* `prefix` - prefix of the scope systemd unit to create for the container.
+* `name` - name of the systemd unit to create.
+    When `name` has `.slice` suffix, in which case `prefix` is ignored and the `name` is used as is,
+    this describes a unit being created is a slice. Otherwise, `prefix` and `name` are used to
+    compose the scope unit name, which is `<prefix>-<name>.scope`.
 
 If the value is specified, the runtime MUST consistently attach to the same place in the cgroups hierarchy given the same value of `cgroupsPath`.
 If the value is not specified, the runtime MAY define the default cgroups path.
