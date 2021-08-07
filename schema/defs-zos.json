@@ -1,0 +1,55 @@
+{
+    "definitions": {
+        "Major": {
+            "description": "major device number",
+            "$ref": "defs.json#/definitions/int64"
+        },
+        "Minor": {
+            "description": "minor device number",
+            "$ref": "defs.json#/definitions/int64"
+        },
+        "FileMode": {
+            "description": "File permissions mode (typically an octal value)",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 512
+        },
+        "FileType": {
+            "description": "Type of a block or special character device",
+            "type": "string",
+            "pattern": "^[cbup]$"
+        },
+        "Device": {
+            "type": "object",
+            "required": [
+                "type",
+                "path",
+                "major",
+                "minor"
+            ],
+            "properties": {
+                "path": {
+                  "$ref": "defs.json#/definitions/FilePath"
+                },
+                "type": {
+                  "$ref": "defs-zos.json#/definitions/FileType"
+                },
+                "major": {
+                  "$ref": "defs-zos.json#/definitions/Major"
+                },
+                "minor": {
+                  "$ref": "defs-zos.json#/definitions/Minor"
+                },
+                "fileMode": {
+                    "$ref": "defs-zos.json#/definitions/FileMode"
+                },
+                "uid": {
+                    "$ref": "defs.json#/definitions/UID"
+                },
+                "gid": {
+                    "$ref": "defs.json#/definitions/GID"
+                }
+            }
+        }
+    }
+}
