@@ -18,8 +18,8 @@ The state of a container includes the following properties:
 
     * `creating`: the container is being created (step 2 in the [lifecycle](#lifecycle))
     * `created`: the runtime has finished the [create operation](#create) (after step 2 in the [lifecycle](#lifecycle)), and the container process has neither exited nor executed the user-specified program
-    * `running`: the container process has executed the user-specified program but has not exited (after step 5 in the [lifecycle](#lifecycle))
-    * `stopped`: the container process has exited (step 7 in the [lifecycle](#lifecycle))
+    * `running`: the container process has executed the user-specified program but has not exited (after step 8 in the [lifecycle](#lifecycle))
+    * `stopped`: the container process has exited (step 10 in the [lifecycle](#lifecycle))
 
     Additional values MAY be defined by the runtime, however, they MUST be used to represent new runtime states not defined above.
 * **`pid`** (int, REQUIRED when `status` is `created` or `running` on Linux, OPTIONAL on other platforms) is the ID of the container process.
