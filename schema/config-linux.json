@@ -110,6 +110,9 @@
                             "quota": {
                                 "$ref": "defs.json#/definitions/int64"
                             },
+                            "burst": {
+                                "$ref": "defs.json#/definitions/uint64"
+                            },
                             "realtimePeriod": {
                                 "$ref": "defs.json#/definitions/uint64"
                             },
