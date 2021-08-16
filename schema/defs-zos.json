@@ -32,16 +32,16 @@
                   "$ref": "defs.json#/definitions/FilePath"
                 },
                 "type": {
-                  "$ref": "defs-zos.json#/definitions/FileType"
+                  "$ref": "#/definitions/FileType"
                 },
                 "major": {
-                  "$ref": "defs-zos.json#/definitions/Major"
+                  "$ref": "#/definitions/Major"
                 },
                 "minor": {
-                  "$ref": "defs-zos.json#/definitions/Minor"
+                  "$ref": "#/definitions/Minor"
                 },
                 "fileMode": {
-                    "$ref": "defs-zos.json#/definitions/FileMode"
+                    "$ref": "#/definitions/FileMode"
                 },
                 "uid": {
                     "$ref": "defs.json#/definitions/UID"
