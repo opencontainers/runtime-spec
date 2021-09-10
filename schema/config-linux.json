@@ -259,6 +259,12 @@
                     "memBwSchema": {
                         "type": "string",
                         "pattern": "^MB:[^\\n]*$"
+                    },
+                    "enableCMT": {
+                        "type": "boolean"
+                    },
+                    "enableMBM": {
+                        "type": "boolean"
                     }
                 }
             },
