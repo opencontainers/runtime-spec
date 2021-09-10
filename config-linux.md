@@ -196,6 +196,51 @@ For example, to run a new process in an existing container without updating limi
 
 Runtimes MAY attach the container process to additional cgroup controllers beyond those necessary to fulfill the `resources` settings.
 
+### Cgroup ownership
+
+Runtimes MAY, according to the following rules, change (or cause to
+be changed) the owner of the container's cgroup to the host uid that
+maps to the value of `process.user.uid` in the [container
+namespace](glossary.md#container-namespace); that is, the user that
+will execute the container process.
+
+Runtimes SHOULD NOT change the ownership of container cgroups when
+cgroups v1 is in use.  Cgroup delegation is not secure in cgroups
+v1.
+
+A runtime SHOULD NOT change the ownership of a container cgroup
+unless it will also create a new cgroup namespace for the container.
+Typically this occurs when the `linux.namespaces` array contains an
+object with `type` equal to `"cgroup"` and `path` unset.
+
+Runtimes SHOULD change the cgroup ownership if and only if the
+cgroup filesystem is to be mounted read/write; that is, when the
+configuration's `mounts` array contains an object where:
+
+- The `source` field is equal to `"cgroup"`
+- The `destination` field is equal to `"/sys/fs/cgroup"`
+- The `options` field does not contain the value `"ro"`
+
+If the configuration does not specify such a mount, the runtime
+SHOULD NOT change the cgroup ownership.
+
+A runtime that changes the cgroup ownership SHOULD only change the
+ownership of the container's cgroup directory and files within that
+directory that are listed in `/sys/kernel/cgroup/delegate` (see
+`cgroups(7)` for details about this file).  If the
+`/sys/kernel/cgroup/delegate` file does not exist, the runtime MUST
+fall back to using the following list of files:
+
+```
+cgroup.procs
+cgroup.subtree_control
+cgroup.threads
+```
+
+The runtime SHOULD NOT change the ownership of any other files.
+Changing other files may allow the container to elevate its own
+resource limits or perform other unwanted behaviour.
+
 ### Example
 
 ```json
