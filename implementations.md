@@ -7,6 +7,7 @@ If you know of any associated projects that are not listed here, please file a p
 
 * [alibaba/inclavare-containers][rune] - Enclave OCI runtime for confidential computing
 * [containers/crun][crun] - Runtime implementation in C
+* [containers/youki][youki] - Runtime implementation in Rust
 * [opencontainers/runc][runc] - Reference implementation of OCI runtime
 * [projectatomic/bwrap-oci][bwrap-oci] - Convert the OCI spec file to a command line for [bubblewrap][bubblewrap]
 
@@ -36,3 +37,4 @@ If you know of any associated projects that are not listed here, please file a p
 [runtime-tools]: https://github.com/opencontainers/runtime-tools
 [runv]: https://github.com/hyperhq/runv
 [virtcontainers]: https://github.com/containers/virtcontainers
+[youki]: https://github.com/containers/youki
