@@ -1,5 +1,7 @@
 # Open Container Initiative Runtime Specification
 
+[![GitHub Actions status](https://github.com/opencontainers/runtime-spec/workflows/build/badge.svg)](https://github.com/opencontainers/runtime-spec/actions?query=workflow%3Abuild)
+
 The [Open Container Initiative][oci] develops specifications for standards on Operating System process and application containers.
 
 The specification can be found [here](spec.md).

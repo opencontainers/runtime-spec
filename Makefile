@@ -1,19 +1,19 @@
 
-EPOCH_TEST_COMMIT	:= 78e6667ae2d67aad100b28ee9580b41b7a24e667
-OUTPUT_DIRNAME		?= output
-DOC_FILENAME		?= oci-runtime-spec
-DOCKER			?= $(shell command -v docker 2>/dev/null)
-PANDOC			?= $(shell command -v pandoc 2>/dev/null)
+EPOCH_TEST_COMMIT := 78e6667ae2d67aad100b28ee9580b41b7a24e667
+OUTPUT_DIRNAME    ?= output
+DOC_FILENAME      ?= oci-runtime-spec
+DOCKER            ?= $(shell command -v docker 2>/dev/null)
+PANDOC            ?= $(shell command -v pandoc 2>/dev/null)
+PANDOC_IMAGE      ?= ghcr.io/opencontainers/pandoc:2.9.2.1-9.fc34.x86_64@sha256:590c5c7aaa6e8e7a4debae7e9102c837daa0c8a76f8f5b5c9831ea5f755e3e95
 ifeq "$(strip $(PANDOC))" ''
 	ifneq "$(strip $(DOCKER))" ''
 		PANDOC = $(DOCKER) run \
 			--security-opt label=disable \
-			-it \
 			--rm \
 			-v $(shell pwd)/:/input/:ro \
 			-v $(shell pwd)/$(OUTPUT_DIRNAME)/:/$(OUTPUT_DIRNAME)/ \
 			-u $(shell id -u) \
-			vbatts/pandoc
+			$(PANDOC_IMAGE)
 		PANDOC_SRC := /input/
 		PANDOC_DST := /
 	endif
@@ -69,11 +69,11 @@ ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
 endif
 
 
-# When this is running in travis, it will only check the travis commit range
+# When this is running in GitHub, it will only check the GitHub commit range
 .gitvalidation:
 	@which git-validation > /dev/null 2>/dev/null || (echo "ERROR: git-validation not found. Consider 'make install.tools' target" && false)
-ifdef TRAVIS_COMMIT_RANGE
-	git-validation -q -run short-subject,dangling-whitespace
+ifdef GITHUB_SHA
+	git-validation -q -run DCO,short-subject,dangling-whitespace -range $(GITHUB_SHA)..HEAD
 else
 	git-validation -v -run DCO,short-subject,dangling-whitespace -range $(EPOCH_TEST_COMMIT)..HEAD
 endif
