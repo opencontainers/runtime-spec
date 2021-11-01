@@ -1,0 +1,33 @@
+name: build-pr
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@master
+      - name: setup go environment
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.17.2'
+      - name: run tests
+        run: |
+          export PATH="$(go env GOPATH)/bin:${PATH}"
+          set -x
+          make install.tools
+
+          # Fix for "cannot find main module" issue
+          go mod init github.com/opencontainers/runtime-spec
+
+          go get -d ./schema/...
+          make .govet
+          make .golint
+
+          make .gitvalidation
+          make docs
+          make -C schema test
