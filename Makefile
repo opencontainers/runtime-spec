@@ -30,6 +30,8 @@ DOC_FILES := \
 	config.md \
 	config-linux.md \
 	config-solaris.md \
+	features.md \
+	features-linux.md \
 	glossary.md
 
 default: docs

@@ -116,7 +116,7 @@ The remaining `process` properties MAY be applied by this operation.
 If the runtime cannot apply a property as specified in the [configuration](config.md), it MUST [generate an error](#errors) and a new container MUST NOT be created.
 
 The runtime MAY validate `config.json` against this spec, either generically or with respect to the local system capabilities, before creating the container ([step 2](#lifecycle)).
-Runtime callers who are interested in pre-create validation can run [bundle-validation tools](implementations.md#testing--tools) before invoking the create operation.
+[Runtime callers](glossary.md#runtime-caller) who are interested in pre-create validation can run [bundle-validation tools](implementations.md#testing--tools) before invoking the create operation.
 
 Any changes made to the [`config.json`](config.md) file after this operation will not have an effect on the container.
 

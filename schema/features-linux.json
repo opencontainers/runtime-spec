@@ -1,0 +1,103 @@
+{
+    "linux": {
+        "description": "Linux platform-specific features",
+        "type": "object",
+        "properties": {
+            "namespaces": {
+                "type": "array",
+                "items": {
+                    "$ref": "defs-linux.json#/definitions/NamespaceType"
+                }
+            },
+            "capabilities": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "pattern": "^CAP_[A-Z_]+$"
+                }
+            },
+            "cgroup": {
+                "type": "object",
+                "properties": {
+                    "v1": {
+                        "type": "boolean"
+                    },
+                    "v2": {
+                        "type": "boolean"
+                    },
+                    "systemd": {
+                        "type": "boolean"
+                    },
+                    "systemdUser": {
+                        "type": "boolean"
+                    },
+                    "rdma": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "seccomp": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "actions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompAction"
+                        }
+                    },
+                    "operators": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompOperators"
+                        }
+                    },
+                    "archs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompArch"
+                        }
+                    },
+                    "knownFlags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompFlag"
+                        }
+                    },
+                    "supportedFlags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SeccompFlag"
+                        }
+                    }
+                }
+            },
+            "apparmor": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "selinux": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "intelRdt": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    }
+}
