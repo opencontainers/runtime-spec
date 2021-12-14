@@ -171,6 +171,16 @@ Also known as cgroups, they are used to restrict resource usage for a container 
 cgroups provide controls (through controllers) to restrict cpu, memory, IO, pids, network and RDMA resources for the container.
 For more information, see the [kernel cgroups documentation][cgroup-v1].
 
+A runtime MAY, during a particular [container operation](runtime.md#operation),
+such as [create](runtime.md#create), [start](runtime.md#start), or
+[exec](runtime.md#exec), check if the container cgroup is fit for purpose,
+and MUST [generate an error](runtime.md#errors) if such a check fails.
+For example, a frozen cgroup or (for [create](runtime.md#create) operation)
+a non-empty cgroup. The reason for this is that accepting such configurations
+could cause container operation outcomes that users may not anticipate or
+understand, such as operation on one container inadvertently affecting other
+containers.
+
 ### <a name="configLinuxCgroupsPath" />Cgroups Path
 
 **`cgroupsPath`** (string, OPTIONAL) path to the cgroups.
