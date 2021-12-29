@@ -4,7 +4,7 @@
 
 The [Open Container Initiative][oci] develops specifications for standards on Operating System process and application containers.
 
-The specification can be found [here](spec.md).
+The specification can be found [here](https://opencontainers.github.io/runtime-spec).
 
 ## Table of Contents
 
