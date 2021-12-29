@@ -1,0 +1,6 @@
+[book]
+authors = ["Open Container Initiative"]
+language = "en"
+multilingual = false
+src = "."
+title = "OCI Runtime Specification"
