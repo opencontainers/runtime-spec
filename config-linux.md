@@ -361,6 +361,7 @@ The following parameters can be specified to set up the controller:
 * **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
 * **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run in
 * **`mems`** *(string, OPTIONAL)* - list of Memory Nodes the container will run in
+* **`idle`** *(int64, OPTIONAL)* - cgroups are configured with minimum weight, 0: default behavior, 1: SCHED_IDLE.
 
 #### Example
 
@@ -372,7 +373,8 @@ The following parameters can be specified to set up the controller:
     "realtimeRuntime": 950000,
     "realtimePeriod": 1000000,
     "cpus": "2-3",
-    "mems": "0-7"
+    "mems": "0-7",
+    "idle": 0
 }
 ```
 

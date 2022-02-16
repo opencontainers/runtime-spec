@@ -330,6 +330,8 @@ type LinuxCPU struct {
 	Cpus string `json:"cpus,omitempty"`
 	// List of memory nodes in the cpuset. Default is to use any available memory node.
 	Mems string `json:"mems,omitempty"`
+	// cgroups are configured with minimum weight, 0: default behavior, 1: SCHED_IDLE. Default 0
+	Idle *int64 `json:"idle,omitempty"`
 }
 
 // LinuxPids for Linux cgroup 'pids' resource management (Linux 4.3)
