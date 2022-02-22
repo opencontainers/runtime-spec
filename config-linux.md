@@ -236,10 +236,14 @@ SHOULD NOT change the cgroup ownership.
 
 A runtime that changes the cgroup ownership SHOULD only change the
 ownership of the container's cgroup directory and files within that
-directory that are listed in `/sys/kernel/cgroup/delegate` (see
-`cgroups(7)` for details about this file).  If the
-`/sys/kernel/cgroup/delegate` file does not exist, the runtime MUST
-fall back to using the following list of files:
+directory that are listed in `/sys/kernel/cgroup/delegate`.  See
+`cgroups(7)` for details about this file.  Note that not all files
+listed in `/sys/kernel/cgroup/delegate` necessarily exist in every
+cgroup.  Runtimes MUST NOT fail in this scenario, and SHOULD change
+the ownership of the listed files that do exist in the cgroup.
+
+If the `/sys/kernel/cgroup/delegate` file does not exist, the
+runtime MUST fall back to using the following list of files:
 
 ```
 cgroup.procs
