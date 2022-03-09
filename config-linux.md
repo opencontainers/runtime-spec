@@ -371,8 +371,8 @@ The following parameters can be specified to set up the controller:
 ```json
 "cpu": {
     "shares": 1024,
-    "quota": 1000000,
-    "period": 500000,
+    "quota": 500000,
+    "period": 1000000,
     "realtimeRuntime": 950000,
     "realtimePeriod": 1000000,
     "cpus": "2-3",
