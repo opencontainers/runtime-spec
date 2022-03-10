@@ -390,6 +390,8 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
             * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
             * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
                 If set, `timeout` MUST be greater than zero.
+            * **`type`** *(string, OPTIONAL)* - hook type, which defines where should the hooks run.
+                Valid values are `host` or `guest`, defaults to `host`.
         * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
         * The `prestart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
     * **`createRuntime`** (array of objects, OPTIONAL) is an array of [`createRuntime` hooks](#createRuntime-hooks).
@@ -400,6 +402,8 @@ For POSIX platforms, the configuration structure supports `hooks` for configurin
             * **`env`** (array of strings, OPTIONAL) with the same semantics as [IEEE Std 1003.1-2008's `environ`][ieee-1003.1-2008-xbd-c8.1].
             * **`timeout`** (int, OPTIONAL) is the number of seconds before aborting the hook.
                 If set, `timeout` MUST be greater than zero.
+            * **`type`** *(string, OPTIONAL)* - hook type, which defines where should the hooks run.
+                Valid values are `host` or `guest`, defaults to `host`.
         * The value of `path` MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
         * The `createRuntime` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
     * **`createContainer`** (array of objects, OPTIONAL) is an array of [`createContainer` hooks](#createContainer-hooks).
@@ -539,8 +543,13 @@ See the below table for a summary of hooks and when they are called:
     ],
     "poststop": [
         {
-            "path": "/usr/sbin/cleanup.sh",
-            "args": ["cleanup.sh", "-f"]
+            "path": "/usr/sbin/cleanup-host.sh",
+            "args": ["cleanup-host.sh", "-f"]
+        },
+        {
+            "path": "/usr/sbin/cleanup-guest.sh",
+            "args": ["cleanup-guest.sh", "-f"],
+            "type": "guest",
         }
     ]
 }

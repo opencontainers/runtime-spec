@@ -125,7 +125,18 @@ type Hook struct {
 	Args    []string `json:"args,omitempty"`
 	Env     []string `json:"env,omitempty"`
 	Timeout *int     `json:"timeout,omitempty"`
+	Type    HookType `json:"type,omitempty"`
 }
+
+// HookType is the type of hooks
+type HookType string
+
+const (
+	// HostHook for hooks run on the host side
+	HostHook HookType = "host"
+	// GuestHook for hooks run on the guest side
+	GuestHook HookType = "guest"
+)
 
 // Hooks specifies a command that is run in the container at a particular event in the lifecycle of a container
 // Hooks for container setup and teardown

@@ -81,6 +81,13 @@
         "Env": {
             "$ref": "#/definitions/ArrayOfStrings"
         },
+        "HookType": {
+            "type": "string",
+            "enum": [
+                "host",
+                "guest"
+            ]
+        },
         "Hook": {
             "type": "object",
             "properties": {
@@ -96,6 +103,9 @@
                 "timeout": {
                     "type": "integer",
                     "minimum": 1
+                },
+                "type": {
+                    "$ref": "#/definitions/HookType"
                 }
             },
             "required": [

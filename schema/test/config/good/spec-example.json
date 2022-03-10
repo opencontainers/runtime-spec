@@ -152,7 +152,8 @@
                 ]
             },
             {
-                "path": "/usr/bin/setup-network"
+                "path": "/usr/bin/setup-network",
+                "type": "host"
             }
         ],
         "createRuntime": [
@@ -170,6 +171,10 @@
                 "path": "/usr/bin/mount-hook",
                 "args": ["-mount", "arg1", "arg2"],
                 "env":  [ "key1=value1"]
+            },
+            {
+                "path": "/usr/bin/download-data",
+                "type": "guest"
             }
         ],
         "startContainer": [
