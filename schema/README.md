@@ -23,7 +23,7 @@ There is also included a simple utility for facilitating validation.
 To build it:
 
 ```bash
-export GOPATH=`mktemp -d`
+export GOPATH=`mktemp -d` GO111MODULE=off
 go get -d ./...
 go build ./validate.go
 rm -rf $GOPATH
@@ -32,7 +32,7 @@ rm -rf $GOPATH
 Or you can just use make command to create the utility:
 
 ```bash
-make validate
+GO111MODULE=off make validate
 ```
 
 Then use it like:
