@@ -794,7 +794,7 @@ The container process state includes the following properties:
 * **`metadata`** (string, OPTIONAL) opaque metadata.
 * **`state`** ([state](runtime.md#state), REQUIRED) is the state of the container.
 
-Example sending a single `seccompFD` file descriptor in the `SCM_RIGHTS` array:
+Example sending a single `seccompFd` file descriptor in the `SCM_RIGHTS` array:
 
 ```json
 {
