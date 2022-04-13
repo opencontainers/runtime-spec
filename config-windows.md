@@ -77,11 +77,13 @@ The following parameters can be specified:
 
 `cpu` is an OPTIONAL configuration for the container's CPU usage.
 
-The following parameters can be specified:
+The following parameters can be specified (mutually exclusive):
 
-* **`count`** *(uint64, OPTIONAL)* - specifies the number of CPUs available to the container.
-* **`shares`** *(uint16, OPTIONAL)* - specifies the relative weight to other containers with CPU shares.
-* **`maximum`** *(uint16, OPTIONAL)* - specifies the portion of processor cycles that this container can use as a percentage times 100.
+* **`count`** *(uint64, OPTIONAL)* - specifies the number of CPUs available to the container. It represents the fraction of the configured processor `count` in a container in relation to the processors available in the host. The fraction ultimately determines the portion of processor cycles that the threads in a container can use during each scheduling interval, as the number of cycles per 10,000 cycles.
+* **`shares`** *(uint16, OPTIONAL)* - limits the share of processor time given to the container relative to other workloads on the processor. The processor `shares` (`weight` at the platform level) is a value between 0 and 10,000.
+* **`maximum`** *(uint16, OPTIONAL)* - determines the portion of processor cycles that the threads in a container can use during each scheduling interval, as the number of cycles per 10,000 cycles. Set processor `maximum` to a percentage times 100.
+
+Ref: https://docs.microsoft.com/en-us/virtualization/api/hcs/schemareference#Container_Processor
 
 #### Example
 

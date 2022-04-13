@@ -524,11 +524,21 @@ type WindowsMemoryResources struct {
 
 // WindowsCPUResources contains CPU resource management settings.
 type WindowsCPUResources struct {
-	// Number of CPUs available to the container.
+	// Count is the number of CPUs available to the container. It represents the
+	// fraction of the configured processor `count` in a container in relation
+	// to the processors available in the host. The fraction ultimately
+	// determines the portion of processor cycles that the threads in a
+	// container can use during each scheduling interval, as the number of
+	// cycles per 10,000 cycles.
 	Count *uint64 `json:"count,omitempty"`
-	// CPU shares (relative weight to other containers with cpu shares).
+	// Shares limits the share of processor time given to the container relative
+	// to other workloads on the processor. The processor `shares` (`weight` at
+	// the platform level) is a value between 0 and 10000.
 	Shares *uint16 `json:"shares,omitempty"`
-	// Specifies the portion of processor cycles that this container can use as a percentage times 100.
+	// Maximum determines the portion of processor cycles that the threads in a
+	// container can use during each scheduling interval, as the number of
+	// cycles per 10,000 cycles. Set processor `maximum` to a percentage times
+	// 100.
 	Maximum *uint16 `json:"maximum,omitempty"`
 }
 
