@@ -15,8 +15,8 @@ fmt:
 
 .PHONY: validate
 validate: validate.go
-	go get -d ./...
-	go build ./validate.go
+	GO111MODULE=auto go get github.com/xeipuuv/gojsonschema
+	GO111MODULE=auto go build ./validate.go
 
 test: validate $(TESTS)
 	for TYPE in $$(ls test); \
