@@ -118,6 +118,9 @@
                             },
                             "shares": {
                                 "$ref": "defs.json#/definitions/uint64"
+                            },
+                            "idle": {
+                                "$ref": "defs.json#/definitions/int64"
                             }
                         }
                     },
