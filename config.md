@@ -840,6 +840,7 @@ Here is a full example `config.json` for reference.
                 "realtimeRuntime": 950000,
                 "realtimePeriod": 1000000,
                 "cpus": "2-3",
+                "idle": 1,
                 "mems": "0-7"
             },
             "devices": [
