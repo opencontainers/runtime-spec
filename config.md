@@ -101,6 +101,11 @@ For POSIX platforms the `mounts` structure has the following fields:
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
     * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). For bind mounts (when `options` include either `bind` or `rbind`), the type is a dummy, often "none" (not listed in */proc/filesystems*).
     * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+* **`uidMappings`** (array of type LinuxIDMapping, OPTIONAL) The mapping to convert UIDs from the source file system to the destination mount point.\
+The format is the same as [user namespace mappings](config-linux.md#user-namespace-mappings).
+* **`gidMappings`** (array of type LinuxIDMapping, OPTIONAL) The mapping to convert GIDs from the source file system to the destination mount point.
+For more details see `uidMappings`.
+
 
 ### Example (Linux)
 
