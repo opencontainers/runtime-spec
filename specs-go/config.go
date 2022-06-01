@@ -117,6 +117,11 @@ type Mount struct {
 	Source string `json:"source,omitempty"`
 	// Options are fstab style mount options.
 	Options []string `json:"options,omitempty"`
+
+	// UID/GID mappings used for changing file owners w/o calling chown, fs should support it.
+	// Every mount point could have its own mapping.
+	UIDMappings []LinuxIDMapping `json:"uidMappings,omitempty" platform:"linux"`
+	GIDMappings []LinuxIDMapping `json:"gidMappings,omitempty" platform:"linux"`
 }
 
 // Hook specifies a command that is run at a particular event in the lifecycle of a container

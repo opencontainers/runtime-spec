@@ -141,6 +141,18 @@
                 },
                 "type": {
                     "type": "string"
+                },
+                "uidMappings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDMapping"
+                    }
+                },
+                "gidMappings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IDMapping"
+                    }
                 }
             },
             "required": [
