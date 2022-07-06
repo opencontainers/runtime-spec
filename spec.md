@@ -47,4 +47,4 @@ An implementation is compliant for a given CPU architecture if it satisfies all 
 
 [c99-unspecified]: http://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
 [oci]: http://www.opencontainers.org
-[rfc2119]: http://tools.ietf.org/html/rfc2119
+[rfc2119]: https://www.rfc-editor.org/rfc/rfc2119.html
