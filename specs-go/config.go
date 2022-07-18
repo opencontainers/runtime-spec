@@ -632,6 +632,19 @@ type Arch string
 // LinuxSeccompFlag is a flag to pass to seccomp(2).
 type LinuxSeccompFlag string
 
+const (
+	// LinuxSeccompFlagLog is a seccomp flag to request all returned
+	// actions except SECCOMP_RET_ALLOW to be logged. An administrator may
+	// override this filter flag by preventing specific actions from being
+	// logged via the /proc/sys/kernel/seccomp/actions_logged file. (since
+	// Linux 4.14)
+	LinuxSeccompFlagLog LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_LOG"
+
+	// LinuxSeccompFlagSpecAllow can be used to disable Speculative Store
+	// Bypass mitigation. (since Linux 4.17)
+	LinuxSeccompFlagSpecAllow LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_SPEC_ALLOW"
+)
+
 // Additional architectures permitted to be used for system calls
 // By default only the native architecture of the kernel is permitted
 const (
