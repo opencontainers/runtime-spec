@@ -189,6 +189,8 @@ type Linux struct {
 	IntelRdt *LinuxIntelRdt `json:"intelRdt,omitempty"`
 	// Personality contains configuration for the Linux personality syscall
 	Personality *LinuxPersonality `json:"personality,omitempty"`
+	// Expose /sys/dev/block entries for mounts and devices in the container.
+	SysDevBlock bool `json:"sysdevblock,omitempty"`
 }
 
 // LinuxNamespace is the configuration for a Linux namespace

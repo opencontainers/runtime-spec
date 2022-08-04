@@ -894,6 +894,20 @@ subset of the available options.
 * **`flags`** *(array of strings, OPTIONAL)* - the additional flags to apply.
     Currently no flag values are supported.
 
+## <a name="configLinuxSysDevBlock" />SysDevBlock
+
+**`sysDevBlock`** (boolean, OPTIONAL), if true, will expose /sys/dev/block symlinks for the mounts
+and devices in the container. This allows containers to navigate via these symlinks to the
+/sys/device hierarachy exposing information about the storage attributes that the container may
+use.
+
+If false, or missing, the default exposure of /sys/dev/block from the container runtime occurs.
+
+### Example
+
+```json
+"sysDevBlock": true
+```
 
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
