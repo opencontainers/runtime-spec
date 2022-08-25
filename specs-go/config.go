@@ -12,6 +12,8 @@ type Spec struct {
 	Root *Root `json:"root,omitempty"`
 	// Hostname configures the container's hostname.
 	Hostname string `json:"hostname,omitempty"`
+	// Domainname configures the container's domainname.
+	Domainname string `json:"domainname,omitempty"`
 	// Mounts configures additional mounts (on top of Root).
 	Mounts []Mount `json:"mounts,omitempty"`
 	// Hooks configures callbacks for container lifecycle events.

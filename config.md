@@ -355,6 +355,18 @@ For Windows based systems the user structure has the following fields:
 "hostname": "mrsdalloway"
 ```
 
+## <a name="configDomainname" />Domainname
+
+* **`domainname`** (string, OPTIONAL) specifies the container's domainname as seen by processes running inside the container.
+    On Linux, for example, this will change the domainname in the [container](glossary.md#container-namespace) [UTS namespace][uts-namespace.7].
+    Depending on your [namespace configuration](config-linux.md#namespaces), the container UTS namespace may be the [runtime](glossary.md#runtime-namespace) [UTS namespace][uts-namespace.7].
+
+### Example
+
+```json
+"domainname": "foobarbaz.test"
+```
+
 ## <a name="configPlatformSpecificConfiguration" />Platform-specific configuration
 
 * **`linux`** (object, OPTIONAL) [Linux-specific configuration](config-linux.md).

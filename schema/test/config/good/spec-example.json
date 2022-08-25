@@ -63,6 +63,7 @@
         "readonly": true
     },
     "hostname": "slartibartfast",
+    "domainname": "foobarbaz.test",
     "mounts": [
         {
             "destination": "/proc",
