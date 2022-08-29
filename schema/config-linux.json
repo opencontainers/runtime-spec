@@ -169,6 +169,9 @@
                             },
                             "useHierarchy": {
                                 "type": "boolean"
+                            },
+                            "checkBeforeUpdate": {
+                                "type": "boolean"
                             }
                         }
                     },

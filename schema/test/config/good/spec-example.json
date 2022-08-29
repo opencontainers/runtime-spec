@@ -270,7 +270,8 @@
                 "kernelTCP": -1,
                 "swappiness": 0,
                 "disableOOMKiller": false,
-                "useHierarchy": false
+                "useHierarchy": false,
+                "checkBeforeUpdate": false
             },
             "cpu": {
                 "shares": 1024,
