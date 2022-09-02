@@ -759,6 +759,11 @@ The following parameters can be specified to set up seccomp:
             * `SCMP_CMP_GT`
             * `SCMP_CMP_MASKED_EQ`
 
+    Syscalls in this list are not guaranteed to be unique, and MAY appear multiple
+    times. If a syscall appears multiple times, runtimes MUST use the first match,
+    and MUST ignore further occurrences. Runtimes MAY log a warning if duplicate entries
+    are present.
+
 ### Example
 
 ```json
