@@ -645,6 +645,10 @@ const (
 	// LinuxSeccompFlagSpecAllow can be used to disable Speculative Store
 	// Bypass mitigation. (since Linux 4.17)
 	LinuxSeccompFlagSpecAllow LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_SPEC_ALLOW"
+
+	// LinuxSeccompFlagWaitKillableRecv can be used to switch to the wait
+	// killable semantics. (since Linux 5.19)
+	LinuxSeccompFlagWaitKillableRecv LinuxSeccompFlag = "SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV"
 )
 
 // Additional architectures permitted to be used for system calls
