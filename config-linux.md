@@ -701,6 +701,7 @@ The following parameters can be specified to set up seccomp:
     * `SECCOMP_FILTER_FLAG_TSYNC`
     * `SECCOMP_FILTER_FLAG_LOG`
     * `SECCOMP_FILTER_FLAG_SPEC_ALLOW`
+    * `SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV`
 
 * **`listenerPath`** *(string, OPTIONAL)* - specifies the path of UNIX domain socket over which the runtime will send the [container process state](#containerprocessstate) data structure when the `SCMP_ACT_NOTIFY` action is used.
     This socket MUST use `AF_UNIX` domain and `SOCK_STREAM` type.
