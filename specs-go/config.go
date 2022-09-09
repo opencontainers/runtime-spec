@@ -319,6 +319,10 @@ type LinuxMemory struct {
 	DisableOOMKiller *bool `json:"disableOOMKiller,omitempty"`
 	// Enables hierarchical memory accounting
 	UseHierarchy *bool `json:"useHierarchy,omitempty"`
+	// CheckBeforeUpdate enables checking if a new memory limit is lower
+	// than the current usage during update, and if so, rejecting the new
+	// limit.
+	CheckBeforeUpdate *bool `json:"checkBeforeUpdate,omitempty"`
 }
 
 // LinuxCPU for Linux cgroup 'cpu' resource management

@@ -336,6 +336,11 @@ The following properties do not specify memory limits, but are covered by the `m
     To disable it, specify a value of `true`.
 * **`useHierarchy`** *(bool, OPTIONAL)* - enables or disables hierarchical memory accounting.
     If enabled (`true`), child cgroups will share the memory limits of this cgroup.
+* **`checkBeforeUpdate`** *(bool, OPTIONAL)* - enables container memory usage check before setting a new limit.
+    If enabled (`true`), runtime MAY check if a new memory limit is lower than the current usage, and MUST
+    reject the new limit. Practically, when cgroup v1 is used, the kernel rejects the limit lower than the
+    current usage, and when cgroup v2 is used, an OOM killer is invoked. This setting can be used on
+    cgroup v2 to mimic the cgroup v1 behavior.
 
 #### Example
 
