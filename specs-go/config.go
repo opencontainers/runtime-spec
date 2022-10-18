@@ -218,6 +218,8 @@ const (
 	UTSNamespace LinuxNamespaceType = "uts"
 	// UserNamespace for isolating user and group IDs
 	UserNamespace LinuxNamespaceType = "user"
+	// ImaNamespace for isolating PCR values
+	ImaNamespace LinuxNamespaceType = "ima"
 	// CgroupNamespace for isolating cgroup hierarchies
 	CgroupNamespace LinuxNamespaceType = "cgroup"
 )
