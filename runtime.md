@@ -57,13 +57,13 @@ The lifecycle describes the timeline of events that happen from when a container
     If the runtime is unable to create the environment specified in the [`config.json`](config.md), it MUST [generate an error](#errors).
     While the resources requested in the [`config.json`](config.md) MUST be created, the user-specified program (from [`process`](config.md#process)) MUST NOT be run at this time.
     Any updates to [`config.json`](config.md) after this step MUST NOT affect the container.
-3. The [`prestart` hooks](config.md#prestart) MUST be invoked by the runtime.
-    If any `prestart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
-4. The [`createRuntime` hooks](config.md#createRuntime-hooks) MUST be invoked by the runtime.
+3. The [`createRuntime` hooks](config.md#createRuntime-hooks) MUST be invoked by the runtime.
     If any `createRuntime` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
-5. The [`createContainer` hooks](config.md#createContainer-hooks) MUST be invoked by the runtime.
+4. The [`createContainer` hooks](config.md#createContainer-hooks) MUST be invoked by the runtime.
     If any `createContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
-6. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+5. Runtime's [`start`](runtime.md#start) command is invoked with the unique identifier of the container.
+6. The [`prestart` hooks](config.md#prestart) MUST be invoked by the runtime.
+    If any `prestart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
 7. The [`startContainer` hooks](config.md#startContainer-hooks) MUST be invoked by the runtime.
     If any `startContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
 8. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
