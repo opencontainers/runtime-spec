@@ -226,10 +226,16 @@ The user for the process is a platform-specific structure that allows specific c
 
 For POSIX platforms the `user` structure has the following fields:
 
-* **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
-* **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
+* **`uid`** (int, REQUIRED) specifies the user ID (UID) in the [container namespace](glossary.md#container-namespace).
+* **`gid`** (int, REQUIRED) specifies the group ID (GID) in the [container namespace](glossary.md#container-namespace).
 * **`umask`** (int, OPTIONAL) specifies the [umask][umask_2] of the user. If unspecified, the umask should not be changed from the calling process' umask.
-* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the process.
+* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the list of supplementary group IDs.
+
+On a POSIX platform, processes have both a 'base' GID (as specified in the `gid` field), and an array of supplementary group IDs as described in [IEEE Std 1003.1-2008][ieee-1003.1.2008-xbd-c3.378].
+Runtimes MUST ensure that all group IDs specified by `gid` and `additionalGids` are present in the array of supplementary group IDs.
+Runtimes SHOULD preserve the order of `additionalGids`; if the base GID (as specified in the `gid` field) is absent from `additionalGids`, it SHOULD be positioned at the start of the supplementary group ID array.
+
+Entities which create a container using a runtime on a POSIX platform SHOULD duplicate the base GID (as specified in the `gid` field) as `additionalGids[0]`; this maximizes compatibility and consistency when using runtimes that target a previous version of this specification.
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
 
@@ -986,6 +992,7 @@ Here is a full example `config.json` for reference.
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
 [naming-a-volume]: https://aka.ms/nb3hqb
+[ieee-1003.1-2008-xbd-c3.378]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_378
 
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
