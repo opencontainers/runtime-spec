@@ -365,6 +365,9 @@ The following parameters can be specified to set up the controller:
 
 * **`shares`** *(uint64, OPTIONAL)* - specifies a relative share of CPU time available to the tasks in a cgroup
 * **`quota`** *(int64, OPTIONAL)* - specifies the total amount of time in microseconds for which all tasks in a cgroup can run during one period (as defined by **`period`** below)
+    If specified with any (valid) positive value, it MUST be no smaller than `burst` (runtimes MAY generate an error).
+* **`burst`** *(uint64, OPTIONAL)* - specifies the maximum amount of accumulated time in microseconds for which all tasks in a cgroup can run additionally for burst during one period (as defined by **`period`** below)
+    If specified, this value MUST be no larger than any positive `quota` (runtimes MAY generate an error).
 * **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
 * **`realtimeRuntime`** *(int64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
 * **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
@@ -378,6 +381,7 @@ The following parameters can be specified to set up the controller:
 "cpu": {
     "shares": 1024,
     "quota": 1000000,
+    "burst": 1000000,
     "period": 500000,
     "realtimeRuntime": 950000,
     "realtimePeriod": 1000000,

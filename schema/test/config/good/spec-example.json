@@ -276,6 +276,7 @@
             "cpu": {
                 "shares": 1024,
                 "quota": 1000000,
+                "burst": 1000000,
                 "period": 500000,
                 "realtimeRuntime": 950000,
                 "realtimePeriod": 1000000,
