@@ -904,6 +904,21 @@ subset of the available options.
 * **`flags`** *(array of strings, OPTIONAL)* - the additional flags to apply.
     Currently no flag values are supported.
 
+## <a name="configLinuxKeyrings" />Keyrings
+
+**`keyrings`** (object, OPTIONAL) sets the kernel keyrings that are created and/or joined by the
+container. For more information, see the [keyrings][keyrings.7] man page.
+
+* **`session`** *(object, OPTIONAL)* - the session shared process keyring.
+    The session-specific keyring is inherited and shared by all child processes. If `session` is
+    not specified, no new session keyring will be created/and or joined by the container. This
+    will cause the container to inherit the calling processes session key.
+
+* **`process`** *(object, OPTIONAL)* - the per-process shared keyring.
+    The process-specific keyring is shared by all threads in a process.
+
+* **`thread`** *(object, OPTIONAL)* - the per-thread keyring.
+	The thread-specific keyring is kept to a particular thread.
 
 [cgroup-v1]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt
 [cgroup-v1-blkio]: https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
@@ -927,6 +942,7 @@ subset of the available options.
 [tmpfs]: https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt
 
 [full.4]: http://man7.org/linux/man-pages/man4/full.4.html
+[keyrings.7]: https://man7.org/linux/man-pages/man7/keyrings.7.html
 [mknod.1]: http://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: http://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: http://man7.org/linux/man-pages/man7/namespaces.7.html
