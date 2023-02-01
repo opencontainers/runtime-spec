@@ -191,6 +191,8 @@ type Linux struct {
 	IntelRdt *LinuxIntelRdt `json:"intelRdt,omitempty"`
 	// Personality contains configuration for the Linux personality syscall
 	Personality *LinuxPersonality `json:"personality,omitempty"`
+	// TimeOffsets specifies the offset for supporting time namespaces.
+	TimeOffsets map[string]LinuxTimeOffset `json:"timeOffsets,omitempty"`
 }
 
 // LinuxNamespace is the configuration for a Linux namespace
@@ -220,6 +222,8 @@ const (
 	UserNamespace LinuxNamespaceType = "user"
 	// CgroupNamespace for isolating cgroup hierarchies
 	CgroupNamespace LinuxNamespaceType = "cgroup"
+	// TimeNamespace for isolating the clocks
+	TimeNamespace LinuxNamespaceType = "time"
 )
 
 // LinuxIDMapping specifies UID/GID mappings
@@ -230,6 +234,14 @@ type LinuxIDMapping struct {
 	HostID uint32 `json:"hostID"`
 	// Size is the number of IDs to be mapped
 	Size uint32 `json:"size"`
+}
+
+// LinuxTimeOffset specifies the offset for Time Namespace
+type LinuxTimeOffset struct {
+	// Secs is the offset of clock (in secs) in the container
+	Secs int64 `json:"secs,omitempty"`
+	// Nanosecs is the additional offset for Secs (in nanosecs)
+	Nanosecs uint32 `json:"nanosecs,omitempty"`
 }
 
 // POSIXRlimit type and restrictions

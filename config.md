@@ -928,6 +928,16 @@ Here is a full example `config.json` for reference.
                 }
             ]
         },
+        "timeOffsets": {
+            "monotonic": {
+                "secs": 172800,
+                "nanosecs": 0
+            },
+            "boottime": {
+                "secs": 604800,
+                "nanosecs": 0
+            }
+        },
         "namespaces": [
             {
                 "type": "pid"
@@ -949,6 +959,9 @@ Here is a full example `config.json` for reference.
             },
             {
                 "type": "cgroup"
+            },
+            {
+                "type": "time"
             }
         ],
         "maskedPaths": [

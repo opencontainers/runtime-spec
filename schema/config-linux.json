@@ -280,6 +280,12 @@
             "personality": {
                 "type": "object",
                 "$ref": "defs-linux.json#/definitions/Personality"
+            },
+            "timeOffsets": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "defs-linux.json#/definitions/TimeOffsets"
+                }
             }
         }
     }
