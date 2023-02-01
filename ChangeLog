@@ -1,5 +1,74 @@
 OpenContainers Specifications
 
+Changes with v1.1.0-rc.1:
+
+	Breaking changes (but rather conforms to the existing runc implementation):
+
+	* config: change prestart hook spec to match reality (#1169)
+
+	Deprecations:
+
+	* config-linux: mark memory.kernel[TCP] as NOT RECOMMENDED (#1093)
+
+	Additions:
+
+	* cgroup: add cgroup v2 support (#1040)
+	* seccomp: allow to override errno return code (#1041)
+	* seccomp: Add support for SCMP_ACT_KILL_PROCESS (#1044)
+	* Update seccomp architectures to support RISCV64 (#1059)
+	* Add support for SCMP_ACT_KILL_THREAD (#1064)
+	* Add Seccomp Notify support using UNIX sockets and container metadata (#1074)
+	* config-linux: Add Intel RDT CMT and MBM Linux support (#1076)
+	* seccomp: allow to override default errno return code (#1087)
+	* Introduce zos as platform (#1095)
+	* config-linux: add idle option for container cgroup (#1136)
+	* config-linux: add CFS bandwidth burst (#1120)
+	* IDMapping field for mount point (#1143)
+	* schema: add cpu idle (#1145)
+	* add domainname spec entity (#1156)
+	* config-linux: add memory.checkBeforeUpdate (#1158)
+	* seccomp: Add flag SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV (#1161)
+
+	Minor fixes and documentation:
+
+	* seccomp: fix go-specs for errnoRet (#1042)
+	* MAINTAINERS: Add @cyphar as maintainer (#1043)
+	* Define State for container and runtime namespace (#1045)
+	* Add Giuseppe Scrivano as a runtime spec maintainer (#1048)
+	* Remove superfluous 'an' (#1049)
+	* Add State status constants to spec-go (#1046)
+	* config.go: make umask a pointer (#1058)
+	* Update State structure to use the new ContainerState type (#1056)
+	* docs: Added enclave OCI runtime rune to implementations (#1055)
+	* Change all references from whitelist to allowlist (#1054)
+	* Fix int64 and uint64 type value ranges (#1060)
+	* MAINTAINERS: update vbatts email (#1065)
+	* travis: fix go_import_path (#1072)
+	* Makefile: Fix golint URL used in go get (#1075)
+	* config-linux: fix personality link (#1086)
+	* README: Fix broken link for charter (#1091)
+	* Fix seccomp notify inconsistencies (#1096)
+	* runtime should WARN / ignore capabilities that cannot be granted (#1094)
+	* config-linux: clarify the handling of ClosID RDT parameter (#1104)
+	* defs-zos: [Fix] prevent schema parsers from hitting recursion-loop while resolving types. (#1117)
+	* fix the lifecycle reference in the states listing (#1118)
+	* add youki to implementations.md (#1126)
+	* Switch to GitHub Actions, CODEOWNERS, etc. (#1128)
+	* specify cgroup ownership semantics (#1123)
+	* config-linux: MAY reject an unfit cgroup (#1125)
+	* cgroup ownership: clarify that some files may not exist (#1137)
+	* typo: seccompFD -> seccompFd (#1133)
+	* schema: update README.md (#1083)
+	* schema: make with golang 1.16 (#1084)
+	* Update Windows CPU comments (#1144)
+	* specs-go: export LinuxBlockIODevice (#1103)
+	* config-linux: update type of LinuxCPU.Idle to *int64 (#1146)
+	* fix RFC link (#1153)
+	* Add available LinuxSeccompFlags (#1138)
+	* maintainer updates as per (#1101 (#1150)
+	* GOVERNANCE: correct the Charter URL (#1157)
+	* CODEOWNERS: sync with MAINTAINERS (#1160)
+
 Changes with v1.0.2:
 
 	Additions:
