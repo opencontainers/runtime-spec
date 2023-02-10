@@ -77,10 +77,86 @@ For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M
     * Windows: a local directory on the filesystem of the container host. UNC paths and mapped drives are not supported.
     * Solaris: corresponds to "special" of the fs resource in [zonecfg(1M)][zonecfg.1m].
 * **`options`** (array of strings, OPTIONAL) Mount options of the filesystem to be used.
-    * Linux: supported options are listed in the [mount(8)][mount.8] man page.
-      Note both [filesystem-independent][mount.8-filesystem-independent] and [filesystem-specific][mount.8-filesystem-specific] options are listed.
+    * Linux: See [Linux mount options](#configLinuxMountOptions) below.
     * Solaris: corresponds to "options" of the fs resource in [zonecfg(1M)][zonecfg.1m].
     * Windows: runtimes MUST support `ro`, mounting the filesystem read-only when `ro` is given.
+
+### <a name="configLinuxMountOptions" />Linux mount options
+
+Runtimes MUST/SHOULD/MAY implement the following option strings for Linux:
+
+ Option name      | Requirement | Description
+------------------|-------------|-----------------------------------------------------
+ `async`          | MUST        | [^1]
+ `atime`          | MUST        | [^1]
+ `bind`           | MUST        | [^2] (bind mounts)
+ `defaults`       | MUST        | [^1]
+ `dev`            | MUST        | [^1]
+ `diratime`       | MUST        | [^1]
+ `dirsync`        | MUST        | [^1]
+ `exec`           | MUST        | [^1]
+ `iversion`       | MUST        | [^1]
+ `lazytime`       | MUST        | [^1]
+ `loud`           | MUST        | [^1]
+ `mand`           | MAY         | [^1] (Deprecated in kernel 5.15, util-linux 2.38)
+ `noatime`        | MUST        | [^1]
+ `nodev`          | MUST        | [^1]
+ `nodiratime`     | MUST        | [^1]
+ `noexec`         | MUST        | [^1]
+ `noiversion`     | MUST        | [^1]
+ `nolazytime`     | MUST        | [^1]
+ `nomand`         | MAY         | [^1]
+ `norelatime`     | MUST        | [^1]
+ `nostrictatime`  | MUST        | [^1]
+ `nosuid`         | MUST        | [^1]
+ `nosymfollow`    | SHOULD      | [^1] (Introduced in kernel 5.10, util-linux 2.38)
+ `private`        | MUST        | [^2] (bind mounts)
+ `ratime`         | SHOULD      | Recursive `atime` [^3]
+ `rbind`          | MUST        | [^2] (bind mounts)
+ `rdev`           | SHOULD      | Recursive `dev` [^3]
+ `rdiratime`      | SHOULD      | Recursive `diratime` [^3]
+ `relatime`       | MUST        | [^1]
+ `remount`        | MUST        | [^1]
+ `rexec`          | SHOULD      | Recursive `dev` [^3]
+ `rnoatime`       | SHOULD      | Recursive `noatime` [^3]
+ `rnodiratime`    | SHOULD      | Recursive `nodiratime` [^3]
+ `rnoexec`        | SHOULD      | Recursive `noexec` [^3]
+ `rnorelatime`    | SHOULD      | Recursive `norelatime` [^3]
+ `rnostrictatime` | SHOULD      | Recursive `nostrictatime` [^3]
+ `rnosuid`        | SHOULD      | Recursive `nosuid` [^3]
+ `rnosymfollow`   | SHOULD      | Recursive `nosymfollow` [^3]
+ `ro`             | MUST        | [^1]
+ `rprivate`       | MUST        | [^2] (bind mounts)
+ `rrelatime  `    | SHOULD      | Recursive `relatime` [^3]
+ `rro`            | SHOULD      | Recursive `ro` [^3]
+ `rrw`            | SHOULD      | Recursive `rw` [^3]
+ `rshared`        | MUST        | [^2] (bind mounts)
+ `rslave`         | MUST        | [^2] (bind mounts)
+ `rstrictatime`   | SHOULD      | Recursive `strictatime` [^3]
+ `rsuid`          | SHOULD      | Recursive `suid` [^3]
+ `rsymfollow`     | SHOULD      | Recursive `symfollow` [^3]
+ `runbindable`    | MUST        | [^2] (bind mounts)
+ `rw`             | MUST        | [^1]
+ `shared`         | MUST        | [^1]
+ `silent`         | MUST        | [^1]
+ `slave`          | MUST        | [^2] (bind mounts)
+ `strictatime`    | MUST        | [^1]
+ `suid`           | MUST        | [^1]
+ `symfollow`      | SHOULD      | Opposite of `nosymfollow`
+ `sync`           | MUST        | [^1]
+ `tmpcopyup`      | MAY         | copy up the contents to a tmpfs
+ `unbindable`     | MUST        | [^2] (bind mounts)
+
+[^1]: Corresponds to [`mount(8)` (filesystem-independent)][mount.8-filesystem-independent].
+[^2]: Corresponds to [`mount(8)` (filesystem-specific)][mount.8-filesystem-specific].
+[^3]: These `AT_RECURSIVE` options need kernel 5.12 or later. See [`mount_setattr(2)`][mount_setattr.2]
+
+The "MUST" options correspond to [`mount(8)`][mount.8].
+
+Runtimes MAY also implement custom option strings that are not listed in the table above.
+If a custom option string is already recognized by [`mount(8)`][mount.8], the runtime SHOULD follow the behavior of [`mount(8)`][mount.8].
+
+Runtimes SHOULD pass unknown options to [`mount(2)`][mount.2] via the fifth argument (`const void *data`).
 
 ### Example (Windows)
 
@@ -1004,6 +1080,7 @@ Here is a full example `config.json` for reference.
 [mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
 [mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
 [mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
+[mount_setattr.2]: http://man7.org/linux/man-pages/man2/mount_setattr.2.html
 [getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
 [getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
