@@ -133,6 +133,7 @@ Each entry has the following structure:
     More info in [mknod(1)][mknod.1].
 * **`path`** *(string, REQUIRED)* - full path to device inside container.
     If a [file][] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
+    The path MAY be anywhere in the container filesystem, notably outside of `/dev`.
 * **`major, minor`** *(int64, REQUIRED unless `type` is `p`)* - [major, minor numbers][devices] for the device.
 * **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
     You can also control access to devices [with cgroups](#configLinuxDeviceAllowedlist).
@@ -140,6 +141,14 @@ Each entry has the following structure:
 * **`gid`** *(uint32, OPTIONAL)* - id of device group in the [container namespace](glossary.md#container-namespace).
 
 The same `type`, `major` and `minor` SHOULD NOT be used for multiple devices.
+
+Containers MAY NOT access any device node that is not either explicitly
+referenced in the **`devices`** array or listed as being part of the
+[default devices](#configLinuxDefaultDevices).
+Rationale: runtimes based on virtual machines need to be able to adjust the node
+devices, and accessing device nodes that were not adjusted could have undefined
+behaviour.
+
 
 ### Example
 
