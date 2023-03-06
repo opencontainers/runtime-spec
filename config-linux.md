@@ -114,7 +114,7 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
 ## <a name="configLinuxTimeOffset" />Offset for Time Namespace
 
 **`timeOffsets`** (object, OPTIONAL) sets the offset for Time Namespace. For more information
-see the [time_namespaces](time_namespaces.7).
+see the [time_namespaces][time_namespaces.7].
 
 The name of the clock is the entry key.
 Entry values are objects with the following properties:
