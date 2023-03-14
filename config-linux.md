@@ -726,6 +726,7 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_PARISC`
     * `SCMP_ARCH_PARISC64`
     * `SCMP_ARCH_RISCV64`
+    * `SCMP_ARCH_LOONGARCH64`
 
 * **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with seccomp(2).
 
