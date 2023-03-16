@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -61,7 +61,7 @@ func main() {
 		}
 		documentLoader = gojsonschema.NewReferenceLoader("file://" + documentPath)
 	} else {
-		documentBytes, err := ioutil.ReadAll(os.Stdin)
+		documentBytes, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
