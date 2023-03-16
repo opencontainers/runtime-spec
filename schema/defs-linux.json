@@ -323,6 +323,30 @@
                     "$ref": "defs.json#/definitions/uint32"
                 }
             }
+        },
+        "SchedulerPolicy": {
+            "type": "string",
+            "enum": [
+                "SCHED_OTHER",
+                "SCHED_FIFO",
+                "SCHED_RR",
+                "SCHED_BATCH",
+                "SCHED_ISO",
+                "SCHED_IDLE",
+                "SCHED_DEADLINE"
+            ]
+        },
+        "SchedulerFlag": {
+            "type": "string",
+            "enum": [
+                "SCHED_FLAG_RESET_ON_FORK",
+                "SCHED_FLAG_RECLAIM",
+                "SCHED_FLAG_DL_OVERRUN",
+                "SCHED_FLAG_KEEP_POLICY",
+                "SCHED_FLAG_KEEP_PARAMS",
+                "SCHED_FLAG_UTIL_CLAMP_MIN",
+                "SCHED_FLAG_UTIL_CLAMP_MAX"
+            ]
         }
     }
 }

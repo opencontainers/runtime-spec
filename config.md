@@ -291,6 +291,33 @@ For Linux-based systems, the `process` object supports the following process-spe
 
     This is a per-process setting, where as [`disableOOMKiller`](config-linux.md#memory) is scoped for a memory cgroup.
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
+* **`scheduler`** (object, OPTIONAL) is an object describing the scheduler properties for the process.  The `scheduler` contains the following properties:
+
+    * **`policy`** (string, REQUIRED) represents the scheduling policy.  A valid list of values is:
+
+        * `SCHED_OTHER`
+        * `SCHED_FIFO`
+        * `SCHED_RR`
+        * `SCHED_BATCH`
+        * `SCHED_ISO`
+        * `SCHED_IDLE`
+        * `SCHED_DEADLINE`
+
+    * **`nice`** (int32, OPTIONAL) is the nice value for the process, affecting its priority. A lower nice value corresponds to a higher priority. If not set, the runtime must use the value 0.
+    * **`priority`** (int32, OPTIONAL) represents the static priority of the process, used by real-time policies like SCHED_FIFO and SCHED_RR. If not set, the runtime must use the value 0.
+    * **`flags`** (array of strings, OPTIONAL) is an array of strings representing scheduling flags.  A valid list of values is:
+
+        * `SCHED_FLAG_RESET_ON_FORK`
+        * `SCHED_FLAG_RECLAIM`
+        * `SCHED_FLAG_DL_OVERRUN`
+        * `SCHED_FLAG_KEEP_POLICY`
+        * `SCHED_FLAG_KEEP_PARAMS`
+        * `SCHED_FLAG_UTIL_CLAMP_MIN`
+        * `SCHED_FLAG_UTIL_CLAMP_MAX`
+
+    * **`runtime`** (uint64, OPTIONAL) represents the amount of time in nanoseconds during which the process is allowed to run in a given period, used by the deadline scheduler. If not set, the runtime must use the value 0.
+    * **`deadline`** (uint64, OPTIONAL) represents the absolute deadline for the process to complete its execution, used by the deadline scheduler. If not set, the runtime must use the value 0.
+    * **`period`** (uint64, OPTIONAL) represents the length of the period in nanoseconds used for determining the process runtime, used by the deadline scheduler. If not set, the runtime must use the value 0.
 * **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label for the process.
     For more information about SELinux, see  [SELinux documentation][selinux].
 

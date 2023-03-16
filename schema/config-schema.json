@@ -147,6 +147,38 @@
                 "noNewPrivileges": {
                     "type": "boolean"
                 },
+                "scheduler": {
+                    "type": "object",
+                    "required": [
+                        "policy"
+                    ],
+                    "properties": {
+                        "policy": {
+                            "$ref": "defs-linux.json#/definitions/SchedulerPolicy"
+                        },
+                        "nice": {
+                            "$ref": "defs.json#/definitions/int32"
+                        },
+                        "priority": {
+                            "$ref": "defs.json#/definitions/int32"
+                        },
+                       "flags": {
+                           "type": "array",
+                           "items": {
+                               "$ref": "defs-linux.json#/definitions/SchedulerFlag"
+                           }
+                        },
+                        "runtime": {
+                            "$ref": "defs.json#/definitions/uint64"
+                        },
+                        "deadline": {
+                            "$ref": "defs.json#/definitions/uint64"
+                        },
+                        "period": {
+                            "$ref": "defs.json#/definitions/uint64"
+                        }
+                    }
+                },
                 "rlimits": {
                     "type": "array",
                     "items": {
