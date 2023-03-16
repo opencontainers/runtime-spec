@@ -73,7 +73,7 @@ endif
 install.tools: .install.gitvalidation
 
 .install.gitvalidation:
-	go get -u github.com/vbatts/git-validation
+	go install github.com/vbatts/git-validation@v1.2.0
 
 clean:
 	rm -rf $(OUTPUT_DIRNAME) *~
