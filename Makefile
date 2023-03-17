@@ -61,14 +61,6 @@ test: .govet .golint .gitvalidation
 .govet:
 	go vet -x ./...
 
-# `go get github.com/golang/lint/golint`
-.golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
-	@which golint > /dev/null 2>/dev/null || (echo "ERROR: golint not found. Consider 'make install.tools' target" && false)
-	golint ./...
-endif
-
-
 # When this is running in GitHub, it will only check the GitHub commit range
 .gitvalidation:
 	@which git-validation > /dev/null 2>/dev/null || (echo "ERROR: git-validation not found. Consider 'make install.tools' target" && false)
@@ -78,16 +70,10 @@ else
 	git-validation -v -run DCO,short-subject,dangling-whitespace -range $(EPOCH_TEST_COMMIT)..HEAD
 endif
 
-install.tools: .install.golint .install.gitvalidation
-
-# golint does not even build for <go1.7
-.install.golint:
-ifeq ($(call ALLOWED_GO_VERSION,1.7,$(HOST_GOLANG_VERSION)),true)
-	go get -u golang.org/x/lint/golint
-endif
+install.tools: .install.gitvalidation
 
 .install.gitvalidation:
-	go get -u github.com/vbatts/git-validation
+	go install github.com/vbatts/git-validation@v1.2.0
 
 clean:
 	rm -rf $(OUTPUT_DIRNAME) *~
