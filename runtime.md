@@ -129,11 +129,13 @@ This operation MUST run the user-specified program as specified by [`process`](c
 This operation MUST generate an error if `process` was not set.
 
 ### <a name="runtimeKill" />Kill
-`kill <container-id> <signal>`
+`kill <container-id> <signal> <all>`
 
 This operation MUST [generate an error](#errors) if it is not provided the container ID.
 Attempting to send a signal to a container that is neither [`created` nor `running`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
 This operation MUST send the specified signal to the container process.
+
+`<all>` is a boolean. If it is true, all the processes in the container are be killed.
 
 ### <a name="runtimeDelete" />Delete
 `delete <container-id>`
