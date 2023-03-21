@@ -483,17 +483,31 @@ The following parameters can be specified to set up the controller:
 
 ### <a name="configLinuxHugePageLimits" />Huge page limits
 
-**`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the
-HugeTLB usage per control group and enforces the controller limit during page fault.
+**`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the HugeTLB reservations (if supported) or usage (page fault).
+By default if supported by the kernel, `hugepageLimits` defines the hugepage sizes and limits for HugeTLB controller
+reservation accounting, which allows to limit the HugeTLB reservations per control group and enforces the controller
+limit at reservation time and at the fault of HugeTLB memory for which no reservation exists.
+Otherwise if not supported by the kernel, this should fallback to the page fault accounting, which allows users to limit
+the HugeTLB usage (page fault) per control group and enforces the limit during page fault.
+
+Note that reservation limits are superior to page fault limits, since reservation limits are enforced at reservation
+time (on mmap or shget), and never causes the application to get SIGBUS signal if the memory was reserved before hand.
+This allows for easier fallback to alternatives such as non-HugeTLB memory for example. In the case of page fault
+accounting, it's very hard to avoid processes getting SIGBUS since the sysadmin needs precisely know the HugeTLB usage
+of all the tasks in the system and make sure there is enough pages to satisfy all requests. Avoiding tasks getting
+SIGBUS on overcommited systems is practically impossible with page fault accounting.
+
 For more information, see the kernel cgroups documentation about [HugeTLB][cgroup-v1-hugetlb].
 
 Each entry has the following structure:
 
-* **`pageSize`** *(string, REQUIRED)* - hugepage size
+* **`pageSize`** *(string, REQUIRED)* - hugepage size.
     The value has the format `<size><unit-prefix>B` (64KB, 2MB, 1GB), and must match the `<hugepagesize>` of the
-    corresponding control file found in `/sys/fs/cgroup/hugetlb/hugetlb.<hugepagesize>.limit_in_bytes`.
+    corresponding control file found in `/sys/fs/cgroup/hugetlb/hugetlb.<hugepagesize>.rsvd.limit_in_bytes` (if
+    hugetlb_cgroup reservation is supported) or `/sys/fs/cgroup/hugetlb/hugetlb.<hugepagesize>.limit_in_bytes` (if not
+    supported).
     Values of `<unit-prefix>` are intended to be parsed using base 1024 ("1KB" = 1024, "1MB" = 1048576, etc).
-* **`limit`** *(uint64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB usage
+* **`limit`** *(uint64, REQUIRED)* - limit in bytes of *hugepagesize* HugeTLB reservations (if supported) or usage.
 
 #### Example
 

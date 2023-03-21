@@ -254,12 +254,13 @@ type POSIXRlimit struct {
 	Soft uint64 `json:"soft"`
 }
 
-// LinuxHugepageLimit structure corresponds to limiting kernel hugepages
+// LinuxHugepageLimit structure corresponds to limiting kernel hugepages.
+// Default to reservation limits if supported. Otherwise fallback to page fault limits.
 type LinuxHugepageLimit struct {
-	// Pagesize is the hugepage size
-	// Format: "<size><unit-prefix>B' (e.g. 64KB, 2MB, 1GB, etc.)
+	// Pagesize is the hugepage size.
+	// Format: "<size><unit-prefix>B' (e.g. 64KB, 2MB, 1GB, etc.).
 	Pagesize string `json:"pageSize"`
-	// Limit is the limit of "hugepagesize" hugetlb usage
+	// Limit is the limit of "hugepagesize" hugetlb reservations (if supported) or usage.
 	Limit uint64 `json:"limit"`
 }
 
@@ -394,7 +395,7 @@ type LinuxResources struct {
 	Pids *LinuxPids `json:"pids,omitempty"`
 	// BlockIO restriction configuration
 	BlockIO *LinuxBlockIO `json:"blockIO,omitempty"`
-	// Hugetlb limit (in bytes)
+	// Hugetlb limits (in bytes). Default to reservation limits if supported.
 	HugepageLimits []LinuxHugepageLimit `json:"hugepageLimits,omitempty"`
 	// Network restriction configuration
 	Network *LinuxNetwork `json:"network,omitempty"`
