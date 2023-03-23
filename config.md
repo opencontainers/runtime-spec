@@ -293,6 +293,12 @@ For Linux-based systems, the `process` object supports the following process-spe
     For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
 * **`selinuxLabel`** (string, OPTIONAL) specifies the SELinux label for the process.
     For more information about SELinux, see  [SELinux documentation][selinux].
+* **`ioPriority`** (object, OPTIONAL) configures the I/O priority settings for the container's processes within the process group.
+    The I/O priority settings will be automatically applied to the entire process group, affecting all processes within the container.
+    The following properties are available:
+
+    * **`class`** (string, REQUIRED) specifies the I/O scheduling class. Possible values are `IOPRIO_CLASS_RT`, `IOPRIO_CLASS_BE`, and `IOPRIO_CLASS_IDLE`.
+    * **`priority`** (int, REQUIRED) specifies the priority level within the class. The value should be an integer ranging from 0 (highest) to 7 (lowest).
 
 ### <a name="configUser" />User
 
@@ -334,6 +340,10 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     ],
     "apparmorProfile": "acme_secure_profile",
     "selinuxLabel": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675",
+    "ioPriority": {
+        "class": "IOPRIO_CLASS_IDLE",
+        "priority": 4
+    },
     "noNewPrivileges": true,
     "capabilities": {
         "bounding": [
@@ -734,6 +744,10 @@ Here is a full example `config.json` for reference.
         "apparmorProfile": "acme_secure_profile",
         "oomScoreAdj": 100,
         "selinuxLabel": "system_u:system_r:svirt_lxc_net_t:s0:c124,c675",
+        "ioPriority": {
+            "class": "IOPRIO_CLASS_IDLE",
+            "priority": 4
+        },
         "noNewPrivileges": true
     },
     "root": {

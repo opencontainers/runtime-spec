@@ -62,6 +62,8 @@ type Process struct {
 	OOMScoreAdj *int `json:"oomScoreAdj,omitempty" platform:"linux"`
 	// SelinuxLabel specifies the selinux context that the container process is run as.
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
+	// IOPriority contains the I/O priority settings for the cgroup.
+	IOPriority *LinuxIOPriority `json:"ioPriority,omitempty" platform:"linux"`
 }
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
@@ -78,6 +80,22 @@ type LinuxCapabilities struct {
 	// Ambient is the ambient set of capabilities that are kept.
 	Ambient []string `json:"ambient,omitempty" platform:"linux"`
 }
+
+// IOPriority represents I/O priority settings for the container's processes within the process group.
+type LinuxIOPriority struct {
+	Class    IOPriorityClass `json:"class"`
+	Priority int             `json:"priority"`
+}
+
+// IOPriorityClass represents an I/O scheduling class.
+type IOPriorityClass string
+
+// Possible values for IOPriorityClass.
+const (
+	IOPRIO_CLASS_RT   IOPriorityClass = "IOPRIO_CLASS_RT"
+	IOPRIO_CLASS_BE   IOPriorityClass = "IOPRIO_CLASS_BE"
+	IOPRIO_CLASS_IDLE IOPriorityClass = "IOPRIO_CLASS_IDLE"
+)
 
 // Box specifies dimensions of a rectangle. Used for specifying the size of a console.
 type Box struct {

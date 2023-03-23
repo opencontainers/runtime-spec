@@ -144,6 +144,15 @@
                 "selinuxLabel": {
                     "type": "string"
                 },
+                "ioPriority": {
+                    "class": "string",
+                    "enum": [
+                        "IOPRIO_CLASS_RT",
+                        "IOPRIO_CLASS_BE",
+                        "IOPRIO_CLASS_IDLE"
+                    ],
+                    "priority": "integer"
+                },
                 "noNewPrivileges": {
                     "type": "boolean"
                 },
