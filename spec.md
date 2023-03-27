@@ -13,11 +13,11 @@ The execution environment is specified to ensure that applications running insid
 
 Platforms defined by this specification are:
 
-* `linux`: [runtime.md](runtime.md), [config.md](config.md), [config-linux.md](config-linux.md), and [runtime-linux.md](runtime-linux.md).
-* `solaris`: [runtime.md](runtime.md), [config.md](config.md), and [config-solaris.md](config-solaris.md).
-* `windows`: [runtime.md](runtime.md), [config.md](config.md), and [config-windows.md](config-windows.md).
-* `vm`: [runtime.md](runtime.md), [config.md](config.md), and [config-vm.md](config-vm.md).
-* `zos`: [runtime.md](runtime.md), [config.md](config.md), and [config-zos.md](config-zos.md).
+* `linux`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), [config-linux.md](config-linux.md), [runtime-linux.md](runtime-linux.md), and [features-linux.md](features-linux.md).
+* `solaris`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-solaris.md](config-solaris.md).
+* `windows`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-windows.md](config-windows.md).
+* `vm`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-vm.md](config-vm.md).
+* `zos`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-zos.md](config-zos.md).
 
 # <a name="ociRuntimeSpecTOC" />Table of Contents
 
@@ -33,6 +33,8 @@ Platforms defined by this specification are:
     - [Windows-specific Configuration](config-windows.md)
     - [Virtual-Machine-specific Configuration](config-vm.md)
     - [z/OS-specific Configuration](config-zos.md)
+- [Features Document](features.md)
+    - [Linux-specific Features Document](features-linux.md)
 - [Glossary](glossary.md)
 
 # <a name="ociRuntimeSpecNotationalConventions" />Notational Conventions

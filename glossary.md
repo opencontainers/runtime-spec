@@ -17,6 +17,11 @@ For example, namespaces, resource limits, and mounts are all part of the contain
 
 On Linux,the [namespaces][namespaces.7] in which the [configured process](config.md#process) executes.
 
+## <a name="glossaryFeaturesDocument" />Features Document
+
+A [JSON][] document that represents [the implemented features](#features.md) of the [runtime](#runtime).
+Irrelevant to the actual availability of the features in the host operating system.
+
 ## <a name="glossaryJson" />JSON
 
 All configuration [JSON][] MUST be encoded in [UTF-8][].
@@ -28,11 +33,20 @@ The order of entries in JSON objects is not significant.
 An implementation of this specification.
 It reads the [configuration files](#configuration) from a [bundle](#bundle), uses that information to create a [container](#container), launches a process inside the container, and performs other [lifecycle actions](runtime.md).
 
+## <a name="glossaryRuntimeCaller" />Runtime caller
+An external program to execute a [runtime](#runtime), directly or indirectly.
+
+Examples of direct callers include containerd, CRI-O, and Podman.
+Examples of indirect callers include Docker/Moby and Kubernetes.
+
+Runtime callers often execute a runtime via [runc][]-compatible command line interface, however, its interaction interface is currently out of the scope of the Open Container Initiative Runtime Specification.
+
 ## <a name="glossaryRuntimeNamespace" />Runtime namespace
 
 On Linux, the namespaces from which new [container namespaces](#container-namespace) are [created](config-linux.md#namespaces) and from which some configured resources are accessed.
 
 [JSON]: https://tools.ietf.org/html/rfc8259
 [UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
+[runc]: https://github.com/opencontainers/runc
 
 [namespaces.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html

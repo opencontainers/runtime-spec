@@ -1,0 +1,29 @@
+{
+    "description": "Open Container Initiative Runtime Specification Runtime Features Schema",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "ociVersionMin": {
+            "$ref": "defs.json#/definitions/ociVersion"
+        },
+        "ociVersionMax": {
+            "$ref": "defs.json#/definitions/ociVersion"
+        },
+        "hooks": {
+            "$ref": "defs.json#/definitions/ArrayOfStrings"
+        },
+        "mountOptions": {
+            "$ref": "defs.json#/definitions/ArrayOfStrings"
+        },
+        "annotations": {
+            "$ref": "defs.json#/definitions/annotations"
+        },
+         "linux": {
+            "$ref": "features-linux.json#/linux"
+        }
+    },
+    "required": [
+        "ociVersionMin",
+        "ociVersionMax"
+    ]
+}
