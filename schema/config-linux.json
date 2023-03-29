@@ -283,8 +283,14 @@
             },
             "timeOffsets": {
                 "type": "object",
-                "additionalProperties": {
-                    "$ref": "defs-linux.json#/definitions/TimeOffsets"
+                "type": "object",
+                "properties": {
+                    "boottime": {
+                        "$ref": "defs-linux.json#/definitions/TimeOffsets"
+                    },
+                    "monotonic": {
+                        "$ref": "defs-linux.json#/definitions/TimeOffsets"
+                    }
                 }
             }
         }
