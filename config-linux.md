@@ -418,7 +418,9 @@ The following parameters can be specified to set up the controller:
 ### <a name="configLinuxBlockIO" />Block IO
 
 **`blockIO`** (object, OPTIONAL) represents the cgroup subsystem `blkio` which implements the block IO controller.
-For more information, see the kernel cgroups documentation about [blkio][cgroup-v1-blkio].
+For more information, see the kernel cgroups documentation about [blkio][cgroup-v1-blkio] of cgroup v1 or [io][cgroup-v2-io] of cgroup v2, .
+
+Note that I/O throttling settings in cgroup v1 apply only to Direct I/O due to kernel implementation constraints, while this limitation does not exist in cgroup v2.
 
 The following parameters can be specified to set up the controller:
 
@@ -954,6 +956,7 @@ subset of the available options.
 [cgroup-v1-pids]: https://www.kernel.org/doc/Documentation/cgroup-v1/pids.txt
 [cgroup-v1-rdma]: https://www.kernel.org/doc/Documentation/cgroup-v1/rdma.txt
 [cgroup-v2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt
+[cgroup-v2-io]: https://docs.kernel.org/admin-guide/cgroup-v2.html#io
 [devices]: https://www.kernel.org/doc/Documentation/admin-guide/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
 [file]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
