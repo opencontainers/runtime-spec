@@ -283,7 +283,6 @@
             },
             "timeOffsets": {
                 "type": "object",
-                "type": "object",
                 "properties": {
                     "boottime": {
                         "$ref": "defs-linux.json#/definitions/TimeOffsets"
