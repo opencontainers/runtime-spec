@@ -770,6 +770,10 @@ The following rules on parameters MUST be applied:
 
 * If `closID` is set, and none of `l3CacheSchema`, `memBwSchema` or `schemata` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
 
+* If `closID` is not set and the runtime has created the sub-directory, the runtime MUST remove the sub-directory when the container is deleted.
+
+* If `closID` is set or the runtime has not created the sub-directory, the runtime MUST NOT remove the sub-directory when the container is deleted.
+
 * If `enableMonitoring` is set, the runtime MUST create a dedicated MON group
   for the container. The runtime MUST use the container ID from
   [`start`](runtime.md#start) as the name of the MON group, i.e. create
