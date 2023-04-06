@@ -754,9 +754,7 @@ The following parameters can be specified for the container:
 
 The following rules on parameters MUST be applied:
 
-* If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
-
-* If `l3CacheSchema` contains a line beginning with `MB:`, the value written to `schemata` file MUST be the non-`MB:` line(s) from `l3CacheSchema` and the line from `memBWSchema`.
+* If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the values to the `schemata` file in that sub-directory discussed in `closID`. The runtimes MUST write `l3CacheSchema` first and `memBwSchema` last.
 
 * If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
 
