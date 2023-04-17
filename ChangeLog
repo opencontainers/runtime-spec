@@ -1,5 +1,24 @@
 OpenContainers Specifications
 
+Changes with v1.1.0-rc.2:
+
+	Additions:
+
+	* config-linux: add support for rsvd hugetlb cgroup (#1116)
+	* features: add `features.md` to formalize the `runc features` JSON (#1130)
+	* config-linux: add support for time namespace (#1151)
+
+	Minor fixes and documentation:
+
+	* config-linux: clarify where device nodes can be created (#1148)
+	* runtime: remove `When serialized in JSON, the format MUST adhere to the
+	  following pattern` (#1178)
+	* Update CI to Go 1.20 (#1179)
+	* config: clarify Linux mount options (#1181)
+	* config-linux: fix url error (#1184)
+	* schema: fix schema for timeOffsets (#1193)
+	* schema: remove duplicate keys (#1195)
+
 Changes with v1.1.0-rc.1:
 
 	Breaking changes (but rather conforms to the existing runc implementation):
