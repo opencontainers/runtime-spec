@@ -1,0 +1,19 @@
+platform/linux:
+- '**/*-linux*'
+- '**/linux-*'
+
+platform/vm:
+- '**/*-vm*'
+- '**/vm-*'
+
+platform/windows:
+- '**/*-windows*'
+- '**/windows-*'
+
+platform/solaris:
+- '**/*-solaris*'
+- '**/solaris-*'
+
+platform/zos:
+- '**/*-zos*'
+- '**/zos-*'
