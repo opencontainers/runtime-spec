@@ -850,14 +850,14 @@ Example sending a single `seccompFd` file descriptor in the `SCM_RIGHTS` array:
 
 ```json
 {
-    "ociVersion": "0.2.0",
+    "ociVersion": "1.0.2",
     "fds": [
         "seccompFd"
     ],
     "pid": 4422,
     "metadata": "MKNOD=/dev/null,/dev/net/tun;BPF_MAP_TYPES=hash,array",
     "state": {
-        "ociVersion": "0.2.0",
+        "ociVersion": "1.0.2",
         "id": "oci-container1",
         "status": "creating",
         "pid": 4422,
