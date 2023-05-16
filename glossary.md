@@ -17,9 +17,9 @@ For example, namespaces, resource limits, and mounts are all part of the contain
 
 On Linux,the [namespaces][namespaces.7] in which the [configured process](config.md#process) executes.
 
-## <a name="glossaryFeaturesDocument" />Features Document
+## <a name="glossaryFeaturesDocument" />Features Structure
 
-A [JSON][] document that represents [the implemented features](#features.md) of the [runtime](#runtime).
+A [JSON][] structure that represents [the implemented features](#features.md) of the [runtime](#runtime).
 Irrelevant to the actual availability of the features in the host operating system.
 
 ## <a name="glossaryJson" />JSON

@@ -1,6 +1,6 @@
-# <a name="linuxFeatures" />Linux Features Document
+# <a name="linuxFeatures" />Linux Features Structure
 
-This document describes the [Linux-specific section](features.md#platform-specific-features) of the [features document](features.md).
+This document describes the [Linux-specific section](features.md#platform-specific-features) of the [Features structure](features.md).
 
 ## <a name="linuxFeaturesNamespaces" />Namespaces
 

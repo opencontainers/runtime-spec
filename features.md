@@ -1,12 +1,12 @@
-# <a name="features" />Features Document
+# <a name="features" />Features Structure
 
-A [runtime](glossary.md#runtime) MAY provide a JSON document about its implemented features to [runtime callers](glossary.md#runtime-caller).
-This JSON document is called ["features document"](glossary.md#features-document).
+A [runtime](glossary.md#runtime) MAY provide a JSON structure about its implemented features to [runtime callers](glossary.md#runtime-caller).
+This JSON structure is called ["Features structure"](glossary.md#features-structure).
 
-The features document is irrelevant to the actual availability of the features in the host operating system.
-Hence, the content of the feature document SHOULD be determined on the compilation time of the runtime, not on the execution time.
+The Features structure is irrelevant to the actual availability of the features in the host operating system.
+Hence, the content of the Features structure SHOULD be determined on the compilation time of the runtime, not on the execution time.
 
-All properties in the features document except `ociVersionMin` and `ociVersionMax` MAY either be absent or have the `null` value.
+All properties in the Features structure except `ociVersionMin` and `ociVersionMax` MAY either be absent or have the `null` value.
 The `null` value MUST NOT be confused with an empty value such as `0`, `false`, `""`, `[]`, and `{}`.
 
 ## <a name="featuresSpecificationVersion" />Specification version
@@ -17,7 +17,7 @@ The `null` value MUST NOT be confused with an empty value such as `0`, `false`, 
 * **`ociVersionMax`** (string, REQUIRED) The maximum recognized version of the Open Container Initiative Runtime Specification.
   The runtime MUST accept this value as the [`ociVersion` property of `config.json`](config.md#specification-version).
   The value MUST NOT be less than the value of the `ociVersionMin` property.
-  The feature document MUST NOT contain properties that are not defined in this version of the Open Container Initiative Runtime Specification.
+  The Features structure MUST NOT contain properties that are not defined in this version of the Open Container Initiative Runtime Specification.
 
 ### Example
 ```json
