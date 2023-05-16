@@ -145,7 +145,7 @@ Here is a full example for reference.
 ```json
 {
   "ociVersionMin": "1.0.0",
-  "ociVersionMax": "1.0.2-dev",
+  "ociVersionMax": "1.1.0-rc.2",
   "hooks": [
     "prestart",
     "createRuntime",
@@ -155,7 +155,6 @@ Here is a full example for reference.
     "poststop"
   ],
   "mountOptions": [
-    "acl",
     "async",
     "atime",
     "bind",
@@ -168,7 +167,6 @@ Here is a full example for reference.
     "lazytime",
     "loud",
     "mand",
-    "noacl",
     "noatime",
     "nodev",
     "nodiratime",
@@ -275,7 +273,8 @@ Here is a full example for reference.
       "v1": true,
       "v2": true,
       "systemd": true,
-      "systemdUser": true
+      "systemdUser": true,
+      "rdma": true
     },
     "seccomp": {
       "enabled": true,
@@ -283,6 +282,8 @@ Here is a full example for reference.
         "SCMP_ACT_ALLOW",
         "SCMP_ACT_ERRNO",
         "SCMP_ACT_KILL",
+        "SCMP_ACT_KILL_PROCESS",
+        "SCMP_ACT_KILL_THREAD",
         "SCMP_ACT_LOG",
         "SCMP_ACT_NOTIFY",
         "SCMP_ACT_TRACE",
@@ -309,6 +310,7 @@ Here is a full example for reference.
         "SCMP_ARCH_PPC",
         "SCMP_ARCH_PPC64",
         "SCMP_ARCH_PPC64LE",
+        "SCMP_ARCH_RISCV64",
         "SCMP_ARCH_S390",
         "SCMP_ARCH_S390X",
         "SCMP_ARCH_X32",
@@ -316,9 +318,13 @@ Here is a full example for reference.
         "SCMP_ARCH_X86_64"
       ],
       "knownFlags": [
+        "SECCOMP_FILTER_FLAG_TSYNC",
+        "SECCOMP_FILTER_FLAG_SPEC_ALLOW",
         "SECCOMP_FILTER_FLAG_LOG"
       ],
       "supportedFlags": [
+        "SECCOMP_FILTER_FLAG_TSYNC",
+        "SECCOMP_FILTER_FLAG_SPEC_ALLOW",
         "SECCOMP_FILTER_FLAG_LOG"
       ]
     },
@@ -327,13 +333,16 @@ Here is a full example for reference.
     },
     "selinux": {
       "enabled": true
+    },
+    "intelRdt": {
+      "enabled": true
     }
   },
   "annotations": {
-      "io.github.seccomp.libseccomp.version": "2.5.4",
-      "org.opencontainers.runc.checkpoint.enabled": "true",
-      "org.opencontainers.runc.commit": "v1.1.0-368-ga1c51c56",
-      "org.opencontainers.runc.version": "1.1.0+dev"
+    "io.github.seccomp.libseccomp.version": "2.5.4",
+    "org.opencontainers.runc.checkpoint.enabled": "true",
+    "org.opencontainers.runc.commit": "v1.1.0-534-g26851168",
+    "org.opencontainers.runc.version": "1.1.0+dev"
   }
 }
 ```
