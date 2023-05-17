@@ -33,8 +33,8 @@ Platforms defined by this specification are:
     - [Windows-specific Configuration](config-windows.md)
     - [Virtual-Machine-specific Configuration](config-vm.md)
     - [z/OS-specific Configuration](config-zos.md)
-- [Features Document](features.md)
-    - [Linux-specific Features Document](features-linux.md)
+- [Features Structure](features.md)
+    - [Linux-specific Features Structure](features-linux.md)
 - [Glossary](glossary.md)
 
 # <a name="ociRuntimeSpecNotationalConventions" />Notational Conventions
