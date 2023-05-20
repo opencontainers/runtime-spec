@@ -165,6 +165,63 @@
         },
         "annotations": {
             "$ref": "#/definitions/mapStringString"
+        },
+        "LandlockFSAction": {
+            "type": "string",
+            "enum": [
+                "execute",
+                "write_file",
+                "read_file",
+                "read_dir",
+                "remove_dir",
+                "remove_file",
+                "make_char",
+                "make_dir",
+                "make_reg",
+                "make_sock",
+                "make_fifo",
+                "make_block",
+                "make_sym"
+            ]
+        },
+        "ArrayOfLandlockFSActions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockFSAction"
+            }
+        },
+        "LandlockRuleset": {
+            "type": "object",
+             "properties": {
+                 "handledAccessFS": {
+                     "$ref": "#/definitions/ArrayOfLandlockFSActions"
+                 }
+             }
+        },
+        "LandlockRulePathBeneath": {
+            "type": "object",
+            "properties": {
+                "allowedAccess": {
+                    "$ref": "#/definitions/ArrayOfLandlockFSActions"
+                },
+                "paths": {
+                    "$ref": "#/definitions/ArrayOfStrings"
+                }
+            }
+        },
+        "ArrayOfLandlockRulePathBeneaths": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockRulePathBeneath"
+            }
+        },
+        "LandlockRules": {
+            "type": "object",
+            "properties": {
+                "pathBeneath": {
+                    "$ref": "#/definitions/ArrayOfLandlockRulePathBeneaths"
+                }
+            }
         }
     }
 }
