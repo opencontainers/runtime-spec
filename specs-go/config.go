@@ -92,6 +92,8 @@ type Process struct {
 	Scheduler *Scheduler `json:"scheduler,omitempty" platform:"linux"`
 	// SelinuxLabel specifies the selinux context that the container process is run as.
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
+	// CoreSched specifies the Core Scheduling config options for the container.
+	CoreSched *LinuxCoreSched `json:"coreSched,omitempty" platform:"linux"`
 }
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
@@ -107,6 +109,27 @@ type LinuxCapabilities struct {
 	Permitted []string `json:"permitted,omitempty" platform:"linux"`
 	// Ambient is the ambient set of capabilities that are kept.
 	Ambient []string `json:"ambient,omitempty" platform:"linux"`
+}
+
+// LinuxCoreSched defines the Core Scheduling config options for the container.
+type LinuxCoreSched struct {
+	// Create controls whether to create a new unique cookie for the process in the container.
+	Create bool `json:"create,omitempty" platform:"linux"`
+	// ShareTo specifies the PIDs that the core_sched cookie of the current process should push to.
+	ShareTo *LinuxCoreSchedPids `json:"shareTo,omitempty" platform:"linux"`
+	// ShareFrom specifies the PIDs that the core_sched cookie of the current process should pull from.
+	ShareFrom *LinuxCoreSchedPids `json:"shareFrom,omitempty" platform:"linux"`
+}
+
+// LinuxCoreSchedPids defines the PIDs that Core Scheduling supports for setting and copying 'task cookies'.
+// 'PID == 0' implies the current process.
+type LinuxCoreSchedPids struct {
+	// Pids are the threads.
+	Pids []int `json:"pids,omitempty" platform:"linux"`
+	// Tgids are the processes.
+	Tgids []int `json:"tgids,omitempty" platform:"linux"`
+	// Pgids are the process groups.
+	Pgids []int `json:"pgids,omitempty" platform:"linux"`
 }
 
 // Box specifies dimensions of a rectangle. Used for specifying the size of a console.
