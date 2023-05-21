@@ -165,6 +165,21 @@
         },
         "annotations": {
             "$ref": "#/definitions/mapStringString"
+        },
+        "Exception": {
+            "type": "object",
+            "properties": {
+                "mitigation": {
+                    "type": "string"
+                },
+                "rule": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "mitigation",
+                "rule"
+            ]
         }
     }
 }

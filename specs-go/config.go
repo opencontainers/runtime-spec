@@ -92,6 +92,8 @@ type Process struct {
 	Scheduler *Scheduler `json:"scheduler,omitempty" platform:"linux"`
 	// SelinuxLabel specifies the selinux context that the container process is run as.
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
+	// DisableSpeculationMitigations disables speculative execution mitigations
+	DisableSpeculationMitigations *LinuxDisableSpeculationMitigations `json:"disableSpeculationMitigations,omitempty" platform:"linux"`
 }
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
@@ -107,6 +109,18 @@ type LinuxCapabilities struct {
 	Permitted []string `json:"permitted,omitempty" platform:"linux"`
 	// Ambient is the ambient set of capabilities that are kept.
 	Ambient []string `json:"ambient,omitempty" platform:"linux"`
+}
+
+// LinuxDisableSpeculationMitigations sets up the rule of speculative execution mitigations.
+type LinuxDisableSpeculationMitigations struct {
+	DefaultRule string `json:"defaultRule"`
+	Exceptions []SpecExceptions `json:"exceptions,omitempty"`
+}
+
+// SpecExceptions is used to specify the setting of speculative execution mitigations.
+type SpecExceptions struct {
+	Mitigation string `json:"mitigation"`
+	Rule string `json:"rule"`
 }
 
 // Box specifies dimensions of a rectangle. Used for specifying the size of a console.
