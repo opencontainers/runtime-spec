@@ -145,13 +145,23 @@
                     "type": "string"
                 },
                 "ioPriority": {
-                    "class": "string",
-                    "enum": [
-                        "IOPRIO_CLASS_RT",
-                        "IOPRIO_CLASS_BE",
-                        "IOPRIO_CLASS_IDLE"
+                    "type": "object",
+                    "required": [
+                        "class"
                     ],
-                    "priority": "integer"
+                    "properties": {
+                        "class": {
+                            "type": "string",
+                            "enum": [
+                                "IOPRIO_CLASS_RT",
+                                "IOPRIO_CLASS_BE",
+                                "IOPRIO_CLASS_IDLE"
+                            ]
+                        },
+                        "priority": {
+                            "$ref": "defs.json#/definitions/int32"
+                        }
+                    }
                 },
                 "noNewPrivileges": {
                     "type": "boolean"
