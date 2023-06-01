@@ -61,8 +61,54 @@ This image contains the root filesystem that the virtual machine **`kernel`** wi
     }
 ```
 
+## <a name="HwConfigObject" /> HWConfig Object
+
+**`hwConfig`** (object OPTIONAL) Specifies the hardware configuration that should be passed to the VM.
+* **`deviceTree`** (string OPTIONAL) Path to the container device-tree file that should be passed to the VM.
+* **`vcpus`** (int OPTIONAL) Number of virtual cpus for the VM.
+* **`memory`** (int OPTIONAL) Maximum memory in bytes allocated to the VM.
+* **`dtdevs`** (array OPTIONAL) Host device tree nodes to passthrough to the VM, see [Xen Config][xl-config-format] for the details.
+* **`iomems`** (array OPTIONAL) Allow auto-translated domains to access specific hardware I/O memory pages, see [Xen Config][xl-config-format].
+    * **`firstGFN`** (int OPTIONAL) Guest Frame Number to map the iomem range.
+        If GFN is not specified, the mapping will be done to the same Frame Number as was provided in firstMFN, see [Xen Config][xl-config-format] for the details.
+    * **`firstMFN`** (int REQUIRED) Physical page number of iomem regions, see [Xen Config][xl-config-format] for the details.
+    * **`nrMFNs`** (int REQUIRED) Number of pages to be mapped, see [Xen Config][xl-config-format] for the details.
+* **`irqs`** (array OPTIONAL) Allows VM to access specific physical IRQs, see [Xen Config][xl-config-format] for the details.
+
+This hwConfig object contains the description of the hardware that can be safely passed through to the VM. Where **`deviceTree`** is the path to the device-tree blob, which conains description of the isolated hardware and paravirtualized hardware that should be used by VM. **`dtdevs`**, **`iomems`** and **`irqs`** parameters describing the minimun set of the parameters, needed for VM to access the hardware.
+
+### Example
+
+```json
+    "hwConfig": {
+        "deviceTree": "/path/to/vm/devicetree.dtb",
+        "vcpus": 1,
+        "memory": 4194304,
+        "dtdevs": [
+            "path/to/dev1_node",
+            "path/to/dev2_node"
+        ],
+        "iomems": [
+            {
+                "firstMFN": 12288,
+                "nrMFNs": 1
+            },
+            {
+                "firstGFN": 12544,
+                "firstMFN": 33024,
+                "nrMFNs": 2
+            }
+        ],
+        "irqs": [
+            11,
+            22
+        ]
+    }
+```
+
 [raw-image-format]: https://en.wikipedia.org/wiki/IMG_(file_format)
 [qcow2-image-format]: https://git.qemu.org/?p=qemu.git;a=blob_plain;f=docs/interop/qcow2.txt;hb=HEAD
 [vdi-image-format]: https://forensicswiki.org/wiki/Virtual_Disk_Image_(VDI)
 [vmdk-image-format]: http://www.vmware.com/app/vmdk/?src=vmdk
 [vhd-image-format]: https://github.com/libyal/libvhdi/blob/master/documentation/Virtual%20Hard%20Disk%20(VHD)%20image%20format.asciidoc
+[xl-config-format]: https://xenbits.xen.org/docs/4.10-testing/man/xl.cfg.5.html
