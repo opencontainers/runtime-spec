@@ -1,5 +1,23 @@
 OpenContainers Specifications
 
+Changes with v1.1.0-rc.3:
+
+	Additions:
+
+	* config: add scheduler entity (#1188)
+	* config: Add I/O Priority Configuration for process group in Linux Containers (#1191)
+
+	Minor fixes and documentation:
+
+	* config-linux: clarify I/O throttling differences between cgroup v1 and v2 (#1194)
+	* config-linux: chore: Update `ociVersion` in example (#1199)
+	* releases: use +dev as in-development suffix (#1198)
+	* MAINTAINERS: add Toru Komatsu (utam0k) (#1201)
+	* glossary: `s/features document/Features structure/g` (#1203)
+	* features: update Example (#1204)
+	* schema: fix definition for ioPriority (#1206)
+	* CODEOWNER: Add Toru Komatsu(@utam0k) to sync with MAINTAINERS (#1207)
+
 Changes with v1.1.0-rc.2:
 
 	Additions:
