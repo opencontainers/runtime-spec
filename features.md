@@ -129,6 +129,8 @@ The `null` value MUST NOT be confused with an empty value such as `0`, `false`, 
 **`annotations`** (object, OPTIONAL) contains arbitrary metadata of the runtime.
 This information MAY be structured or unstructured.
 Annotations MUST be a key-value map that follows the same convention as the Key and Values of the [`annotations` property of `config.json`](config.md#annotations).
+However, annotations do not need to contain the possible values of the [`annotations` property of `config.json`](config.md#annotations).
+The current version of the spec do not provide a way to enumerate the possible values of the [`annotations` property of `config.json`](config.md#annotations).
 
 ### Example
 ```json
