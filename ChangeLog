@@ -1,5 +1,13 @@
 OpenContainers Specifications
 
+Changes with v1.1.0:
+
+	Minor fixes and documentation:
+
+	* README.md: update chat information (#1210)
+	* Remove outdated meeting.ics (#1211)
+	* features: add a note to avoid confusion about annotations (#1212)
+
 Changes with v1.1.0-rc.3:
 
 	Additions:
