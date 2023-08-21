@@ -209,3 +209,22 @@ Irrelevant to the availability of Intel RDT on the host operating system.
   "enabled": true
 }
 ```
+
+## <a name="linuxFeaturesMountExtensions" />MountExtensions
+
+**`mountExtensions`** (object, OPTIONAL) represents whether the runtime supports certain mount features, irrespective of the availability of the features on the host operating system.
+
+* **`idmap`** (object, OPTIONAL) represents whether the runtime supports idmap mounts using the `uidMappings` and `gidMappings` properties of the mount.
+  * **`enabled`** (bool, OPTIONAL) represents whether the runtime parses and attempts to use the `uidMappings` and `gidMappings` properties of mounts if provided.
+    Note that it is possible for runtimes to have partial implementations of id-mapped mounts support (such as only allowing mounts which have mappings matching the container's user namespace, or only allowing the id-mapped bind-mounts).
+    In such cases, runtimes MUST still set this value to `true`, to indicate that the runtime recognises the `uidMappings` and `gidMappings` properties.
+
+### Example
+
+```json
+"mountExtensions": {
+  "idmap":{
+    "enabled": true
+  }
+}
+```
