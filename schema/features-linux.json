@@ -97,6 +97,19 @@
                         "type": "boolean"
                     }
                 }
+            },
+            "mountExtensions": {
+                "type": "object",
+                "properties": {
+                    "idmap": {
+                        "type": "object",
+                        "properties": {
+			    "enabled": {
+                                "type": "boolean"
+                            }
+                       }
+                    }
+                }
             }
         }
     }
