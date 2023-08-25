@@ -146,6 +146,8 @@ Runtimes MUST/SHOULD/MAY implement the following option strings for Linux:
  `sync`           | MUST        | [^1]
  `tmpcopyup`      | MAY         | copy up the contents to a tmpfs
  `unbindable`     | MUST        | [^2] (bind mounts)
+ `idmap`          | SHOULD      | Indicates that the mount has `uidMappings` and `gidMappings` specified. This option SHOULD NOT be passed to the underlying [`mount(2)`][mount.2] call. If supported, the runtime MUST return an error if this option is provided and either of `uidMappings` or `gidMappings` are empty or not present.
+ `ridmap`         | SHOULD      | Indicates that the mount has `uidMappings` and `gidMappings` specified, and the mapping is applied recursively [^3]. This option SHOULD NOT be passed to the underlying [`mount(2)`][mount.2] call. If supported, the runtime MUST return an error if this option is provided and either of `uidMappings` or `gidMappings` are empty or not present.
 
 [^1]: Corresponds to [`mount(8)` (filesystem-independent)][mount.8-filesystem-independent].
 [^2]: Corresponds to [`mount(8)` (filesystem-specific)][mount.8-filesystem-specific].
@@ -177,10 +179,16 @@ For POSIX platforms the `mounts` structure has the following fields:
 * **`type`** (string, OPTIONAL) The type of the filesystem to be mounted.
     * Linux: filesystem types supported by the kernel as listed in */proc/filesystems* (e.g., "minix", "ext2", "ext3", "jfs", "xfs", "reiserfs", "msdos", "proc", "nfs", "iso9660"). For bind mounts (when `options` include either `bind` or `rbind`), the type is a dummy, often "none" (not listed in */proc/filesystems*).
     * Solaris: corresponds to "type" of the fs resource in [zonecfg(1M)][zonecfg.1m].
-* **`uidMappings`** (array of type LinuxIDMapping, OPTIONAL) The mapping to convert UIDs from the source file system to the destination mount point.\
-The format is the same as [user namespace mappings](config-linux.md#user-namespace-mappings).
+* **`uidMappings`** (array of type LinuxIDMapping, OPTIONAL) The mapping to convert UIDs from the source file system to the destination mount point.
+  This SHOULD be implemented using [`mount_setattr(MOUNT_ATTR_IDMAP)`][mount_setattr.2], available since Linux 5.12.
+  If specified, the `options` field of the `mounts` structure SHOULD contain either `idmap` or `ridmap` to specify whether the mapping should be applied recursively for `rbind` mounts, as well as to ensure that older runtimes will not silently ignore this field.
+  The format is the same as [user namespace mappings](config-linux.md#user-namespace-mappings).
+  If specified, it MUST be specified along with `gidMappings`.
 * **`gidMappings`** (array of type LinuxIDMapping, OPTIONAL) The mapping to convert GIDs from the source file system to the destination mount point.
-For more details see `uidMappings`.
+  This SHOULD be implemented using [`mount_setattr(MOUNT_ATTR_IDMAP)`][mount_setattr.2], available since Linux 5.12.
+  If specified, the `options` field of the `mounts` structure SHOULD contain either `idmap` or `ridmap` to specify whether the mapping should be applied recursively for `rbind` mounts, as well as to ensure that older runtimes will not silently ignore this field.
+  For more details see `uidMappings`.
+  If specified, it MUST be specified along with `uidMappings`.
 
 
 ### Example (Linux)
