@@ -68,9 +68,14 @@ For Linux, the parameters are as documented in [mount(2)][mount.2] system call m
 For Solaris, the mount entry corresponds to the 'fs' resource in the [zonecfg(1M)][zonecfg.1m] man page.
 
 * **`destination`** (string, REQUIRED) Destination of mount point: path inside container.
-    This value MUST be an absolute path.
-    * Windows: one mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
-    * Solaris: corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * Linux: This value SHOULD be an absolute path.
+      For compatibility with old tools and configurations, it MAY be a relative path, in which case it MUST be interpreted as relative to "/".
+      Relative paths are **deprecated**.
+    * Windows: This value MUST be an absolute path.
+      One mount destination MUST NOT be nested within another mount (e.g., c:\\foo and c:\\foo\\bar).
+    * Solaris: This value MUST be an absolute path.
+      Corresponds to "dir" of the fs resource in [zonecfg(1M)][zonecfg.1m].
+    * For all other platforms: This value MUST be an absolute path.
 * **`source`** (string, OPTIONAL) A device name, but can also be a file or directory name for bind mounts or a dummy.
     Path values for bind mounts are either absolute or relative to the bundle.
     A mount is a bind mount if it has either `bind` or `rbind` in the options.
