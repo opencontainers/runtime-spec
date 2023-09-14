@@ -28,8 +28,8 @@ The `null` value MUST NOT be confused with an empty value such as `0`, `false`, 
 ```
 
 ## <a name="featuresHooks" />Hooks
-* **`hooks`** (array of strings, OPTIONAL) The recognized names of the [hooks](config.md#hooks).
-  The runtime MUST support the elements in this array as the [`hooks` property of `config.json`](config.md#hooks).
+* **`hooks`** (array of strings, OPTIONAL) The recognized names of the [hooks](config.md#posix-platform-hooks).
+  The runtime MUST support the elements in this array as the [`hooks` property of `config.json`](config.md#posix-platform-hooks).
 
 ### Example
 ```json
