@@ -94,7 +94,7 @@ Runtimes MUST/SHOULD/MAY implement the following option strings for Linux:
 ------------------|-------------|-----------------------------------------------------
  `async`          | MUST        | [^1]
  `atime`          | MUST        | [^1]
- `bind`           | MUST        | [^2] (bind mounts)
+ `bind`           | MUST        | Bind mount [^2]
  `defaults`       | MUST        | [^1]
  `dev`            | MUST        | [^1]
  `diratime`       | MUST        | [^1]
@@ -115,9 +115,9 @@ Runtimes MUST/SHOULD/MAY implement the following option strings for Linux:
  `nostrictatime`  | MUST        | [^1]
  `nosuid`         | MUST        | [^1]
  `nosymfollow`    | SHOULD      | [^1] (Introduced in kernel 5.10, util-linux 2.38)
- `private`        | MUST        | [^2] (bind mounts)
+ `private`        | MUST        | Bind mount propagation [^2]
  `ratime`         | SHOULD      | Recursive `atime` [^3]
- `rbind`          | MUST        | [^2] (bind mounts)
+ `rbind`          | MUST        | Recursive bind mount [^2]
  `rdev`           | SHOULD      | Recursive `dev` [^3]
  `rdiratime`      | SHOULD      | Recursive `diratime` [^3]
  `relatime`       | MUST        | [^1]
@@ -131,31 +131,31 @@ Runtimes MUST/SHOULD/MAY implement the following option strings for Linux:
  `rnosuid`        | SHOULD      | Recursive `nosuid` [^3]
  `rnosymfollow`   | SHOULD      | Recursive `nosymfollow` [^3]
  `ro`             | MUST        | [^1]
- `rprivate`       | MUST        | [^2] (bind mounts)
+ `rprivate`       | MUST        | Bind mount propagation [^2]
  `rrelatime  `    | SHOULD      | Recursive `relatime` [^3]
  `rro`            | SHOULD      | Recursive `ro` [^3]
  `rrw`            | SHOULD      | Recursive `rw` [^3]
- `rshared`        | MUST        | [^2] (bind mounts)
- `rslave`         | MUST        | [^2] (bind mounts)
+ `rshared`        | MUST        | Bind mount propagation [^2]
+ `rslave`         | MUST        | Bind mount propagation [^2]
  `rstrictatime`   | SHOULD      | Recursive `strictatime` [^3]
  `rsuid`          | SHOULD      | Recursive `suid` [^3]
  `rsymfollow`     | SHOULD      | Recursive `symfollow` [^3]
- `runbindable`    | MUST        | [^2] (bind mounts)
+ `runbindable`    | MUST        | Bind mount propagation [^2]
  `rw`             | MUST        | [^1]
  `shared`         | MUST        | [^1]
  `silent`         | MUST        | [^1]
- `slave`          | MUST        | [^2] (bind mounts)
+ `slave`          | MUST        | Bind mount propagation [^2]
  `strictatime`    | MUST        | [^1]
  `suid`           | MUST        | [^1]
  `symfollow`      | SHOULD      | Opposite of `nosymfollow`
  `sync`           | MUST        | [^1]
  `tmpcopyup`      | MAY         | copy up the contents to a tmpfs
- `unbindable`     | MUST        | [^2] (bind mounts)
+ `unbindable`     | MUST        | Bind mount propagation [^2]
  `idmap`          | SHOULD      | Indicates that the mount has `uidMappings` and `gidMappings` specified. This option SHOULD NOT be passed to the underlying [`mount(2)`][mount.2] call. If supported, the runtime MUST return an error if this option is provided and either of `uidMappings` or `gidMappings` are empty or not present.
  `ridmap`         | SHOULD      | Indicates that the mount has `uidMappings` and `gidMappings` specified, and the mapping is applied recursively [^3]. This option SHOULD NOT be passed to the underlying [`mount(2)`][mount.2] call. If supported, the runtime MUST return an error if this option is provided and either of `uidMappings` or `gidMappings` are empty or not present.
 
 [^1]: Corresponds to [`mount(8)` (filesystem-independent)][mount.8-filesystem-independent].
-[^2]: Corresponds to [`mount(8)` (filesystem-specific)][mount.8-filesystem-specific].
+[^2]: Corresponds to [bind mounts and shared subtrees][mount-bind].
 [^3]: These `AT_RECURSIVE` options need kernel 5.12 or later. See [`mount_setattr(2)`][mount_setattr.2]
 
 The "MUST" options correspond to [`mount(8)`][mount.8].
@@ -163,7 +163,8 @@ The "MUST" options correspond to [`mount(8)`][mount.8].
 Runtimes MAY also implement custom option strings that are not listed in the table above.
 If a custom option string is already recognized by [`mount(8)`][mount.8], the runtime SHOULD follow the behavior of [`mount(8)`][mount.8].
 
-Runtimes SHOULD pass unknown options to [`mount(2)`][mount.2] via the fifth argument (`const void *data`).
+Runtimes SHOULD treat unknown options as [filesystem-specific ones][mount.8-filesystem-specific])
+and pass those as a comma-separated string to the fifth (`const void *data`) argument of [`mount(2)`][mount.2].
 
 ### Example (Windows)
 
@@ -1135,6 +1136,7 @@ Here is a full example `config.json` for reference.
 [mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
 [mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
 [mount_setattr.2]: http://man7.org/linux/man-pages/man2/mount_setattr.2.html
+[mount-bind]: https://docs.kernel.org/filesystems/sharedsubtree.html
 [getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
 [getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
 [stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
