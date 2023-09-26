@@ -35,6 +35,8 @@
                 "SCMP_ARCH_X32",
                 "SCMP_ARCH_ARM",
                 "SCMP_ARCH_AARCH64",
+                "SCMP_ARCH_LOONGARCH64",
+                "SCMP_ARCH_M68K",
                 "SCMP_ARCH_MIPS",
                 "SCMP_ARCH_MIPS64",
                 "SCMP_ARCH_MIPS64N32",
@@ -46,6 +48,8 @@
                 "SCMP_ARCH_PPC64LE",
                 "SCMP_ARCH_S390",
                 "SCMP_ARCH_S390X",
+                "SCMP_ARCH_SH",
+                "SCMP_ARCH_SHEB",
                 "SCMP_ARCH_PARISC",
                 "SCMP_ARCH_PARISC64",
                 "SCMP_ARCH_RISCV64"

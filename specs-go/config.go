@@ -743,6 +743,18 @@ const (
 	ArchRISCV64     Arch = "SCMP_ARCH_RISCV64"
 )
 
+// The following constants are defined in the main branch of libseccomp,
+// but not included in its latest release (v2.5) yet.
+// https://github.com/seccomp/libseccomp/commits/main/include/seccomp.h.in
+//
+// Will be included in libseccomp v2.6.
+const (
+	ArchLOONGARCH64 Arch = "SCMP_ARCH_LOONGARCH64"
+	ArchM68K        Arch = "SCMP_ARCH_M68K"
+	ArchSH          Arch = "SCMP_ARCH_SH"
+	ArchSHEB        Arch = "SCMP_ARCH_SHEB"
+)
+
 // LinuxSeccompAction taken upon Seccomp rule match
 type LinuxSeccompAction string
 
