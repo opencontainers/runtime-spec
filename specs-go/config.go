@@ -795,14 +795,23 @@ type LinuxSyscall struct {
 type LinuxIntelRdt struct {
 	// The identity for RDT Class of Service
 	ClosID string `json:"closID,omitempty"`
+
+	// Schemata specifies the complete schemata to be written as is to the
+	// schemata file in resctrl fs. Each element represents a single line in the schemata file.
+	// NOTE: This will overwrite schemas specified in the L3CacheSchema and/or
+	// MemBwSchema fields.
+	Schemata []string `json:"schemata,omitempty"`
+
 	// The schema for L3 cache id and capacity bitmask (CBM)
 	// Format: "L3:<cache_id0>=<cbm0>;<cache_id1>=<cbm1>;..."
+	// NOTE: Should not be specified if Schemata is non-empty.
 	L3CacheSchema string `json:"l3CacheSchema,omitempty"`
 
 	// The schema of memory bandwidth per L3 cache id
 	// Format: "MB:<cache_id0>=bandwidth0;<cache_id1>=bandwidth1;..."
 	// The unit of memory bandwidth is specified in "percentages" by
 	// default, and in "MBps" if MBA Software Controller is enabled.
+	// NOTE: Should not be specified if Schemata is non-empty.
 	MemBwSchema string `json:"memBwSchema,omitempty"`
 
 	// EnableCMT is the flag to indicate if the Intel RDT CMT is enabled. CMT (Cache Monitoring Technology) supports monitoring of
