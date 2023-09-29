@@ -187,6 +187,10 @@ type Hook struct {
 type Hooks struct {
 	// Prestart is Deprecated. Prestart is a list of hooks to be run before the container process is executed.
 	// It is called in the Runtime Namespace
+	//
+	// Deprecated: use [Hooks.CreateRuntime], [Hooks.CreateContainer], and
+	// [Hooks.StartContainer] instead, which allow more granular hook control
+	// during the create and start phase.
 	Prestart []Hook `json:"prestart,omitempty"`
 	// CreateRuntime is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
 	// It is called in the Runtime Namespace
