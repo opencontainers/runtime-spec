@@ -375,6 +375,12 @@ type LinuxMemory struct {
 	// Total memory limit (memory + swap).
 	Swap *int64 `json:"swap,omitempty"`
 	// Kernel memory limit (in bytes).
+	//
+	// Deprecated: kernel-memory limits are not supported in cgroups v2, and
+	// were obsoleted in [kernel v5.4]. This field should no longer be used,
+	// as it may be ignored by runtimes.
+	//
+	// [kernel v5.4]: https://github.com/torvalds/linux/commit/0158115f702b0ba208ab0
 	Kernel *int64 `json:"kernel,omitempty"`
 	// Kernel memory limit for tcp (in bytes)
 	KernelTCP *int64 `json:"kernelTCP,omitempty"`
