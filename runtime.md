@@ -132,16 +132,26 @@ This operation MUST generate an error if `process` was not set.
 `kill <container-id> <signal>`
 
 This operation MUST [generate an error](#errors) if it is not provided the container ID.
+
 Attempting to send a signal to a container that is neither [`created` nor `running`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
-This operation MUST send the specified signal to the container process.
+
+This operation MUST send the specified signal to the container's init process.
+
+Specially, if the signal is `SIGKILL` and the container does not have its own private PID namespace, this operation MUST send the `SIGKILL` signal to all the processes in the container, even if the container's state is `stopped`.
 
 ### <a name="runtimeDelete" />Delete
 `delete <container-id>`
 
 This operation MUST [generate an error](#errors) if it is not provided the container ID.
+
 Attempting to `delete` a container that is not [`stopped`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
+
 Deleting a container MUST delete the resources that were created during the `create` step.
+
+Specially, when deleting a container, which does not have its own private PID namespace, the operation SHOULD kill all processes in this type container first, and return an error if those processes can not be killed.
+
 Note that resources associated with the container, but not created by this container, MUST NOT be deleted.
+
 Once a container is deleted its ID MAY be used by a subsequent container.
 
 
