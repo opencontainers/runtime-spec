@@ -349,10 +349,40 @@ The user for the process is a platform-specific structure that allows specific c
 
 For POSIX platforms the `user` structure has the following fields:
 
-* **`uid`** (int, REQUIRED) specifies the user ID in the [container namespace](glossary.md#container-namespace).
-* **`gid`** (int, REQUIRED) specifies the group ID in the [container namespace](glossary.md#container-namespace).
-* **`umask`** (int, OPTIONAL) specifies the [umask][umask_2] of the user. If unspecified, the umask should not be changed from the calling process' umask.
-* **`additionalGids`** (array of ints, OPTIONAL) specifies additional group IDs in the [container namespace](glossary.md#container-namespace) to be added to the process.
+* **`uid`** (int, REQUIRED) specifies a user ID (UID) in the [container namespace](glossary.md#container-namespace).
+  The container process MUST be started with the [real user ID, effective user ID and saved set-user-ID][ieee-1003.1-2008-xbd-c3.436] set to the value of `uid`.
+* **`gid`** (int, REQUIRED) specifies a group ID (GID) in the [container namespace](glossary.md#container-namespace).
+  The conatiner process MUST be started with the [real group ID, effective group ID, and saved set-group-ID][ieee-1003.1-2008-xbd-c3.189] set to the value of `gid`.
+* **`umask`** (int, OPTIONAL) specifies the [umask][umask.2] of the user.
+  If unspecified, the umask should not be changed from the calling process' umask.
+* **`additionalGids`** (array of ints, OPTIONAL) specifies a list of group IDs in the [container namespace](glossary.md#container-namespace)
+  to be added to the [supplementary group IDs][ieee-1003.1-2008-xbd-c3.378] of the container process.
+* **`sgids`** (array of ints, OPTIONAL) specifies a list of group IDs in the [container namespace](glossary.md#container-namespace).
+  This field takes precedence over `additionalGids`:
+  if `sgids` is specified, including if set to the empty array,
+  the container process MUST be started with its [supplementary group IDs][ieee-1003.1-2008-xbd-c3.378] set
+  such that a call to [getgroups][getgroups.2] from the container process
+  would return a _grouplist_ which contains all distinct group IDs in `sgids` and no group IDs not in `sgids`.
+  The group IDs in _grouplist_ SHOULD be in the same order as `sgids`.
+
+When the configuration does not define `sgids`,
+the container process MUST be started with its [supplementary group IDs][ieee-1003.1-2008-xbd-c3.378] set
+such that a call to [getgroups][getgroups.2] from the container process
+would return a _grouplist_ which contains all distinct group IDs specified by `additionalGids`.
+The order of group IDs in `additionalGids` SHOULD be preserved in _grouplist_.
+If the group ID specified by `gid` is not present in `additionalGids`,
+the container process _grouplist_ MUST additionally have `gid` as index 0.
+
+_Note: producers of configuration files which wish to be backwards-compatible
+with runtimes that are only compliant with earlier revisions of the specification
+should always include the `gid` group ID as the first item in the `additionalGids` array
+to ensure that `gid` is a supplementary group ID of the container process.
+Otherwise, processes in the container may be able to [bypass certain filesystem access controls.][negative-group-perms]_
+
+_Note: producers of configuration files which require full control over the supplementary group IDs of the container process
+should specify `sgids` and omit `additionalGids`,
+and specify a revision of the specification which defines `sgids` as the configuration `ociVersion`.
+As the security implications are subtle, use of the `sgids` field is discouraged._
 
 _Note: symbolic name for uid and gid, such as uname and gname respectively, are left to upper levels to derive (i.e. `/etc/passwd` parsing, NSS, etc)_
 
@@ -1124,11 +1154,16 @@ Here is a full example `config.json` for reference.
 [selinux]:http://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
+[getgroups.2]: https://pubs.opengroup.org/onlinepubs/009695399/functions/getgroups.html
 [umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
 [semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
 [naming-a-volume]: https://aka.ms/nb3hqb
+[ieee-1003.1-2008-xbd-c3.189]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_189
+[ieee-1003.1-2008-xbd-c3.378]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_378
+[ieee-1003.1-2008-xbd-c3.436]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_436
+[negative-group-perms]: https://www.benthamsgaze.org/2022/08/22/vulnerability-in-linux-containers-investigation-and-mitigation/
 
 [capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
 [mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
