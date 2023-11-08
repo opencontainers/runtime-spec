@@ -18,6 +18,9 @@
         "annotations": {
             "$ref": "defs.json#/definitions/annotations"
         },
+        "potentiallyUnsafeConfigAnnotations": {
+            "$ref": "defs.json#/definitions/ArrayOfStrings"
+        },
          "linux": {
             "$ref": "features-linux.json#/linux"
         }
