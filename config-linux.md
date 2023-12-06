@@ -37,7 +37,7 @@ The following parameters can be specified to set up namespaces:
     * **`time`** the container will be able to have its own clocks.
 * **`path`** *(string, OPTIONAL)* - namespace file.
     This value MUST be an absolute path in the [runtime mount namespace](glossary.md#runtime-namespace).
-    The runtime MUST place the container process in the namespace associated with that `path`.
+    The runtime MUST let the container process join in the namespace associated with that `path`.
     The runtime MUST [generate an error](runtime.md#errors) if `path` is not associated with a namespace of type `type`.
 
     If `path` is not specified, the runtime MUST create a new [container namespace](glossary.md#container-namespace) of type `type`.
@@ -80,6 +80,9 @@ If a `namespaces` field contains duplicated namespaces with same `type`, the run
 
 ## <a name="configLinuxUserNamespaceMappings" />User namespace mappings
 
+If the runtime should create an new user namespace for the container, `uidMappings` and `gidMappings` should be provided, otherwise, these two fields should not be specified, 
+and it will be ignored by the runtime.
+
 **`uidMappings`** (array of objects, OPTIONAL) describes the user namespace uid mappings from the host to the container.
 **`gidMappings`** (array of objects, OPTIONAL) describes the user namespace gid mappings from the host to the container.
 
@@ -112,6 +115,9 @@ Note that the number of mapping entries MAY be limited by the [kernel][user-name
 ```
 
 ## <a name="configLinuxTimeOffset" />Offset for Time Namespace
+
+If the runtime should create an new time namespace for the container, `timeOffsets` should be provided, otherwise, it should not be specified, 
+and it will be ignored by the runtime.
 
 **`timeOffsets`** (object, OPTIONAL) sets the offset for Time Namespace. For more information
 see the [time_namespaces][time_namespaces.7].
