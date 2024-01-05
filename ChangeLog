@@ -1,5 +1,26 @@
 OpenContainers Specifications
 
+Changes with v1.2.0:
+
+	Additions:
+
+	* config: add idmap and ridmap mount options (#1222)
+	* config.md: allow empty mappings for [r]idmap (#1224)
+	* features-linux: Expose idmap information (#1219)
+	* mount: Allow relative mount destinations on Linux (#1225)
+	* features: add potentiallyUnsafeConfigAnnotations (#1205)
+	* config: add support for org.opencontainers.image annotations #1197
+
+	Minor fixes:
+
+	* config: improve bind mount and propagation doc (#1228)
+
+	Documentation, CI & Governance:
+
+	* fix link to hooks in features (#1226)
+	* specs-go: add missing deprecation comment for Hooks.Prestart (#1232)
+	* specs-go: mark LinuxMemory.Kernel as deprecated ()#1233)
+
 Changes with v1.1.0:
 
 	Breaking changes (but rather conforms to the existing runc implementation):
