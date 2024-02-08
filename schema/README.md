@@ -15,7 +15,7 @@ The layout of the files is as follows:
 * [defs.json](defs.json) - definitions for general types
 * [defs-linux.json](defs-linux.json) - definitions for Linux-specific types
 * [defs-windows.json](defs-windows.json) - definitions for Windows-specific types
-* [validate.go](validate.go) - validation utility source code
+* [validate](validate) - validation utility source code directory
 
 
 ## Utility
@@ -24,24 +24,17 @@ There is also included a simple utility for facilitating validation.
 To build it:
 
 ```bash
-go get github.com/xeipuuv/gojsonschema
-go build ./validate.go
-```
-
-Or you can just use make command to create the utility:
-
-```bash
 make validate
 ```
 
 Then use it like:
 
 ```bash
-./validate config-schema.json <yourpath>/config.json
+./validate/validate config-schema.json <yourpath>/config.json
 ```
 
 Or like:
 
 ```bash
-./validate https://raw.githubusercontent.com/opencontainers/runtime-spec/<runtime-spec-version>/schema/config-schema.json <yourpath>/config.json
+./validate/validate https://raw.githubusercontent.com/opencontainers/runtime-spec/<runtime-spec-version>/schema/config-schema.json <yourpath>/config.json
 ```
