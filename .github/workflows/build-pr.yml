@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: setup go environment
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
       
@@ -30,7 +30,7 @@ jobs:
           go get -d ./schema/...
 
       - name: run golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: v1.51.2
           args: --verbose
