@@ -228,6 +228,8 @@ type Linux struct {
 	Namespaces []LinuxNamespace `json:"namespaces,omitempty"`
 	// Devices are a list of device nodes that are created for the container
 	Devices []LinuxDevice `json:"devices,omitempty"`
+	// NetDevices are a list of device nodes that are created for the container
+	NetDevices []LinuxNetDevice `json:"netdevices,omitempty"`
 	// Seccomp specifies the seccomp security settings for the container.
 	Seccomp *LinuxSeccomp `json:"seccomp,omitempty"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container.
@@ -481,6 +483,12 @@ type LinuxDevice struct {
 	UID *uint32 `json:"uid,omitempty"`
 	// Gid of the device.
 	GID *uint32 `json:"gid,omitempty"`
+}
+
+// LinuxNetDevice represents the information for a Linux network device
+type LinuxNetDevice struct {
+	// Name of the network device.
+	Name string `json:"name"`
 }
 
 // LinuxDeviceCgroup represents a device rule for the devices specified to
