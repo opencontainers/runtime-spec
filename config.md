@@ -340,6 +340,17 @@ For Linux-based systems, the `process` object supports the following process-spe
 
     * **`class`** (string, REQUIRED) specifies the I/O scheduling class. Possible values are `IOPRIO_CLASS_RT`, `IOPRIO_CLASS_BE`, and `IOPRIO_CLASS_IDLE`.
     * **`priority`** (int, REQUIRED) specifies the priority level within the class. The value should be an integer ranging from 0 (highest) to 7 (lowest).
+* **`execCPUAffinity`** (object, OPTIONAL) specifies CPU affinity used to execute the process.
+    This setting is not applicable to the container's init process.
+    The following properties are available:
+    * **`initial`** (string, OPTIONAL) is a list of CPUs a runtime parent
+      process to be run on initially, before the transition to container's
+      cgroup. This is a a comma-separated list, with dashes to represent
+      ranges. For example, `0-3,7` represents CPUs 0,1,2,3, and 7.
+    * **`final`** (string, OPTIONAL) is a list of CPUs the process will be run
+      on after the transition to container's cgroup. The format is the same as
+      for `initial`. If omitted or empty, the container's default CPU affinity,
+      as defined by [cpu.cpus property](./config.md#configLinuxCPUs)), is used.
 
 ### <a name="configUser" />User
 
@@ -416,7 +427,11 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
             "hard": 1024,
             "soft": 1024
         }
-    ]
+    ],
+    "execCPUAffinity": {
+        "initial": "7",
+        "final": "0-3,7"
+    }
 }
 ```
 ### Example (Solaris)
