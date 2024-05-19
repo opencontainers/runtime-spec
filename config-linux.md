@@ -395,8 +395,8 @@ The following parameters can be specified to set up the controller:
 * **`period`** *(uint64, OPTIONAL)* - specifies a period of time in microseconds for how regularly a cgroup's access to CPU resources should be reallocated (CFS scheduler only)
 * **`realtimeRuntime`** *(int64, OPTIONAL)* - specifies a period of time in microseconds for the longest continuous period in which the tasks in a cgroup have access to CPU resources
 * **`realtimePeriod`** *(uint64, OPTIONAL)* - same as **`period`** but applies to realtime scheduler only
-* **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run in
-* **`mems`** *(string, OPTIONAL)* - list of Memory Nodes the container will run in
+* **`cpus`** *(string, OPTIONAL)* - list of CPUs the container will run on. This is a comma-separated list, with dashes to represent ranges. For example, `0-3,7` represents CPUs 0,1,2,3, and 7.
+* **`mems`** *(string, OPTIONAL)* - list of memory nodes the container will run on. This is a comma-separated list, with dashes to represent ranges. For example, `0-3,7` represents memory nodes 0,1,2,3, and 7.
 * **`idle`** *(int64, OPTIONAL)* - cgroups are configured with minimum weight, 0: default behavior, 1: SCHED_IDLE.
 
 #### Example
