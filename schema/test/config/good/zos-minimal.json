@@ -3,6 +3,5 @@
     "root": {
         "path": "rootfs"
     },
-    "zos": {
-    }
+    "zos": {}
 }

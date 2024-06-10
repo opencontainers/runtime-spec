@@ -29,16 +29,16 @@
             ],
             "properties": {
                 "path": {
-                  "$ref": "defs.json#/definitions/FilePath"
+                    "$ref": "defs.json#/definitions/FilePath"
                 },
                 "type": {
-                  "$ref": "#/definitions/FileType"
+                    "$ref": "#/definitions/FileType"
                 },
                 "major": {
-                  "$ref": "#/definitions/Major"
+                    "$ref": "#/definitions/Major"
                 },
                 "minor": {
-                  "$ref": "#/definitions/Minor"
+                    "$ref": "#/definitions/Minor"
                 },
                 "fileMode": {
                     "$ref": "#/definitions/FileMode"
