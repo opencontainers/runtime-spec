@@ -21,7 +21,7 @@
         "potentiallyUnsafeConfigAnnotations": {
             "$ref": "defs.json#/definitions/ArrayOfStrings"
         },
-         "linux": {
+        "linux": {
             "$ref": "features-linux.json#/linux"
         }
     },

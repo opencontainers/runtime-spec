@@ -171,10 +171,10 @@
                 "SCMP_ARCH_X86_64"
             ],
             "knownFlags": [
-              "SECCOMP_FILTER_FLAG_LOG"
+                "SECCOMP_FILTER_FLAG_LOG"
             ],
             "supportedFlags": [
-              "SECCOMP_FILTER_FLAG_LOG"
+                "SECCOMP_FILTER_FLAG_LOG"
             ]
         },
         "apparmor": {

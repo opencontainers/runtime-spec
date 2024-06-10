@@ -104,10 +104,10 @@
                     "idmap": {
                         "type": "object",
                         "properties": {
-			    "enabled": {
+                            "enabled": {
                                 "type": "boolean"
                             }
-                       }
+                        }
                     }
                 }
             }
