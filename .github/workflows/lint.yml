@@ -1,0 +1,14 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  check-format:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Run make -C schema fmt
+      run: make -C schema fmt
+    - name: Check for changes
+      run: git diff --exit-code
