@@ -1,0 +1,29 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  check-format:
+    runs-on: ubuntu-latest
+    env:
+      # We need jq +1.7 because of jqlang/jq#1741.
+      JQ_VERSION: '1.7'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Replace jq with specified version
+      run: |
+        wget -O jq "https://github.com/jqlang/jq/releases/download/jq-${{ env.JQ_VERSION }}/jq-linux-amd64"
+        chmod +x ./jq
+        JQ_PATH=$(which jq)
+        sudo mv jq $JQ_PATH
+    - name: Check jq version
+      run: jq --version
+
+    - name: Run make -C schema fmt
+      run: make -C schema fmt
+
+    - name: Check for changes
+      run: git diff --exit-code
