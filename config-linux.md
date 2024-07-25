@@ -483,6 +483,41 @@ The following parameters can be specified to set up the controller:
 }
 ```
 
+### <a name="configLinuxVTPMs" />vTPMs
+
+**`vtpms`** (array of objects, OPTIONAL) lists a number of emulated TPMs that will be made available to the container.
+
+Each entry has the following structure:
+
+* **`statePath`** *(string, REQUIRED)* - Unique path where vTPM writes its state into.
+* **`statePathIsManaged`** *(string, OPTIONAL)* - Whether runc is allowed to delete the TPM's state path upon destroying the TPM, defaults to false.
+* **`vtpmVersion`** *(string, OPTIONAL)* - The version of TPM to emulate, either 1.2 or 2, defaults to 1.2.
+* **`createCerts`** *(boolean, OPTIONAL)* - If true then create certificates for the vTPM, defaults to false.
+* **`runAs`** *(string, OPTIONAL)* - Under which user to run the vTPM, e.g.  'tss'.
+Contributor
+@mrunalp mrunalp on Aug 7, 2020
+Does it make sense to run this as the container user or it is typically set to a separate tss user?
+
+@KevinLi1020	Reply...
+* **`pcrBanks`** *(string, OPTIONAL)* - Comma-separated list of PCR banks to activate, default depends on `swtpm`.
+* **`encryptionPassword`** *(string, OPTIONAL)* - Write state encrypted with a key derived from the password, defaults to not encrypted.
+
+#### Example
+
+```json
+    "vtpms": [
+        {
+            "statePath": "/var/lib/runc/myvtpm1",
+            "statePathIsManaged": false,
+            "vtpmVersion": "2",
+            "createCerts": false,
+            "runAs": "tss",
+            "pcrBanks": "sha1,sha512",
+            "encryptionPassword": "mysecret"
+        }
+    ]
+```
+
 ### <a name="configLinuxHugePageLimits" />Huge page limits
 
 **`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the HugeTLB reservations (if supported) or usage (page fault).

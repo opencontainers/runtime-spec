@@ -43,6 +43,12 @@
                             "$ref": "defs-linux.json#/definitions/DeviceCgroup"
                         }
                     },
+                    "vtpms" : {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/VTPM"
+                        }
+                    },
                     "pids": {
                         "type": "object",
                         "properties": {

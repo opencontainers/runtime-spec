@@ -345,7 +345,25 @@
                         "rate": 300
                     }
                 ]
-            }
+            },
+            "vtpms": [
+                {
+                    "statePath": "/var/lib/runc/myvtpm1",
+                    "vtpmVersion": "2",
+                    "createCerts": false,
+                    "runAs": "tss",
+                    "pcrBanks": "sha1,sha512"
+                },
+                {
+                    "statePath": "/var/lib/runc/myvtpm2",
+                    "statePathIsManaged": true,
+                    "vtpmVersion": "1.2",
+                    "createCerts": true,
+                    "runAs": "root",
+                    "pcrBanks": "sha1,sha512",
+                    "encryptionPassword": "mysecret"
+                }
+            ]
         },
         "rootfsPropagation": "slave",
         "seccomp": {

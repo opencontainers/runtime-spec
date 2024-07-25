@@ -1069,7 +1069,16 @@ Here is a full example `config.json` for reference.
                         "rate": 300
                     }
                 ]
-            }
+            },
+            "vtpms": [
+                {
+                    "statePath": "/var/lib/runc/myvtpm1",
+                    "vtpmVersion": "2",
+                    "createCerts": false,
+                    "runAs": "tss",
+                    "pcrBanks": "sha1,sha512"
+                }
+            ]
         },
         "rootfsPropagation": "slave",
         "seccomp": {
