@@ -634,7 +634,8 @@ The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#ru
 
 ### <a name="configHooksPoststop" />Poststop
 
-The `poststop` hooks MUST be called [after the container is deleted](runtime.md#lifecycle) but before the [`delete`](runtime.md#delete) operation returns.
+The `poststop` hooks MUST be called [after the user-specified process is killed](runtime.md#lifecycle), but before the [`delete`](runtime.md#delete) operation return.
+Runtime should make sure that if a `poststop` hook failed, the [`delete`](runtime.md#delete) operation could fail and be retried.
 Cleanup or debugging functions are examples of such a hook.
 
 The `poststop` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
