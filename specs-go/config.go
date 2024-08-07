@@ -635,6 +635,19 @@ type WindowsCPUResources struct {
 	// cycles per 10,000 cycles. Set processor `maximum` to a percentage times
 	// 100.
 	Maximum *uint16 `json:"maximum,omitempty"`
+	// Set of CPUs to affinitize for this container.
+	AffinityCPUs []WindowsCPUGroupAffinity `json:"affinityCPUs,omitempty"`
+	// Specifies preferred set of numa node numbers to affinitize for this container.
+	AffinityPreferredNumaNodes []uint32 `json:"affinityPreferredNumaNodes,omitempty"`
+}
+
+// Similar to _GROUP_AFFINITY struct defined in
+// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/miniport/ns-miniport-_group_affinity
+type WindowsCPUGroupAffinity struct {
+	// CPU mask relative to this CPU group.
+	CPUMask uint64 `json:"cpuMask,omitempty"`
+	// Processor group the mask refers to, as returned by GetLogicalProcessorInformationEx.
+	CPUGroup uint32 `json:"cpuGroup,omitempty"`
 }
 
 // WindowsStorageResources contains storage resource management settings.
