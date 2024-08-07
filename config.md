@@ -349,8 +349,9 @@ For Linux-based systems, the `process` object supports the following process-spe
       ranges. For example, `0-3,7` represents CPUs 0,1,2,3, and 7.
     * **`final`** (string, OPTIONAL) is a list of CPUs the process will be run
       on after the transition to container's cgroup. The format is the same as
-      for `initial`. If omitted or empty, the container's default CPU affinity,
-      as defined by [cpu.cpus property](./config.md#configLinuxCPUs)), is used.
+      for `initial`. If omitted or empty, runtime SHOULD NOT change process'
+      CPU affinity after the process is moved to container's cgroup, and the
+      final affinity is determined by the Linux kernel.
 
 ### <a name="configUser" />User
 
