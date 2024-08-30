@@ -83,7 +83,7 @@ type Process struct {
 	// Rlimits specifies rlimit options to apply to the process.
 	Rlimits []POSIXRlimit `json:"rlimits,omitempty" platform:"linux,solaris,zos"`
 	// NoNewPrivileges controls whether additional privileges could be gained by processes in the container.
-	NoNewPrivileges bool `json:"noNewPrivileges,omitempty" platform:"linux"`
+	NoNewPrivileges bool `json:"noNewPrivileges,omitempty" platform:"linux,zos"`
 	// ApparmorProfile specifies the apparmor profile for the container.
 	ApparmorProfile string `json:"apparmorProfile,omitempty" platform:"linux"`
 	// Specify an oom_score_adj for the container.
@@ -846,27 +846,32 @@ type LinuxIntelRdt struct {
 
 // ZOS contains platform-specific configuration for z/OS based containers.
 type ZOS struct {
-	// Devices are a list of device nodes that are created for the container
-	Devices []ZOSDevice `json:"devices,omitempty"`
+	// Namespaces contains the namespaces that are created and/or joined by the container
+	Namespaces []ZOSNamespace `json:"namespaces,omitempty"`
 }
 
-// ZOSDevice represents the mknod information for a z/OS special device file
-type ZOSDevice struct {
-	// Path to the device.
-	Path string `json:"path"`
-	// Device type, block, char, etc.
-	Type string `json:"type"`
-	// Major is the device's major number.
-	Major int64 `json:"major"`
-	// Minor is the device's minor number.
-	Minor int64 `json:"minor"`
-	// FileMode permission bits for the device.
-	FileMode *os.FileMode `json:"fileMode,omitempty"`
-	// UID of the device.
-	UID *uint32 `json:"uid,omitempty"`
-	// Gid of the device.
-	GID *uint32 `json:"gid,omitempty"`
+// ZOSNamespace is the configuration for a z/OS namespace
+type ZOSNamespace struct {
+	// Type is the type of namespace
+	Type ZOSNamespaceType `json:"type"`
+	// Path is a path to an existing namespace persisted on disk that can be joined
+	// and is of the same type
+	Path string `json:"path,omitempty"`
 }
+
+// ZOSNamespaceType is one of the z/OS namespaces
+type ZOSNamespaceType string
+
+const (
+	// PIDNamespace for isolating process IDs
+	ZOSPIDNamespace ZOSNamespaceType = "pid"
+	// MountNamespace for isolating mount points
+	ZOSMountNamespace ZOSNamespaceType = "mount"
+	// IPCNamespace for isolating System V IPC, POSIX message queues
+	ZOSIPCNamespace ZOSNamespaceType = "ipc"
+	// UTSNamespace for isolating hostname and NIS domain name
+	ZOSUTSNamespace ZOSNamespaceType = "uts"
+)
 
 // LinuxSchedulerPolicy represents different scheduling policies used with the Linux Scheduler
 type LinuxSchedulerPolicy string

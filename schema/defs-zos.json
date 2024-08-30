@@ -1,55 +1,27 @@
 {
     "definitions": {
-        "Major": {
-            "description": "major device number",
-            "$ref": "defs.json#/definitions/int64"
-        },
-        "Minor": {
-            "description": "minor device number",
-            "$ref": "defs.json#/definitions/int64"
-        },
-        "FileMode": {
-            "description": "File permissions mode (typically an octal value)",
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 512
-        },
-        "FileType": {
-            "description": "Type of a block or special character device",
+        "NamespaceType": {
             "type": "string",
-            "pattern": "^[cbup]$"
+            "enum": [
+                "mount",
+                "pid",
+                "uts",
+                "ipc"
+            ]
         },
-        "Device": {
+        "NamespaceReference": {
             "type": "object",
-            "required": [
-                "type",
-                "path",
-                "major",
-                "minor"
-            ],
             "properties": {
+                "type": {
+                    "$ref": "#/definitions/NamespaceType"
+                },
                 "path": {
                     "$ref": "defs.json#/definitions/FilePath"
-                },
-                "type": {
-                    "$ref": "#/definitions/FileType"
-                },
-                "major": {
-                    "$ref": "#/definitions/Major"
-                },
-                "minor": {
-                    "$ref": "#/definitions/Minor"
-                },
-                "fileMode": {
-                    "$ref": "#/definitions/FileMode"
-                },
-                "uid": {
-                    "$ref": "defs.json#/definitions/UID"
-                },
-                "gid": {
-                    "$ref": "defs.json#/definitions/GID"
                 }
-            }
+            },
+            "required": [
+                "type"
+            ]
         }
     }
 }
