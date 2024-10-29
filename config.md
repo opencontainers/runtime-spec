@@ -1158,7 +1158,7 @@ Here is a full example `config.json` for reference.
 [semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
 [ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
 [ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
-[naming-a-volume]: https://aka.ms/nb3hqb
+[naming-a-volume]: https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-volume
 [oci-image-config-properties]: https://github.com/opencontainers/image-spec/blob/v1.1.0-rc2/config.md#properties
 [oci-image-conversion]: https://github.com/opencontainers/image-spec/blob/v1.1.0-rc2/conversion.md
 
