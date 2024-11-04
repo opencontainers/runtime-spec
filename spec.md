@@ -47,6 +47,6 @@ An implementation is not compliant for a given CPU architecture if it fails to s
 An implementation is compliant for a given CPU architecture if it satisfies all the MUST, REQUIRED, and SHALL requirements for the [platforms](#platforms) it implements.
 
 
-[c99-unspecified]: http://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
-[oci]: http://www.opencontainers.org
+[c99-unspecified]: https://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf#page=18
+[oci]: https://opencontainers.org
 [rfc2119]: https://www.rfc-editor.org/rfc/rfc2119.html

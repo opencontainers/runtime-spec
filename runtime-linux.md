@@ -18,4 +18,4 @@ While creating the container (step 2 in the [lifecycle](runtime.md#lifecycle)), 
 | /proc/self/fd/2 | /dev/stderr |
 
 
-[socket-activated-containers]: http://0pointer.de/blog/projects/socket-activated-containers.html
+[socket-activated-containers]: https://0pointer.de/blog/projects/socket-activated-containers.html
