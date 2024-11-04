@@ -1151,26 +1151,26 @@ Here is a full example `config.json` for reference.
 
 [apparmor]: https://wiki.ubuntu.com/AppArmor
 [cgroup-v1-memory_2]: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
-[selinux]:http://selinuxproject.org/page/Main_Page
+[selinux]:https://selinuxproject.org/page/Main_Page
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
-[umask.2]: http://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
-[semver-v2.0.0]: http://semver.org/spec/v2.0.0.html
-[ieee-1003.1-2008-xbd-c8.1]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
-[ieee-1003.1-2008-functions-exec]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
+[umask.2]: https://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
+[semver-v2.0.0]: https://semver.org/spec/v2.0.0.html
+[ieee-1003.1-2008-xbd-c8.1]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_01
+[ieee-1003.1-2008-functions-exec]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html
 [naming-a-volume]: https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-volume
 [oci-image-config-properties]: https://github.com/opencontainers/image-spec/blob/v1.1.0-rc2/config.md#properties
 [oci-image-conversion]: https://github.com/opencontainers/image-spec/blob/v1.1.0-rc2/conversion.md
 
-[capabilities.7]: http://man7.org/linux/man-pages/man7/capabilities.7.html
-[mount.2]: http://man7.org/linux/man-pages/man2/mount.2.html
-[mount.8]: http://man7.org/linux/man-pages/man8/mount.8.html
-[mount.8-filesystem-independent]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
-[mount.8-filesystem-specific]: http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
-[mount_setattr.2]: http://man7.org/linux/man-pages/man2/mount_setattr.2.html
+[capabilities.7]: https://man7.org/linux/man-pages/man7/capabilities.7.html
+[mount.2]: https://man7.org/linux/man-pages/man2/mount.2.html
+[mount.8]: https://man7.org/linux/man-pages/man8/mount.8.html
+[mount.8-filesystem-independent]: https://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS
+[mount.8-filesystem-specific]: https://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-SPECIFIC_MOUNT_OPTIONS
+[mount_setattr.2]: https://man7.org/linux/man-pages/man2/mount_setattr.2.html
 [mount-bind]: https://docs.kernel.org/filesystems/sharedsubtree.html
-[getrlimit.2]: http://man7.org/linux/man-pages/man2/getrlimit.2.html
-[getrlimit.3]: http://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
-[stdin.3]: http://man7.org/linux/man-pages/man3/stdin.3.html
-[uts-namespace.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html
-[zonecfg.1m]: http://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html
+[getrlimit.2]: https://man7.org/linux/man-pages/man2/getrlimit.2.html
+[getrlimit.3]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html
+[stdin.3]: https://man7.org/linux/man-pages/man3/stdin.3.html
+[uts-namespace.7]: https://man7.org/linux/man-pages/man7/namespaces.7.html
+[zonecfg.1m]: https://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html

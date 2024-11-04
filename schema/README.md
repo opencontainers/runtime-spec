@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains the [JSON Schema](http://json-schema.org/) for validating JSON covered by this specification.
+This directory contains the [JSON Schema](https://json-schema.org) for validating JSON covered by this specification.
 
 The layout of the files is as follows:
 

@@ -115,6 +115,6 @@ Mapped to `lower-link` in the [zonecfg(1M)][zonecfg.1m_2] man page.
 ```
 
 
-[priv-str-to-set.3c]: http://docs.oracle.com/cd/E86824_01/html/E54766/priv-str-to-set-3c.html
-[zoneadmd.1m]: http://docs.oracle.com/cd/E86824_01/html/E54764/zoneadmd-1m.html
-[zonecfg.1m_2]: http://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html
+[priv-str-to-set.3c]: https://docs.oracle.com/cd/E86824_01/html/E54766/priv-str-to-set-3c.html
+[zoneadmd.1m]: https://docs.oracle.com/cd/E86824_01/html/E54764/zoneadmd-1m.html
+[zonecfg.1m_2]: https://docs.oracle.com/cd/E86824_01/html/E54764/zonecfg-1m.html

@@ -46,7 +46,7 @@ Runtime callers often execute a runtime via [runc][]-compatible command line int
 On Linux, the namespaces from which new [container namespaces](#container-namespace) are [created](config-linux.md#namespaces) and from which some configured resources are accessed.
 
 [JSON]: https://tools.ietf.org/html/rfc8259
-[UTF-8]: http://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
+[UTF-8]: https://www.unicode.org/versions/Unicode8.0.0/ch03.pdf
 [runc]: https://github.com/opencontainers/runc
 
-[namespaces.7]: http://man7.org/linux/man-pages/man7/namespaces.7.html
+[namespaces.7]: https://man7.org/linux/man-pages/man7/namespaces.7.html

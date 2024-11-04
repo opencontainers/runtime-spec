@@ -99,7 +99,7 @@ type Process struct {
 }
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
-// http://man7.org/linux/man-pages/man7/capabilities.7.html
+// https://man7.org/linux/man-pages/man7/capabilities.7.html
 type LinuxCapabilities struct {
 	// Bounding is the set of capabilities checked by the kernel.
 	Bounding []string `json:"bounding,omitempty" platform:"linux"`
