@@ -1,0 +1,41 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "netDevices": {
+            "eth0": {
+                "name": "container_eth0"
+            },
+            "ens4": {
+                "addresses": [
+                    "10.0.0.10/24"
+                ],
+                "hardwareAddress": "32:ba:1c:b1:eb:63",
+                "mtu": 9000
+            },
+            "ens5": {
+                "addresses": [
+                    "2001:db8:1:2::4/64"
+                ],
+                "mtu": 1500
+            },
+            "ens6": {
+                "addresses": [
+                    "10.0.0.10/24",
+                    "2001:db8:1:2::4/64"
+                ],
+                "mtu": 1500
+            },
+            "ens7": {
+                "addresses": [
+                    "10.0.0.10/24",
+                    "2001:db8:1:2::4/64",
+                    "fd00:1::af/48"
+                ],
+                "mtu": 1500
+            }
+        }
+    }
+}
