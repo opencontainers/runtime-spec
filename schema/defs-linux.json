@@ -185,6 +185,23 @@
                 }
             }
         },
+        "NetDevice": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "mask": {
+                    "type": "string"
+                },
+                "mtu": {
+                    "$ref": "defs.json#/definitions/uint32"
+                }
+            }
+        },
         "weight": {
             "$ref": "defs.json#/definitions/uint16"
         },
