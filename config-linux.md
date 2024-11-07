@@ -189,6 +189,55 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
+## <a name="configLinuxNetworkDevices" />Network Devices
+
+Linux network devices are entities that send and receive data packets.
+They are not represented as files in the /dev directory, unlike block devices, network devices are represented with the [`net_device`][net_device] data structure in the Linux kernel.
+Network devices have their own network namespace and a set of operations distinct from regular file operations. Examples of network devices include Ethernet cards, loopback devices, and virtual devices like bridges, VLANs, and MACVLANs.
+
+This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
+
+**`netdevices`** (object, OPTIONAL) set of network devices that MUST be available in the container. The runtime MAY supply them however it likes.
+
+The name of the network device is the entry key.
+Entry values are objects with the following properties:
+
+* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used.
+* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container.
+* **`mask`** *(string, OPTIONAL)* - the network mask for the IP address.
+* **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
+
+### Example
+
+#### Moving a device with a renamed interface inside the container:
+
+```json
+
+"netdevices": [
+  {
+    "eth0" : {
+      "name": "container_eth0"
+    }
+  }
+]
+```
+
+This configuration will move the device named "eth0" from the host into the container's network namespace. Inside the container, the device will be named "container_eth0".
+
+#### Moving a device with a specific IP address and MTU inside the container:
+
+```json
+"netdevices": [
+  {
+    "ens4": {
+      "address": "10.0.0.10",
+      "mask": "255.255.255.0",
+      "mtu": 9000
+    }
+  }
+]
+```
+
 ## <a name="configLinuxControlGroups" />Control groups
 
 Also known as cgroups, they are used to restrict resource usage for a container and handle device access.
@@ -960,6 +1009,7 @@ subset of the available options.
 [devices]: https://www.kernel.org/doc/Documentation/admin-guide/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
 [file]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
+[ifreq]: https://man7.org/linux/man-pages/man7/netdevice.7.html
 [libseccomp]: https://github.com/seccomp/libseccomp
 [proc]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [seccomp]: https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
@@ -971,6 +1021,7 @@ subset of the available options.
 [mknod.1]: https://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: https://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: https://man7.org/linux/man-pages/man7/namespaces.7.html
+[net_device]: https://docs.kernel.org/networking/netdevices.html
 [null.4]: https://man7.org/linux/man-pages/man4/null.4.html
 [personality.2]: https://man7.org/linux/man-pages/man2/personality.2.html
 [pts.4]: https://man7.org/linux/man-pages/man4/pts.4.html
