@@ -9,6 +9,12 @@
                     "$ref": "defs-linux.json#/definitions/Device"
                 }
             },
+            "netDevices": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "defs-linux.json#/definitions/NetDevice"
+                }
+            },
             "uidMappings": {
                 "type": "array",
                 "items": {
