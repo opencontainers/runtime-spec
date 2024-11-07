@@ -203,7 +203,7 @@ The name of the network device is the entry key.
 Entry values are objects with the following properties:
 
 * **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used.
-* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container.
+* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container. All IPv4 addresses must be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses must be represented in their canonical form as defined in RFC 5952.
 * **`mask`** *(string, OPTIONAL)* - the network mask for the IP address.
 * **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
 
