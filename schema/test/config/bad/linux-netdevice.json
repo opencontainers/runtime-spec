@@ -1,0 +1,14 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "netdevices": {
+            "eth0": {
+                "name": "container_eth0",
+                "mtu": "not_an_int"
+            }
+        }
+    }
+}

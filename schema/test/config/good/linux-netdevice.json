@@ -1,0 +1,18 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "netdevices": {
+            "eth0": {
+                "name": "container_eth0"
+            },
+            "ens4": {
+                "address": "10.0.0.10",
+                "mask": "255.255.255.0",
+                "mtu": 9000
+            }
+        }
+    }
+}
