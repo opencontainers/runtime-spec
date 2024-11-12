@@ -9,7 +9,7 @@
                     "$ref": "defs-linux.json#/definitions/Device"
                 }
             },
-            "netdevices": {
+            "netDevices": {
                 "type": "object",
                 "additionalProperties": {
                     "$ref": "defs-linux.json#/definitions/NetDevice"

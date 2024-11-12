@@ -4,7 +4,7 @@
         "path": "rootfs"
     },
     "linux": {
-        "netdevices": {
+        "netDevices": {
             "eth0": {
                 "name": "container_eth0",
                 "mtu": "not_an_int"
