@@ -110,6 +110,14 @@
                         }
                     }
                 }
+            },
+            "netDevices": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
             }
         }
     }
