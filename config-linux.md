@@ -197,14 +197,22 @@ Network devices have their own network namespace and a set of operations distinc
 
 This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
 
+Only one IP address is allowed for initial network device setup. This restriction is intended to reduce complexity during the container creation and to mitigate the risk during container start of IP address duplication. Adding additional IP addresses to the interface can be handled through post-configuration or by the container application itself.
+
 **`netDevices`** (object, OPTIONAL) set of network devices that MUST be available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
+
+Only privileged containers with a dedicated network namespace can have network devices directly assigned to them. This is required because moving network devices requires CAP_NET_ADMIN capabilities, not present on rootless containers, and to ensure security and avoid conflicts manipulate interfaces in the runtime network namespace.
+The runtime MUST check that is possible to move the network interface to the container namespace and MUST [generate an error](runtime.md#errors) if the check fails.
+
+Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, unmoveable devices (NETIF_F_NETNS_LOCAL) and virtual devices (veth, macvlan, ...) are destroyed.
+The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
 
 The name of the network device is the entry key.
 Entry values are objects with the following properties:
 
-* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used.
-* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container. All IPv4 addresses must be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses must be represented in their canonical form as defined in RFC 5952.
-* **`mask`** *(string, OPTIONAL)* - the network mask for the IP address.
+* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used. The network device name is unique per network namespace, if an existing network with the same name exist that rename operation will fail. The runtime MAY check that the name is unique before the rename operation.
+* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses must be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses must be represented in their canonical form as defined in RFC 5952.
+* **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface.
 * **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
 
 ### Example
@@ -212,30 +220,39 @@ Entry values are objects with the following properties:
 #### Moving a device with a renamed interface inside the container:
 
 ```json
-
-"netDevices": [
-  {
+"netDevices": {
     "eth0" : {
-      "name": "container_eth0"
+        "name": "container_eth0"
     }
-  }
-]
+}
 ```
 
 This configuration will move the device named "eth0" from the host into the container's network namespace. Inside the container, the device will be named "container_eth0".
 
 #### Moving a device with a specific IP address and MTU inside the container:
 
+IPv4 address
+
 ```json
-"netDevices": [
-  {
+"netDevices": {
     "ens4": {
-      "address": "10.0.0.10",
-      "mask": "255.255.255.0",
-      "mtu": 9000
+        "address": "10.0.0.10/24",
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
     }
-  }
-]
+}
+```
+
+IPv6 address
+
+```json
+"netDevices": {
+    "ens4": {
+        "address": "2001:db8:1:2::a/64",
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
+    }
+}
 ```
 
 ## <a name="configLinuxControlGroups" />Control groups

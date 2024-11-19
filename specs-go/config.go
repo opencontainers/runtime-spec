@@ -497,10 +497,10 @@ type LinuxDevice struct {
 type LinuxNetDevice struct {
 	// Name of the device in the container namespace
 	Name string `json:"name,omitempty"`
-	// Address is the IP address in the container namespace
+	// Address is the IP address in CIDR format in the container namespace
 	Address string `json:"address,omitempty"`
-	// Mask is the network mask in the container namespace
-	Mask string `json:"mask,omitempty"`
+	// HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface
+	HardwareAddress string `json:"hardwareAddress,omitempty"`
 	// MTU Maximum Transfer Unit of the network device in the container namespace
 	MTU uint32 `json:"mtu,omitempty"`
 }

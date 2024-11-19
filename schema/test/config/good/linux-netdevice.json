@@ -9,9 +9,13 @@
                 "name": "container_eth0"
             },
             "ens4": {
-                "address": "10.0.0.10",
-                "mask": "255.255.255.0",
+                "address": "10.0.0.10/24",
+                "hardwareAddress": "32:ba:1c:b1:eb:63",
                 "mtu": 9000
+            },
+            "ens5": {
+                "address": "2001:db8:1:2::4/64",
+                "mtu": 1500
             }
         }
     }
