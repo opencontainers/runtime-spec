@@ -194,7 +194,7 @@
                 "address": {
                     "type": "string"
                 },
-                "mask": {
+                "hardwareAddress": {
                     "type": "string"
                 },
                 "mtu": {
