@@ -197,8 +197,6 @@ Network devices have their own network namespace and a set of operations distinc
 
 This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
 
-Only one IP address is allowed for initial network device setup. This restriction is intended to reduce complexity during the container creation and to mitigate the risk during container start of IP address duplication. Adding additional IP addresses to the interface can be handled through post-configuration or by the container application itself.
-
 **`netDevices`** (object, OPTIONAL) set of network devices that MUST be available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
 
 Only privileged containers with a dedicated network namespace can have network devices directly assigned to them. This is required because moving network devices requires CAP_NET_ADMIN capabilities, not present on rootless containers, and to ensure security and avoid conflicts manipulate interfaces in the runtime network namespace.
@@ -211,7 +209,8 @@ The name of the network device is the entry key.
 Entry values are objects with the following properties:
 
 * **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used. The network device name is unique per network namespace, if an existing network with the same name exist that rename operation will fail. The runtime MAY check that the name is unique before the rename operation.
-* **`address`** *(string, OPTIONAL)* - the IP address of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses must be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses must be represented in their canonical form as defined in RFC 5952.
+* **`addresses`** *(array of strings, OPTIONAL)* - the IP addresses, IPv4 and or IPv6, of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses SHOULD be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses SHOULD be represented in their canonical form as defined in RFC 5952.
+The runtime MAY limit the number of addresses allowed.
 * **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface.
 * **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
 
@@ -236,7 +235,9 @@ IPv4 address
 ```json
 "netDevices": {
     "ens4": {
-        "address": "10.0.0.10/24",
+        "addresses": [
+            "10.0.0.10/24"
+        ],
         "hardwareAddress": "32:ba:1c:b1:eb:63",
         "mtu": 9000
     }
@@ -248,12 +249,30 @@ IPv6 address
 ```json
 "netDevices": {
     "ens4": {
-        "address": "2001:db8:1:2::a/64",
+        "addresses": [
+            "2001:db8:1:2::a/64"
+        ],
         "hardwareAddress": "32:ba:1c:b1:eb:63",
         "mtu": 9000
     }
 }
 ```
+
+Dual Stack
+
+```json
+"netDevices": {
+    "ens4": {
+        "addresses": [
+            "10.0.0.10/24",
+            "2001:db8:1:2::a/64"
+        ],
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
+    }
+}
+```
+
 
 ## <a name="configLinuxControlGroups" />Control groups
 

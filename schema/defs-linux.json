@@ -191,8 +191,11 @@
                 "name": {
                     "type": "string"
                 },
-                "address": {
-                    "type": "string"
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "hardwareAddress": {
                     "type": "string"
