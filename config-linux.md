@@ -203,7 +203,7 @@ The runtime MUST check that is possible to move the network interface to the con
 
 The runtime MUST set the network device state to "up" after moving it to the network namespace to allow the container to send and receive network traffic through that device.
 
-Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, unmoveable devices (NETIF_F_NETNS_LOCAL) and virtual devices (veth, macvlan, ...) are destroyed.
+Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, virtual devices (veth, macvlan, ...) are destroyed.
 The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" before moving it back to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
 
 The name of the network device is the entry key.
