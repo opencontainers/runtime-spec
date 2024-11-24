@@ -203,7 +203,7 @@ Only privileged containers with a dedicated network namespace can have network d
 The runtime MUST check that is possible to move the network interface to the container namespace and MUST [generate an error](runtime.md#errors) if the check fails.
 
 Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, unmoveable devices (NETIF_F_NETNS_LOCAL) and virtual devices (veth, macvlan, ...) are destroyed.
-The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
+The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" before moving it back to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
 
 The name of the network device is the entry key.
 Entry values are objects with the following properties:
