@@ -743,6 +743,17 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_PARISC64`
     * `SCMP_ARCH_RISCV64`
 
+<!--
+The following constants are defined in the main branch of libseccomp,
+but not included in its latest release (v2.5) yet:
+https://github.com/seccomp/libseccomp/commits/main/include/seccomp.h.in
+
+* SCMP_ARCH_LOONGARCH64
+* SCMP_ARCH_M68K
+* SCMP_ARCH_SH
+* SCMP_ARCH_SHEB
+-->
+
 * **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with seccomp(2).
 
     A valid list of constants is shown below.
