@@ -214,7 +214,7 @@ The runtime MUST revert back the original name to guarantee the idempotence of o
 * **`addresses`** *(array of strings, OPTIONAL)* - the IP addresses, IPv4 and or IPv6, of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses SHOULD be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses SHOULD be represented in their canonical form as defined in RFC 5952.
 The runtime MAY limit the number of addresses allowed.
 The runtime MAY decide to revert back the original addreses.
-* **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface.
+* **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface, represented as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet IP over InfiniBand link-layer address.
 The runtime MAY decide to revert back the original hardware address.
 * **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
 The runtime MAY decide to revert back the original MTU value.
