@@ -182,6 +182,9 @@
         },
         "selinux": {
             "enabled": true
+        },
+        "netDevices": {
+            "enabled": true
         }
     },
     "annotations": {

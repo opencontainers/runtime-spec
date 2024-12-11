@@ -189,6 +189,96 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
+## <a name="configLinuxNetworkDevices" />Network Devices
+
+Linux network devices are entities that send and receive data packets.
+They are not represented as files in the /dev directory, unlike block devices, network devices are represented with the [`net_device`][net_device] data structure in the Linux kernel.
+Network devices have their own network namespace and a set of operations distinct from regular file operations. Examples of network devices include Ethernet cards, loopback devices, and virtual devices like bridges, VLANs, and MACVLANs.
+
+This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
+
+**`netDevices`** (object, OPTIONAL) set of network devices that MUST be available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
+
+The runtime MUST check that is possible to move the network interface to the container namespace and MUST [generate an error](runtime.md#errors) if the check fails.
+
+The runtime MUST set the network device state to "up" after moving it to the network namespace to allow the container to send and receive network traffic through that device.
+
+Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, virtual devices (veth, macvlan, ...) are destroyed.
+The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" before moving it back to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
+
+The name of the network device is the entry key.
+Entry values are objects with the following properties:
+
+* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used. The network device name is unique per network namespace, if an existing network with the same name exist that rename operation will fail. The runtime MAY check that the name is unique before the rename operation.
+The runtime MUST revert back the original name to guarantee the idempotence of operations, so a container that moves an interfaces and renames it can be created and destroyed multiple times with the same result.
+* **`addresses`** *(array of strings, OPTIONAL)* - the IP addresses, IPv4 and or IPv6, of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses SHOULD be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses SHOULD be represented in their canonical form as defined in RFC 5952.
+The runtime MAY limit the number of addresses allowed.
+The runtime MAY decide to revert back the original addreses.
+* **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface, represented as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet IP over InfiniBand link-layer address.
+The runtime MAY decide to revert back the original hardware address.
+* **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
+The runtime MAY decide to revert back the original MTU value.
+
+### Example
+
+#### Moving a device with a renamed interface inside the container:
+
+```json
+"netDevices": {
+    "eth0" : {
+        "name": "container_eth0"
+    }
+}
+```
+
+This configuration will move the device named "eth0" from the host into the container's network namespace. Inside the container, the device will be named "container_eth0".
+
+#### Moving a device with a specific IP address and MTU inside the container:
+
+IPv4 address
+
+```json
+"netDevices": {
+    "ens4": {
+        "addresses": [
+            "10.0.0.10/24"
+        ],
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
+    }
+}
+```
+
+IPv6 address
+
+```json
+"netDevices": {
+    "ens4": {
+        "addresses": [
+            "2001:db8:1:2::a/64"
+        ],
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
+    }
+}
+```
+
+Dual Stack
+
+```json
+"netDevices": {
+    "ens4": {
+        "addresses": [
+            "10.0.0.10/24",
+            "2001:db8:1:2::a/64"
+        ],
+        "hardwareAddress": "32:ba:1c:b1:eb:63",
+        "mtu": 9000
+    }
+}
+```
+
+
 ## <a name="configLinuxControlGroups" />Control groups
 
 Also known as cgroups, they are used to restrict resource usage for a container and handle device access.
@@ -971,6 +1061,7 @@ subset of the available options.
 [devices]: https://www.kernel.org/doc/Documentation/admin-guide/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
 [file]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
+[ifreq]: https://man7.org/linux/man-pages/man7/netdevice.7.html
 [libseccomp]: https://github.com/seccomp/libseccomp
 [proc]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [seccomp]: https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
@@ -982,6 +1073,7 @@ subset of the available options.
 [mknod.1]: https://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: https://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: https://man7.org/linux/man-pages/man7/namespaces.7.html
+[net_device]: https://docs.kernel.org/networking/netdevices.html
 [null.4]: https://man7.org/linux/man-pages/man4/null.4.html
 [personality.2]: https://man7.org/linux/man-pages/man2/personality.2.html
 [pts.4]: https://man7.org/linux/man-pages/man4/pts.4.html
