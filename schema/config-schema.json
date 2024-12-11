@@ -226,14 +226,14 @@
                     "properties": {
                         "initial": {
                             "type": "string",
-			    "pattern": "^[0-9, -]*$"
+                            "pattern": "^[0-9, -]*$"
                         },
                         "final": {
                             "type": "string",
-			    "pattern": "^[0-9, -]*$"
+                            "pattern": "^[0-9, -]*$"
                         }
                     }
-		}
+                }
             }
         },
         "linux": {
