@@ -209,7 +209,7 @@ The runtime MAY decide to move back or destroy the network device before the net
 The name of the network device is the entry key.
 Entry values are objects with the following properties:
 
-* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used. The network device name is unique per network namespace, if an existing network with the same name exist that rename operation will fail. The runtime MAY check that the name is unique before the rename operation.
+* **`name`** *(string, OPTIONAL)* - the name of the network device inside the container namespace. If not specified, the host name is used. The network device name is unique per network namespace, if an existing network device with the same name exists that rename operation will fail. The runtime MAY check that the name is unique before the rename operation.
 The runtime MUST revert back the original name to guarantee the idempotence of operations, so a container that moves an interfaces and renames it can be created and destroyed multiple times with the same result.
 * **`addresses`** *(array of strings, OPTIONAL)* - the IP addresses, IPv4 and or IPv6, of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses SHOULD be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses SHOULD be represented in their canonical form as defined in RFC 5952.
 The runtime MAY limit the number of addresses allowed.
