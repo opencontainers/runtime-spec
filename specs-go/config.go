@@ -236,7 +236,7 @@ type Linux struct {
 	Namespaces []LinuxNamespace `json:"namespaces,omitempty"`
 	// Devices are a list of device nodes that are created for the container
 	Devices []LinuxDevice `json:"devices,omitempty"`
-	// NetDevices are key-value pairs, keyed by network device name, moved to the container's network namespace.
+	// NetDevices are key-value pairs, keyed by network device name on the host, moved to the container's network namespace.
 	NetDevices map[string]LinuxNetDevice `json:"netDevices,omitempty"`
 	// Seccomp specifies the seccomp security settings for the container.
 	Seccomp *LinuxSeccomp `json:"seccomp,omitempty"`
