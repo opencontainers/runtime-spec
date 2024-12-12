@@ -195,7 +195,7 @@ Linux network devices are entities that send and receive data packets.
 They are not represented as files in the /dev directory, unlike block devices, network devices are represented with the [`net_device`][net_device] data structure in the Linux kernel.
 Network devices have their own network namespace and a set of operations distinct from regular file operations. Examples of network devices include Ethernet cards, loopback devices, and virtual devices like bridges, VLANs, and MACVLANs.
 
-This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
+This schema focuses solely on moving existing network devices identified by name from the host network namespace into the container network namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
 
 **`netDevices`** (object, OPTIONAL) set of network devices that MUST be made available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
 
