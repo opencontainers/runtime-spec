@@ -204,7 +204,8 @@ The runtime MUST check that is possible to move the network interface to the con
 The runtime MUST set the network device state to "up" after moving it to the network namespace to allow the container to send and receive network traffic through that device.
 
 Notice that after deleting a network namespace, all its migratable network devices are moved to the default network namespace, virtual devices (veth, macvlan, ...) are destroyed.
-The runtime MAY decide to move back or destroy the network device before the network namespace is deleted. If the network device is moved back, the runtime MUST set its state to "down" before moving it back to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
+The runtime MUST move back the network device before the network namespace is deleted.
+The runtime MUST set the network device state to "down" before moving it back to ensure that the interface is no longer active and won't interfere with other network operations or cause IP address conflicts.
 
 The name of the network device is the entry key.
 Entry values are objects with the following properties:
@@ -213,7 +214,8 @@ Entry values are objects with the following properties:
 The runtime MUST revert back the original name to guarantee the idempotence of operations, so a container that moves an interface and renames it can be created and destroyed multiple times with the same result.
 * **`addresses`** *(array of strings, OPTIONAL)* - the IP addresses, IPv4 and or IPv6, of the device within the container in CIDR format (IP address / Prefix). All IPv4 addresses SHOULD be expressed in their decimal format, consisting of four decimal numbers separated by periods. Each number ranges from 0 to 255 and represents an octet of the address. IPv6 addresses SHOULD be represented in their canonical form as defined in RFC 5952.
 The runtime MAY limit the number of addresses allowed.
-The runtime MAY decide to revert back the original addreses.
+The runtime MAY revert back the original addresses, keep the existing ones or completely
+remove them, since the interface MUST be in down state can not present a problem.
 * **`hardwareAddress`** *(string, OPTIONAL)* - represents the hardware address (e.g. MAC Address) of the device's network interface, represented as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet IP over InfiniBand link-layer address.
 The runtime MAY decide to revert back the original hardware address.
 * **`mtu`** *(uint32, OPTIONAL)* - the MTU (Maximum Transmission Unit) size for the device.
