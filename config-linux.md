@@ -197,7 +197,7 @@ Network devices have their own network namespace and a set of operations distinc
 
 This schema focuses solely on moving existing network devices identified by name into the container namespace. It does not cover the complexities of network device creation or network configuration, such as IP address assignment, routing, and DNS setup.
 
-**`netDevices`** (object, OPTIONAL) set of network devices that MUST be available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
+**`netDevices`** (object, OPTIONAL) set of network devices that MUST be made available in the container. The runtime is responsible for providing these devices; the underlying mechanism is implementation-defined.
 
 The runtime MUST check that is possible to move the network interface to the container namespace and MUST [generate an error](runtime.md#errors) if the check fails.
 
