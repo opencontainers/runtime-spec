@@ -38,6 +38,17 @@
                             },
                             "maximum": {
                                 "$ref": "defs.json#/definitions/uint16"
+                            },
+                            "affinity": {
+                                "type": "object",
+                                "properties": {
+                                    "mask": {
+                                        "$ref": "defs.json#/definitions/uint64"
+                                    },
+                                    "group": {
+                                        "$ref": "defs.json#/definitions/uint32"
+                                    }
+                                }
                             }
                         }
                     },

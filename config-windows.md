@@ -82,6 +82,14 @@ The following parameters can be specified (mutually exclusive):
 * **`count`** *(uint64, OPTIONAL)* - specifies the number of CPUs available to the container. It represents the fraction of the configured processor `count` in a container in relation to the processors available in the host. The fraction ultimately determines the portion of processor cycles that the threads in a container can use during each scheduling interval, as the number of cycles per 10,000 cycles.
 * **`shares`** *(uint16, OPTIONAL)* - limits the share of processor time given to the container relative to other workloads on the processor. The processor `shares` (`weight` at the platform level) is a value between 0 and 10,000.
 * **`maximum`** *(uint16, OPTIONAL)* - determines the portion of processor cycles that the threads in a container can use during each scheduling interval, as the number of cycles per 10,000 cycles. Set processor `maximum` to a percentage times 100.
+* **`affinity`** *(array of objects, OPTIONAL)* - specifies the set of CPU to affinitize for this container.
+
+  Each entry has the following structure:
+
+  Ref: https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/miniport/ns-miniport-_group_affinity
+
+  * **`mask`** *(uint64, REQUIRED)* - specifies the CPU mask relative to this CPU group.
+  * **`group`** *(uint32, REQUIRED)* - specifies the processor group this mask refers to, as returned by GetLogicalProcessorInformationEx.
 
 Ref: https://docs.microsoft.com/en-us/virtualization/api/hcs/schemareference#Container_Processor
 
