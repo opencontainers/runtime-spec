@@ -80,7 +80,7 @@
                 "type": "string"
             }
         },
-        "ArrayOfPorts":{
+        "ArrayOfPorts": {
             "type": "array",
             "items": {
                 "$ref": "#/definitions/port"
@@ -216,16 +216,16 @@
                 "$ref": "#/definitions/LandlockNetworkAction"
             }
         },
-        "LandlockRuleset": {
+        "LandlockHandledAccess": {
             "type": "object",
-             "properties": {
-                 "handledAccessFS": {
-                     "$ref": "#/definitions/ArrayOfLandlockFSActions"
-                 },
-                 "handledAssessNetwork": {
-                      "$ref": "#/definitions/ArrayOfLandlockNetworkActions"
-                 }
-             }
+            "properties": {
+                "handledAccessFS": {
+                    "$ref": "#/definitions/ArrayOfLandlockFSActions"
+                },
+                "handledAccessNetwork": {
+                    "$ref": "#/definitions/ArrayOfLandlockNetworkActions"
+                }
+            }
         },
         "LandlockRulePathBeneath": {
             "type": "object",
@@ -238,13 +238,13 @@
                 }
             }
         },
-        "LandlockRulePortBeneath": {
+        "LandlockRuleNetworkPort": {
             "type": "object",
             "properties": {
                 "allowedAccess": {
                     "$ref": "#/definitions/ArrayOfLandlockNetworkActions"
                 },
-                "paths": {
+                "ports": {
                     "$ref": "#/definitions/ArrayOfPorts"
                 }
             }
@@ -255,10 +255,10 @@
                 "$ref": "#/definitions/LandlockRulePathBeneath"
             }
         },
-        "ArrayOfLandlockRulePortBeneaths": {
+        "ArrayOfLandlockRuleNetworkPorts": {
             "type": "array",
             "items": {
-                "$ref": "#/definitions/LandlockRulePortBeneath"
+                "$ref": "#/definitions/LandlockRuleNetworkPort"
             }
         },
         "LandlockRules": {
@@ -266,6 +266,9 @@
             "properties": {
                 "pathBeneath": {
                     "$ref": "#/definitions/ArrayOfLandlockRulePathBeneaths"
+                },
+                "networkPort": {
+                    "$ref": "#/definitions/ArrayOfLandlockRuleNetworkPorts"
                 }
             }
         }

@@ -166,13 +166,13 @@
                 "landlock": {
                     "type": "object",
                     "properties": {
-                        "ruleset": {
-                            "$ref": "defs.json#/definitions/LandlockRuleset"
+                        "handledAccess": {
+                            "$ref": "defs.json#/definitions/LandlockHandledAccess"
                         },
                         "rules": {
                             "$ref": "defs.json#/definitions/LandlockRules"
                         },
-                        "disableBestEffort": {
+                        "enableBestEffort": {
                             "type": "boolean"
                         }
                     }
