@@ -262,6 +262,9 @@
                     "closID": {
                         "type": "string"
                     },
+                    "schemata": {
+                        "type": "string"
+                    },
                     "l3CacheSchema": {
                         "type": "string"
                     },
