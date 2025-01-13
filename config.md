@@ -647,7 +647,7 @@ See the below table for a summary of hooks and when they are called:
 
 |           Name          | Namespace |                                                            When                                                                    |
 | ----------------------- | --------- | -----------------------------------------------------------------------------------------------------------------------------------|
-| `prestart` (Deprecated) | runtime   | After the start  operation is called but before the user-specified program command is executed.                                    |
+| `prestart` (Deprecated) | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `createRuntime`         | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `createContainer`       | container | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `startContainer`        | container | After the start operation is called but before the user-specified program command is executed.                                     |
