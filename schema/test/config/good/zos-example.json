@@ -1,0 +1,138 @@
+{
+    "ociVersion": "0.5.0-dev",
+    "process": {
+        "terminal": true,
+        "user": {
+            "uid": 1,
+            "gid": 1,
+            "additionalGids": [
+                5,
+                6
+            ]
+        },
+        "args": [
+            "sh"
+        ],
+        "env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin",
+            "TERM=xterm"
+        ],
+        "cwd": "/",
+        "rlimits": [
+            {
+                "type": "RLIMIT_NOFILE",
+                "hard": 1024,
+                "soft": 1024
+            }
+        ],
+        "noNewPrivileges": true
+    },
+    "root": {
+        "path": "rootfs"
+    },
+    "hostname": "slartibartfast",
+    "mounts": [
+        {
+            "destination": "/proc",
+            "type": "proc",
+            "source": "proc"
+        },
+        {
+            "destination": "/dev",
+            "type": "tfs",
+            "source": "tmpfs",
+            "options": [
+                "nosuid",
+                "-p 1755",
+                "-s 64"
+            ]
+        }
+    ],
+    "hooks": {
+        "prestart": [
+            {
+                "path": "/usr/bin/fix-mounts",
+                "args": [
+                    "fix-mounts",
+                    "arg1",
+                    "arg2"
+                ],
+                "env": [
+                    "key1=value1"
+                ]
+            },
+            {
+                "path": "/usr/bin/setup-network"
+            }
+        ],
+        "createRuntime": [
+            {
+                "path": "/usr/bin/fix-mounts",
+                "args": [
+                    "fix-mounts",
+                    "arg1",
+                    "arg2"
+                ],
+                "env": [
+                    "key1=value1"
+                ]
+            },
+            {
+                "path": "/usr/bin/setup-network"
+            }
+        ],
+        "createContainer": [
+            {
+                "path": "/usr/bin/mount-hook",
+                "args": [
+                    "-mount",
+                    "arg1",
+                    "arg2"
+                ],
+                "env": [
+                    "key1=value1"
+                ]
+            }
+        ],
+        "startContainer": [
+            {
+                "path": "/usr/bin/refresh-ldcache"
+            }
+        ],
+        "poststart": [
+            {
+                "path": "/usr/bin/notify-start",
+                "timeout": 5
+            }
+        ],
+        "poststop": [
+            {
+                "path": "/usr/sbin/cleanup.sh",
+                "args": [
+                    "cleanup.sh",
+                    "-f"
+                ]
+            }
+        ]
+    },
+    "zos": {
+        "namespaces": [
+            {
+                "type": "pid"
+            },
+            {
+                "type": "ipc"
+            },
+            {
+                "type": "uts"
+            },
+            {
+                "type": "mount"
+            }
+        ]
+    },
+    "annotations": {
+        "com.example.key1": "value1",
+        "com.example.key2": "value2"
+    }
+}

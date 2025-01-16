@@ -3,10 +3,14 @@
         "description": "z/OS platform-specific configurations",
         "type": "object",
         "properties": {
-            "devices": {
+            "namespaces": {
                 "type": "array",
                 "items": {
-                    "$ref": "defs-zos.json#/definitions/Device"
+                    "anyOf": [
+                        {
+                            "$ref": "defs-zos.json#/definitions/NamespaceReference"
+                        }
+                    ]
                 }
             }
         }

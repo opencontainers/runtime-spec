@@ -353,6 +353,12 @@ For Linux-based systems, the `process` object supports the following process-spe
       CPU affinity after the process is moved to container's cgroup, and the
       final affinity is determined by the Linux kernel.
 
+### <a name="configZOSProcess" />z/OS Process
+
+For z/OS-based systems, the `process` object supports the following process-specific properties.
+
+* **`noNewPrivileges`** (bool, OPTIONAL) setting `noNewPrivileges` to true prevents the process from gaining additional privileges.
+
 ### <a name="configUser" />User
 
 The user for the process is a platform-specific structure that allows specific control over which user the process runs as.
