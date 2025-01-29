@@ -721,7 +721,7 @@ The following parameters can be specified to set up seccomp:
     When the action doesn't support an errno, the runtime MUST print and error and fail.
     If not specified then its default value is `EPERM`.
 * **`architectures`** *(array of strings, OPTIONAL)* - the architecture used for system calls.
-    A valid list of constants as of libseccomp v2.5.0 is shown below.
+    A valid list of constants as of libseccomp v2.6.0 is shown below.
 
     * `SCMP_ARCH_X86`
     * `SCMP_ARCH_X86_64`
@@ -742,17 +742,10 @@ The following parameters can be specified to set up seccomp:
     * `SCMP_ARCH_PARISC`
     * `SCMP_ARCH_PARISC64`
     * `SCMP_ARCH_RISCV64`
-
-<!--
-The following constants are defined in the main branch of libseccomp,
-but not included in its latest release (v2.5) yet:
-https://github.com/seccomp/libseccomp/commits/main/include/seccomp.h.in
-
-* SCMP_ARCH_LOONGARCH64
-* SCMP_ARCH_M68K
-* SCMP_ARCH_SH
-* SCMP_ARCH_SHEB
--->
+    * `SCMP_ARCH_LOONGARCH64`
+    * `SCMP_ARCH_M68K`
+    * `SCMP_ARCH_SH`
+    * `SCMP_ARCH_SHEB`
 
 * **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with seccomp(2).
 
@@ -786,7 +779,7 @@ https://github.com/seccomp/libseccomp/commits/main/include/seccomp.h.in
     * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
         `names` MUST contain at least one entry.
     * **`action`** *(string, REQUIRED)* - the action for seccomp rules.
-        A valid list of constants as of libseccomp v2.5.0 is shown below.
+        A valid list of constants as of libseccomp v2.6.0 is shown below.
 
         * `SCMP_ACT_KILL`
         * `SCMP_ACT_KILL_PROCESS`
@@ -810,7 +803,7 @@ https://github.com/seccomp/libseccomp/commits/main/include/seccomp.h.in
         * **`value`** *(uint64, REQUIRED)* - the value for syscall arguments in seccomp.
         * **`valueTwo`** *(uint64, OPTIONAL)* - the value for syscall arguments in seccomp.
         * **`op`** *(string, REQUIRED)* - the operator for syscall arguments in seccomp.
-            A valid list of constants as of libseccomp v2.3.2 is shown below.
+            A valid list of constants as of libseccomp v2.6.0 is shown below.
 
             * `SCMP_CMP_NE`
             * `SCMP_CMP_LT`
