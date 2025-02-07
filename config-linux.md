@@ -719,7 +719,7 @@ The following parameters can be specified to set up seccomp:
 * **`defaultErrnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
     Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno code to return.
     When the action doesn't support an errno, the runtime MUST print and error and fail.
-    If not specified then its default value is `EPERM`.
+    The default is `EPERM`.
 * **`architectures`** *(array of strings, OPTIONAL)* - the architecture used for system calls.
     A valid list of constants as of libseccomp v2.6.0 is shown below.
 
@@ -794,7 +794,7 @@ The following parameters can be specified to set up seccomp:
     * **`errnoRet`** *(uint, OPTIONAL)* - the errno return code to use.
         Some actions like `SCMP_ACT_ERRNO` and `SCMP_ACT_TRACE` allow to specify the errno code to return.
         When the action doesn't support an errno, the runtime MUST print and error and fail.
-        If not specified its default value is `EPERM`.
+        The default is `EPERM`.
 
     * **`args`** *(array of objects, OPTIONAL)* - the specific syscall in seccomp.
         Each entry has the following structure:
