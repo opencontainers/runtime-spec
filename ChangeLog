@@ -1,5 +1,34 @@
 OpenContainers Specifications
 
+Changes with v1.2.1:
+
+	Additions:
+
+	* zos updates (#1273)
+	* Add support for windows CPU affinity (#1258)
+	* specs-go: sync SCMP_ARCH_* constants with libseccomp main (#1229)
+	* Add CPU affinity to executed processes (#1253, #1261)
+	* config-linux: describe the format of cpus and mems (#1253)
+
+	Minor fixes:
+
+	* Fix description of errnoRet in Seccomp (#1277)
+	* config-linux: update for libseccomp v2.6.0 (#1276)
+	* Correct `prestart` hook description in summary (#1275)
+
+	Documentation, CI & Governance:
+
+	* ci: Add a github actions workflow for lint (#1257)
+	* update http links to https (#1269)
+	* doc: fix the invalid hyperlink naming-a-volume (#1268)
+	* ci: remove redundunt actions (#1256)
+	* chore: format JSON file `make -C schema fmt` (#1255)
+	* CODEOWNERS: remove vbatts (#1248)
+	* MAINTAINERS: move vbatts to EMERITUS (#1248)
+	* Update golangci-lint to v1.56.1 in CI (#1245)
+	* Add Go v1.21 and v1.22 to GitHub Actions CI matrix (#1245)
+	* Update GitHub Actions packages to resolve warnings in CI (#1244)
+
 Changes with v1.2.0:
 
 	Additions:
