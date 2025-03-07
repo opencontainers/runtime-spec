@@ -1,0 +1,7 @@
+{
+    "ociVersion": "1.3.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "freebsd": {}
+}
