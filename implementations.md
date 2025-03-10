@@ -10,6 +10,7 @@ If you know of any associated projects that are not listed here, please file a p
 * [containers/youki][youki] - Runtime implementation in Rust
 * [opencontainers/runc][runc] - Reference implementation of OCI runtime
 * [projectatomic/bwrap-oci][bwrap-oci] - Convert the OCI spec file to a command line for [bubblewrap][bubblewrap]
+* [systemd/systemd][systemd] - Contains [systemd-nspawn][nspawn], runtime implementation in C (via `--oci-bundle` option since systemd v242)
 
 ## <a name="implementationsRuntimeVirtualMachine" />Runtime (Virtual Machine)
 
@@ -30,11 +31,13 @@ If you know of any associated projects that are not listed here, please file a p
 [crun]: https://github.com/containers/crun
 [gvisor]: https://github.com/google/gvisor
 [kata-runtime]: https://github.com/kata-containers/runtime
+[nspawn]: https://www.freedesktop.org/software/systemd/man/latest/systemd-nspawn.html
 [oct]: https://github.com/huawei-openlab/oct
 [octool]: https://github.com/kunalkushwaha/octool
 [runc]: https://github.com/opencontainers/runc
 [rune]: https://github.com/alibaba/inclavare-containers
 [runtime-tools]: https://github.com/opencontainers/runtime-tools
 [runv]: https://github.com/hyperhq/runv
+[systemd]: https://github.com/systemd/systemd
 [virtcontainers]: https://github.com/containers/virtcontainers
 [youki]: https://github.com/containers/youki
