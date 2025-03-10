@@ -35,7 +35,7 @@ jobs:
       - name: run golangci-lint
         uses: golangci/golangci-lint-action@v4
         with:
-          version: v1.56.1
+          version: v1.64
           args: --verbose
 
       - name: run tests
