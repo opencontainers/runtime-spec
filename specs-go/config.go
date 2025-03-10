@@ -688,7 +688,7 @@ type WindowsHyperV struct {
 	UtilityVMPath string `json:"utilityVMPath,omitempty"`
 }
 
-// IOMems containes information about iomem addresses that should be passed to the VM.
+// IOMems contains information about iomem addresses that should be passed to the VM.
 type IOMems struct {
 	// Guest Frame Number to map the iomem range. If GFN is not specified, the mapping will be done to the same Frame Number as was provided in FirstMFN.
 	FirstGFN *uint64 `json:"firstGFN,omitempty"`

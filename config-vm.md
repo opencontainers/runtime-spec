@@ -75,7 +75,7 @@ This image contains the root filesystem that the virtual machine **`kernel`** wi
     * **`nrMFNs`** (int REQUIRED) Number of pages to be mapped, see [Xen Config][xl-config-format] for the details.
 * **`irqs`** (array OPTIONAL) Allows VM to access specific physical IRQs, see [Xen Config][xl-config-format] for the details.
 
-This hwConfig object contains the description of the hardware that can be safely passed through to the VM. Where **`deviceTree`** is the path to the device-tree blob, which conains description of the isolated hardware and paravirtualized hardware that should be used by VM. **`dtdevs`**, **`iomems`** and **`irqs`** parameters describing the minimun set of the parameters, needed for VM to access the hardware.
+This hwConfig object contains the description of the hardware that can be safely passed through to the VM. Where **`deviceTree`** is the path to the device-tree blob, which contains description of the isolated hardware and paravirtualized hardware that should be used by VM. **`dtdevs`**, **`iomems`** and **`irqs`** parameters describing the minimal set of the parameters, needed for VM to access the hardware.
 
 ### Example
 
