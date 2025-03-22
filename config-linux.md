@@ -189,6 +189,107 @@ In addition to any devices configured with this setting, the runtime MUST also s
 * [`/dev/ptmx`][pts.4].
   A [bind-mount or symlink of the container's `/dev/pts/ptmx`][devpts].
 
+## <a name="configLinuxNetworkDevices" />Network Devices
+
+Linux network devices are entities that send and receive data packets. They are
+not represented as files in the `/dev` directory. Instead, they are represented
+by the [`net_device`][net_device] data structure in the Linux kernel. Network
+devices can belong to only one network namespace and use a set of operations
+distinct from regular file operations. Network devices can be categorized as
+**physical** or **virtual**:
+
+* **Physical network devices** correspond to hardware interfaces, such as
+    Ethernet cards (e.g., `eth0`, `enp0s3`). They are directly associated with
+    physical network hardware.
+* **Virtual network devices** are software-defined interfaces, such as loopback
+    devices (`lo`), virtual Ethernet pairs (`veth`), bridges (`br0`), VLANs, and
+    MACVLANs. They are created and managed by the kernel and do not correspond
+    to physical hardware.
+
+This schema focuses solely on moving existing network devices identified by name
+from the host network namespace into the container network namespace. It does
+not cover the complexities of network device creation or network configuration,
+such as IP address assignment, routing, and DNS setup.
+
+**`netDevices`** (object, OPTIONAL) - A set of network devices that MUST be made
+available in the container. The runtime is responsible for moving these devices;
+the underlying mechanism is implementation-defined.
+
+The name of the network device is the entry key. Entry values are objects with
+the following properties:
+
+* **`name`** *(string, OPTIONAL)* - the name of the network device inside the
+    container namespace. If not specified, the host name is used.
+
+The runtime MUST check if moving the network interface to the container
+namespace is possible. If a network device with the specified name already
+exists in the container namespace, the runtime MUST [generate an error](runtime.md#errors),
+unless the user has provided a template by appending
+`%d` to the new name. In that case, the runtime MUST allow the move, and the
+kernel will generate a unique name for the interface within the container's
+network namespace.
+
+The runtime MUST preserve existing network interface attributes, including all
+permanent IP addresses (IFA_F_PERMANENT flag) of any family with global scope
+(RT_SCOPE_UNIVERSE value) as defined in [`RFC 3549 Section 2.3.3.2`][rfc3549].
+This ensures that only addresses intended for persistent, external communication
+are transferred.
+
+The runtime MUST set the network device state to "up" after moving it to the
+network namespace to allow the container to send and receive network traffic
+through that device.
+
+### Namespace Lifecycle and Container Termination
+
+The runtime MUST NOT actively manage the interface's lifecycle and configuration
+*within* the container's network namespace. This is because network interfaces
+are inherently tied to the network namespace itself, and their lifecycle is
+therefore managed by the owner of the network namespace. Typically, this
+ownership and management are handled by higher-level container runtime
+orchestrators, rather than the processes running directly within the container.
+
+The runtime **MUST NOT** attempt to move the interface out of the namespace
+before deletion. This design decision is based on the following:
+
+* **Namespace Ownership:** Network interfaces are tied to the network namespace,
+    which may not always be directly managed by the runtime.
+* **Abrupt Termination:** Even when the runtime manages the namespace, it cannot
+    reliably participate in its deletion if the container's processes terminate
+    abruptly (e.g., due to a crash) or run until completion.
+
+During the network namespace deletion the kernel's built-in namespace cleanup
+mechanisms take over, as described in [network_namespaces(7)][net_namespaces.7]:
+"When a network namespace is freed (i.e., when the last process in the namespace
+terminates), its physical network devices are moved back to the initial network
+namespace." All the network namespace migratable physical network devices are
+moved to the default network namespace, while virtual devices (veth, macvlan,
+...) are destroyed.
+
+If users require custom handling of interface lifecycle during namespace
+deletion, they can utilize existing features within the namespace orchestrator
+or employ post-stop hooks.
+
+**Physical Interface Renaming and Systemd**
+
+When a physical interface is renamed within a container and the container's
+network namespace is later deleted, the kernel will move the interface back to
+the root namespace with its renamed name. In case of a name conflict in the root
+namespace, the kernel will rename it to `dev%d`. To ensure predictable interface
+names in the root namespace, users can utilize systemd's `udevd` and `networkd`
+rules. Refer to [systemd Predictable Network Interface Names][predictable-network-interfaces-names]
+for more information on configuring predictable names.
+
+### Example
+
+#### Moving a device with a renamed interface inside the container:
+
+```json
+"netDevices": {
+    "eth0" : {
+        "name": "container_eth0"
+    }
+}
+
 ## <a name="configLinuxControlGroups" />Control groups
 
 Also known as cgroups, they are used to restrict resource usage for a container and handle device access.
@@ -975,6 +1076,10 @@ subset of the available options.
 [mknod.1]: https://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: https://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: https://man7.org/linux/man-pages/man7/namespaces.7.html
+[net_device]: https://docs.kernel.org/networking/netdevices.html
+[net_namespaces.7]: https://man7.org/linux/man-pages/man7/network_namespaces.7.html
+[predictable-network-interfaces-names]: https://systemd.io/PREDICTABLE_INTERFACE_NAMES
+[rfc3549]: https://www.ietf.org/rfc/rfc3549.txt
 [null.4]: https://man7.org/linux/man-pages/man4/null.4.html
 [personality.2]: https://man7.org/linux/man-pages/man2/personality.2.html
 [pts.4]: https://man7.org/linux/man-pages/man4/pts.4.html
