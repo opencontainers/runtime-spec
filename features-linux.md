@@ -228,3 +228,17 @@ Irrelevant to the availability of Intel RDT on the host operating system.
   }
 }
 ```
+
+## <a name="linuxFeaturesNetDevices" />NetDevices
+
+**`netDevices`** (object, OPTIONAL) represents the runtime's implementation status of Linux network devices.
+
+* **`enabled`** (bool, OPTIONAL) represents whether the runtime supports the capability to move Linux network devices into the container's network namespace.
+
+### Example
+
+```json
+"netDevices": {
+  "enabled": true
+}
+```

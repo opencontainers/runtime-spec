@@ -189,6 +189,14 @@
                 }
             }
         },
+        "NetDevice": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "weight": {
             "$ref": "defs.json#/definitions/uint16"
         },
