@@ -354,6 +354,21 @@ Here is a full example for reference.
     "selinux": {
       "enabled": true
     },
+    "memoryPolicy": {
+      "modes": [
+        "MPOL_DEFAULT",
+        "MPOL_BIND",
+        "MPOL_INTERLEAVE",
+        "MPOL_WEIGHTED_INTERLEAVE",
+        "MPOL_PREFERRED",
+        "MPOL_LOCAL"
+      ],
+      "flags": [
+        "MPOL_F_NUMA_BALANCING",
+        "MPOL_F_RELATIVE_NODES",
+        "MPOL_F_STATIC_NODES"
+      ]
+    },
     "intelRdt": {
       "enabled": true
     }

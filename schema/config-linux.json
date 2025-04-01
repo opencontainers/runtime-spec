@@ -283,6 +283,23 @@
                     }
                 }
             },
+            "memoryPolicy": {
+                "type": "object",
+                "properties": {
+                    "mode": {
+                        "$ref": "defs-linux.json#/definitions/MemoryPolicyMode"
+                    },
+                    "nodes": {
+                        "type": "string"
+                    },
+                    "flags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/MemoryPolicyFlag"
+                        }
+                    }
+                }
+            },
             "personality": {
                 "type": "object",
                 "$ref": "defs-linux.json#/definitions/Personality"
