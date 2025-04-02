@@ -665,7 +665,9 @@ For more information, see the kernel cgroups documentation about [pids][cgroup-v
 
 The following parameters can be specified to set up the controller:
 
-* **`limit`** *(int64, REQUIRED)* - specifies the maximum number of tasks in the cgroup
+* **`limit`** *(int64, REQUIRED)* - specifies the maximum number of tasks in the cgroup, with `-1` indicating no limit (`max`).
+
+> Note: Even though it superficially seems redundant, `0` is a valid limit value for the `pids` cgroup controller and SHOULD NOT be treated as a special value.
 
 #### Example
 
