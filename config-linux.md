@@ -289,6 +289,7 @@ for more information on configuring predictable names.
         "name": "container_eth0"
     }
 }
+```
 
 ## <a name="configLinuxControlGroups" />Control groups
 
