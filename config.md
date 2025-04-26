@@ -304,7 +304,7 @@ For Linux-based systems, the `process` object supports the following process-spe
     If `oomScoreAdj` is not set, the runtime MUST NOT change the value of `oom_score_adj`.
 
     This is a per-process setting, where as [`disableOOMKiller`](config-linux.md#memory) is scoped for a memory cgroup.
-    For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Contol][cgroup-v1-memory_2].
+    For more information on how these two settings work together, see [the memory cgroup documentation section 10. OOM Control][cgroup-v1-memory_2].
 * **`scheduler`** (object, OPTIONAL) is an object describing the scheduler properties for the process.  The `scheduler` contains the following properties:
 
     * **`policy`** (string, REQUIRED) represents the scheduling policy.  A valid list of values is:
