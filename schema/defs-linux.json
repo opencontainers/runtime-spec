@@ -272,6 +272,26 @@
                 "allow"
             ]
         },
+        "MemoryPolicyMode": {
+            "type": "string",
+            "enum": [
+                "MPOL_DEFAULT",
+                "MPOL_BIND",
+                "MPOL_INTERLEAVE",
+                "MPOL_WEIGHTED_INTERLEAVE",
+                "MPOL_PREFERRED",
+                "MPOL_PREFERRED_MANY",
+                "MPOL_LOCAL"
+            ]
+        },
+        "MemoryPolicyFlag": {
+            "type": "string",
+            "enum": [
+                "MPOL_F_NUMA_BALANCING",
+                "MPOL_F_RELATIVE_NODES",
+                "MPOL_F_STATIC_NODES"
+            ]
+        },
         "NetworkInterfacePriority": {
             "type": "object",
             "properties": {
