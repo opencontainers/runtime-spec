@@ -163,6 +163,20 @@
                         }
                     }
                 },
+                "landlock": {
+                    "type": "object",
+                    "properties": {
+                        "handledAccess": {
+                            "$ref": "defs.json#/definitions/LandlockHandledAccess"
+                        },
+                        "rules": {
+                            "$ref": "defs.json#/definitions/LandlockRules"
+                        },
+                        "enableBestEffort": {
+                            "type": "boolean"
+                        }
+                    }
+                },
                 "noNewPrivileges": {
                     "type": "boolean"
                 },
