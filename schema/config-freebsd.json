@@ -1,0 +1,75 @@
+{
+    "freebsd": {
+        "description": "FreeBSD platform-specific configurations",
+        "type": "object",
+        "properties": {
+            "devices": {
+                "type": "array",
+                "items": {
+                    "$ref": "defs-freebsd.json#/definitions/Device"
+                }
+            },
+            "jail": {
+                "type": "object",
+                "properties": {
+                    "parent": {
+                        "type": "string"
+                    },
+                    "host": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingModeNoDisable"
+                    },
+                    "ip4": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingMode"
+                    },
+                    "ip6": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingMode"
+                    },
+                    "vnet": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingModeNoDisable"
+                    },
+                    "sysvmsg": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingMode"
+                    },
+                    "sysvsem": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingMode"
+                    },
+                    "sysvshm": {
+                        "$ref": "defs-freebsd.json#/definitions/SharingMode"
+                    },
+                    "enforceStatfs": {
+                        "$ref": "defs.json#/definitions/uint8"
+                    },
+                    "allow": {
+                        "type": "object",
+                        "properties": {
+                            "setHostname": {
+                                "type": "boolean"
+                            },
+                            "rawSockets": {
+                                "type": "boolean"
+                            },
+                            "chflags": {
+                                "type": "boolean"
+                            },
+                            "mount": {
+                                "$ref": "defs.json#/definitions/ArrayOfStrings"
+                            },
+                            "quotas": {
+                                "type": "boolean"
+                            },
+                            "socketAf": {
+                                "type": "boolean"
+                            },
+                            "reservedPorts": {
+                                "type": "boolean"
+                            },
+                            "suser": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

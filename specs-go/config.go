@@ -31,6 +31,8 @@ type Spec struct {
 	VM *VM `json:"vm,omitempty" platform:"vm"`
 	// ZOS is platform-specific configuration for z/OS based containers.
 	ZOS *ZOS `json:"zos,omitempty" platform:"zos"`
+	// FreeBSD is platform-specific configuration for FreeBSD based containers.
+	FreeBSD *FreeBSD `json:"freebsd,omitempty" platform:"freebsd"`
 }
 
 // Scheduler represents the scheduling attributes for a process. It is based on
@@ -170,7 +172,7 @@ type Mount struct {
 	// Destination is the absolute path where the mount will be placed in the container.
 	Destination string `json:"destination"`
 	// Type specifies the mount kind.
-	Type string `json:"type,omitempty" platform:"linux,solaris,zos"`
+	Type string `json:"type,omitempty" platform:"linux,solaris,zos,freebsd"`
 	// Source specifies the source path of the mount.
 	Source string `json:"source,omitempty"`
 	// Options are fstab style mount options.
@@ -932,3 +934,64 @@ const (
 	// SchedFlagUtilClampMin represents the utilization clamp maximum scheduling flag
 	SchedFlagUtilClampMax LinuxSchedulerFlag = "SCHED_FLAG_UTIL_CLAMP_MAX"
 )
+
+// FreeBSD contains platform-specific configuration for FreeBSD based containers.
+type FreeBSD struct {
+	// Devices which are accessible in the container
+	Devices []FreeBSDDevice `json:"devices,omitempty"`
+	// Jail definition for this container
+	Jail *FreeBSDJail `json:"jail,omitempty"`
+}
+
+type FreeBSDDevice struct {
+	Path string `json:"path"`
+	Mode int    `json:"mode"`
+}
+
+// FreeBSDJail describes how to configure the container's jail
+type FreeBSDJail struct {
+	// Parent jail name - this can be used to share a single vnet
+	// across several containers
+	Parent string `json:"parent,omitempty"`
+	// Whether to use parent UTS names or override in the container
+	Host FreeBSDSharing `json:"host,omitempty"`
+	// IPv4 address sharing for the container
+	Ip4 FreeBSDSharing `json:"ip4,omitempty"`
+	// IPv6 address sharing for the container
+	Ip6 FreeBSDSharing `json:"ip6,omitempty"`
+	// Which network stack to use for the container
+	Vnet FreeBSDSharing `json:"vnet,omitempty"`
+	// SystemV IPC message sharing for the container
+	SysVMsg FreeBSDSharing `json:"sysvmsg,omitempty"`
+	// SystemV semaphore message sharing for the container
+	SysVSem FreeBSDSharing `json:"sysvsem,omitempty"`
+	// SystemV memory sharing for the container
+	SysVShm FreeBSDSharing `json:"sysvmem,omitempty"`
+	// Mount visibility (see jail(8) for details)
+	EnforceStatfs *int `json:"enforceStatfs,omitempty"`
+	// Jail capabilities
+	Allow *FreeBSDJailAllow `json:"allow,omitempty"`
+}
+
+// These values are used to control access to features in the container, either
+// disabling the feature, sharing state with the parent or creating new private
+// state in the container.
+type FreeBSDSharing string
+
+const (
+	ShareDisable FreeBSDSharing = "disable"
+	ShareNew     FreeBSDSharing = "new"
+	ShareInherit FreeBSDSharing = "inherit"
+)
+
+// FreeBSDJailAllow describes jail capabilities
+type FreeBSDJailAllow struct {
+	SetHostname   bool     `json:"setHostname,omitempty"`
+	RawSockets    bool     `json:"rawSockets,omitempty"`
+	Chflags       bool     `json:"chflags,omitempty"`
+	Mount         []string `json:"mount,omitempty"`
+	Quotas        bool     `json:"quotas,omitempty"`
+	SocketAf      bool     `json:"socketAf,omitempty"`
+	ReservedPorts bool     `json:"reservedPorts,omitempty"`
+	Suser         bool     `json:"suser,omitempty"`
+}
