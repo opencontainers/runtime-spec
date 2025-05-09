@@ -747,6 +747,7 @@ The following parameters can be specified for the container:
     The value SHOULD start with `L3:` and SHOULD NOT contain newlines.
 * **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth per L3 cache id.
     The value MUST start with `MB:` and MUST NOT contain newlines.
+* **`schemata`** *(array of strings, OPTIONAL)* - specifies the schemata to be written to the `schemata` file in resctrlfs. Each element represents one line in the `schemata` file. The value MUST NOT contain newlines.
 
 The following rules on parameters MUST be applied:
 
@@ -756,15 +757,17 @@ The following rules on parameters MUST be applied:
 
 * If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
 
-* If neither `l3CacheSchema` nor `memBwSchema` is set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
+* If `schemata` field is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`. If also `l3CacheSchema` or `memBwSchema` is set the value of `schemata` field must be written last, after the values from `l3CacheSchema` and `memBwSchema` has been written.
+
+* If none of `l3CacheSchema`, `memBwSchema` or `schemata` is set, runtimes MUST NOT write to `schemata` files in any `resctrl` pseudo-filesystems.
 
 * If `closID` is not set, runtimes MUST use the container ID from [`start`](runtime.md#start) and create the `<container-id>` directory.
 
-* If `closID` is set, `l3CacheSchema` and/or `memBwSchema` is set
+* If `closID` is set, `l3CacheSchema` and/or `memBwSchema` and/or `schemata` is set
   * if `closID` directory in a mounted `resctrl` pseudo-filesystem doesn't exist, the runtimes MUST create it.
   * if `closID` directory in a mounted `resctrl` pseudo-filesystem exists, runtimes MUST compare `l3CacheSchema` and/or `memBwSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
 
-* If `closID` is set, and neither of `l3CacheSchema` and `memBwSchema` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
+* If `closID` is set, and none of `l3CacheSchema`, `memBwSchema` or `schemata` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
 
 * **`enableCMT`** *(boolean, OPTIONAL)* - specifies if Intel RDT CMT should be enabled:
     * CMT (Cache Monitoring Technology) supports monitoring of the last-level cache (LLC) occupancy
@@ -776,18 +779,27 @@ The following rules on parameters MUST be applied:
 
 ### Example
 
-Consider a two-socket machine with two L3 caches where the default CBM is 0x7ff and the max CBM length is 11 bits,
-and minimum memory bandwidth of 10% with a memory bandwidth granularity of 10%.
+Consider a two-socket machine with:
 
-Tasks inside the container only have access to the "upper" 7/11 of L3 cache on socket 0 and the "lower" 5/11 L3 cache on socket 1,
-and may use a maximum memory bandwidth of 20% on socket 0 and 70% on socket 1.
+- two L3 caches where the default CBM is 0x7ff (11 bits)
+- eight L2 caches where the default CBM is 0xFF (8 bits)
+- minimum memory bandwidth of 10% with a memory bandwidth granularity of 10%
+
+Tasks inside the container:
+
+- have access to the "upper" 7/11 of L3 cache on socket 0 and the "lower" 5/11 L3 cache on socket 1
+- have access to the "lower" 4/8 of L2 cache on socket 0 (socket 1 is left out from this example)
+- may use a maximum memory bandwidth of 20% on socket 0 and 70% on socket 1.
 
 ```json
 "linux": {
     "intelRdt": {
         "closID": "guaranteed_group",
-        "l3CacheSchema": "L3:0=7f0;1=1f",
-        "memBwSchema": "MB:0=20;1=70"
+        "schemata": [
+            "L3:0=7f0;1=1f",
+            "L2:0=f;1=f;2=f;3=f",
+            "MB:0=20;1=70"
+        ]
     }
 }
 ```

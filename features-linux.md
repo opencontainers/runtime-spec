@@ -201,12 +201,15 @@ Irrelevant to the availability of SELinux on the host operating system.
 Irrelevant to the availability of Intel RDT on the host operating system.
 
 * **`enabled`** (bool, OPTIONAL) represents whether the runtime supports Intel RDT.
+* **`schemata`** (bool, OPTIONAL) represents whether the
+  (`schemata` field of `linux.intelRdt` in `config.json`)[config-linux.md#intelrdt] is supported.
 
 ### Example
 
 ```json
 "intelRdt": {
-  "enabled": true
+  "enabled": true,
+  "schemata": true
 }
 ```
 

@@ -355,7 +355,8 @@ Here is a full example for reference.
       "enabled": true
     },
     "intelRdt": {
-      "enabled": true
+      "enabled": true,
+      "schemata": true
     }
   },
   "annotations": {
