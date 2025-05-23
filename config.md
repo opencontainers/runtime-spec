@@ -528,6 +528,8 @@ For Windows based systems the user structure has the following fields:
     This MAY be set if the target platform and architecture of this spec support hardware virtualization.
 * **`zos`** (object, OPTIONAL) [z/OS-specific configuration](config-zos.md).
     This MAY be set if the target platform of this spec is `zos`.
+* **`freebsd`** (object, OPTIONAL) [FreeBSD-specific configuration](config-freebsd.md).
+    This MAY be set if the target platform of this spec is `freebsd`.
 
 ### Example (Linux)
 
