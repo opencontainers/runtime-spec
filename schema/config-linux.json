@@ -278,6 +278,9 @@
                         "type": "string",
                         "pattern": "^MB:[^\\n]*$"
                     },
+                    "enableMonitoring": {
+                        "type": "boolean"
+                    },
                     "enableCMT": {
                         "type": "boolean"
                     },

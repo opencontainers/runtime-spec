@@ -748,6 +748,7 @@ The following parameters can be specified for the container:
 * **`memBwSchema`** *(string, OPTIONAL)* - specifies the schema of memory bandwidth per L3 cache id.
     The value MUST start with `MB:` and MUST NOT contain newlines.
 * **`schemata`** *(array of strings, OPTIONAL)* - specifies the schemata to be written to the `schemata` file in resctrlfs. Each element represents one line in the `schemata` file. The value MUST NOT contain newlines.
+* **`enableMonitoring`** *(boolean, OPTIONAL)* - enables resctrl monitoring for the container.
 
 The following rules on parameters MUST be applied:
 
@@ -769,13 +770,22 @@ The following rules on parameters MUST be applied:
 
 * If `closID` is set, and none of `l3CacheSchema`, `memBwSchema` or `schemata` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
 
-* **`enableCMT`** *(boolean, OPTIONAL)* - specifies if Intel RDT CMT should be enabled:
-    * CMT (Cache Monitoring Technology) supports monitoring of the last-level cache (LLC) occupancy
-      for the container.
+* If `enableMonitoring` is set, the runtime MUST create a dedicated MON group
+  for the container. The runtime MUST use the container ID from
+  [`start`](runtime.md#start) as the name of the MON group, i.e. create
+  `mon_groups/<container-id>/` subdirectory under the top-level CTRL_MON group
+  (named after `closID` or `<container-id>`, see above). The runtime MUST
+  delete the MON group after the container is deleted. If creation of the MON
+  group fails (e.g. the maximum number of MON groups is reached) the runtime MUST
+  return an error.
 
-* **`enableMBM`** *(boolean, OPTIONAL)* - specifies if Intel RDT MBM should be enabled:
+* **`enableCMT`** *(boolean, OPTIONAL, **DEPRECATED**)* - specifies if Intel RDT CMT should be enabled:
+    * CMT (Cache Monitoring Technology) supports monitoring of the last-level cache (LLC) occupancy
+      for the container. If `enableMonitoring` is specified the ``enableCMT` MUST be ignored.
+
+* **`enableMBM`** *(boolean, OPTIONAL, **DEPRECATED**)* - specifies if Intel RDT MBM should be enabled:
     * MBM (Memory Bandwidth Monitoring) supports monitoring of total and local memory bandwidth
-      for the container.
+      for the container. If `enableMonitoring` is specified the ``enableMBM` MUST be ignored.
 
 ### Example
 

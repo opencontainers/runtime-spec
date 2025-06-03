@@ -855,12 +855,18 @@ type LinuxIntelRdt struct {
 	// NOTE: Should not be specified if Schemata is non-empty.
 	MemBwSchema string `json:"memBwSchema,omitempty"`
 
+	// EnableMonitoring enables resctrl monitoring for the container. This will
+	// create a dedicated resctrl monitoring group for the container.
+	EnableMonitoring bool `json:"enableMonitoring,omitempty"`
+
 	// EnableCMT is the flag to indicate if the Intel RDT CMT is enabled. CMT (Cache Monitoring Technology) supports monitoring of
 	// the last-level cache (LLC) occupancy for the container.
+	// Deprecated: use [LinuxIntelRdt.EnableMonitoring] instead.
 	EnableCMT bool `json:"enableCMT,omitempty"`
 
 	// EnableMBM is the flag to indicate if the Intel RDT MBM is enabled. MBM (Memory Bandwidth Monitoring) supports monitoring of
 	// total and local memory bandwidth for the container.
+	// Deprecated: use [LinuxIntelRdt.EnableMonitoring] instead.
 	EnableMBM bool `json:"enableMBM,omitempty"`
 }
 
