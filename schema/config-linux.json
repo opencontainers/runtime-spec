@@ -280,12 +280,6 @@
                     },
                     "enableMonitoring": {
                         "type": "boolean"
-                    },
-                    "enableCMT": {
-                        "type": "boolean"
-                    },
-                    "enableMBM": {
-                        "type": "boolean"
                     }
                 }
             },

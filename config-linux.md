@@ -779,14 +779,6 @@ The following rules on parameters MUST be applied:
   group fails (e.g. the maximum number of MON groups is reached) the runtime MUST
   return an error.
 
-* **`enableCMT`** *(boolean, OPTIONAL, **DEPRECATED**)* - specifies if Intel RDT CMT should be enabled:
-    * CMT (Cache Monitoring Technology) supports monitoring of the last-level cache (LLC) occupancy
-      for the container. If `enableMonitoring` is specified the ``enableCMT` MUST be ignored.
-
-* **`enableMBM`** *(boolean, OPTIONAL, **DEPRECATED**)* - specifies if Intel RDT MBM should be enabled:
-    * MBM (Memory Bandwidth Monitoring) supports monitoring of total and local memory bandwidth
-      for the container. If `enableMonitoring` is specified the ``enableMBM` MUST be ignored.
-
 ### Example
 
 Consider a two-socket machine with:
