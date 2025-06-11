@@ -43,4 +43,4 @@ The process was slow, inefficient and cost a fortune - and was entirely differen
 
 Standard Containers make INDUSTRIAL-GRADE DELIVERY of software a reality.
 Leveraging all of the properties listed above, Standard Containers are enabling large and small enterprises to streamline and automate their software delivery pipelines.
-Whether it is in-house devOps flows, or external customer-based software delivery mechanisms, Standard Containers are changing the way the community thinks about software packaging and delivery.
+Whether it is in-house DevOps flows, or external customer-based software delivery mechanisms, Standard Containers are changing the way the community thinks about software packaging and delivery.
