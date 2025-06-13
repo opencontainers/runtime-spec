@@ -1,0 +1,30 @@
+{
+    "definitions": {
+        "Device": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                }
+            }
+        },
+        "SharingMode": {
+            "type": "string",
+            "enum": [
+                "disable",
+                "new",
+                "inherit"
+            ]
+        },
+        "SharingModeNoDisable": {
+            "type": "string",
+            "enum": [
+                "new",
+                "inherit"
+            ]
+        }
+    }
+}
