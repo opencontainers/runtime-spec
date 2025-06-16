@@ -230,7 +230,7 @@ Changes with v1.0.1:
 	* config-linux: More specific documentation for weightDevice and
 	  throttle* (#825)
 	* config-linux: Modify procfs to proc (#905)
-	* config-linux: Fix "psuedo" -> "pseudo" typo (#921)
+	* config-linux: Fix a typo (#921)
 	* config-windows: Make maximum a uint16 (was a uint) (#891)
 	* runtime: Change "process in the container" -> "container
 	  process" (#907)
@@ -490,7 +490,7 @@ Changes with v1.0.0-rc3:
 	* spec: Separate the spec from project scaffolding (#626)
 	* README: Define "unspecified", "undefined", and
 	 "implementation-defined" (#575)
-	* config: Clarify absolue and relative values for root.path (#558)
+	* config: Clarify absolute and relative values for root.path (#558)
 	* config: Clarify ociVersion covering the configuration <->
 	  runtime API (#523)
 	* config-linux: Forbid duplicated namespaces with same `type`
@@ -551,7 +551,7 @@ Changes with v1.0.0-rc1:
 	* runtime: Split create and start, #384, #450, #463, #464, #467,
 	  #468
 	* runtime: Remove exec, #388
-	* runtime: Enviroment MUST match the configuration, #397
+	* runtime: Environment MUST match the configuration, #397
 	* config: Runtime MUST generate errors for unsupported platforms,
 	  #441
 	* config: Windows mount destinations MUST NOT be nested, #437
@@ -567,7 +567,7 @@ Changes with v1.0.0-rc1:
 	* config: Allow absolute paths for root.path (which previously
 	  required relative paths), #394
 	* config-linux: Add linux.mountLabel, #393
-	* config-linux: Add suport for cgroup namespace, #397
+	* config-linux: Add support for cgroup namespace, #397
 	* config-linux: Runtime SHOULD NOT modify ownership of any
 	  referenced filesystem (previously the restriction only applied to
 	  the root filesystem), #452
@@ -576,7 +576,7 @@ Changes with v1.0.0-rc1:
 	Minor fixes and documentation:
 
 	* README: Add project.md to the Table of Contents, #376
-	* README: Consistenly indent the Table of Contents, #400
+	* README: Consistently indent the Table of Contents, #400
 	* README: Link to LICENSE, #442
 	* README: Weekly call is OCI-wide, #378
 	* config: Explicit runtime namespace for hooks, #415
@@ -642,8 +642,7 @@ Changes with v0.5.0:
 	* style: Move one-sentence-per-line rule from the README, #369
 	* style: Remove dangling parenthesis, #359
 	* README: Add a link to the IRC logs, #358
-	* Fix "manadate", "exmaple", "paramters", and "preferrably" typos,
-	  #353, #354
+	* Fix typos, #353, #354
 
 Changes with v0.4.0:
 	Breaking changes:
@@ -729,7 +728,7 @@ Changes with v0.2.0:
 	* bundle.md: fix off-by-one error
 	* bundle.md: various updates to latest spec
 	* bundle: Move 'Linux sysctl' header to its own line
-	* Change commiter to committer
+	* Fix a typo
 	* Change Device field order in spec_linux.go, 'Path' should be top of the 'Type' field, according to the different of the config-linux.md, 'Path' field is the unique key.
 	* Change layout of mountpoints and mounts
 	* Change the rlimit type to string instead of int
@@ -854,7 +853,7 @@ Changes with v0.1.0:
 	* implementations: Link to mrunalp/ocitools
 	* lifecycle: Don't require /run/opencontainer/<runtime>/containers
 	* lifecycle: Mention runtime.json
-	* lifecycle: no hypens
+	* lifecycle: no hyphens
 	* MAINTAINERS: add tianon per the charter
 	* MAINTAINERS: correct Vish's github account
 	* Makefile: Add glossary to DOC_FILES
