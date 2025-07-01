@@ -812,6 +812,45 @@ Tasks inside the container:
 }
 ```
 
+## <a name="configLinuxMemoryPolicy" />Memory policy
+
+**`memoryPolicy`** (object, OPTIONAL) sets the NUMA memory policy for the container.
+For more information see the [set_mempolicy(2)][set_mempolicy.2] man page.
+
+* **`mode`** *(string, REQUIRED)* -
+
+    A valid list of constants is shown below.
+
+    * `MPOL_DEFAULT`
+    * `MPOL_BIND`
+    * `MPOL_INTERLEAVE`
+    * `MPOL_WEIGHTED_INTERLEAVE`
+    * `MPOL_PREFERRED`
+    * `MPOL_PREFERRED_MANY`
+    * `MPOL_LOCAL`
+
+* **`nodes`** *(string, REQUIRED)* - list of memory nodes from which nodemask is constructed to set_mempolicy(2). This is a comma-separated list, with dashes to represent ranges. For example, `0-3,7` represents memory nodes 0,1,2,3, and 7.
+
+* **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with set_mempolicy(2).
+
+    A valid list of constants is shown below.
+
+    * `MPOL_F_NUMA_BALANCING`
+    * `MPOL_F_RELATIVE_NODES`
+    * `MPOL_F_STATIC_NODES`
+
+### Example
+
+```json
+"linux": {
+    "memoryPolicy": {
+        "mode": "MPOL_INTERLEAVE",
+        "nodes": "2-3"
+        "flags": ["MPOL_F_STATIC_NODES"],
+    }
+}
+```
+
 ## <a name="configLinuxSysctl" />Sysctl
 
 **`sysctl`** (object, OPTIONAL) allows kernel parameters to be modified at runtime for the container.
@@ -1094,6 +1133,7 @@ subset of the available options.
 [tmpfs]: https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt
 
 [full.4]: https://man7.org/linux/man-pages/man4/full.4.html
+[set_mempolicy.2]: https://man7.org/linux/man-pages/man2/set_mempolicy.2.html
 [mknod.1]: https://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: https://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: https://man7.org/linux/man-pages/man7/namespaces.7.html
