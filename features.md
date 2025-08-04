@@ -372,7 +372,8 @@ Here is a full example for reference.
     },
     "intelRdt": {
       "enabled": true,
-      "schemata": true
+      "schemata": true,
+      "monitoring": true
     }
   },
   "annotations": {

@@ -134,6 +134,10 @@ type IntelRdt struct {
 	// Schemata is true if the "linux.intelRdt.enableMonitoring" field of the
 	// spec is implemented.
 	Schemata *bool `json:"schemata,omitempty"`
+	// Monitoring is true if the "linux.intelRdt.enableMonitoring" field of the
+	// spec is implemented.
+	// Nil value means "unknown", not "false".
+	Monitoring *bool `json:"monitoring,omitempty"`
 }
 
 // MemoryPolicy represents the "memoryPolicy" field.
