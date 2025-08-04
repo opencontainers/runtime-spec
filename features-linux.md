@@ -195,6 +195,37 @@ Irrelevant to the availability of SELinux on the host operating system.
 }
 ```
 
+## <a name="linuxFeaturesMemoryPolicy" />MemoryPolicy
+
+**`memoryPolicy`** (object, OPTIONAL) represents the runtime's implementation status of memoryPolicy.
+
+* **`modes`** (array of strings, OPTIONAL). Recognized memory policies. Includes policies that may not be supported by the host operating system.
+  The runtime MUST recognize the elements in this array as the [`mode` of `linux.memoryPolicy` objects in `config.json`](config-linux.md#memory-policy).
+
+* **`flags`** (array of strings, OPTIONAL). Recognized flags for memory policies. Includes flags that may not be supported by the host operating system.
+  The runtime MUST recognize the elements in this in the [`flags` property of the `linux.memoryPolicy` object in `config.json`](config-linux.md#memory-policy)
+
+### Example
+
+```json
+"memoryPolicy": {
+  "modes": [
+    "MPOL_DEFAULT",
+    "MPOL_BIND",
+    "MPOL_INTERLEAVE",
+    "MPOL_WEIGHTED_INTERLEAVE",
+    "MPOL_PREFERRED",
+    "MPOL_PREFERRED_MANY",
+    "MPOL_LOCAL"
+  ],
+  "flags": [
+    "MPOL_F_NUMA_BALANCING",
+    "MPOL_F_RELATIVE_NODES",
+    "MPOL_F_STATIC_NODES"
+  ]
+}
+```
+
 ## <a name="linuxFeaturesIntelRdt" />Intel RDT
 
 **`intelRdt`** (object, OPTIONAL) represents the runtime's implementation status of Intel RDT.
