@@ -460,7 +460,7 @@ type LinuxVTPM struct {
 	// Whether runc is allowed to delete the 'Statepath' once the TPM is destroyed
 	StatePathIsManaged bool `json:"statePathIsManaged,omitempty"`
 	// Version of the TPM that is emulated
-	TPMVersion string `json:"vtpmVersion,omitempty"`
+	VTPMVersion string `json:"vtpmVersion,omitempty"`
 	// Whether to create certificates upon first start of vTPM
 	CreateCertificates bool `json:"createCerts,omitempty"`
 	// The PCR banks to enable
@@ -469,6 +469,12 @@ type LinuxVTPM struct {
 	RunAs string `json:"runAs,omitempty"`
 	// The password to derive the encryption key from
 	EncryptionPassword string `json:"encryptionPassword,omitempty"`
+	// Name of the vtpm
+	VTPMName string `json:"vtpmName,omitempty"`
+	// Device's major to be created
+	VTPMMajor int64 `json:"vtpmMajor,omitempty"`
+	// Device's minor to be created
+	VTPMMinor int64 `json:"vtpmMinor,omitempty"`
 }
 
 // LinuxResources has container runtime resource constraints
@@ -493,7 +499,7 @@ type LinuxResources struct {
 	Rdma map[string]LinuxRdma `json:"rdma,omitempty"`
 	// Unified resources.
 	Unified map[string]string `json:"unified,omitempty"`
-	// VTPM configuration
+	// Linux VTPM configuration
 	VTPMs []LinuxVTPM `json:"vtpms,omitempty"`
 }
 

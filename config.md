@@ -1083,7 +1083,10 @@ Here is a full example `config.json` for reference.
                     "vtpmVersion": "2",
                     "createCerts": false,
                     "runAs": "tss",
-                    "pcrBanks": "sha1,sha512"
+                    "pcrBanks": "sha1,sha512",
+                    "vtpmName": "tpm0",
+                    "vtpmMajor": 100,
+                    "vtpmMinor": 1
                 }
             ]
         },

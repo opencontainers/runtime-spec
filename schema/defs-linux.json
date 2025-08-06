@@ -280,10 +280,20 @@
                 },
                 "encryptionPassword": {
                     "type": "string"
+                },
+                "vtpmName": {
+                    "type": "string"
+                },
+                "vtpmMajor": {
+                    "$ref": "#/definitions/Major"
+                },
+                "vtpmMinor": {
+                    "$ref": "#/definitions/Minor"
                 }
             },
             "required": [
-                "statePath"
+                "statePath",
+                "vtpmName"
             ]
         },
         "DeviceCgroup": {

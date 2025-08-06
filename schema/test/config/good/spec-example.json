@@ -352,7 +352,11 @@
                     "vtpmVersion": "2",
                     "createCerts": false,
                     "runAs": "tss",
-                    "pcrBanks": "sha1,sha512"
+                    "pcrBanks": "sha1,sha512",
+                    "encryptionPassword": "mysecret",
+                    "vtpmName": "tpm0",
+                    "vtpmMajor": 100,
+                    "vtpmMinor": 1
                 },
                 {
                     "statePath": "/var/lib/runc/myvtpm2",
@@ -361,7 +365,10 @@
                     "createCerts": true,
                     "runAs": "root",
                     "pcrBanks": "sha1,sha512",
-                    "encryptionPassword": "mysecret"
+                    "encryptionPassword": "mysecret",
+                    "vtpmName": "tpm1",
+                    "vtpmMajor": 101,
+                    "vtpmMinor": 1
                 }
             ]
         },
