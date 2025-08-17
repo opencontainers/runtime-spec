@@ -131,6 +131,9 @@ type IntelRdt struct {
 	// Unrelated to whether the host supports Intel RDT or not.
 	// Nil value means "unknown", not "false".
 	Enabled *bool `json:"enabled,omitempty"`
+	// Schemata is true if the "linux.intelRdt.enableMonitoring" field of the
+	// spec is implemented.
+	Schemata *bool `json:"schemata,omitempty"`
 }
 
 // MemoryPolicy represents the "memoryPolicy" field.
