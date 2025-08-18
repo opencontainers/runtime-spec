@@ -70,7 +70,7 @@ The lifecycle describes the timeline of events that happen from when a container
     If any `startContainer` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
 8. The runtime MUST run the user-specified program, as specified by [`process`](config.md#process).
 9. The [`poststart` hooks](config.md#poststart) MUST be invoked by the runtime.
-    If any `poststart` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+    If any `poststart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
 10. The container process exits.
     This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
 11. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
