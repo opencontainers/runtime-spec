@@ -518,14 +518,16 @@ For Windows based systems the user structure has the following fields:
 
 ## <a name="configPlatformSpecificConfiguration" />Platform-specific configuration
 
+* **`freebsd`** (object, OPTIONAL) [FreeBSD-specific configuration](config-freebsd.md).
+    This MAY be set if the target platform of this spec is `freebsd`.
 * **`linux`** (object, OPTIONAL) [Linux-specific configuration](config-linux.md).
     This MAY be set if the target platform of this spec is `linux`.
-* **`windows`** (object, OPTIONAL) [Windows-specific configuration](config-windows.md).
-    This MUST be set if the target platform of this spec is `windows`.
 * **`solaris`** (object, OPTIONAL) [Solaris-specific configuration](config-solaris.md).
     This MAY be set if the target platform of this spec is `solaris`.
 * **`vm`** (object, OPTIONAL) [Virtual-machine-specific configuration](config-vm.md).
     This MAY be set if the target platform and architecture of this spec support hardware virtualization.
+* **`windows`** (object, OPTIONAL) [Windows-specific configuration](config-windows.md).
+    This MUST be set if the target platform of this spec is `windows`.
 * **`zos`** (object, OPTIONAL) [z/OS-specific configuration](config-zos.md).
     This MAY be set if the target platform of this spec is `zos`.
 
