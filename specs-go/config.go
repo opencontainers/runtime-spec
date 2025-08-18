@@ -487,7 +487,7 @@ type LinuxDevice struct {
 	Major int64 `json:"major"`
 	// Minor is the device's minor number.
 	Minor int64 `json:"minor"`
-	// FileMode permission bits for the device.
+	// File mode bits for the device.
 	FileMode *os.FileMode `json:"fileMode,omitempty"`
 	// UID of the device.
 	UID *uint32 `json:"uid,omitempty"`
