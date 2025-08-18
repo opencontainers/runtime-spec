@@ -434,7 +434,7 @@ type LinuxCPU struct {
 // LinuxPids for Linux cgroup 'pids' resource management (Linux 4.3)
 type LinuxPids struct {
 	// Maximum number of PIDs. Default is "no limit".
-	Limit int64 `json:"limit"`
+	Limit *int64 `json:"limit,omitempty"`
 }
 
 // LinuxNetwork identification and priority configuration
