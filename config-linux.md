@@ -742,6 +742,8 @@ If `intelRdt` is not set, the runtime MUST NOT manipulate any `resctrl` pseudo-f
 The following parameters can be specified for the container:
 
 * **`closID`** *(string, OPTIONAL)* - specifies the identity for RDT Class of Service (CLOS).
+  As a special case, value `/` means that the container MUST be assigned to the default CLOS (the
+  root of the resctrl filesystem).
 
 * **`l3CacheSchema`** *(string, OPTIONAL)* - specifies the schema for L3 cache id and capacity bitmask (CBM).
     The value SHOULD start with `L3:` and SHOULD NOT contain newlines.
