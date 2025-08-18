@@ -234,13 +234,16 @@ Irrelevant to the availability of Intel RDT on the host operating system.
 * **`enabled`** (bool, OPTIONAL) represents whether the runtime supports Intel RDT.
 * **`schemata`** (bool, OPTIONAL) represents whether the
   (`schemata` field of `linux.intelRdt` in `config.json`)[config-linux.md#intelrdt] is supported.
+* **`monitoring`** (bool, OPTIONAL) represents whether the
+  (`enableMonitoring` field of `linux.intelRdt` in `config.json`)[config-linux.md#intelrdt] is supported.
 
 ### Example
 
 ```json
 "intelRdt": {
   "enabled": true,
-  "schemata": true
+  "schemata": true,
+  "monitoring": true
 }
 ```
 
