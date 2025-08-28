@@ -831,7 +831,7 @@ For more information see the [set_mempolicy(2)][set_mempolicy.2] man page.
     * `MPOL_PREFERRED_MANY`
     * `MPOL_LOCAL`
 
-* **`nodes`** *(string, REQUIRED)* - list of memory nodes from which nodemask is constructed to set_mempolicy(2). This is a comma-separated list, with dashes to represent ranges. For example, `0-3,7` represents memory nodes 0,1,2,3, and 7.
+* **`nodes`** *(string, OPTIONAL)* - list of memory nodes from which nodemask is constructed to set_mempolicy(2). This is a comma-separated list, with dashes to represent ranges. For example, `0-3,7` represents memory nodes 0,1,2,3, and 7. Some modes require that there are no nodes, e.g. `MPOL_DEFAULT` and `MPOL_LOCAL`. Others that there is at least one node, e.g. `MPOL_BIND` and `MPOL_INTERLEAVE`. See set_mempolicy(2) for details.
 
 * **`flags`** *(array of strings, OPTIONAL)* - list of flags to use with set_mempolicy(2).
 
