@@ -46,6 +46,11 @@
             "minimum": 0,
             "maximum": 100
         },
+        "port": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535
+        },
         "mapStringString": {
             "type": "object",
             "patternProperties": {
@@ -73,6 +78,12 @@
             "type": "array",
             "items": {
                 "type": "string"
+            }
+        },
+        "ArrayOfPorts": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/port"
             }
         },
         "FilePath": {
@@ -165,6 +176,101 @@
         },
         "annotations": {
             "$ref": "#/definitions/mapStringString"
+        },
+        "LandlockFSAction": {
+            "type": "string",
+            "enum": [
+                "execute",
+                "write_file",
+                "read_file",
+                "read_dir",
+                "remove_dir",
+                "remove_file",
+                "make_char",
+                "make_dir",
+                "make_reg",
+                "make_sock",
+                "make_fifo",
+                "make_block",
+                "make_sym",
+                "refer",
+                "truncate"
+            ]
+        },
+        "LandlockNetworkAction": {
+            "type": "string",
+            "enum": [
+                "bind",
+                "connect"
+            ]
+        },
+        "ArrayOfLandlockFSActions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockFSAction"
+            }
+        },
+        "ArrayOfLandlockNetworkActions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockNetworkAction"
+            }
+        },
+        "LandlockHandledAccess": {
+            "type": "object",
+            "properties": {
+                "handledAccessFS": {
+                    "$ref": "#/definitions/ArrayOfLandlockFSActions"
+                },
+                "handledAccessNetwork": {
+                    "$ref": "#/definitions/ArrayOfLandlockNetworkActions"
+                }
+            }
+        },
+        "LandlockRulePathBeneath": {
+            "type": "object",
+            "properties": {
+                "allowedAccess": {
+                    "$ref": "#/definitions/ArrayOfLandlockFSActions"
+                },
+                "paths": {
+                    "$ref": "#/definitions/ArrayOfStrings"
+                }
+            }
+        },
+        "LandlockRuleNetworkPort": {
+            "type": "object",
+            "properties": {
+                "allowedAccess": {
+                    "$ref": "#/definitions/ArrayOfLandlockNetworkActions"
+                },
+                "ports": {
+                    "$ref": "#/definitions/ArrayOfPorts"
+                }
+            }
+        },
+        "ArrayOfLandlockRulePathBeneaths": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockRulePathBeneath"
+            }
+        },
+        "ArrayOfLandlockRuleNetworkPorts": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/LandlockRuleNetworkPort"
+            }
+        },
+        "LandlockRules": {
+            "type": "object",
+            "properties": {
+                "pathBeneath": {
+                    "$ref": "#/definitions/ArrayOfLandlockRulePathBeneaths"
+                },
+                "networkPort": {
+                    "$ref": "#/definitions/ArrayOfLandlockRuleNetworkPorts"
+                }
+            }
         }
     }
 }

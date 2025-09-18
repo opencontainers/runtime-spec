@@ -352,6 +352,52 @@ For Linux-based systems, the `process` object supports the following process-spe
       for `initial`. If omitted or empty, runtime SHOULD NOT change process'
       CPU affinity after the process is moved to container's cgroup, and the
       final affinity is determined by the Linux kernel.
+* **`landlock`** (object, OPTIONAL) specifies the Landlock unprivileged access control settings for the container process.
+   Note that `noNewPrivileges` must be set to true to use this feature.
+   For more information about Landlock, see [Landlock documentation][landlock].
+   `landlock` contains the following properties:
+
+   * **`handledAccess`** (object, OPTIONAL) specifies the access rights that will be restricted by the ruleset.
+   The `handledAccess` currently contains the following types:
+       * **`handledAccessFS`** (array of strings, OPTIONAL) is an array of FS typed actions that are handled by a ruleset.
+       If no rule explicitly allow them, they should then be forbidden.
+       * **`handledAccessNetwork`** (array of strings, OPTIONAL) is an array of NETWORK typed actions that are handled by a ruleset. (The NETWORK typed actions are available when the ABI version >= 4. The behavior when the ABI version is less than 4 will depend on the **`enableBestEffort`**)
+   * **`rules`** (object, OPTIONAL) specifies the security policies (i.e., actions allowed on objects) to be enforced.
+   The `rules` currently contains the following types:
+       * **`pathBeneath`** (array of objects, OPTIONAL) is an array of the file-hierarchy typed rules.
+       Entries in the array contain the following properties:
+           * **`allowedAccess`** (array of strings, OPTIONAL) is an array of FS typed actions that are allowed by a rule. The actions are grouped by the ABI version in the following description:
+               1. ABI version >= 1:
+                   1. execute
+                   2. write_file
+                   3. read_file
+                   4. read_dir
+                   5. remove_dir
+                   6. remove_file
+                   7. make_char
+                   8. make_dir
+                   9. make_reg
+                   10. make_sock
+                   11. make_fifo
+                   12. make_block
+                   13. make_sym
+               2. ABI version >= 2:
+                   1. refer
+               3. ABI version >= 3:
+                   1. truncate
+           * **`paths`** (array of strings, OPTIONAL) is an array of files or parent directories of the file hierarchies to restrict.
+       * **`networkPort`** (array of objects, OPTIONAL) is an array of the network socket rules.
+       Entries in the array contain the following properties:
+           * **`allowedAccess`** (array of strings, OPTIONAL) is an array of NETWORK typed actions that are allowed by a rule. The actions are grouped by the ABI version in the following description:
+               1. ABI version >= 4:
+                   1. bind
+                   2. connect
+           * **`ports`** (array of strings, OPTIONAL) is an array of network ports to restrict.
+   * **`enableBestEffort`** (bool, OPTIONAL) the `enableBestEffort` field disables the best-effort security approach for Landlock access rights.
+   This is for conditions when the Landlock access rights explicitly configured by the container are not supported or available in the running kernel.
+   If the best-effort security approach is enabled (`false`), the runtime SHOULD enforce the strongest rules configured up to the current kernel support, and only be [logged as a warning](runtime.md#warnings) for those not supported.
+   If disabled (`true`), the runtime MUST [generate an error](runtime.md#errors) if one or more rules specified by the container is not supported.
+   Default is `true`, i.e., following a best-effort security approach.
 
 ### <a name="configZOSProcess" />z/OS Process
 
@@ -402,6 +448,79 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
     "ioPriority": {
         "class": "IOPRIO_CLASS_IDLE",
         "priority": 4
+    },
+    "landlock": {
+        "handledAccess": {
+            "handledAccessFS": [
+                "execute",
+                "write_file",
+                "read_file",
+                "read_dir",
+                "remove_dir",
+                "remove_file",
+                "make_char",
+                "make_dir",
+                "make_reg",
+                "make_sock",
+                "make_fifo",
+                "make_block",
+                "make_sym",
+                "refer",
+                "truncate"
+            ],
+            "handledAccessNetwork": [
+                "bind",
+                "connect"
+            ]
+        },
+        "rules": {
+            "pathBeneath": [
+                {
+                    "allowedAccess": [
+                        "execute",
+                        "read_file",
+                        "read_dir"
+                    ],
+                    "paths": [
+                        "/usr",
+                        "/bin"
+                    ]
+                },
+                {
+                    "allowedAccess": [
+                        "execute",
+                        "write_file",
+                        "read_file",
+                        "read_dir",
+                        "remove_dir",
+                        "remove_file",
+                        "make_char",
+                        "make_dir",
+                        "make_reg",
+                        "make_sock",
+                        "make_fifo",
+                        "make_block",
+                        "make_sym"
+                    ],
+                    "paths": [
+                        "/tmp"
+                    ]
+                }
+            ],
+            "networkPort": [
+                {
+                    "allowedAccess": [
+                        "bind",
+                        "connect"
+                    ],
+                    "ports": [
+                        80,
+                        443
+                    ]
+                }
+            ]
+        },
+        "enableBestEffort": true
     },
     "noNewPrivileges": true,
     "capabilities": {
@@ -1157,7 +1276,8 @@ Here is a full example `config.json` for reference.
 
 [apparmor]: https://wiki.ubuntu.com/AppArmor
 [cgroup-v1-memory_2]: https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt
-[selinux]:https://selinuxproject.org/page/Main_Page
+[selinux]:http://selinuxproject.org/page/Main_Page
+[landlock]: https://landlock.io
 [no-new-privs]: https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
 [proc_2]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [umask.2]: https://pubs.opengroup.org/onlinepubs/009695399/functions/umask.html
