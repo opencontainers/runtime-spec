@@ -75,6 +75,12 @@
                 "type": "string"
             }
         },
+        "FileMode": {
+            "description": "File permissions mode (typically an octal value)",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 512
+        },
         "FilePath": {
             "type": "string"
         },
