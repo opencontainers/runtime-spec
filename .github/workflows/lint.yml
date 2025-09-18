@@ -12,3 +12,12 @@ jobs:
       run: make -C schema fmt
     - name: Check for changes
       run: git diff --exit-code
+
+  codespell:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: install deps
+      run: pip install --break-system-packages codespell==v2.4.1
+    - name: run codespell
+      run: codespell
