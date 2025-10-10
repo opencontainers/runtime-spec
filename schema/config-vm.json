@@ -54,6 +54,35 @@
                         "$ref": "defs-vm.json#/definitions/RootImageFormat"
                     }
                 }
+            },
+            "hwConfig": {
+                "description": "hardware configuration for the VM image",
+                "type": "object",
+                "properties": {
+                    "deviceTree": {
+                        "$ref": "defs.json#/definitions/FilePath"
+                    },
+                    "vcpus": {
+                        "$ref": "defs.json#/definitions/uint32"
+                    },
+                    "memory": {
+                        "$ref": "defs.json#/definitions/uint64"
+                    },
+                    "dtdevs": {
+                        "$ref": "defs.json#/definitions/ArrayOfStrings"
+                    },
+                    "iomems": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "$ref": "defs-vm.json#/definitions/IOMemEntryFormat"
+                            }
+                        ]
+                    },
+                    "irqs": {
+                        "$ref": "defs.json#/definitions/ArrayOfUint32"
+                    }
+                }
             }
         }
     }

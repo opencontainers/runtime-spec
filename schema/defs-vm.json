@@ -9,6 +9,24 @@
                 "vmdk",
                 "vhd"
             ]
+        },
+        "IOMemEntryFormat": {
+            "type": "object",
+            "properties": {
+                "firstGFN": {
+                    "$ref": "defs.json#/definitions/uint64"
+                },
+                "firstMFN": {
+                    "$ref": "defs.json#/definitions/uint64"
+                },
+                "nrMFNs": {
+                    "$ref": "defs.json#/definitions/uint64"
+                }
+            },
+            "required": [
+                "firstMFN",
+                "nrMFNs"
+            ]
         }
     }
 }
