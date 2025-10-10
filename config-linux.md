@@ -756,9 +756,7 @@ The following parameters can be specified for the container:
 
 The following rules on parameters MUST be applied:
 
-* If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the combined value to the `schemata` file in that sub-directory discussed in `closID`.
-
-* If `l3CacheSchema` contains a line beginning with `MB:`, the value written to `schemata` file MUST be the non-`MB:` line(s) from `l3CacheSchema` and the line from `memBWSchema`.
+* If both `l3CacheSchema` and `memBwSchema` are set, runtimes MUST write the values to the `schemata` file in that sub-directory discussed in `closID`. The runtimes MUST write `l3CacheSchema` first and `memBwSchema` last.
 
 * If either `l3CacheSchema` or `memBwSchema` is set, runtimes MUST write the value to the `schemata` file in the that sub-directory discussed in `closID`.
 
@@ -773,6 +771,10 @@ The following rules on parameters MUST be applied:
   * if `closID` directory in a mounted `resctrl` pseudo-filesystem exists, runtimes MUST compare `l3CacheSchema` and/or `memBwSchema` value with `schemata` file, and [generate an error](runtime.md#errors) if doesn't match.
 
 * If `closID` is set, and none of `l3CacheSchema`, `memBwSchema` or `schemata` are set, runtime MUST check if corresponding pre-configured directory `closID` is present in mounted `resctrl`. If such pre-configured directory `closID` exists, runtime MUST assign container to this `closID` and [generate an error](runtime.md#errors) if directory does not exist.
+
+* If `closID` is not set and the runtime has created the sub-directory, the runtime MUST remove the sub-directory when the container is deleted.
+
+* If `closID` is set or the runtime has not created the sub-directory, the runtime MUST NOT remove the sub-directory when the container is deleted.
 
 * If `enableMonitoring` is set, the runtime MUST create a dedicated MON group
   for the container. The runtime MUST use the container ID from
