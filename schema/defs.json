@@ -75,7 +75,7 @@
                 "type": "string"
             }
         },
-	"ArrayOfUint32": {
+        "ArrayOfUint32": {
             "type": "array",
             "items": {
                 "$ref": "#definitions/uint32"
