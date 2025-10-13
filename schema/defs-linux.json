@@ -149,7 +149,7 @@
             "$ref": "defs.json#/definitions/int64"
         },
         "FileMode": {
-            "description": "File permissions mode (typically an octal value)",
+            "description": "File permissions mode (in decimal, not octal)",
             "type": "integer",
             "minimum": 0,
             "maximum": 512
