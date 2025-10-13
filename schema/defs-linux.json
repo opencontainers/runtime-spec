@@ -152,7 +152,7 @@
             "description": "File permissions mode (in decimal, not octal)",
             "type": "integer",
             "minimum": 0,
-            "maximum": 512
+            "maximum": 511
         },
         "FileType": {
             "description": "Type of a block or special character device",
