@@ -135,7 +135,7 @@ Each entry has the following structure:
     If a [file][] already exists at `path` that does not match the requested device, the runtime MUST generate an error.
     The path MAY be anywhere in the container filesystem, notably outside of `/dev`.
 * **`major, minor`** *(int64, REQUIRED unless `type` is `p`)* - [major, minor numbers][devices] for the device.
-* **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device.
+* **`fileMode`** *(uint32, OPTIONAL)* - file mode for the device. Note it is a decimal (not an octal) number.
     You can also control access to devices [with cgroups](#configLinuxDeviceAllowedlist).
 * **`uid`** *(uint32, OPTIONAL)* - id of device owner in the [container namespace](glossary.md#container-namespace).
 * **`gid`** *(uint32, OPTIONAL)* - id of device group in the [container namespace](glossary.md#container-namespace).
