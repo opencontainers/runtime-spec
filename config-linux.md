@@ -585,6 +585,45 @@ The following parameters can be specified to set up the controller:
 }
 ```
 
+### <a name="configLinuxVTPMs" />vTPMs
+
+**`vtpms`** (array of objects, OPTIONAL) lists a number of emulated TPMs that will be made available to the container.
+
+Each entry has the following structure:
+
+* **`statePath`** *(string, REQUIRED)* - Unique path where vTPM writes its state into.
+* **`statePathIsManaged`** *(boolean, OPTIONAL)* - Whether runtime is not allowed to delete the TPM's state path upon destroying the TPM, e.g. if we do not want to recreate vTPM with the previous state. Defaults to false.
+* **`vtpmVersion`** *(string, OPTIONAL)* - The version of TPM to emulate, either 1.2 or 2, defaults to 2.
+* **`createCerts`** *(boolean, OPTIONAL)* - If true then create certificates for the vTPM, defaults to false.
+* **`runAs`** *(string, OPTIONAL)* - Under which user to run the vTPM, e.g. 'tss'.
+* **`pcrBanks`** *(string, OPTIONAL)* - Comma-separated list of PCR banks to activate, default depends on `swtpm`.
+* **`encryptionPassword`** *(string, OPTIONAL)* - Write state encrypted with a key derived from the password, defaults to not encrypted.
+* **`vtpmName`** *(string, REQUIRED)* - The name of vTPM device to emulate in the container. The devpath will have the format `/dev/tpm` + `vtpmName`. `vtpmName` should be unique among the container's `vtpms` devices.
+
+Note that some runtimes can use different commands to pass device in the container (e.g. bind if the container will be running in the non-default user namespace and mknod otherwise). Runtime can adopt a device path to the format `/dev/generated-host-path` + `vtpmName`. This can be essential if we want to create different containers with non-shared VTPM devices under the same device path.
+* **`vtpmMajor`** *(int64, OPTIONAL) - The major of vTPM device to emulate in the container. This is required when runtime is running in the container and tmpfs is mounted on `/dev` path.
+* **`vtpmMinor`** *(int64, OPTIONAL) - The minor of vTPM device to emulate in the container. This is required when runtime is running in the container and tmpfs is mounted on `/dev` path.
+
+Note that a vTPM device should be precreated with Endorsement Key Pair. Another main commands e.g. TakeOwnership for TPM 1.2 can be called in the createContainer hooks.
+#### Example
+
+```json
+    "vtpms": [
+        {
+            "statePath": "/var/lib/runc/myvtpm1",
+            "statePathIsManaged": false,
+            "vtpmVersion": "2",
+            "createCerts": false,
+            "runAs": "tss",
+            "pcrBanks": "sha1,sha512",
+            "encryptionPassword": "mysecret",
+            "vtpmName": "tpm0",
+            "vtpmMajor": 100,
+            "vtpmMinor": 1
+        }
+    ]
+```
+
 ### <a name="configLinuxHugePageLimits" />Huge page limits
 
 **`hugepageLimits`** (array of objects, OPTIONAL) represents the `hugetlb` controller which allows to limit the HugeTLB reservations (if supported) or usage (page fault).
