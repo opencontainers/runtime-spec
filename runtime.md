@@ -73,7 +73,7 @@ The lifecycle describes the timeline of events that happen from when a container
     If any `poststart` hook fails, the runtime MUST [generate an error](#errors), stop the container, and continue the lifecycle at step 12.
 10. The container process exits.
     This MAY happen due to erroring out, exiting, crashing or the runtime's [`kill`](runtime.md#kill) operation being invoked.
-11. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
+11. Runtime's [`delete`](runtime.md#delete) command is invoked with one or more container IDs.
 12. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
 13. The [`poststop` hooks](config.md#poststop) MUST be invoked by the runtime.
     If any `poststop` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
@@ -82,6 +82,10 @@ The lifecycle describes the timeline of events that happen from when a container
 
 In cases where the specified operation generates an error, this specification does not mandate how, or even if, that error is returned or exposed to the user of an implementation.
 Unless otherwise stated, generating an error MUST leave the state of the environment as if the operation were never attempted - modulo any possible trivial ancillary changes such as logging.
+
+When multiple container IDs are provided to the delete operation, the runtime MUST attempt to delete each container independently.
+If an error occurs for a specific container (e.g., container not stopped, container does not exist), the runtime MUST report that error for that container.
+An error on one container MUST NOT prevent deletion attempts on the remaining containers.
 
 ## <a name="runtimeWarnings" />Warnings
 
@@ -136,11 +140,13 @@ Attempting to send a signal to a container that is neither [`created` nor `runni
 This operation MUST send the specified signal to the container process.
 
 ### <a name="runtimeDelete" />Delete
-`delete <container-id>`
+`delete <container-id> [<container-id> ...]`
 
-This operation MUST [generate an error](#errors) if it is not provided the container ID.
+This operation MUST [generate an error](#errors) if it is not provided at least one container ID.
 Attempting to `delete` a container that is not [`stopped`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
+When multiple container IDs are provided, the runtime MUST attempt to delete all specified containers and MUST report an error for each container individually if it cannot be deleted. An error on one container MUST NOT prevent deletion attempts on other containers.
 Deleting a container MUST delete the resources that were created during the `create` step.
+Resources associated with the container, but not created by this container, MUST NOT be deleted.
 Note that resources associated with the container, but not created by this container, MUST NOT be deleted.
 Once a container is deleted its ID MAY be used by a subsequent container.
 
