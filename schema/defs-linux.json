@@ -148,6 +148,14 @@
             "description": "minor device number",
             "$ref": "defs.json#/definitions/int64"
         },
+        "TPMVersion": {
+            "description": "The TPM version",
+            "type": "string",
+            "enum": [
+                "1.2",
+                "2"
+            ]
+        },
         "FileMode": {
             "description": "File permissions mode (in decimal, not octal)",
             "type": "integer",
@@ -247,6 +255,45 @@
                         }
                     }
                 }
+            ]
+        },
+        "VTPM" : {
+            "type": "object",
+            "properties" : {
+                "statePath": {
+                    "type": "string"
+                },
+                "statePathIsManaged": {
+                    "type": "boolean"
+                },
+                "vtpmVersion": {
+                    "$ref": "#/definitions/TPMVersion"
+                },
+                "createCerts": {
+                    "type": "boolean"
+                },
+                "runAs": {
+                    "type": "string"
+                },
+                "pcrBanks": {
+                    "type": "string"
+                },
+                "encryptionPassword": {
+                    "type": "string"
+                },
+                "vtpmName": {
+                    "type": "string"
+                },
+                "vtpmMajor": {
+                    "$ref": "#/definitions/Major"
+                },
+                "vtpmMinor": {
+                    "$ref": "#/definitions/Minor"
+                }
+            },
+            "required": [
+                "statePath",
+                "vtpmName"
             ]
         },
         "DeviceCgroup": {
