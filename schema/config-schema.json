@@ -221,6 +221,31 @@
                         }
                     }
                 },
+                "CPUAffinity": {
+                    "type": "object",
+                    "properties": {
+                        "runtimeCreate": {
+                            "type": "string",
+                            "pattern": "^[0-9, -]*$"
+                        },
+                        "containerCreate": {
+                            "type": "string",
+                            "pattern": "^[0-9, -]*$"
+                        },
+                        "containerStart": {
+                            "type": "string",
+                            "pattern": "^[0-9, -]*$"
+                        },
+                        "runtimeExec": {
+                            "type": "string",
+                            "pattern": "^[0-9, -]*$"
+                        },
+                        "containerExec": {
+                            "type": "string",
+                            "pattern": "^[0-9, -]*$"
+                        }
+                    }
+                },
                 "execCPUAffinity": {
                     "type": "object",
                     "properties": {
