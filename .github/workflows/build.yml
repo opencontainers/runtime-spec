@@ -14,7 +14,8 @@ jobs:
 
     strategy:
       matrix:
-        go: [oldstable, stable]
+        # our oldest (officially) supported version and the two upstream-supported versions
+        go: [1.21.x, oldstable, stable]
 
     steps:
       - name: checkout source code
