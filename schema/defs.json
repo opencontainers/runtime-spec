@@ -81,6 +81,12 @@
                 "$ref": "#definitions/uint32"
             }
         },
+        "FileMode": {
+            "description": "File permissions mode (in decimal, not octal)",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 511
+        },
         "FilePath": {
             "type": "string"
         },
