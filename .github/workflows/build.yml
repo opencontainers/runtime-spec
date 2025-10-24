@@ -17,6 +17,10 @@ jobs:
         # our oldest (officially) supported version and the two upstream-supported versions
         go: [1.21.x, oldstable, stable]
 
+    env:
+      # avoid downloading any alternate toolchains (https://go.dev/doc/toolchain)
+      GOTOOLCHAIN: local
+
     steps:
       - name: checkout source code
         uses: actions/checkout@v4
