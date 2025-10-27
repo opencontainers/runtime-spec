@@ -453,6 +453,30 @@ type LinuxRdma struct {
 	HcaObjects *uint32 `json:"hcaObjects,omitempty"`
 }
 
+// LinuxVTPM for vTPM definition
+type LinuxVTPM struct {
+	// Path on host where vTPM writes state to
+	StatePath string `json:"statePath,omitempty"`
+	// Whether runc is allowed to delete the 'Statepath' once the TPM is destroyed
+	StatePathIsManaged bool `json:"statePathIsManaged,omitempty"`
+	// Version of the TPM that is emulated
+	VTPMVersion string `json:"vtpmVersion,omitempty"`
+	// Whether to create certificates upon first start of vTPM
+	CreateCertificates bool `json:"createCerts,omitempty"`
+	// The PCR banks to enable
+	PcrBanks string `json:"pcrBanks,omitempty"`
+	// Under what user to run the vTPM process
+	RunAs string `json:"runAs,omitempty"`
+	// The password to derive the encryption key from
+	EncryptionPassword string `json:"encryptionPassword,omitempty"`
+	// Name of the vtpm
+	VTPMName string `json:"vtpmName,omitempty"`
+	// Device's major to be created
+	VTPMMajor int64 `json:"vtpmMajor,omitempty"`
+	// Device's minor to be created
+	VTPMMinor int64 `json:"vtpmMinor,omitempty"`
+}
+
 // LinuxResources has container runtime resource constraints
 type LinuxResources struct {
 	// Devices configures the device allowlist.
@@ -475,6 +499,8 @@ type LinuxResources struct {
 	Rdma map[string]LinuxRdma `json:"rdma,omitempty"`
 	// Unified resources.
 	Unified map[string]string `json:"unified,omitempty"`
+	// Linux VTPM configuration
+	VTPMs []LinuxVTPM `json:"vtpms,omitempty"`
 }
 
 // LinuxDevice represents the mknod information for a Linux special device file
