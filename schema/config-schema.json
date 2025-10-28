@@ -250,6 +250,9 @@
         },
         "zos": {
             "$ref": "config-zos.json#/zos"
+        },
+        "freebsd": {
+            "$ref": "config-freebsd.json#/freebsd"
         }
     },
     "required": [

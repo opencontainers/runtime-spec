@@ -1,0 +1,30 @@
+{
+    "definitions": {
+        "Device": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "mode": {
+                    "$ref": "defs.json#/definitions/FileMode"
+                }
+            }
+        },
+        "SharingMode": {
+            "type": "string",
+            "enum": [
+                "disable",
+                "new",
+                "inherit"
+            ]
+        },
+        "SharingModeNoDisable": {
+            "type": "string",
+            "enum": [
+                "new",
+                "inherit"
+            ]
+        }
+    }
+}
