@@ -233,6 +233,8 @@ type Linux struct {
 	// CgroupsPath specifies the path to cgroups that are created and/or joined by the container.
 	// The path is expected to be relative to the cgroups mountpoint.
 	// If resources are specified, the cgroups at CgroupsPath will be updated based on resources.
+	// If systemd cgroup driver is used to create cgroups and set cgroup limits, the path must be
+	// in the "slice:prefix:name" form (e.g. "system.slice:runtime:434234").
 	CgroupsPath string `json:"cgroupsPath,omitempty"`
 	// Namespaces contains the namespaces that are created and/or joined by the container
 	Namespaces []LinuxNamespace `json:"namespaces,omitempty"`
