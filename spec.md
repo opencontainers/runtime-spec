@@ -13,6 +13,7 @@ The execution environment is specified to ensure that applications running insid
 
 Platforms defined by this specification are:
 
+* `freebsd`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-freebsd.md](config-freebsd.md).
 * `linux`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), [config-linux.md](config-linux.md), [runtime-linux.md](runtime-linux.md), and [features-linux.md](features-linux.md).
 * `solaris`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-solaris.md](config-solaris.md).
 * `windows`: [runtime.md](runtime.md), [config.md](config.md), [features.md](features.md), and [config-windows.md](config-windows.md).
@@ -28,6 +29,7 @@ Platforms defined by this specification are:
 - [Runtime and Lifecycle](runtime.md)
     - [Linux-specific Runtime and Lifecycle](runtime-linux.md)
 - [Configuration](config.md)
+    - [FreeBSD-specific Configuration](config-freebsd.md)
     - [Linux-specific Configuration](config-linux.md)
     - [Solaris-specific Configuration](config-solaris.md)
     - [Windows-specific Configuration](config-windows.md)
