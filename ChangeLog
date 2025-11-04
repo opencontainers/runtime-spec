@@ -1,5 +1,39 @@
 OpenContainers Specifications
 
+Changes with v1.3.0:
+
+	Additions:
+
+	* config-vm: add hwConfig object (#1209)
+	* config-linux: add intelRdt.schemata field (#1230)
+	* config-linux: add netDevices object (#1271)
+	* config-linux: add memoryPolicy object (#1282)
+	* config-freebsd: add the spec for FreeBSD (#1286)
+	* config-linux: add intelRdt.enableMonitoring field (#1287)
+
+	Minor fixes:
+
+	* config-linux: clarify intelRdt configuration (#1196)
+	* runtime: fail when a poststart hook fails (#1262)
+	* config-linux: clarify pids cgroup settings (#1279)
+	* config-linux: define default clos for intelRdt (#1289)
+	* features-linux: add intelRdt.enableMonitoring field (#1290)
+	* features-linux: add intelRdt.schemata field (#1291)
+	* config-linux: fix and elaborate memoryPolicy.nodes field (#1294)
+	* config-linux, schema: fix FileMode description (#1298)
+
+	Documentation, CI & Governance:
+
+	* add systemd-nspawn to implementations.md (#1272)
+	* CI: add codespell, bump golangci-lint (#1281)
+	* docs: add missing backticks for code formatting  (#1284)
+	* docs: fix typo (#1285)
+	* principles: fix typo (#1288)
+	* schema: fix json (#1297)
+	* ci: use supported Go versions (#1300)
+	* Add minimum supported Go version to CI (#1303)
+	* Mention FreeBSD platform (#1304)
+
 Changes with v1.2.1:
 
 	Additions:
