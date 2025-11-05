@@ -635,9 +635,7 @@ The `startContainer` hooks MUST be executed in the [container namespace](glossar
 
 ### <a name="configHooksPoststart" />Poststart
 
-The `poststart` hooks MUST be called [after the user-specified process is executed](runtime.md#lifecycle) but before the [`start`](runtime.md#start) operation returns.
-For example, this hook can notify the user that the container process is spawned.
-
+The `poststart` hooks MUST be called [before the user-specified process is executed].
 The `poststart` hooks' path MUST resolve in the [runtime namespace](glossary.md#runtime-namespace).
 The `poststart` hooks MUST be executed in the [runtime namespace](glossary.md#runtime-namespace).
 
@@ -659,7 +657,7 @@ See the below table for a summary of hooks and when they are called:
 | `createRuntime`         | runtime   | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `createContainer`       | container | During the create operation, after the runtime environment has been created and before the pivot root or any equivalent operation. |
 | `startContainer`        | container | After the start operation is called but before the user-specified program command is executed.                                     |
-| `poststart`             | runtime   | After the user-specified process is executed but before the start operation returns.                                               |
+| `poststart`             | runtime   | Before the user-specified process is executed.                                               |
 | `poststop`              | runtime   | After the container is deleted but before the delete operation returns.                                                            |
 
 ### Example
