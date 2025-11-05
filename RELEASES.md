@@ -29,12 +29,12 @@ To avoid unfortunate side effects (onerous backwards compatibility requirements 
 
 Every OCI specification project SHOULD hold meetings that involve maintainers reviewing pull requests, debating outstanding issues, and planning releases.
 This meeting MUST be advertised on the project README and MAY happen on a phone call, video conference, or on IRC.
-Maintainers MUST send updates to the dev@opencontainers.org with results of these meetings.
+Maintainers MUST send updates to the <dev@opencontainers.org> with results of these meetings.
 
 Before the specification reaches v1.0.0, the meetings SHOULD be weekly.
 Once a specification has reached v1.0.0, the maintainers may alter the cadence, but a meeting MUST be held within four weeks of the previous meeting.
 
-The release plans, corresponding milestones and estimated due dates MUST be published on GitHub (e.g. https://github.com/opencontainers/runtime-spec/milestones).
+The release plans, corresponding milestones and estimated due dates MUST be published on GitHub (e.g. <https://github.com/opencontainers/runtime-spec/milestones>).
 GitHub milestones and issues are only used for community organization and all releases MUST follow the [project governance](GOVERNANCE.md) rules and procedures.
 
 ### Timelines
@@ -47,8 +47,6 @@ Specifications have a variety of different timelines in their lifecycle.
     Maintainers SHOULD strive to make zero breaking changes during this cycle of release candidates and SHOULD restart the three-candidate count when a breaking change is introduced.
     For example if a breaking change is introduced in v1.0.0-rc2 then the series would end with v1.0.0-rc4 and v1.0.0.
 * Minor and patch releases SHOULD be made on an as-needed basis.
-
-[charter]: https://github.com/opencontainers/tob/blob/main/CHARTER.md
 
 ## Checklist
 
@@ -65,14 +63,15 @@ Releases usually follow a few steps:
     * [ ] drop hash and indent, `:'<,'> s/^\w*  /^I* /`
   * [ ] a commit bumping `./specs-go/version.go` to next version and empty the `VersionDev` variable
   * [ ] a commit adding back the "+dev" to `VersionDev`
-* [ ] send email to dev@opencontainers.org
+* [ ] send email to <dev@opencontainers.org>
   * [ ] copy the exact commit hash for bumping the version from the pull-request (since master always stays as "-dev")
   * [ ] count the PRs since last release (that this version is tracking, in the cases of multiple branching), like `git log --pretty=oneline --no-merges --decorate $priorTag..$versionBumpCommit  | grep \(pr\/ | wc -l`
   * [ ] get the date for a week from now, like `TZ=UTC date --date='next week'`
   * [ ] OPTIONAL find a cute animal gif to attach to the email, and subsequently the release description
   * [ ] subject line like `[runtime-spec VOTE] tag $versionBumpCommit as $version (closes $dateWeekFromNowUTC)`
   * [ ] email body like
-```
+
+```text
 Hey everyone,
 
 There have been $numPRs PRs merged since $priorTag release (https://github.com/opencontainers/runtime-spec/compare/$priorTag...$versionBumpCommit).
@@ -83,7 +82,8 @@ Please respond LGTM or REJECT (with reasoning).
 
 $sig
 ```
-* [ ] edit/update the pull-request to link to the VOTE thread, from https://groups.google.com/a/opencontainers.org/forum/#!forum/dev
+
+* [ ] edit/update the pull-request to link to the VOTE thread, from <https://groups.google.com/a/opencontainers.org/forum/#!forum/dev>
 * [ ] a week later, if the vote passes, merge the PR
   * [ ] `git tag -s $version $versionBumpCommit`
   * [ ] `git push --tags`
@@ -91,6 +91,9 @@ $sig
   * [ ] git checkout the release tag, like `git checkout $version`
   * [ ] `make docs`
   * [ ] rename the output PDF and HTML file to include version, like `mv output/oci-runtime-spec.pdf output/oci-runtime-spec-$version.pdf``
-  * [ ] attach these docs to the release on https://github.com/opencontainers/runtime-spec/releases
+  * [ ] attach these docs to the release on <https://github.com/opencontainers/runtime-spec/releases>
   * [ ] link to the the VOTE thread and include the passing vote count
   * [ ] link to the pull request that merged the release
+* [ ] add release notes to the website <https://github.com/opencontainers/opencontainers.org/tree/main/content/release-notices>
+
+[charter]: https://github.com/opencontainers/tob/blob/main/CHARTER.md
