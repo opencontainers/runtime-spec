@@ -73,11 +73,9 @@
                     },
                     "iomems": {
                         "type": "array",
-                        "items": [
-                            {
-                                "$ref": "defs-vm.json#/definitions/IOMemEntryFormat"
-                            }
-                        ]
+                        "items": {
+                            "$ref": "defs-vm.json#/definitions/IOMemEntryFormat"
+                        }
                     },
                     "irqs": {
                         "$ref": "defs.json#/definitions/ArrayOfUint32"
