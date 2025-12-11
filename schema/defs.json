@@ -78,7 +78,7 @@
         "ArrayOfUint32": {
             "type": "array",
             "items": {
-                "$ref": "#definitions/uint32"
+                "$ref": "#/definitions/uint32"
             }
         },
         "FileMode": {
