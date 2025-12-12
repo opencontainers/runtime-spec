@@ -340,18 +340,35 @@ For Linux-based systems, the `process` object supports the following process-spe
 
     * **`class`** (string, REQUIRED) specifies the I/O scheduling class. Possible values are `IOPRIO_CLASS_RT`, `IOPRIO_CLASS_BE`, and `IOPRIO_CLASS_IDLE`.
     * **`priority`** (int, REQUIRED) specifies the priority level within the class. The value should be an integer ranging from 0 (highest) to 7 (lowest).
-* **`execCPUAffinity`** (object, OPTIONAL) specifies CPU affinity used to execute the process.
+* **`cpuAffinity`** (object, OPTIONAL) specifies CPU affinity used to execute processes in the runtime and the container.
+    All the properties in this setting expects as argument a string that contain a comma-separated list, with dashes to represent ranges.
+    For example, `0-3,7` represents CPUs 0,1,2,3, and 7. Special value `all` can be used to reset CPU affinity to the value that includes all possible CPUs in the system.
+    If omitted or empty for particular [lifecycle](runtime.md#lifecycle) stage, the runtime SHOULD NOT change process' CPU affinity, and the actual affinity is determined by the Linux kernel.
+    The following properties are available:
+    * **`createRuntime`** (string, OPTIONAL) is a list of CPUs the runtime parent process should run on during the runtime creation stage, before entering the container's namespaces or cgroups.
+    CPU affinity should be applied on early stages of container creation, so that any potential CPU consuming operations inside runtime (e.g. [`createRuntime` hooks](#createRuntime-hooks)) will be run on the specified list of CPUs.
+    * **`createContainer`** (string, OPTIONAL) is a list of CPUs the process should run on during the container creation stage, after entering the container's namespaces but before the user process or any of [`createContainer` hooks](#createContainer-hooks) are executed.
+    * **`startContainer`** (string, OPTIONAL) is a list of CPUs the process should be run on during the container start stage, inside the container's namespace during `start` operation. The affinity should be applied before executing [`startContainer` hooks](#startContainer-hooks).
+    * **`execRuntime`** (string, OPTIONAL) is a list of CPUs the runtime parent process to be run during `exec` operation, before the transition to container's cgroup.
+    * **`execContainer`** (string, OPTIONAL) is a list of CPUs the process will be run on during `exec` operationon after the transition to container's cgroup.
+* **`execCPUAffinity`** (object, OPTIONAL, **DEPRECATED**) specifies CPU affinity used to execute the process.
+
+    Note: `execCPUAffinity` is deprecated in favor of `cpuAffinity`. If `cpuAffinity` is specified and supported by the runtime, the content of `execCPUAffinity` should be ignored.
+
     This setting is not applicable to the container's init process.
     The following properties are available:
     * **`initial`** (string, OPTIONAL) is a list of CPUs a runtime parent
       process to be run on initially, before the transition to container's
       cgroup. This is a a comma-separated list, with dashes to represent
       ranges. For example, `0-3,7` represents CPUs 0,1,2,3, and 7.
+      Deprecated in favor of `execRuntime` in `cpuAffinity`.
     * **`final`** (string, OPTIONAL) is a list of CPUs the process will be run
       on after the transition to container's cgroup. The format is the same as
       for `initial`. If omitted or empty, runtime SHOULD NOT change process'
       CPU affinity after the process is moved to container's cgroup, and the
       final affinity is determined by the Linux kernel.
+      Deprecated in favor of `execContainer` in `cpuAffinity`.
+    
 
 ### <a name="configZOSProcess" />z/OS Process
 
@@ -435,9 +452,12 @@ _Note: symbolic name for uid and gid, such as uname and gname respectively, are 
             "soft": 1024
         }
     ],
-    "execCPUAffinity": {
-        "initial": "7",
-        "final": "0-3,7"
+    "cpuAffinity": {
+        "createRuntime": "7",
+        "createContainer": "all",
+        "startContainer": "0-3,7",
+        "execRuntime": "7",
+        "execContainer": "0-3,7"
     }
 }
 ```

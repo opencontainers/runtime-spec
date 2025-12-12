@@ -221,6 +221,31 @@
                         }
                     }
                 },
+                "cpuAffinity": {
+                    "type": "object",
+                    "properties": {
+                        "createRuntime": {
+                            "type": "string",
+                            "pattern": "^([0-9, -]*|all)$"
+                        },
+                        "createContainer": {
+                            "type": "string",
+                            "pattern": "^([0-9, -]*|all)$"
+                        },
+                        "startContainer": {
+                            "type": "string",
+                            "pattern": "^([0-9, -]*|all)$"
+                        },
+                        "execRuntime": {
+                            "type": "string",
+                            "pattern": "^([0-9, -]*|all)$"
+                        },
+                        "execContainer": {
+                            "type": "string",
+                            "pattern": "^([0-9, -]*|all)$"
+                        }
+                    }
+                },
                 "execCPUAffinity": {
                     "type": "object",
                     "properties": {

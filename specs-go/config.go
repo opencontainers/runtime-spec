@@ -96,8 +96,13 @@ type Process struct {
 	SelinuxLabel string `json:"selinuxLabel,omitempty" platform:"linux"`
 	// IOPriority contains the I/O priority settings for the cgroup.
 	IOPriority *LinuxIOPriority `json:"ioPriority,omitempty" platform:"linux"`
-	// ExecCPUAffinity specifies CPU affinity for exec processes.
-	ExecCPUAffinity *CPUAffinity `json:"execCPUAffinity,omitempty" platform:"linux"`
+	// ExecCPUAffinity is Deprecated. ExecCPUAffinity specifies CPU affinity for exec processes.
+	//
+	// Deprecated: use [Process.CPUAffinity] instead, which allows more granular control
+	// during the create, start and exec phases.
+	ExecCPUAffinity *ExecCPUAffinity `json:"execCPUAffinity,omitempty" platform:"linux"`
+	// CPUAffinity specifies CPU affinity for executing processes
+	CPUAffinity *CPUAffinity `json:"cpuAffinity,omitempty" platform:"linux"`
 }
 
 // LinuxCapabilities specifies the list of allowed capabilities that are kept for a process.
@@ -131,10 +136,19 @@ const (
 	IOPRIO_CLASS_IDLE IOPriorityClass = "IOPRIO_CLASS_IDLE"
 )
 
-// CPUAffinity specifies process' CPU affinity.
-type CPUAffinity struct {
+// ExecCPUAffinity specifies process' CPU affinity during runtime exec operation.
+type ExecCPUAffinity struct {
 	Initial string `json:"initial,omitempty"`
 	Final   string `json:"final,omitempty"`
+}
+
+// CPUAffinity specifies process' CPU affinity.
+type CPUAffinity struct {
+	CreateRuntime   string `json:"createRuntime,omitempty"`
+	CreateContainer string `json:"createContainer,omitempty"`
+	StartContainer  string `json:"startContainer,omitempty"`
+	ExecRuntime     string `json:"execRuntime,omitempty"`
+	ExecContainer   string `json:"execContainer,omitempty"`
 }
 
 // Box specifies dimensions of a rectangle. Used for specifying the size of a console.
