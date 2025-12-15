@@ -899,7 +899,7 @@ type LinuxMemoryPolicy struct {
 
 	// Nodes representing the nodemask for the set_mempolicy syscall in comma separated ranges format.
 	// Format: "<node0>-<node1>,<node2>,<node3>-<node4>,..."
-	Nodes string `json:"nodes"`
+	Nodes string `json:"nodes,omitempty"`
 
 	// Flags for the set_mempolicy syscall.
 	Flags []MemoryPolicyFlagType `json:"flags,omitempty"`
