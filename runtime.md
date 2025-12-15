@@ -110,9 +110,10 @@ This operation MUST [generate an error](#errors) if it is not provided a path to
 If the ID provided is not unique across all containers within the scope of the runtime, or is not valid in any other way, the implementation MUST [generate an error](#errors) and a new container MUST NOT be created.
 This operation MUST create a new container.
 
-All of the properties configured in [`config.json`](config.md) except for [`process`](config.md#process) MUST be applied.
+All of the properties configured in [`config.json`](config.md) except for [`process`](config.md#process) and [Platform](spec.md#platforms)-specific configuration beyond the target platform MUST be applied.
 [`process.args`](config.md#process) MUST NOT be applied until triggered by the [`start`](#start) operation.
 The remaining `process` properties MAY be applied by this operation.
+[Platform](spec.md#platforms)-specific configuration MAY be ignored if it's not the runtime's target platform.
 If the runtime cannot apply a property as specified in the [configuration](config.md), it MUST [generate an error](#errors) and a new container MUST NOT be created.
 
 The runtime MAY validate `config.json` against this spec, either generically or with respect to the local system capabilities, before creating the container ([step 2](#lifecycle)).
