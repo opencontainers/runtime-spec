@@ -943,7 +943,7 @@ The following parameters can be specified to set up seccomp:
     For example, if `defaultAction` is `SCMP_ACT_KILL` and `syscalls` is empty or unset, the kernel will kill the container process on its first syscall.
     Each entry has the following structure:
 
-    * **`names`** *(array of strings, REQUIRED)* - the names of the syscalls.
+    * **`names`** *(array of strings, REQUIRED)* - the names (or decimal strings of the number) of the syscalls.
         `names` MUST contain at least one entry.
     * **`action`** *(string, REQUIRED)* - the action for seccomp rules.
         A valid list of constants as of libseccomp v2.6.0 is shown below.
