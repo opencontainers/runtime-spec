@@ -990,7 +990,7 @@ const (
 	SchedFlagKeepParams LinuxSchedulerFlag = "SCHED_FLAG_KEEP_PARAMS"
 	// SchedFlagUtilClampMin represents the utilization clamp minimum scheduling flag
 	SchedFlagUtilClampMin LinuxSchedulerFlag = "SCHED_FLAG_UTIL_CLAMP_MIN"
-	// SchedFlagUtilClampMin represents the utilization clamp maximum scheduling flag
+	// SchedFlagUtilClampMax represents the utilization clamp maximum scheduling flag
 	SchedFlagUtilClampMax LinuxSchedulerFlag = "SCHED_FLAG_UTIL_CLAMP_MAX"
 )
 
