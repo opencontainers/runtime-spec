@@ -726,6 +726,7 @@ Keys SHOULD be named using a reverse domain notation - e.g. `com.example.myKey`.
 
 The `org.opencontainers` namespace for keys is reserved for use by this specification, annotations using keys in this namespace MUST be as described in this section.
 The following keys in the `org.opencontainers` namespaces MAY be used:
+
 |                   Key                   | Definition                                                         |
 | --------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------|
 | `org.opencontainers.image.os`           | Indicates the operating system the container image was built to run on. The annotation value MUST have a valid value for the `os` property as defined in [the OCI image specification][oci-image-config-properties]. This annotation SHOULD only be used in accordance with the [OCI image specification's runtime conversion specification][oci-image-conversion]. |
