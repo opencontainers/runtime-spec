@@ -139,7 +139,8 @@ This operation MUST send the specified signal to the container process.
 `delete <container-id>`
 
 This operation MUST [generate an error](#errors) if it is not provided the container ID.
-Attempting to `delete` a container that is not [`stopped`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
+Attempting to `delete` a container that is neither [`created`](#state) nor [`stopped`](#state) MUST have no effect on the container and MUST [generate an error](#errors).
+Attempting to `delete` a container that is [`created`](#state) MAY either have no effect on the container and [generate an error](#errors), or terminate the container process and then delete the container.
 Deleting a container MUST delete the resources that were created during the `create` step.
 Note that resources associated with the container, but not created by this container, MUST NOT be deleted.
 Once a container is deleted its ID MAY be used by a subsequent container.
