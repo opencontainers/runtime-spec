@@ -54,15 +54,6 @@ endif
 version.md: ./specs-go/version.go
 	go run ./.tool/version-doc.go > $@
 
-HOST_GOLANG_VERSION	= $(shell go version | cut -d ' ' -f3 | cut -c 3-)
-# this variable is used like a function. First arg is the minimum version, Second arg is the version to be checked.
-ALLOWED_GO_VERSION	= $(shell test '$(shell /bin/echo -e "$(1)\n$(2)" | sort -V | head -n1)' = '$(1)' && echo 'true')
-
-test: .govet .golint .gitvalidation
-
-.govet:
-	go vet -x ./...
-
 # When this is running in GitHub, it will only check the GitHub commit range
 .gitvalidation:
 	@which git-validation > /dev/null 2>/dev/null || (echo "ERROR: git-validation not found. Consider 'make install.tools' target" && false)
