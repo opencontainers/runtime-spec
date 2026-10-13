@@ -242,6 +242,8 @@ type Linux struct {
 	NetDevices map[string]LinuxNetDevice `json:"netDevices,omitempty"`
 	// Seccomp specifies the seccomp security settings for the container.
 	Seccomp *LinuxSeccomp `json:"seccomp,omitempty"`
+	// IOUring restricts the io_uring operations available to the container.
+	IOUring *LinuxIOUring `json:"ioUring,omitempty"`
 	// RootfsPropagation is the rootfs mount propagation mode for the container.
 	RootfsPropagation string `json:"rootfsPropagation,omitempty"`
 	// MaskedPaths masks over the provided paths inside the container.
@@ -890,6 +892,17 @@ type LinuxIntelRdt struct {
 	// EnableMonitoring enables resctrl monitoring for the container. This will
 	// create a dedicated resctrl monitoring group for the container.
 	EnableMonitoring bool `json:"enableMonitoring,omitempty"`
+}
+
+// LinuxIOUring restricts the io_uring operations available to the container.
+type LinuxIOUring struct {
+	// Ops is the list of allowed io_uring operations, e.g., "IORING_OP_READ".
+	// All other operations are denied.
+	Ops []string `json:"ops"`
+	// SocketFamilies is the list of address families that IORING_OP_SOCKET
+	// can create, e.g., "AF_INET". Nil or empty means any address family;
+	// to deny all sockets, leave IORING_OP_SOCKET out of Ops.
+	SocketFamilies []string `json:"socketFamilies,omitempty"`
 }
 
 // LinuxMemoryPolicy represents input for the set_mempolicy syscall.
