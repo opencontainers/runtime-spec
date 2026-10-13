@@ -3,6 +3,22 @@ name: Lint
 on: [push, pull_request]
 
 jobs:
+  golangci-lint:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-go@v7
+      with:
+        # Keep in sync with the Go version golangci-lint is built with.
+        go-version: 1.27.x
+    - name: install golangci-lint
+      uses: golangci/golangci-lint-action@v9
+      with:
+        version: v2.14
+        install-only: true
+    - name: run golangci-lint
+      run: make lint
+
   check-format:
     runs-on: ubuntu-24.04
     steps:

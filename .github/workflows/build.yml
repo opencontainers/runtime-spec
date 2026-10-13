@@ -26,17 +26,6 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-      - name: install golangci-lint
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          install-only: true
-
-      - name: run golangci-lint
-        run: |
-          golangci-lint run
-          cd schema/validate && golangci-lint run --path-prefix schema/validate
-
       - name: run tests
         run: |
           set -x
