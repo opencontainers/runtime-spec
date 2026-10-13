@@ -54,6 +54,11 @@ endif
 version.md: ./specs-go/version.go
 	go run ./.tool/version-doc.go > $@
 
+.PHONY: lint
+lint:
+	golangci-lint run
+	cd schema/validate && golangci-lint run --path-prefix schema/validate
+
 # When this is running in GitHub, it will only check the GitHub commit range
 .gitvalidation:
 	@which git-validation > /dev/null 2>/dev/null || (echo "ERROR: git-validation not found. Consider 'make install.tools' target" && false)
