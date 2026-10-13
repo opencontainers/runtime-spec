@@ -1,5 +1,6 @@
 GOOD_TESTS = $(wildcard test/good/*.json)
 BAD_TESTS = $(wildcard test/bad/*.json)
+VALIDATE = validate/validate
 
 default: validate
 
@@ -14,9 +15,8 @@ fmt:
 	find . -name '*.json' -exec bash -c 'jq --indent 4 -M . {} > xx && mv xx {} || echo "skipping invalid {}"' \;
 
 .PHONY: validate
-validate: validate.go
-	GO111MODULE=auto go get github.com/xeipuuv/gojsonschema
-	GO111MODULE=auto go build ./validate.go
+validate:
+	cd validate && go build
 
 test: validate $(TESTS)
 	for TYPE in $$(ls test); \
@@ -25,7 +25,7 @@ test: validate $(TESTS)
 		for FILE in $$(ls "test/$${TYPE}/good"); \
 		do \
 			echo "  testing test/$${TYPE}/good/$${FILE}"; \
-			if ./validate "$${TYPE}-schema.json" "test/$${TYPE}/good/$${FILE}" ; \
+			if $(VALIDATE) "$${TYPE}-schema.json" "test/$${TYPE}/good/$${FILE}" ; \
 			then \
 				echo "    received expected validation success" ; \
 			else \
@@ -36,7 +36,7 @@ test: validate $(TESTS)
 		for FILE in $$(ls "test/$${TYPE}/bad"); \
 		do \
 			echo "  testing test/$${TYPE}/bad/$${FILE}"; \
-			if ./validate "$${TYPE}-schema.json" "test/$${TYPE}/bad/$${FILE}" ; \
+			if $(VALIDATE) "$${TYPE}-schema.json" "test/$${TYPE}/bad/$${FILE}" ; \
 			then \
 				echo "    received unexpected validation success" ; \
 				exit 1; \
@@ -46,5 +46,6 @@ test: validate $(TESTS)
 		done; \
 	done
 
+.PHONY: clean
 clean:
-	rm -f validate
+	rm -f validate/validate
