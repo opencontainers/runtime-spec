@@ -1,0 +1,13 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "ioUring": {
+            "socketFamilies": [
+                "AF_INET"
+            ]
+        }
+    }
+}
