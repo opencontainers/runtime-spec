@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
     - name: Run make -C schema fmt
       run: make -C schema fmt
     - name: Check for changes
@@ -16,7 +16,7 @@ jobs:
   codespell:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: install deps
       run: pip install --break-system-packages codespell==v2.4.1
     - name: run codespell
