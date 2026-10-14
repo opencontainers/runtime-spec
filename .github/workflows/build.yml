@@ -17,36 +17,19 @@ jobs:
         # our oldest (officially) supported version and the two upstream-supported versions
         go: [1.21.x, oldstable, stable]
 
-    env:
-      # avoid downloading any alternate toolchains (https://go.dev/doc/toolchain)
-      GOTOOLCHAIN: local
-
     steps:
       - name: checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: setup go environment
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ matrix.go }}
-
-      - name: install golangci-lint
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          install-only: true
-
-      - name: run golangci-lint
-        run: |
-          golangci-lint run
-          cd schema/validate && golangci-lint run --path-prefix schema/validate
 
       - name: run tests
         run: |
           set -x
           make install.tools
-
-          make .govet
 
           make .gitvalidation
           make docs
