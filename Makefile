@@ -54,6 +54,10 @@ endif
 version.md: ./specs-go/version.go
 	go run ./.tool/version-doc.go > $@
 
+.PHONY: test
+test:
+	go test ./...
+
 .PHONY: lint
 lint:
 	golangci-lint run

@@ -31,6 +31,8 @@ jobs:
           set -x
           make install.tools
 
+          make test
+
           make .gitvalidation
           make docs
           make -C schema test
