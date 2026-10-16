@@ -61,8 +61,8 @@ Releases usually follow a few steps:
     * [ ] delete the `(^M|^A|^D)` lines, `:%!grep -vE '(^M|^A|^D)'`
     * [ ] merge multi-commit PRs (so each line has a `(#num)` suffix)
     * [ ] drop hash and indent, `:'<,'> s/^\w*  /^I* /`
-  * [ ] a commit bumping `./specs-go/version.go` to next version and empty the `VersionDev` variable
-  * [ ] a commit adding back the "+dev" to `VersionDev`
+  * [ ] a commit bumping `./specs-go/version.go` to next version and empty the `VersionDev` variable (update `Version` accordingly)
+  * [ ] a commit adding back the "+dev" to `VersionDev` and `Version`
 * [ ] send email to <dev@opencontainers.org>
   * [ ] copy the exact commit hash for bumping the version from the pull-request (since master always stays as "-dev")
   * [ ] count the PRs since last release (that this version is tracking, in the cases of multiple branching), like `git log --pretty=oneline --no-merges --decorate $priorTag..$versionBumpCommit  | grep \(pr\/ | wc -l`

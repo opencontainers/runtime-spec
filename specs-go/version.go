@@ -1,7 +1,5 @@
 package specs
 
-import "fmt"
-
 const (
 	// VersionMajor is for an API incompatible changes
 	VersionMajor = 1
@@ -15,4 +13,4 @@ const (
 )
 
 // Version is the specification version that the package types support.
-var Version = fmt.Sprintf("%d.%d.%d%s", VersionMajor, VersionMinor, VersionPatch, VersionDev)
+var Version = "1.3.0+dev"
