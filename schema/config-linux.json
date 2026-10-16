@@ -250,6 +250,27 @@
                     "defaultAction"
                 ]
             },
+            "ioUring": {
+                "type": "object",
+                "properties": {
+                    "ops": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/IoUringOp"
+                        }
+                    },
+                    "socketFamilies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SocketFamily"
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "ops"
+                ]
+            },
             "sysctl": {
                 "$ref": "defs.json#/definitions/mapStringString"
             },

@@ -266,6 +266,14 @@
                 "allow"
             ]
         },
+        "IoUringOp": {
+            "type": "string",
+            "pattern": "^IORING_OP_[A-Z0-9_]+$"
+        },
+        "SocketFamily": {
+            "type": "string",
+            "pattern": "^AF_[A-Z0-9_]+$"
+        },
         "MemoryPolicyMode": {
             "type": "string",
             "enum": [
