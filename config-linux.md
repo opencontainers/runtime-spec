@@ -90,6 +90,7 @@ Each entry has the following structure:
 * **`size`** *(uint32, REQUIRED)* - is the number of ids to be mapped.
 
 The runtime SHOULD NOT modify the ownership of referenced filesystems to realize the mapping.
+The runtime MUST generate an error when user namespace mappings is specified, but a new user namespace is not specified to create.
 Note that the number of mapping entries MAY be limited by the [kernel][user-namespaces].
 
 ### Example
