@@ -406,7 +406,8 @@ The runtime MUST apply entries in the listed order.
 
 Each entry has the following structure:
 
-* **`allow`** *(boolean, REQUIRED)* - whether the entry is allowed or denied.
+* **`allow`** *(boolean, OPTIONAL, **DEPRECATED**)* - whether the entry is allowed or denied.
+    Value of `false` is deprecated if `major,minor` is specified. Missing entry is interpretted as `false` -- relying on default denial for all devices.
 * **`type`** *(string, OPTIONAL)* - type of device: `a` (all), `c` (char), or `b` (block).
     Unset values mean "all", mapping to `a`.
 * **`major, minor`** *(int64, OPTIONAL)* - [major, minor numbers][devices] for the device.
