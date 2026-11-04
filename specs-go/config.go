@@ -725,7 +725,7 @@ type VM struct {
 	// Image specifies guest image related configuration for virtual-machine-based containers.
 	Image VMImage `json:"image,omitempty"`
 	// Hardware configuration that should be passed to the VM.
-	HwConfig *HWConfig `json:"hwconfig,omitempty"`
+	HwConfig *HWConfig `json:"hwConfig,omitempty"`
 }
 
 // VMHypervisor contains information about the hypervisor to use for a virtual machine.
