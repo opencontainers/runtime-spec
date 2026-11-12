@@ -74,6 +74,26 @@
                     }
                 }
             },
+            "ioUring": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "ops": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/IoUringOp"
+                        }
+                    },
+                    "socketFamilies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "defs-linux.json#/definitions/SocketFamily"
+                        }
+                    }
+                }
+            },
             "apparmor": {
                 "type": "object",
                 "properties": {

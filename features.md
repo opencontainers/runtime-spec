@@ -348,6 +348,18 @@ Here is a full example for reference.
         "SECCOMP_FILTER_FLAG_LOG"
       ]
     },
+    "ioUring": {
+      "enabled": true,
+      "ops": [
+        "IORING_OP_READ",
+        "IORING_OP_WRITE"
+      ],
+      "socketFamilies": [
+        "AF_UNIX",
+        "AF_INET",
+        "AF_INET6"
+      ]
+    },
     "apparmor": {
       "enabled": true
     },

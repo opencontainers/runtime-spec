@@ -1040,6 +1040,53 @@ Example sending a single `seccompFd` file descriptor in the `SCM_RIGHTS` array:
 }
 ```
 
+## <a name="configLinuxIoUring" />io_uring
+
+**`ioUring`** (object, OPTIONAL) restricts the [io_uring(7)][io_uring.7] operations that the container process can submit.
+io_uring operations are not system calls, so [seccomp](#configLinuxSeccomp) cannot filter them.
+Whether the io_uring system calls themselves are allowed is controlled by seccomp.
+
+* **`ops`** *(array of strings, REQUIRED)* - the io_uring operations that are allowed.
+    All other operations are denied, and an empty array denies all operations.
+    Whether an operation is allowed does not depend on its submission flags (`IOSQE_*`).
+    Values are names of the `IORING_OP_*` constants from `<linux/io_uring.h>`, for example `IORING_OP_READ`.
+    The runtime MUST ignore a value that it does not recognize or that the kernel does not support: the operation stays denied.
+* **`socketFamilies`** *(array of strings, OPTIONAL)* - the address families that `IORING_OP_SOCKET` can create.
+    If this property is not set, any address family is allowed.
+    If it is set, it MUST NOT be empty; to deny all sockets, leave `IORING_OP_SOCKET` out of `ops`.
+    Values are names of the `AF_*` constants from `<sys/socket.h>`, for example `AF_INET`.
+    The runtime MUST ignore a value that it does not recognize: the address family stays denied.
+    If the runtime recognizes none of the values, `IORING_OP_SOCKET` is denied.
+    The runtime MUST generate an error if this property is set and `ops` does not contain `IORING_OP_SOCKET`.
+
+The runtime MUST apply the restrictions before the container process is executed, so that they apply to the container process and all of its descendants.
+If the runtime cannot apply the restrictions, it MUST generate an error.
+If the runtime cannot ensure that a process keeps the restrictions when it calls [execve(2)][execve.2] after using io_uring, it MUST generate an error.
+For example, Linux 7.0 and 7.1 without commit [bc0e8faf90e7][io-uring-exec-fix] drop them.
+Applying `ioUring` SHOULD NOT prevent the container process from adding io_uring BPF filters of its own, or restrictions to the io_uring instances it creates.
+The restrictions only apply to io_uring instances created after they are applied.
+An io_uring instance passed into the container, for example with `SCM_RIGHTS`, is not restricted.
+
+### Example
+
+```json
+"ioUring": {
+    "ops": [
+        "IORING_OP_READ",
+        "IORING_OP_WRITE",
+        "IORING_OP_SEND",
+        "IORING_OP_RECV",
+        "IORING_OP_ACCEPT",
+        "IORING_OP_SOCKET"
+    ],
+    "socketFamilies": [
+        "AF_UNIX",
+        "AF_INET",
+        "AF_INET6"
+    ]
+}
+```
+
 ## <a name="configLinuxRootfsMountPropagation" />Rootfs Mount Propagation
 
 **`rootfsPropagation`** (string, OPTIONAL) sets the rootfs's mount propagation.
@@ -1131,6 +1178,7 @@ subset of the available options.
 [devices]: https://www.kernel.org/doc/Documentation/admin-guide/devices.txt
 [devpts]: https://www.kernel.org/doc/Documentation/filesystems/devpts.txt
 [file]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_164
+[io-uring-exec-fix]: https://git.kernel.org/torvalds/c/bc0e8faf90e7
 [libseccomp]: https://github.com/seccomp/libseccomp
 [proc]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt
 [seccomp]: https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt
@@ -1138,8 +1186,10 @@ subset of the available options.
 [sysfs]: https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt
 [tmpfs]: https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt
 
+[execve.2]: https://man7.org/linux/man-pages/man2/execve.2.html
 [full.4]: https://man7.org/linux/man-pages/man4/full.4.html
 [set_mempolicy.2]: https://man7.org/linux/man-pages/man2/set_mempolicy.2.html
+[io_uring.7]: https://man7.org/linux/man-pages/man7/io_uring.7.html
 [mknod.1]: https://man7.org/linux/man-pages/man1/mknod.1.html
 [mknod.2]: https://man7.org/linux/man-pages/man2/mknod.2.html
 [namespaces.7_2]: https://man7.org/linux/man-pages/man7/namespaces.7.html

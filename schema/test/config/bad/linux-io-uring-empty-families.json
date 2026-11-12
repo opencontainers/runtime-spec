@@ -1,0 +1,14 @@
+{
+    "ociVersion": "1.0.0",
+    "root": {
+        "path": "rootfs"
+    },
+    "linux": {
+        "ioUring": {
+            "ops": [
+                "IORING_OP_SOCKET"
+            ],
+            "socketFamilies": []
+        }
+    }
+}

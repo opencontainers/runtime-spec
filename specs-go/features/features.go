@@ -44,6 +44,7 @@ type Linux struct {
 
 	Cgroup          *Cgroup          `json:"cgroup,omitempty"`
 	Seccomp         *Seccomp         `json:"seccomp,omitempty"`
+	IOUring         *IOUring         `json:"ioUring,omitempty"`
 	Apparmor        *Apparmor        `json:"apparmor,omitempty"`
 	Selinux         *Selinux         `json:"selinux,omitempty"`
 	IntelRdt        *IntelRdt        `json:"intelRdt,omitempty"`
@@ -107,6 +108,21 @@ type Seccomp struct {
 	// not supported by the current kernel and/or libseccomp.
 	// Nil value means "unknown", not "no flags are supported".
 	SupportedFlags []string `json:"supportedFlags,omitempty"`
+}
+
+// IOUring represents the "ioUring" field.
+type IOUring struct {
+	// Enabled is true if io_uring restrictions support is compiled in.
+	// Nil value means "unknown", not "false".
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Ops is the list of the recognized io_uring operations, e.g., "IORING_OP_READ".
+	// Nil value means "unknown", not "no support for any operation".
+	Ops []string `json:"ops,omitempty"`
+
+	// SocketFamilies is the list of the recognized address families, e.g., "AF_INET".
+	// Nil value means "unknown", not "no support for any address family".
+	SocketFamilies []string `json:"socketFamilies,omitempty"`
 }
 
 // Apparmor represents the "apparmor" field.
