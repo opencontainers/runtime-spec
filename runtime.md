@@ -76,7 +76,7 @@ The lifecycle describes the timeline of events that happen from when a container
 11. Runtime's [`delete`](runtime.md#delete) command is invoked with the unique identifier of the container.
 12. The container MUST be destroyed by undoing the steps performed during create phase (step 2).
 13. The [`poststop` hooks](config.md#poststop) MUST be invoked by the runtime.
-    If any `poststop` hook fails, the runtime MUST [log a warning](#warnings), but the remaining hooks and lifecycle continue as if the hook had succeeded.
+    If any `poststop` hook fails, the runtime MUST [generate an error](#errors), and the remaining hooks MUST NOT be executed.
 
 ## <a name="runtimeErrors" />Errors
 
