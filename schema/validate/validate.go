@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
-	"github.com/xeipuuv/gojsonschema"
+	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
 const usage = `Validate is used to check document with specified schema.
@@ -23,6 +26,21 @@ You can use validate in following ways:
       validate <schema.json>
       [INPUT DOCUMENT CONTENT HERE]
 `
+
+type httpURLLoader struct{}
+
+func (httpURLLoader) Load(url string) (any, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected HTTP status: %s", resp.Status)
+	}
+	return jsonschema.UnmarshalJSON(resp.Body)
+}
 
 func main() {
 	nargs := len(os.Args[1:])
@@ -41,50 +59,55 @@ func main() {
 	schemaPath := os.Args[1]
 	if !strings.Contains(schemaPath, "://") {
 		var err error
-		schemaPath, err = formatFilePath(schemaPath)
+		schemaPath, err = formatFileURL(schemaPath)
 		if err != nil {
 			fmt.Printf("ERROR: invalid schema-file path: %s\n", err)
 			os.Exit(1)
 		}
-		schemaPath = "file://" + schemaPath
 	}
 
-	schemaLoader := gojsonschema.NewReferenceLoader(schemaPath)
+	compiler := jsonschema.NewCompiler()
+	compiler.DefaultDraft(jsonschema.Draft4)
+	compiler.UseLoader(jsonschema.SchemeURLLoader{
+		"file":  jsonschema.FileLoader{},
+		"http":  httpURLLoader{},
+		"https": httpURLLoader{},
+	})
 
-	var documentLoader gojsonschema.JSONLoader
+	schema, err := compiler.Compile(schemaPath)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
+	var document io.Reader = os.Stdin
 	if nargs > 1 {
 		documentPath, err := formatFilePath(os.Args[2])
 		if err != nil {
 			fmt.Printf("ERROR: invalid document-file path: %s\n", err)
 			os.Exit(1)
 		}
-		documentLoader = gojsonschema.NewReferenceLoader("file://" + documentPath)
-	} else {
-		documentBytes, err := io.ReadAll(os.Stdin)
+		f, err := os.Open(documentPath)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		documentString := string(documentBytes)
-		documentLoader = gojsonschema.NewStringLoader(documentString)
+		defer func() { _ = f.Close() }()
+		document = f
 	}
 
-	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
+	instance, err := jsonschema.UnmarshalJSON(document)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	if result.Valid() {
-		fmt.Printf("The document is valid\n")
-	} else {
-		fmt.Printf("The document is not valid. see errors :\n")
-		for _, desc := range result.Errors() {
-			fmt.Printf("- %s\n", desc)
-		}
+	if err := schema.Validate(instance); err != nil {
+		fmt.Println("The document is not valid. see errors :")
+		fmt.Println(err)
 		os.Exit(1)
 	}
+	fmt.Println("The document is valid")
 }
 
 func formatFilePath(path string) (string, error) {
@@ -97,4 +120,19 @@ func formatFilePath(path string) (string, error) {
 		return "", err
 	}
 	return absPath, nil
+}
+
+func formatFileURL(path string) (string, error) {
+	fp, err := formatFilePath(path)
+	if err != nil {
+		return "", err
+	}
+
+	path = filepath.ToSlash(fp)
+	if runtime.GOOS == "windows" {
+		// FileLoader removes one leading slash on Windows.
+		// Preserve both leading slashes for UNC paths.
+		path = "/" + path
+	}
+	return (&url.URL{Scheme: "file", Path: path}).String(), nil
 }
