@@ -223,11 +223,7 @@ the following properties:
 
 The runtime MUST check if moving the network interface to the container
 namespace is possible. If a network device with the specified name already
-exists in the container namespace, the runtime MUST [generate an error](runtime.md#errors),
-unless the user has provided a template by appending
-`%d` to the new name. In that case, the runtime MUST allow the move, and the
-kernel will generate a unique name for the interface within the container's
-network namespace.
+exists in the container namespace, the runtime MUST [generate an error](runtime.md#errors).
 
 The runtime MUST preserve existing network interface attributes, including all
 permanent IP addresses (IFA_F_PERMANENT flag) of any family with global scope
