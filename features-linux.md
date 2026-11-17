@@ -165,6 +165,44 @@ Irrelevant to the kernel version of the host operating system.
 }
 ```
 
+## <a name="linuxFeaturesIoUring" />io_uring
+
+**`ioUring`** (object, OPTIONAL) represents the runtime's implementation status of io_uring restrictions.
+Irrelevant to the kernel version of the host operating system.
+
+* **`enabled`** (bool, OPTIONAL) represents whether the runtime supports io_uring restrictions.
+* **`ops`** (array of strings, OPTIONAL) The recognized names of the io_uring operations.
+  The runtime MUST recognize the elements in this array in the [`ops` property of the `linux.ioUring` object in `config.json`](config-linux.md#configLinuxIoUring).
+* **`socketFamilies`** (array of strings, OPTIONAL) The recognized names of the address families.
+  The runtime MUST recognize the elements in this array in the [`socketFamilies` property of the `linux.ioUring` object in `config.json`](config-linux.md#configLinuxIoUring).
+
+### Example
+
+```json
+"ioUring": {
+  "enabled": true,
+  "ops": [
+    "IORING_OP_NOP",
+    "IORING_OP_READV",
+    "IORING_OP_WRITEV",
+    "IORING_OP_READ",
+    "IORING_OP_WRITE",
+    "IORING_OP_SEND",
+    "IORING_OP_RECV",
+    "IORING_OP_ACCEPT",
+    "IORING_OP_SOCKET"
+  ],
+  "socketFamilies": [
+    "AF_UNIX",
+    "AF_INET",
+    "AF_INET6",
+    "AF_NETLINK",
+    "AF_PACKET",
+    "AF_VSOCK"
+  ]
+}
+```
+
 ## <a name="linuxFeaturesApparmor" />AppArmor
 
 **`apparmor`** (object, OPTIONAL) represents the runtime's implementation status of AppArmor.
