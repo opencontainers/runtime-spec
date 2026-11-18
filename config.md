@@ -648,10 +648,13 @@ The definition of `createContainer` hooks is currently underspecified and hooks 
 ### <a name="configHooksStartContainer" />StartContainer Hooks
 
 The `startContainer` hooks MUST be called [before the user-specified process is executed](runtime.md#lifecycle) as part of the [`start`](runtime.md#start) operation.
-This hook can be used to execute some operations in the container, for example running the `ldconfig` binary on linux before the container process is spawned.
+This hook can be used to execute some operations in the container, for example running a trusted `ldconfig` binary on Linux before the container process is spawned.
 
 The `startContainer` hooks' path MUST resolve in the [container namespace](glossary.md#container-namespace).
 The `startContainer` hooks MUST be executed in the [container namespace](glossary.md#container-namespace).
+
+The hook executable and its runtime dependencies may be supplied by the container root filesystem and controlled by the container image.
+Users should ensure they are trusted, because execution in the container namespace alone does not provide a security boundary between the hook and the runtime.
 
 ### <a name="configHooksPoststart" />Poststart
 
