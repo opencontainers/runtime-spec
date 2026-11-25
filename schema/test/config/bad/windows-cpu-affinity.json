@@ -1,0 +1,16 @@
+{
+    "ociVersion": "1.2.1",
+    "windows": {
+        "layerFolders": [
+            "C:\\Layers\\layer1"
+        ],
+        "resources": {
+            "cpu": {
+                "affinity": {
+                    "mask": 15,
+                    "group": 0
+                }
+            }
+        }
+    }
+}
